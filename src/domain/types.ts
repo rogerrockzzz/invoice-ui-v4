@@ -206,6 +206,8 @@ export interface StoryDone {
   sub: string;
   at: string;
   cash?: boolean;
+  visitId?: number;
+  refundInvoiceId?: string;
 }
 
 export interface Visit {

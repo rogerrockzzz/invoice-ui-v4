@@ -38,3 +38,14 @@
 - Theme overrides in `src/theme.css` are unlayered and the light block matches `:root`, so every base colour set
   for light must be set again under `.dark`.
 - `window.__vida = { reset, world, ui }` is always exposed (prototype, mock data) for e2e and demos.
+
+## Learned in 1b
+- v3's actions are in `src/store/actions.ts` (plain `(w, c, …, fx)` functions); UI runs them with
+  `useWorld.getState().act(caseId, fn)` so they mutate an immer draft and toasts fire after the commit.
+  `nextStep` action ids map to them in `src/store/stepActions.ts` (`STEP_LATER` = disabled "Coming in …").
+- Scripted golden flows: add ops to `FLOWS` in `tools/v3-golden/extract.html`, run `npm run golden`; the v4 replay is
+  `src/store/__tests__/flows.test.ts` (keep its `runOp` in step with the extractor's).
+- HeroUI `ToggleButtonGroup selectionMode="single"` renders `role="radio"` buttons — e2e uses `getByRole("radio")`.
+- `NumberField` snaps to `step` — use `step={0.01}` for money or 173.69 shows as 173.70.
+- Drawer width goes on `Drawer.Dialog` (not `Drawer.Content`, which is the full-screen flex container).
+- `tests/` compiles without the DOM lib: reach the app hook as `(globalThis as unknown as Vida).__vida` inside `page.evaluate`.

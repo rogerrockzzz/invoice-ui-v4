@@ -91,7 +91,7 @@ test("booked visits come first, flagged upcoming, then today's — upcoming and 
   /* the choice holds, and a tile still opens its visit */
   await tabs.getByRole("tab", { name: /Today/ }).click();
   await page.getByTestId("tile-2").getByRole("button", { name: /Open/ }).click();
-  await expect(page.getByText("V100002 · Consultation · CARDIOLOGY")).toBeVisible();
+  await expect(page.getByTestId("visit-ctx")).toContainText("V100002");
   /* back to the patient */
   await page.getByRole("link", { name: "MOHAMMED AL QAHTANI" }).click();
   await expect(page.getByRole("heading", { name: "MOHAMMED AL QAHTANI" })).toBeVisible();

@@ -1,6 +1,12 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
-import type { Lang } from "../i18n";
+import i18n, { type Lang } from "../i18n";
+import { resolveMsg } from "../i18n/msg";
+import { newDrawer, type DrawerState, type DrawerToast } from "../domain/drawer";
+import type { Visit, World } from "../domain/types";
+import { openedVisit } from "./actions";
+import { notify } from "./toasts";
+import { useWorld } from "./world";
 
 export type Screen = "home" | "patient" | "visit" | "invoices";
 export type Theme = "light" | "dark";
@@ -32,6 +38,13 @@ export interface UiState {
   visGroup: boolean;
   pinvOpen: boolean;
   pkgOpen: boolean;
+  /* the payment pop-up, the event and invoice pop-ups, the visit history and the Simulate panel */
+  drawer: DrawerState | null;
+  eventPop: { caseId: number; i: number } | null;
+  invPop: string | null;
+  histOpen: boolean;
+  comment: { cid: number; text: string; important: boolean } | null;
+  simOpen: boolean;
   theme: Theme;
   lang: Lang;
 
@@ -40,17 +53,20 @@ export interface UiState {
   closeTab: (mrn: string) => void;
   goHome: () => void;
   openInvoices: () => void;
+  openDrawer: (caseId: number, amount: number) => void;
+  drawerDo: (fn: (d: DrawerState, w: World, c: Visit) => DrawerToast | null | void) => void;
   set: (patch: Partial<Omit<UiState, Fns>>) => void;
   setTheme: (t: Theme) => void;
   setLang: (l: Lang) => void;
   reset: () => void;
 }
-type Fns = "openPatient" | "openVisit" | "closeTab" | "goHome" | "openInvoices" | "set" | "setTheme" | "setLang" | "reset";
+type Fns = "openPatient" | "openVisit" | "closeTab" | "goHome" | "openInvoices" | "openDrawer" | "drawerDo" | "set" | "setTheme" | "setLang" | "reset";
 
 const initial = () => ({
   screen: "home" as Screen, tabs: [] as string[], activeMrn: null, caseId: null, q: "", homeSel: null, homePanel: null,
   walletOpen: false, profPendOpen: true, pendView: "today" as PendView, profVisitsOpen: true, vf: { no: "", from: "", to: "" },
   visGroup: false, pinvOpen: false, pkgOpen: false,
+  drawer: null, eventPop: null, invPop: null, histOpen: true, comment: null, simOpen: false,
 });
 
 export const useUi = create<UiState>()(
@@ -64,11 +80,14 @@ export const useUi = create<UiState>()(
       if (!s.tabs.includes(mrn)) s.tabs.push(mrn);
       s.activeMrn = mrn; s.caseId = null; s.screen = "patient";
     }),
-    /* v3 openVisit() (line 3397); resetting the visit's active story happens in the world store (1b) */
-    openVisit: (id, mrn) => set((s) => {
-      if (!s.tabs.includes(mrn)) s.tabs.push(mrn);
-      s.activeMrn = mrn; s.caseId = id; s.screen = "visit";
-    }),
+    /* v3 openVisit() (line 3397): a visit always opens on its main story */
+    openVisit: (id, mrn) => {
+      useWorld.getState().act(id, (w, c) => openedVisit(w, c));
+      set((s) => {
+        if (!s.tabs.includes(mrn)) s.tabs.push(mrn);
+        s.activeMrn = mrn; s.caseId = id; s.screen = "visit";
+      });
+    },
     /* v3 closeTab() (line 3407) */
     closeTab: (mrn) => set((s) => {
       s.tabs = s.tabs.filter((m) => m !== mrn);
@@ -81,6 +100,19 @@ export const useUi = create<UiState>()(
     goHome: () => set((s) => { s.screen = "home"; s.activeMrn = null; s.caseId = null; }),
     /* v3 renderTabs(): the Invoices screen always opens asking what to load */
     openInvoices: () => set((s) => { s.screen = "invoices"; }),
+    /* v3 `state.drawer = { c, mode:"Cash", amount }` — the desk opens on cash */
+    openDrawer: (caseId, amount) => set((s) => { s.drawer = newDrawer(caseId, amount); }),
+    drawerDo: (fn) => {
+      let out: DrawerToast | null | void = null;
+      const w = useWorld.getState();
+      set((s) => {
+        if (!s.drawer) return;
+        const c = w.cases.find((x) => x.id === s.drawer!.caseId);
+        if (c) out = fn(s.drawer, w, c);
+      });
+      const tst = out as DrawerToast | null;
+      if (tst) notify(tst.kind, resolveMsg(i18n.t, tst.title), tst.sub ? resolveMsg(i18n.t, tst.sub) : undefined);
+    },
     set: (patch) => set((s) => { Object.assign(s, patch); }),
     setTheme: (t) => set((s) => { s.theme = t; try { localStorage.setItem("vida.theme", t); } catch { /* private mode */ } }),
     setLang: (l) => set((s) => { s.lang = l; try { localStorage.setItem("vida.lang", l); } catch { /* private mode */ } }),

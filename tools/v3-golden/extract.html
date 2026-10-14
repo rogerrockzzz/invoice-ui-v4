@@ -90,7 +90,86 @@ f.onload = () => {
     const notes = [0.05, 46, 65.55, 273.69, 999.99, 1234.5].map((a) => ({ amount: a, out: suggestNotes(a) }));
     function strip(t) { return { patient: t.patient, company: t.company, deductible: t.deductible, rows: t.rows.map((r) => ({ code: r.line.code, calc: r.calc })) }; }
     function lr(e) { return { type: e.type, amount: e.amount, balance: e.balance, inflow: e.inflow, docId: e.docId || null, invoiceId: e.invoiceId || null }; }
-    out.textContent = JSON.stringify({ build: E("BUILD"), generatedAt: new Date().toISOString(), calc, visits, patients: pats, notes, queries, payerSearch });
+
+    /* Scripted flows (checkpoint 1b): v3's own actions, run one op at a time, with a snapshot of the visit
+       after each. The ops are written to the JSON so the v4 test replays exactly the same script.
+       Invoice numbers come from a seeded Math.random (v4 uses the same sequence); times are masked. */
+    let seed = 42;
+    w.Math.random = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    const due = E("due"), startBill = E("startBill"), selectedLines = E("selectedLines"), round2 = (x) => +x.toFixed(2);
+    const FLOWS = [
+      { name: "visit 1: bill the consultation, cash at the desk", ops: [
+        ["billConsult", 1], ["cancelBill", 1], ["billConsult", 1],
+        ["pay", 1, "Cash", "tendered SAR 100.00 (1×SAR 100) · change SAR 54.00", [["Cash", "rest"]]],
+      ] },
+      { name: "visit 3: approval, link, doctor, orders, hold, release, approval, credit", ops: [
+        ["approveConsult", 3], ["approveConsult", 3], ["billConsult", 3], ["sendLink", 3], ["simStale", 3], ["resendLink", 3],
+        ["simPaid", 3], ["checkDoctor", 3], ["checkDoctor", 3], ["checkOrders", 3], ["checkOrders", 3],
+        ["waitAll", 3], ["checkApproval", 3], ["release", 3], ["billApproved", 3], ["sendLink", 3], ["cancelBill", 3],
+        ["billApproved", 3], ["pay", 3, "Span", "4417 · 884120", [["Span", "rest", "884120", "4417"]]],
+        ["checkApproval", 3], ["checkApproval", 3], ["checkApproval", 3], ["billApproved", 3],
+        ["pay", 3, "Credit", "", [["Credit", "rest"]]], ["checkOrders", 3], ["checkOrders", 3],
+      ] },
+      { name: "visit 2: tick and untick, then split Span + OPEN advance", ops: [
+        ["toggle", 2, "PKG-100"], ["toggle", 2, "LAB-010"], ["toggle", 2, "RAD-050"], ["toggle", 2, "PKG-100"], ["billApproved", 2],
+        ["toggle", 2, "LAB-010"], ["toggle", 2, "RAD-050"],
+        ["pay", 2, "Span + OPEN", "Span SAR 100.00 + OPEN SAR 173.69", [["Span", 100], ["OPEN", "rest"]]],
+        ["cashBill", 2], ["cancelBill", 2], ["cashBill", 2], ["simApproval", 2],
+      ] },
+      { name: "visit 20: interbranch orders billed here", ops: [
+        ["billApproved", 20], ["pay", 20, "Cash", "", [["Cash", "rest"]]], ["simApproval", 20], ["billApproved", 20], ["markLinkPaid", 20],
+      ] },
+      { name: "visit 13: a nil follow-up is recorded", ops: [["billConsult", 13], ["pay", 13, "No charge", null, null]] },
+      { name: "visit 31: part paid, part on credit", ops: [
+        ["billConsult", 31], ["pay", 31, "Span + Credit", "Span SAR 20.00 + Credit SAR 26.00", [["Span", 20], ["Credit", "rest"]]],
+      ] },
+      { name: "visit 30: approval, then all on credit", ops: [
+        ["approveConsult", 30], ["billConsult", 30], ["pay", 30, "Credit", "", [["Credit", "rest"]]],
+      ] },
+    ];
+    const caseOf = (id) => cases.find((x) => x.id === id);
+    function runOp([op, id, ...a]) {
+      const c = caseOf(id);
+      if (op === "billConsult") startBill(c, "consult", [c.consult]);
+      else if (op === "billApproved") startBill(c, "orders", selectedLines(c, approvedOrders(c)));
+      else if (op === "approveConsult") E("simApproveConsult")(c);
+      else if (op === "waitAll") nextStep(c).no.fn();
+      else if (op === "release") nextStep(c).acts.find((x) => /approved order\(s\) now/.test(x.label)).fn();
+      else if (op === "toggle") E("toggleLine")(c, a[0], nextStep(c).ext.lines);
+      else if (op === "cashBill") E("startCashBill")(c, E("pendingOrders")(c).filter((o) => !o.paid && !o.invoiceId));
+      else if (op === "markLinkPaid") E("payAll")(c, "Payment link");
+      else if (op === "pay") {
+        const [via, detail, spec] = a;
+        let parts = null;
+        if (spec) {
+          const fixed = spec.filter((p) => p[1] !== "rest").reduce((s, p) => s + p[1], 0);
+          parts = spec.map(([mode, amt, ref, ref2]) => ({ mode, amount: amt === "rest" ? round2(due(c) - fixed) : amt, ref: ref || "", ref2: ref2 || "" }));
+        }
+        E("payAll")(c, via, detail || "", parts);
+      } else E(op)(c);
+    }
+    const norm = (s) => String(s ?? "").replace(/\s+/g, " ").trim().replace(/\b\d\d:\d\d\b/g, "HH:MM");
+    function snap(c) {
+      const s = nextStep(c), p = patients[c.mrn], stories = visitStories(c);
+      return {
+        step: s.key, q: norm(s.q), sub: norm(s.sub), amt: s.amt ?? null,
+        buttons: [btn(s.yes), btn(s.no), ...(s.acts || []).map((x) => x.label)].filter(Boolean),
+        stories, active: E("activeStory")(c), stages: Object.fromEntries(stories.map((id) => [id, storyStage(c, id)])),
+        due: due(c), dedUsed: c.dedUsed, link: c.link ? c.link.ageMin : null, waitAll: !!c.prefs.waitAll,
+        bill: c.bill ? { scope: c.bill.scope, codes: c.bill.codes, patient: c.bill.patient, company: c.bill.company, deductible: c.bill.deductible, cashOnly: !!c.bill.cashOnly } : null,
+        lines: [c.consult, ...c.orders].map((l) => ({ code: l.code, ins: l.ins, price: l.price, paid: !!l.paid, via: l.via || null, invoiceId: l.invoiceId || null,
+          urgentCash: !!l.urgentCash, approvalPending: !!l.approvalPending })),
+        invoices: c.invoices.map((i) => ({ id: i.id, scope: i.scope, patient: i.patient, company: i.company, deductible: i.deductible, paid: i.paid,
+          via: i.via, viaDetail: norm(i.viaDetail), payments: i.payments || null, payer: i.payer, branch: i.branch || null, cashOnly: !!i.cashOnly,
+          billType: i.billType || null, rows: i.rows.map((r) => r.code) })),
+        history: c.history.map((h) => ({ ic: h.ic || "", tx: norm(h.tx), sub: norm(h.sub), type: h.type || "", by: h.by || "",
+          invoiceId: h.invoiceId || null, amount: h.amount ?? null, mode: h.mode || null })),
+        wallet: { ...p.wallet.advance }, credit: creditTotal(c.mrn),
+        ledger: (p.ledger || []).map((e) => ({ type: e.type, amount: e.amount, note: norm(e.note), invoiceId: e.invoiceId || null, visitId: e.visitId ?? null, docId: e.docId || null })),
+      };
+    }
+    const flows = FLOWS.map((f) => ({ name: f.name, ops: f.ops, snaps: f.ops.map((o) => { runOp(o); return snap(caseOf(o[1])); }) }));
+    out.textContent = JSON.stringify({ build: E("BUILD"), generatedAt: new Date().toISOString(), calc, visits, patients: pats, notes, queries, payerSearch, flows });
   } catch (e) {
     out.textContent = "ERROR " + e.message + "\n" + e.stack;
   }

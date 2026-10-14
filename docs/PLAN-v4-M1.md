@@ -447,13 +447,13 @@ orders → bill → collect → complete — with the same amounts, events and t
     "the flow must move on, not ask for the consultation again", "the same holds for orders put on credit".
 
 ### Acceptance (1b)
-- [ ] Visit 2 (7000667): Orders invoicing at stage 3 "Bill orders", question "4 procedures were ordered. 3 have approval, 1 does not.", **SAR 273.69**; "Bill the 3 approved now" → "How is MOHAMMED paying for the orders — SAR 273.69?" → desk: split **Span 100 + OPEN advance rest** → invoice created, advance reduced by the OPEN part, `ADV_USED` ledger entry, one PAYMENT history row naming the invoice, toast "Payment received · SAR 273.69".
-- [ ] Visit 3 (7100482): "Approval not received…" → check → approval → bill → send link → Simulate "patient paid" → invoice via Payment link → SEE_DOCTOR → check twice → WAIT_DOCTOR → check twice → orders arrive.
-- [ ] Visit 1 cash desk payment with notes: tender SAR 100 for SAR 46.00-type amount shows correct change; detail string records notes.
-- [ ] Credit mode: putting part on credit raises `CREDIT_RAISED`, wallet chip credit rises by that amount.
-- [ ] Visit 20 interbranch: no consultation step; invoice carries `branch`.
-- [ ] All `nextStep`/`storyStage` results for scripted flows equal the goldens.
-- [ ] `npm run verify` green on desktop + tablet. PARITY updated. Commit `M1b: core billing flow`.
+- [x] Visit 2 (7000667): Orders invoicing at stage 3 "Bill orders", question "4 procedures were ordered. 3 have approval, 1 does not.", **SAR 273.69**; "Bill the 3 approved now" → "How is MOHAMMED paying for the orders — SAR 273.69?" → desk: split **Span 100 + OPEN advance rest** → invoice created, advance reduced by the OPEN part, `ADV_USED` ledger entry, one PAYMENT history row naming the invoice, toast "Payment received · SAR 273.69".
+- [x] Visit 3 (7100482): "Approval not received…" → check → approval → bill → send link → Simulate "patient paid" → invoice via Payment link → SEE_DOCTOR → check twice → WAIT_DOCTOR → check twice → orders arrive.
+- [x] Visit 1 cash desk payment with notes: tender SAR 100 for SAR 46.00-type amount shows correct change; detail string records notes.
+- [x] Credit mode: putting part on credit raises `CREDIT_RAISED`, wallet chip credit rises by that amount.
+- [x] Visit 20 interbranch: no consultation step; invoice carries `branch`.
+- [x] All `nextStep`/`storyStage` results for scripted flows equal the goldens.
+- [x] `npm run verify` green on desktop + tablet. PARITY updated. Commit `M1b: core billing flow`.
 
 ---
 
