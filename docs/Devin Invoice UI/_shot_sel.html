@@ -1,0 +1,24 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>html,body{margin:0}iframe{width:100vw;height:100vh;border:0;display:block}</style></head><body>
+<script>
+const n=new URLSearchParams(location.search).get('s')||'1';
+const f=document.createElement('iframe');
+f.onload=()=>{const w=f.contentWindow;
+  const q=s=>w.document.querySelector(s),qa=s=>[...w.document.querySelectorAll(s)],R=()=>w.eval('render')();
+  const c=w.eval('cases').find(x=>x.id===2);
+  w.eval('openVisit')(2);
+  if(n<='2'){
+    q('details.ext').open=true; R(); q('details.ext').open=true;
+    if(n==='2'){ const b=qa('.step .lnChk')[2]; if(b) b.click(); q('details.ext').open=true; R(); q('details.ext').open=true; }
+  }
+  if(n==='3'){   // a cash visit that has a policy on file, with an approval already held
+    const v=w.eval('cases').find(x=>x.id===1);
+    w.eval('openVisit')(1);
+    v.payerId='CASH'; v.sel={}; v.bill=null; v.parked=false; v.invoices=[];
+    v.consult={ name:'Paediatric Consultation', code:'CON-101', price:170, priceIns:200, priceCash:170, ins:'notinsured', paid:true };
+    v.orders=[{ code:'LAB-022', name:'Urea & Electrolytes', price:150, priceIns:180, priceCash:150, ins:'notinsured', insWas:'approved', ordered:'11:20', paid:false },
+              { code:'RAD-018', name:'Abdominal Ultrasound', price:360, priceIns:420, priceCash:360, ins:'notinsured', insWas:'partial', ordered:'11:20', paid:false }];
+    R();
+  }
+  document.title='SHOT-READY';};
+f.src='journey-opd-v2.html';document.body.appendChild(f);
+</script></body></html>

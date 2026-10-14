@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>v3 golden extractor</title></head>
+<body>
+<pre id="out">…</pre>
+<script>
+/* Runs journey-opd-v3.html's own functions and dumps what they return, so v4's ported domain can be
+   compared against it (docs/PLAN-v4-M1.md §6.2). Served from the project root; run via `npm run golden`. */
+const f = document.createElement("iframe");
+f.style.cssText = "width:1200px;height:900px";
+f.onload = () => {
+  const out = document.getElementById("out");
+  try {
+    const w = f.contentWindow, E = (s) => w.eval(s);
+    const cases = E("cases"), patients = E("patients");
+    const calcLine = E("calcLine"), priceLines = E("priceLines"), dedPool = E("dedPool"), planOf = E("planOf");
+    const nextStep = E("nextStep"), storyStage = E("storyStage"), visitStories = E("visitStories"), mainStory = E("mainStory");
+    const pendingSummary = E("pendingSummary"), collected = E("collected"), creditTotal = E("creditTotal");
+    const ledgerRows = E("ledgerRows"), suggestNotes = E("suggestNotes"), approvedOrders = E("approvedOrders");
+    const pendingVisits = E("pendingVisits"), activePayerOf = E("activePayerOf"), visitsOf = E("visitsOf");
+    const parentVisit = E("parentVisit"), rootVisit = E("rootVisit"), visitNo = E("visitNo");
+    const plans = {
+      none: null,
+      bupaGold: patients["7000667"].payers[0].plan,
+      ncciA: patients["7000203"].payers[0].plan,
+      tawSilver: patients["7100482"].payers[0].plan,
+    };
+    const statuses = ["approved", "partial", "pending", "rejected", "notcovered", "notinsured"];
+    const calc = [];
+    for (const [pk, plan] of Object.entries(plans))
+      for (const ins of statuses)
+        for (const dLeft of [0, 10, 143, 1000])
+          for (const price of [90, 250, 1500, 333.33])
+            calc.push({ plan: pk, ins, dLeft, price, out: calcLine({ price, ins }, dLeft, plan) });
+    for (const ins of ["approved", "partial"]) calc.push({ plan: "bupaGold", ins, dLeft: 143, price: 300, selfPay: true,
+      out: calcLine({ price: 300, ins, selfPay: true }, 143, plans.bupaGold) });
+
+    const btn = (b) => b ? b.label : null;
+    const visits = cases.map((c) => {
+      const s = nextStep(c);
+      const stories = visitStories(c);
+      const ps = pendingSummary(c);
+      return {
+        id: c.id, mrn: c.mrn, visitNo: visitNo(c),
+        dedPool: dedPool(c),
+        priceConsult: strip(priceLines(c, [c.consult])),
+        priceApproved: strip(priceLines(c, approvedOrders(c))),
+        priceAllApproved: strip(priceLines(c, c.orders.map((o) => ({ ...o, ins: "approved" })))),
+        step: {
+          key: s.key, tone: s.tone, tag: s.tag, q: s.q, sub: s.sub || "", amt: s.amt ?? null, amtLabel: s.amtLabel || null,
+          amts: (s.amts || []).map((a) => ({ v: a.v, label: a.label })),
+          ext: s.ext ? { title: s.ext.title, codes: s.ext.lines.map((l) => l.code), selectable: !!s.ext.selectable, note: s.ext.note || null } : null,
+          buttons: [btn(s.yes), btn(s.no), ...(s.acts || []).map((a) => a.label)].filter(Boolean),
+          back: !!s.back,
+        },
+        stories, main: mainStory(c),
+        stages: Object.fromEntries(stories.map((id) => [id, storyStage(c, id)])),
+        pending: { kind: ps.kind, owed: ps.owed },
+        collected: collected(c),
+        parent: (parentVisit(c) || {}).id ?? null,
+        root: rootVisit(c).id,
+        badges: Object.fromEntries(stories.map((id) => [id, E("storyBadge")(c, id)])),
+        locks: Object.fromEntries(Object.keys(E("STORIES")).map((id) => [id, E("storyLock")(c, id)])),
+        invoices: c.invoices.map((inv) => ({ id: inv.id, refundable: E("refundable")(inv), state: E("refundState")(inv),
+          type: E("invType")(inv), status: E("invStatus")(inv), mode: E("invMode")(inv), payerType: E("invPayerType")(c, inv),
+          date: E("invDate")(c, inv), credit: E("creditOf")(inv) })),
+      };
+    });
+    const anyDate = { preset: "any", from: "", to: "", clinic: "", doctor: "", payer: "", type: "", status: "", mode: "" };
+    const queries = [["", anyDate], ["qahtani", anyDate], ["INV-771204", anyDate], ["7000203", anyDate],
+      ["", { ...anyDate, mode: "Credit" }], ["", { ...anyDate, clinic: "CARDIOLOGY", status: "Paid" }],
+      ["", { ...anyDate, payer: "Cash" }], ["", { ...anyDate, type: "Consultation" }]]
+      .map(([q, f]) => ({ q, f, ids: E("queryInvoices")(f, q).map((r) => r.inv.id) }));
+    const payerSearch = [{ group: "bupa" }, { group: "" }, { group: "charity" }, { contract: "61" }, { policy: "class b" }, { group: "5101" }]
+      .map((f) => ({ f, ids: E("searchPayers")(f).map((x) => x.id) }));
+    const pats = Object.keys(patients).map((mrn) => {
+      const pv = pendingVisits(mrn);
+      const ap = activePayerOf(patients[mrn]);
+      return {
+        mrn,
+        creditTotal: creditTotal(mrn),
+        ledgerADV: ledgerRows(mrn, "ADV").map(lr),
+        ledgerCREDIT: ledgerRows(mrn, "CREDIT").map(lr),
+        walletDocs: (patients[mrn].walletDocs || []).map((d) => ({ id: d.id, wtype: d.wtype, amount: d.amount, visitId: d.visitId, invoiceId: d.invoiceId })),
+        visitOrder: visitsOf(mrn).map((c) => c.id),
+        pending: { today: pv.today.map((x) => x.c.id), upcoming: pv.upcoming.map((x) => x.c.id), earlier: pv.earlier.map((x) => x.c.id) },
+        activePayer: { id: ap.payer.id, from: ap.from },
+      };
+    });
+    const notes = [0.05, 46, 65.55, 273.69, 999.99, 1234.5].map((a) => ({ amount: a, out: suggestNotes(a) }));
+    function strip(t) { return { patient: t.patient, company: t.company, deductible: t.deductible, rows: t.rows.map((r) => ({ code: r.line.code, calc: r.calc })) }; }
+    function lr(e) { return { type: e.type, amount: e.amount, balance: e.balance, inflow: e.inflow, docId: e.docId || null, invoiceId: e.invoiceId || null }; }
+    out.textContent = JSON.stringify({ build: E("BUILD"), generatedAt: new Date().toISOString(), calc, visits, patients: pats, notes, queries, payerSearch });
+  } catch (e) {
+    out.textContent = "ERROR " + e.message + "\n" + e.stack;
+  }
+  document.title = "GOLDEN-READY";
+};
+f.src = "../../docs/Devin%20Invoice%20UI/journey-opd-v3.html";
+document.body.appendChild(f);
+</script>
+</body>
+</html>

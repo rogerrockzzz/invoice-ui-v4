@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VIDA — Guided Patient Journey (OPD)</title>
+<style>
+  :root{
+    --navy:#0f3a5f; --blue:#1f6fb2; --blue-dark:#155a94; --red:#e2231a;
+    --bg:#eef2f6; --card:#ffffff; --line:#e3e7ec; --text:#1f2733; --muted:#6b7684;
+    --green:#1c8a4b; --green-bg:#e9f7ef; --amber:#b6710a; --amber-bg:#fdf3e0;
+    --red-bg:#fdecec; --purple:#6b46a8; --purple-bg:#f1ebfa; --radius:10px;
+    font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-size:13px;}
+  button{font-family:inherit;cursor:pointer;}
+
+  /* ---------- shell ---------- */
+  header{background:#fff;border-bottom:1px solid var(--line);padding:10px 20px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:30;}
+  header .logo{display:flex;align-items:center;gap:9px;}
+  header .mark{width:26px;height:26px;border-radius:6px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;}
+  header .brand b{display:block;font-size:12px;color:var(--navy);letter-spacing:.2px;}
+  header .brand span{font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+  header .vida{font-size:19px;font-weight:800;color:var(--red);letter-spacing:.5px;margin-left:4px;}
+  header .sp{flex:1;}
+  header .who{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--muted);}
+  header .who .av{width:28px;height:28px;border-radius:50%;background:#dde5ec;color:var(--navy);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;}
+  .bell{position:relative;border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 11px;font-size:13px;}
+  .bell .dot{position:absolute;top:-5px;right:-5px;background:var(--red);color:#fff;border-radius:9px;font-size:9px;font-weight:700;padding:1px 5px;}
+
+  main{max-width:1180px;margin:0 auto;padding:20px 18px 60px;}
+
+  /* ---------- queue ---------- */
+  .q-head{display:flex;align-items:baseline;gap:12px;margin-bottom:4px;}
+  .q-head h1{font-size:20px;color:var(--navy);}
+  .q-head span{font-size:12px;color:var(--muted);}
+  .q-sub{font-size:12px;color:var(--muted);margin-bottom:16px;}
+  .q-strip{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+  .q-strip .s{background:#fff;border:1px solid var(--line);border-radius:9px;padding:9px 14px;min-width:120px;}
+  .q-strip .s span{display:block;font-size:9.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);}
+  .q-strip .s b{font-size:19px;color:var(--navy);}
+  .q-strip .s.act{background:var(--amber-bg);border-color:#f0d99a;} .q-strip .s.act b{color:var(--amber);}
+  .q-strip .s.ok{background:var(--green-bg);border-color:#bfe4cd;} .q-strip .s.ok b{color:var(--green);}
+
+  .jcard{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;
+    display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.5fr) auto;gap:16px;align-items:center;cursor:pointer;transition:.12s;}
+  .jcard:hover{border-color:#bcd4ea;box-shadow:0 3px 12px rgba(15,58,95,.07);}
+  .jcard .who b{font-size:14.5px;color:var(--navy);display:block;}
+  .jcard .who span{font-size:11px;color:var(--muted);}
+  .jcard .nx{font-size:12.5px;color:#3f4a57;}
+  .jcard .nx b{color:var(--navy);}
+  .jcard .nx .lbl{display:block;font-size:9.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
+  .jcard .amt{text-align:right;white-space:nowrap;}
+  .jcard .amt .k{font-size:9.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);}
+  .jcard .amt .v{font-size:17px;font-weight:700;color:var(--navy);}
+  .jcard .amt .v.due{color:var(--red);}
+  .jcard.needs{border-left:4px solid var(--amber);}
+  .jcard.done{opacity:.72;border-left:4px solid var(--green);}
+
+  /* ---------- journey screen ---------- */
+  .crumb{font-size:11.5px;color:var(--muted);margin-bottom:12px;}
+  .crumb a{color:var(--blue);cursor:pointer;} .crumb a:hover{text-decoration:underline;}
+  .pstrip{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:12px 16px;display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap;}
+  .pstrip .nm b{font-size:16px;color:var(--navy);}
+  .pstrip .nm span{display:block;font-size:11px;color:var(--muted);}
+  .pstrip .sp{flex:1;}
+  .badge{display:inline-block;border-radius:11px;padding:2px 9px;font-size:10px;font-weight:700;letter-spacing:.2px;}
+  .badge.ins{background:#e8f2fb;color:var(--blue-dark);}
+  .badge.cash{background:#eef0f3;color:#5b6470;}
+  .badge.ok{background:var(--green-bg);color:var(--green);}
+  .badge.warn{background:var(--amber-bg);color:var(--amber);}
+  .badge.due{background:var(--red-bg);color:var(--red);}
+
+  .stage{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:start;}
+  @media(max-width:1000px){ .stage{grid-template-columns:minmax(0,1fr);} }
+
+  /* the single decision the receptionist has to make */
+  .next{background:#fff;border:1px solid var(--line);border-left:5px solid var(--blue);border-radius:var(--radius);padding:18px 20px;margin-bottom:14px;}
+  .next.wait{border-left-color:var(--amber);background:#fffdf7;}
+  .next.done{border-left-color:var(--green);background:#f7fdf9;}
+  .next .step{font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px;}
+  .next h2{font-size:19px;color:var(--navy);line-height:1.3;}
+  .next .why{font-size:12.5px;color:#5b6470;margin-top:7px;line-height:1.5;}
+  .next .why b{color:#28323d;}
+  .next .money{display:flex;align-items:baseline;gap:10px;margin:14px 0 4px;}
+  .next .money .v{font-size:30px;font-weight:800;color:var(--red);letter-spacing:-.5px;}
+  .next .money .k{font-size:11.5px;color:var(--muted);}
+  .next .acts{display:flex;gap:9px;margin-top:16px;flex-wrap:wrap;}
+  .btn{border:1px solid var(--line);background:#fff;border-radius:7px;padding:10px 16px;font-size:13px;font-weight:600;color:#3f4a57;}
+  .btn:hover{background:#f6f9fc;}
+  .btn.primary{background:var(--blue);border-color:var(--blue);color:#fff;}
+  .btn.primary:hover{background:var(--blue-dark);}
+  .btn.green{background:var(--green);border-color:var(--green);color:#fff;}
+  .btn.lg{padding:12px 22px;font-size:14px;}
+  .btn.sm{padding:6px 11px;font-size:11.5px;}
+  .btn.link{border:none;background:none;color:var(--blue);padding:6px 2px;}
+  .btn.link:hover{text-decoration:underline;background:none;}
+  .btn:disabled{opacity:.5;cursor:not-allowed;}
+
+  /* what the money is, in three numbers */
+  .money3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+  .money3 .m{background:#fff;border:1px solid var(--line);border-radius:9px;padding:11px 13px;}
+  .money3 .m span{display:block;font-size:9.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);}
+  .money3 .m b{font-size:17px;color:var(--navy);}
+  .money3 .m.paid b{color:var(--green);}
+  .money3 .m.now b{color:var(--red);}
+  .money3 .m.later b{color:var(--amber);}
+
+  /* journey timeline */
+  .track{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin-bottom:14px;}
+  .track h3{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:12px;}
+  .tl{display:flex;flex-direction:column;gap:0;}
+  .tl .st{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:11px;align-items:start;position:relative;padding-bottom:14px;}
+  .tl .st:last-child{padding-bottom:0;}
+  .tl .st:not(:last-child):before{content:"";position:absolute;left:10px;top:20px;bottom:0;width:2px;background:var(--line);}
+  .tl .st.done:not(:last-child):before{background:#bfe4cd;}
+  .tl .dot{width:21px;height:21px;border-radius:50%;border:2px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted);z-index:1;}
+  .tl .st.done .dot{background:var(--green);border-color:var(--green);color:#fff;}
+  .tl .st.now .dot{border-color:var(--blue);color:var(--blue);box-shadow:0 0 0 4px #e8f2fb;}
+  .tl .lb{font-size:12.5px;color:#3f4a57;}
+  .tl .st.now .lb{font-weight:700;color:var(--navy);}
+  .tl .st.todo .lb{color:#9aa3ad;}
+  .tl .sub{font-size:10.5px;color:var(--muted);margin-top:1px;}
+  .tl .when{font-size:10.5px;color:var(--muted);white-space:nowrap;}
+
+  /* details, hidden until asked for */
+  details.more{background:#fff;border:1px solid var(--line);border-radius:var(--radius);margin-bottom:14px;}
+  details.more>summary{list-style:none;cursor:pointer;padding:12px 16px;font-size:12.5px;font-weight:600;color:var(--blue);display:flex;justify-content:space-between;align-items:center;}
+  details.more>summary::-webkit-details-marker{display:none;}
+  details.more>summary:after{content:"⌄";font-size:15px;color:var(--muted);}
+  details.more[open]>summary:after{content:"⌃";}
+  details.more .body{padding:0 16px 14px;border-top:1px solid var(--line);}
+  table.mini{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px;}
+  table.mini th{text-align:left;padding:7px 8px;font-size:9.5px;text-transform:uppercase;letter-spacing:.35px;color:var(--muted);border-bottom:1px solid var(--line);}
+  table.mini td{padding:8px;border-bottom:1px solid #f2f4f7;}
+  table.mini .num,table.mini th.num{text-align:right;}
+  table.mini tfoot td{font-weight:700;color:var(--navy);border-top:1px solid var(--line);border-bottom:none;}
+
+  /* right rail: activity */
+  .rail{background:#fff;border:1px solid var(--line);border-radius:var(--radius);position:sticky;top:74px;}
+  .rail h3{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);padding:13px 15px 9px;}
+  .feed{max-height:60vh;overflow:auto;padding:0 15px 14px;}
+  .feed .ev{display:grid;grid-template-columns:20px minmax(0,1fr);gap:9px;padding:9px 0;border-bottom:1px solid #f2f4f7;}
+  .feed .ev:last-child{border-bottom:none;}
+  .feed .ic{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;background:#eef2f6;}
+  .feed .ic.pay{background:var(--green-bg);} .feed .ic.appr{background:#e8f2fb;} .feed .ic.link{background:var(--purple-bg);}
+  .feed .tx{font-size:11.5px;color:#3f4a57;line-height:1.45;}
+  .feed .tx b{color:var(--navy);}
+  .feed .tm{font-size:10px;color:var(--muted);margin-top:1px;}
+  .feed .empty{font-size:11.5px;color:var(--muted);padding:6px 0 12px;}
+
+  /* link status pill */
+  .linkbox{background:#faf7fe;border:1px solid #e4d9f3;border-radius:8px;padding:10px 12px;margin-top:12px;font-size:11.5px;color:#4a3566;display:flex;gap:9px;align-items:center;flex-wrap:wrap;}
+  .linkbox b{color:#3a2752;}
+  .pulse{width:8px;height:8px;border-radius:50%;background:var(--amber);animation:p 1.4s infinite;}
+  @keyframes p{0%{opacity:.35}50%{opacity:1}100%{opacity:.35}}
+
+  /* toast */
+  #toasts{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:9px;z-index:60;}
+  .toast{background:#fff;border:1px solid var(--line);border-left:4px solid var(--green);border-radius:9px;padding:11px 14px;box-shadow:0 6px 22px rgba(15,58,95,.14);min-width:290px;max-width:360px;}
+  .toast b{display:block;font-size:12.5px;color:var(--navy);}
+  .toast span{font-size:11.5px;color:#5b6470;}
+  .toast.info{border-left-color:var(--blue);} .toast.warn{border-left-color:var(--amber);}
+
+  /* demo simulator */
+  .sim{position:fixed;left:18px;bottom:18px;z-index:55;font-size:11.5px;}
+  .sim .panel{background:#1f2733;color:#dfe6ee;border-radius:10px;padding:12px 14px;box-shadow:0 8px 26px rgba(0,0,0,.25);width:300px;}
+  .sim h4{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:#8b95a1;margin-bottom:8px;}
+  .sim button{display:block;width:100%;text-align:left;background:#2c3644;border:1px solid #3a4553;color:#dfe6ee;border-radius:6px;padding:7px 10px;margin-bottom:6px;font-size:11.5px;}
+  .sim button:hover{background:#38455a;}
+  .sim button:disabled{opacity:.4;}
+  .sim .tgl{background:var(--navy);color:#fff;border:none;border-radius:9px;padding:8px 13px;font-weight:600;}
+  .sim .panel{width:340px;max-height:76vh;overflow:auto;}
+  .sim .sc-intro{font-size:11px;color:#9fb0c4;line-height:1.5;margin-bottom:9px;}
+  .sim .sc-list{margin-bottom:9px;}
+  .sim .sc-step{display:grid;grid-template-columns:18px minmax(0,1fr) auto;gap:8px;align-items:start;padding:5px 0;font-size:11px;}
+  .sim .sc-step .n{width:18px;height:18px;border-radius:50%;background:#2c3644;color:#8b95a1;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;}
+  .sim .sc-step.past{opacity:.5;} .sim .sc-step.past .n{background:#1c8a4b;color:#fff;}
+  .sim .sc-step.cur .n{background:var(--blue);color:#fff;}
+  .sim .sc-step.cur b{color:#fff;}
+  .sim .sc-step.next{opacity:.55;}
+  .sim .sc-step .tx b{display:block;font-weight:600;color:#c9d6e4;}
+  .sim .sc-step .tx i{display:block;font-style:normal;color:#8b95a1;margin-top:2px;line-height:1.45;}
+  .sim .sc-step .wh{font-size:8.5px;text-transform:uppercase;letter-spacing:.4px;padding:1px 6px;border-radius:8px;background:#2c3644;color:#8b95a1;height:fit-content;}
+  .sim .sc-step .wh.reception{background:#1f6fb2;color:#fff;}
+  .sim .sc-step .wh.patient{background:#6b46a8;color:#fff;}
+  .sim .sc-step .wh.doctor{background:#1c8a4b;color:#fff;}
+  .sim .sc-step .wh.payer{background:#b6710a;color:#fff;}
+  .sim button.go{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600;text-align:center;}
+  .sim button.go:hover{background:var(--blue-dark);}
+  .sim button.restart{background:none;border:none;color:#8b95a1;text-align:center;font-size:10.5px;}
+  .sim details.man{margin-top:4px;}
+  .sim details.man summary{cursor:pointer;font-size:10px;text-transform:uppercase;letter-spacing:.4px;color:#8b95a1;padding:6px 0;}
+  .q-strip .s.go{cursor:pointer;text-align:left;background:var(--navy);border-color:var(--navy);}
+  .q-strip .s.go span{color:#9fb0c4;} .q-strip .s.go b{color:#fff;font-size:14px;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">
+    <div class="mark">+</div>
+    <div class="brand"><b>DR SULAIMAN AL HABIB</b><span>Medical Group</span></div>
+    <div class="vida">VIDA<sup style="font-size:10px">®</sup></div>
+  </div>
+  <div class="sp"></div>
+  <button class="bell" id="bell">🔔<span class="dot" id="bellDot">0</span></button>
+  <div class="who"><div class="av">SS</div><div><b style="color:var(--navy);display:block;font-size:12px">SAADAN SAAFAN</b>Receptionist</div></div>
+</header>
+
+<main id="app"></main>
+<div id="toasts"></div>
+<div class="sim" id="sim"></div>
+
+<script>
+/* =====================================================================
+   VIDA — Guided Patient Journey (OPD)   ·  prototype v1
+   The receptionist is never asked to assemble a bill. The system works out
+   what should happen next and asks a single question; everything else is
+   folded away until it is asked for.
+   ===================================================================== */
+
+const VAT = 0.15;
+const fmt = (n)=>"SAR " + (Math.round((n||0)*100)/100).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+const now = ()=>new Date().toTimeString().slice(0,5);
+const el = (html)=>{ const t=document.createElement("template"); t.innerHTML=html.trim(); return t.content.firstElementChild; };
+
+/* ---------------- journey definition ---------------- */
+const STEPS = [
+  { key:"ARRIVED",   label:"Patient arrived",        sub:"Checked in at reception" },
+  { key:"CONSULT",   label:"Consultation fee",       sub:"Paid before seeing the doctor" },
+  { key:"DOCTOR",    label:"With the doctor",        sub:"Consultation in progress" },
+  { key:"ORDERS",    label:"Doctor's orders",        sub:"Investigations and procedures" },
+  { key:"SETTLE",    label:"Orders paid",            sub:"Patient share for the orders" },
+  { key:"DONE",      label:"Visit complete",         sub:"Nothing left to collect" }
+];
+
+/* ---------------- demo data ---------------- */
+/* Each case is one OPD visit walking through the journey. */
+let cases = [
+  {
+    id:1, mrn:"7000203", name:"WADHA DAIFALLAH", age:"4M", gender:"Female", mobile:"0555 401 220",
+    payer:"NCCI · CLASS A", insured:true, clinic:"PAEDIATRICS", doctor:"LINA FAROUK", arrived:"09:12",
+    consult:{ name:"Paediatric Consultation", code:"CON-101", price:200, coverage:0.8, paid:false, link:null },
+    orders:[], step:"CONSULT", events:[{ ic:"", cls:"", tx:"<b>Patient arrived</b> and was checked in", tm:"09:12" }],
+    doctorSeen:false, closed:false
+  },
+  {
+    id:2, mrn:"7000667", name:"MOHAMMED AL QAHTANI", age:41, gender:"Male", mobile:"0555 112 233",
+    payer:"BUPA · GOLD", insured:true, clinic:"CARDIOLOGY", doctor:"AHMED AL SUBAIE", arrived:"08:40",
+    consult:{ name:"Cardiology Consultation", code:"CON-204", price:300, coverage:0.8, paid:true, paidAt:"08:47", via:"Payment link", link:{ status:"PAID", sentAt:"08:42", paidAt:"08:47" } },
+    orders:[
+      { code:"LAB-010", name:"Full Blood Count",  price:120, coverage:0.8, approval:"APPROVED", paid:false },
+      { code:"RAD-050", name:"Chest X-Ray 2 View",price:250, coverage:0.8, approval:"APPROVED", paid:false },
+      { code:"CAR-330", name:"Echocardiogram",    price:900, coverage:0.8, approval:"PENDING",  paid:false }
+    ],
+    step:"SETTLE", doctorSeen:true, closed:false,
+    events:[
+      { ic:"", cls:"appr", tx:"<b>2 of 3 orders approved</b> by BUPA · Echocardiogram still pending", tm:"09:26" },
+      { ic:"", cls:"", tx:"<b>Dr Ahmed placed 3 orders</b>", tm:"09:21" },
+      { ic:"", cls:"pay", tx:"<b>Consultation paid</b> — SAR 69.00 by payment link", tm:"08:47" },
+      { ic:"", cls:"link", tx:"Payment link sent to 0555 112 233", tm:"08:42" },
+      { ic:"", cls:"", tx:"<b>Patient arrived</b> and was checked in", tm:"08:40" }
+    ]
+  },
+  {
+    id:3, mrn:"8825140", name:"AHMED BIN SALEM", age:57, gender:"Male", mobile:"0501 998 442",
+    payer:"Self-pay", insured:false, clinic:"ORTHOPAEDICS", doctor:"OMAR HASSAN", arrived:"08:05",
+    consult:{ name:"Orthopaedic Consultation", code:"CON-310", price:250, coverage:0, paid:true, paidAt:"08:09", via:"Cash at desk", link:null },
+    orders:[ { code:"RAD-120", name:"Knee X-Ray", price:180, coverage:0, approval:"NA", paid:true, paidAt:"08:58", via:"Payment link" } ],
+    step:"DONE", doctorSeen:true, closed:true,
+    events:[
+      { ic:"", cls:"pay", tx:"<b>Orders paid</b> — SAR 207.00 by payment link", tm:"08:58" },
+      { ic:"", cls:"", tx:"<b>Dr Omar placed 1 order</b>", tm:"08:51" },
+      { ic:"", cls:"pay", tx:"<b>Consultation paid</b> — SAR 287.50 cash at desk", tm:"08:09" },
+      { ic:"", cls:"", tx:"<b>Patient arrived</b> and was checked in", tm:"08:05" }
+    ]
+  }
+];
+
+let state = { screen:"queue", caseId:null, simOpen:false, bell:0, scenario:null };
+
+/* ---------------- money ---------------- */
+/* One rule, used everywhere: the patient pays the uncovered slice plus VAT. */
+function share(line){
+  const net = line.price;
+  const patient = +(net * (1 - (line.coverage||0))).toFixed(2);
+  const company = +(net - patient).toFixed(2);
+  return { net, patient:+(patient*(1+VAT)).toFixed(2), company:+(company*(1+VAT)).toFixed(2),
+           tax:+((patient+company)*VAT).toFixed(2) };
+}
+function billable(c){ return c.orders.filter(o=>o.approval!=="PENDING"); }
+function waiting(c){ return c.orders.filter(o=>o.approval==="PENDING"); }
+function sumShare(lines){ return +lines.reduce((a,l)=>a+share(l).patient,0).toFixed(2); }
+
+function money(c){
+  const paid = (c.consult.paid ? share(c.consult).patient : 0)
+             + sumShare(c.orders.filter(o=>o.paid));
+  const dueNow = (c.consult.paid ? 0 : share(c.consult).patient)
+               + sumShare(billable(c).filter(o=>!o.paid));
+  const later = sumShare(waiting(c));
+  return { paid:+paid.toFixed(2), dueNow:+dueNow.toFixed(2), later:+later.toFixed(2) };
+}
+
+/* ---------------- the journey engine ---------------- */
+/* Works out where the visit is and what to ask next. Every screen reads this. */
+function stepIndex(key){ return STEPS.findIndex(s=>s.key===key); }
+function journeyState(c){
+  if(c.closed) return "DONE";
+  if(!c.consult.paid) return "CONSULT";
+  if(!c.doctorSeen) return "DOCTOR";
+  if(c.orders.length===0) return "ORDERS";
+  const unpaid = billable(c).filter(o=>!o.paid);
+  if(unpaid.length) return "SETTLE";
+  if(waiting(c).length) return "WAIT_APPROVAL";
+  return "READY_TO_CLOSE";
+}
+
+/* The single suggestion shown to the receptionist. */
+function nextAction(c){
+  const m = money(c);
+  const st = journeyState(c);
+  const link = c.consult.link;
+
+  if(st==="CONSULT"){
+    if(link && link.status==="SENT") return {
+      tone:"wait", step:"Consultation fee",
+      title:`Waiting for ${c.name.split(" ")[0]} to pay ${fmt(m.dueNow)}`,
+      why:`Payment link sent to <b>${c.mobile}</b> at ${link.sentAt}. The journey moves on by itself once the app confirms the payment.`,
+      amount:m.dueNow, amountLabel:"consultation — patient share",
+      linkNote:`Link sent ${link.sentAt} · awaiting payment`,
+      acts:[ {label:"Resend link", fn:()=>sendLink(c,"consult",true)},
+             {label:"Take payment at the desk", fn:()=>payAtDesk(c,"consult")} ]
+    };
+    return {
+      tone:"", step:"Consultation fee",
+      title:`Collect ${fmt(m.dueNow)} for the consultation`,
+      why:`${c.insured?`${c.payer} covers the rest of the <b>${fmt(c.consult.price)}</b> fee.`:`Self-pay — the patient owes the full fee.`} Send the link and the patient pays on the mobile app.`,
+      amount:m.dueNow, amountLabel:"consultation — patient share",
+      acts:[ {label:"Send payment link", primary:true, fn:()=>sendLink(c,"consult")},
+             {label:"Take payment at the desk", fn:()=>payAtDesk(c,"consult")} ]
+    };
+  }
+
+  if(st==="DOCTOR") return {
+    tone:"wait", step:"With the doctor",
+    title:`Send ${c.name.split(" ")[0]} in to ${c.doctor}`,
+    why:`Consultation is paid. Nothing else is needed until the doctor places orders — we will tell you the moment that happens.`,
+    acts:[ {label:"Mark as with the doctor", primary:true, fn:()=>{ c.doctorSeen=true; log(c,"","Patient sent in to "+c.doctor); toast("info","Patient with the doctor","We will let you know when orders are placed."); render(); }} ]
+  };
+
+  if(st==="ORDERS") return {
+    tone:"wait", step:"Doctor's orders",
+    title:`${c.name.split(" ")[0]} is with ${c.doctor}`,
+    why:`No orders yet. If the visit ends without any, close the journey here.`,
+    acts:[ {label:"Close the visit", fn:()=>closeVisit(c)} ]
+  };
+
+  if(st==="SETTLE"){
+    const ready = billable(c).filter(o=>!o.paid);
+    const pend = waiting(c);
+    const linkO = c.orderLink;
+    if(linkO && linkO.status==="SENT") return {
+      tone:"wait", step:"Orders payment",
+      title:`Waiting for ${c.name.split(" ")[0]} to pay ${fmt(m.dueNow)}`,
+      why:`Payment link for <b>${ready.length} order(s)</b> sent to ${c.mobile} at ${linkO.sentAt}.` +
+          (pend.length?` <b>${pend.length} order(s)</b> are still with ${c.payer.split("·")[0].trim()} — we will ask again when they come back.`:""),
+      amount:m.dueNow, amountLabel:`${ready.length} order(s) — patient share`,
+      linkNote:`Link sent ${linkO.sentAt} · awaiting payment`,
+      acts:[ {label:"Resend link", fn:()=>sendLink(c,"orders",true)},
+             {label:"Take payment at the desk", fn:()=>payAtDesk(c,"orders")} ]
+    };
+    return {
+      tone:"", step:"Orders payment",
+      title:`Collect ${fmt(m.dueNow)} for ${ready.length} approved order(s)`,
+      why:`These will be invoiced together — nothing to select.` +
+          (pend.length?` <b>${pend.length} order(s)</b> are waiting on ${c.payer.split("·")[0].trim()}; leave them for now and we will ask when the approval lands.`:""),
+      amount:m.dueNow, amountLabel:`${ready.length} order(s) — patient share`,
+      acts:[ {label:"Send payment link", primary:true, fn:()=>sendLink(c,"orders")},
+             {label:"Take payment at the desk", fn:()=>payAtDesk(c,"orders")} ]
+    };
+  }
+
+  if(st==="WAIT_APPROVAL") return {
+    tone:"wait", step:"Waiting on approval",
+    title:`Nothing to collect right now`,
+    why:`Everything approved has been paid. <b>${waiting(c).length} order(s)</b> are still with ${c.payer.split("·")[0].trim()} — as soon as the approval arrives we will send the patient a link for ${fmt(money(c).later)} and tell you.`,
+    amount:money(c).later, amountLabel:"expected once approved", muted:true,
+    acts:[ {label:"Close the visit anyway", fn:()=>closeVisit(c)} ]
+  };
+
+  if(st==="READY_TO_CLOSE") return {
+    tone:"done", step:"Visit complete",
+    title:`${c.name.split(" ")[0]} is fully settled`,
+    why:`Everything the doctor ordered has been invoiced and paid. Nothing is outstanding.`,
+    acts:[ {label:"Close the journey", primary:true, fn:()=>closeVisit(c)},
+           {label:"Print receipt", fn:()=>toast("info","Receipt sent to the printer","A copy was also pushed to the patient's app.")} ]
+  };
+
+  return {
+    tone:"done", step:"Visit complete",
+    title:`Journey complete`,
+    why:`Closed at ${c.closedAt||now()}. Total collected <b>${fmt(money(c).paid)}</b>.`,
+    acts:[ {label:"Reopen", fn:()=>{ c.closed=false; render(); }} ]
+  };
+}
+
+/* ---------------- actions ---------------- */
+function log(c, cls, tx){ c.events.unshift({ cls, tx, tm:now() }); }
+function toast(kind, title, sub){
+  const t = el(`<div class="toast ${kind}"><b>${title}</b><span>${sub||""}</span></div>`);
+  document.getElementById("toasts").appendChild(t);
+  setTimeout(()=>{ t.style.opacity="0"; t.style.transition="opacity .4s"; setTimeout(()=>t.remove(),400); }, 4200);
+}
+function sendLink(c, what, resend){
+  const amt = money(c).dueNow;
+  const link = { status:"SENT", sentAt:now() };
+  if(what==="consult") c.consult.link = link; else c.orderLink = link;
+  log(c,"link",`Payment link ${resend?"re-":""}sent to ${c.mobile} — <b>${fmt(amt)}</b>`);
+  state.bell++;
+  toast("info", (resend?"Link resent":"Payment link sent"), `${fmt(amt)} · ${c.mobile} — the patient pays in the app.`);
+  render();
+}
+function payAtDesk(c, what){ settle(c, what, "Cash at desk"); }
+function receiveLinkPayment(c){
+  const what = c.consult.paid ? "orders" : "consult";
+  settle(c, what, "Payment link");
+}
+function settle(c, what, via){
+  const amt = money(c).dueNow;
+  if(what==="consult"){ c.consult.paid = true; c.consult.paidAt = now(); c.consult.via = via;
+    if(c.consult.link) c.consult.link.status = "PAID"; }
+  else { billable(c).filter(o=>!o.paid).forEach(o=>{ o.paid = true; o.paidAt = now(); o.via = via; });
+    if(c.orderLink) c.orderLink.status = "PAID"; c.orderLink = null; }
+  log(c,"pay",`<b>${what==="consult"?"Consultation":"Orders"} paid</b> — ${fmt(amt)} by ${via.toLowerCase()}`);
+  state.bell++;
+  toast("", `Payment received · ${fmt(amt)}`, nextAction(c).title);
+  render();
+}
+function closeVisit(c){ c.closed = true; c.closedAt = now(); log(c,"", "<b>Journey closed</b>"); toast("", "Journey complete", `${c.name} · ${fmt(money(c).paid)} collected today.`); render(); }
+
+/* simulated inbound events, so the flow can be demonstrated end to end */
+function simDoctorOrders(c){
+  if(c.orders.length) return;
+  c.doctorSeen = true;
+  c.orders = [
+    { code:"LAB-022", name:"Urea & Electrolytes", price:140, coverage:c.insured?0.8:0, approval:c.insured?"APPROVED":"NA", paid:false },
+    { code:"RAD-018", name:"Abdominal Ultrasound", price:420, coverage:c.insured?0.8:0, approval:c.insured?"PENDING":"NA", paid:false }
+  ];
+  log(c,"",`<b>Dr ${c.doctor.split(" ")[0]} placed ${c.orders.length} orders</b>`);
+  state.bell++;
+  toast("info", "Doctor placed 2 orders", nextAction(c).title);
+  render();
+}
+function simApproval(c){
+  const p = waiting(c);
+  if(!p.length) return;
+  p.forEach(o=>{ o.approval = "APPROVED"; });
+  log(c,"appr",`<b>Approval received</b> for ${p.map(o=>o.name).join(", ")}`);
+  state.bell++;
+  /* the payer answering is exactly the moment to ask the patient for the money */
+  sendLink(c, "orders");
+  toast("warn", `Approval received · ${p.length} order(s)`, `Payment link for ${fmt(money(c).dueNow)} sent automatically.`);
+  render();
+}
+
+/* =====================================================================
+   Scripted scenario — one patient, from walking in to fully settled.
+   Each step is either something the receptionist does or something the
+   world does back (app payment, doctor's orders, payer's approval).
+   ===================================================================== */
+const SCENARIO = [
+  { t:"Patient arrives at reception",
+    n:"Check-in creates the visit. Nothing is asked of the receptionist yet.",
+    who:"reception",
+    run:(c)=>{ log(c,"","<b>Patient arrived</b> and was checked in"); } },
+
+  { t:"System asks for the consultation fee",
+    n:"Coverage is read from the policy — the receptionist is shown one number, not a bill.",
+    who:"system", run:()=>{} },
+
+  { t:"Receptionist sends the payment link",
+    n:"One click. The patient pays on the VIDA mobile app.",
+    who:"reception", run:(c)=>sendLink(c,"consult") },
+
+  { t:"Patient pays in the app",
+    n:"The journey moves on by itself — no one has to come back and tick anything.",
+    who:"patient", run:(c)=>receiveLinkPayment(c) },
+
+  { t:"Patient goes in to the doctor",
+    n:"Nothing to collect while the consultation is happening.",
+    who:"reception", run:(c)=>{ c.doctorSeen=true; log(c,"","Patient sent in to "+c.doctor); } },
+
+  { t:"Doctor places 3 orders — 2 approved, 1 pending",
+    n:"The system prices them, splits payer and patient, and asks only for the approved share.",
+    who:"doctor", run:(c)=>scenarioOrders(c) },
+
+  { t:"Receptionist sends the link for the approved orders",
+    n:"No order selection, no invoice assembly — the system already decided what is billable.",
+    who:"reception", run:(c)=>sendLink(c,"orders") },
+
+  { t:"Patient pays for the approved orders",
+    n:"The pending order is left alone and stays visible as 'once approved'.",
+    who:"patient", run:(c)=>receiveLinkPayment(c) },
+
+  { t:"Payer returns the last approval",
+    n:"The moment the payer answers, the link for the remaining share is sent automatically.",
+    who:"payer", run:(c)=>simApproval(c) },
+
+  { t:"Patient pays the final link",
+    n:"Everything ordered today is now settled.",
+    who:"patient", run:(c)=>receiveLinkPayment(c) },
+
+  { t:"Journey complete",
+    n:"The receptionist made three decisions in total; the system did the rest.",
+    who:"system", run:(c)=>closeVisit(c) }
+];
+
+function scenarioCase(){ return cases.find(c=>c.id===99); }
+function startScenario(){
+  cases = cases.filter(c=>c.id!==99);
+  const c = {
+    id:99, mrn:"7100482", name:"NOURA AL HARBI", age:34, gender:"Female", mobile:"0553 220 118",
+    payer:"TAWUNIYA · SILVER", insured:true, clinic:"DERMATOLOGY", doctor:"HUDA AL MUTAIRI", arrived:now(),
+    consult:{ name:"Dermatology Consultation", code:"CON-402", price:250, coverage:0.8, paid:false, link:null },
+    orders:[], step:"CONSULT", events:[], doctorSeen:false, closed:false, scenario:true
+  };
+  cases.unshift(c);
+  state.scenario = 0;
+  state.screen = "journey"; state.caseId = 99;
+  render();
+}
+function scenarioOrders(c){
+  c.orders = [
+    { code:"LAB-010", name:"Full Blood Count",      price:120, coverage:0.8, approval:"APPROVED", paid:false },
+    { code:"LAB-233", name:"Skin Biopsy — Histology",price:250, coverage:0.8, approval:"APPROVED", paid:false },
+    { code:"DER-880", name:"Phototherapy Course",   price:900, coverage:0.8, approval:"PENDING",  paid:false }
+  ];
+  log(c,"",`<b>Dr ${c.doctor.split(" ")[0]} placed 3 orders</b> — 2 approved, 1 awaiting ${c.payer.split("·")[0].trim()}`);
+  state.bell++;
+}
+function scenarioNext(){
+  const c = scenarioCase();
+  if(!c || state.scenario===null) return;
+  const stepDef = SCENARIO[state.scenario];
+  if(!stepDef) return;
+  stepDef.run(c);
+  state.scenario = Math.min(state.scenario+1, SCENARIO.length);
+  state.screen = "journey"; state.caseId = 99;
+  render();
+}
+
+/* ---------------- render ---------------- */
+function render(){
+  const app = document.getElementById("app");
+  app.innerHTML = "";
+  app.appendChild(state.screen==="journey" ? renderJourney() : renderQueue());
+  document.getElementById("bellDot").textContent = state.bell;
+  renderSim();
+}
+
+function renderQueue(){
+  const wrap = document.createElement("div");
+  const needs = cases.filter(c=>!c.closed && ["CONSULT","SETTLE"].includes(journeyState(c)) &&
+    !(journeyState(c)==="CONSULT" && c.consult.link && c.consult.link.status==="SENT") &&
+    !(journeyState(c)==="SETTLE" && c.orderLink && c.orderLink.status==="SENT"));
+  const waitingCount = cases.filter(c=>!c.closed && !needs.includes(c)).length;
+  const collected = cases.reduce((a,c)=>a+money(c).paid,0);
+
+  wrap.appendChild(el(`
+    <div>
+      <div class="q-head"><h1>Today's patients</h1><span>AL Hamra Hospital · ${new Date().toLocaleDateString('en-GB',{weekday:'long', day:'2-digit', month:'short'})}</span></div>
+      <div class="q-sub">The system tells you who needs you. Open a patient only when it says so.</div>
+      <div class="q-strip">
+        <div class="s act"><span>Need you now</span><b>${needs.length}</b></div>
+        <div class="s"><span>In progress</span><b>${waitingCount}</b></div>
+        <div class="s ok"><span>Collected today</span><b>${fmt(collected).replace("SAR ","")}</b></div>
+        <button class="s go" id="scStart"><span>Demo</span><b>▶ Full scenario</b></button>
+      </div>
+    </div>`));
+
+  cases.forEach(c=>{
+    const a = nextAction(c);
+    const m = money(c);
+    const mine = needs.includes(c);
+    const card = el(`
+      <div class="jcard ${c.closed?"done":mine?"needs":""}">
+        <div class="who">
+          <b>${c.name}</b>
+          <span>MRN ${c.mrn} · ${c.age}/${c.gender} · ${c.clinic} · arrived ${c.arrived}</span>
+          <span class="badge ${c.insured?"ins":"cash"}" style="margin-top:5px">${c.payer}</span>
+        </div>
+        <div class="nx"><span class="lbl">${mine?"Action needed":"Status"}</span>${a.title}</div>
+        <div class="amt">
+          <div class="k">${m.dueNow>0?"Patient pays now":m.later>0?"Awaiting approval":"Collected"}</div>
+          <div class="v ${m.dueNow>0?"due":""}">${fmt(m.dueNow>0?m.dueNow:m.later>0?m.later:m.paid)}</div>
+        </div>
+      </div>`);
+    card.onclick = ()=>{ state.screen="journey"; state.caseId=c.id; render(); };
+    wrap.appendChild(card);
+  });
+  const sb = wrap.querySelector("#scStart");
+  if(sb) sb.onclick = ()=>{ state.simOpen = true; startScenario(); };
+  return wrap;
+}
+
+function renderJourney(){
+  const c = cases.find(x=>x.id===state.caseId);
+  const a = nextAction(c);
+  const m = money(c);
+  const wrap = document.createElement("div");
+
+  wrap.appendChild(el(`<div class="crumb"><a id="back">← Today's patients</a></div>`));
+  wrap.appendChild(el(`
+    <div class="pstrip">
+      <div class="nm"><b>${c.name}</b><span>MRN ${c.mrn} · ${c.age}/${c.gender} · ${c.mobile}</span></div>
+      <span class="badge ${c.insured?"ins":"cash"}">${c.payer}</span>
+      <div class="sp"></div>
+      <div style="text-align:right"><div style="font-size:9.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted)">${c.clinic}</div>
+        <div style="font-size:12px;color:#3f4a57">${c.doctor} · arrived ${c.arrived}</div></div>
+    </div>`));
+
+  const stage = el(`<div class="stage"></div>`);
+  const left = document.createElement("div");
+
+  /* the one thing to do */
+  const nx = el(`
+    <div class="next ${a.tone}">
+      <div class="step">${a.step}</div>
+      <h2>${a.title}</h2>
+      <div class="why">${a.why}</div>
+      ${a.amount!==undefined?`<div class="money"><div class="v" style="${a.muted?"color:var(--amber)":""}">${fmt(a.amount)}</div><div class="k">${a.amountLabel||""}</div></div>`:""}
+      ${a.linkNote?`<div class="linkbox"><span class="pulse"></span><span>${a.linkNote}</span>
+        <span style="flex:1"></span><b>Patient pays in the VIDA app</b></div>`:""}
+      <div class="acts"></div>
+    </div>`);
+  const acts = nx.querySelector(".acts");
+  a.acts.forEach(x=>{
+    const b = el(`<button class="btn ${x.primary?"primary lg":""}">${x.label}</button>`);
+    b.onclick = x.fn;
+    acts.appendChild(b);
+  });
+  left.appendChild(nx);
+
+  /* three numbers — everything else is behind a disclosure */
+  left.appendChild(el(`
+    <div class="money3">
+      <div class="m paid"><span>Paid so far</span><b>${fmt(m.paid)}</b></div>
+      <div class="m now"><span>Patient pays now</span><b>${fmt(m.dueNow)}</b></div>
+      <div class="m later"><span>Once approved</span><b>${fmt(m.later)}</b></div>
+    </div>`));
+
+  /* journey track */
+  const cur = journeyState(c);
+  const curStep = c.closed ? "DONE" : ({ CONSULT:"CONSULT", DOCTOR:"DOCTOR", ORDERS:"ORDERS", SETTLE:"SETTLE",
+    WAIT_APPROVAL:"SETTLE", READY_TO_CLOSE:"DONE" })[cur];
+  const track = el(`<div class="track"><h3>Patient journey</h3><div class="tl"></div></div>`);
+  const tl = track.querySelector(".tl");
+  STEPS.forEach(s=>{
+    const done = stepIndex(s.key) < stepIndex(curStep) || (c.closed && s.key==="DONE");
+    const isNow = s.key===curStep && !c.closed;
+    let when = "", sub = s.sub;
+    if(s.key==="ARRIVED"){ when = c.arrived; }
+    if(s.key==="CONSULT" && c.consult.paid){ when = c.consult.paidAt; sub = `${fmt(share(c.consult).patient)} · ${c.consult.via}`; }
+    if(s.key==="ORDERS" && c.orders.length){ sub = `${c.orders.length} order(s) placed by ${c.doctor}`; }
+    if(s.key==="SETTLE" && c.orders.length){
+      const paidN = c.orders.filter(o=>o.paid).length;
+      sub = `${paidN} of ${c.orders.length} paid` + (waiting(c).length?` · ${waiting(c).length} awaiting approval`:"");
+    }
+    if(s.key==="DONE" && c.closed){ when = c.closedAt || ""; sub = `Collected ${fmt(m.paid)}`; }
+    tl.appendChild(el(`
+      <div class="st ${done?"done":isNow?"now":"todo"}">
+        <div class="dot">${done?"✓":isNow?"●":""}</div>
+        <div><div class="lb">${s.label}</div><div class="sub">${sub}</div></div>
+        <div class="when">${when}</div>
+      </div>`));
+  });
+  left.appendChild(track);
+
+  /* the detail nobody needs until they need it */
+  const rows = [];
+  rows.push({ ...c.consult, kind:"Consultation" });
+  c.orders.forEach(o=>rows.push({ ...o, kind:"Order" }));
+  const tot = rows.reduce((a2,r)=>{ const s=share(r); return { p:a2.p+s.patient, co:a2.co+s.company, g:a2.g+r.price }; }, {p:0,co:0,g:0});
+  left.appendChild(el(`
+    <details class="more">
+      <summary>Invoice detail — ${rows.length} line(s), ${fmt(tot.p)} patient share <span style="font-weight:400;color:var(--muted)">(open only if you need it)</span></summary>
+      <div class="body">
+        <table class="mini">
+          <thead><tr><th>Line</th><th>Code</th><th class="num">Price</th><th>Cover</th><th class="num">Patient + VAT</th><th class="num">Company + VAT</th><th>Status</th></tr></thead>
+          <tbody>${rows.map(r=>{ const s=share(r); return `<tr>
+            <td><b>${r.name}</b><div style="font-size:10.5px;color:var(--muted)">${r.kind}</div></td>
+            <td style="font-family:ui-monospace,Menlo,monospace;font-size:11px">${r.code}</td>
+            <td class="num">${fmt(r.price)}</td>
+            <td>${r.coverage?`${Math.round(r.coverage*100)}%`:"—"}</td>
+            <td class="num"><b>${fmt(s.patient)}</b></td>
+            <td class="num">${fmt(s.company)}</td>
+            <td>${r.paid?`<span class="badge ok">Paid</span>`
+                 :r.approval==="PENDING"?`<span class="badge warn">Awaiting approval</span>`
+                 :`<span class="badge due">Due</span>`}</td></tr>`; }).join("")}</tbody>
+          <tfoot><tr><td colspan="4">Totals</td><td class="num">${fmt(tot.p)}</td><td class="num">${fmt(tot.co)}</td><td></td></tr></tfoot>
+        </table>
+        <div style="font-size:11px;color:var(--muted);margin-top:9px">VAT ${Math.round(VAT*100)}% included in both shares. The company share is invoiced to ${c.payer} — the receptionist never has to touch it.</div>
+      </div>
+    </details>`));
+
+  stage.appendChild(left);
+
+  /* activity rail */
+  const rail = el(`<div class="rail"><h3>What has happened</h3><div class="feed"></div></div>`);
+  const feed = rail.querySelector(".feed");
+  if(c.events.length===0) feed.appendChild(el(`<div class="empty">Nothing yet.</div>`));
+  c.events.forEach(e=>feed.appendChild(el(`
+    <div class="ev">
+      <div class="ic ${e.cls||""}">${e.cls==="pay"?"✓":e.cls==="appr"?"🛡":e.cls==="link"?"↗":"•"}</div>
+      <div><div class="tx">${e.tx}</div><div class="tm">${e.tm}</div></div>
+    </div>`)));
+  stage.appendChild(rail);
+
+  wrap.appendChild(stage);
+  wrap.querySelector("#back").onclick = ()=>{ state.screen="queue"; render(); };
+  return wrap;
+}
+
+/* ---------------- demo panel: scripted scenario + manual events ---------------- */
+function renderSim(){
+  const host = document.getElementById("sim");
+  host.innerHTML = "";
+  if(!state.simOpen){
+    const b = el(`<button class="tgl">▶ Demo${state.scenario!==null?` · step ${Math.min(state.scenario+1,SCENARIO.length)}/${SCENARIO.length}`:""}</button>`);
+    b.onclick = ()=>{ state.simOpen = true; render(); };
+    host.appendChild(b); return;
+  }
+  const c = cases.find(x=>x.id===state.caseId) || cases[0];
+  const running = state.scenario!==null && scenarioCase();
+  const i = state.scenario;
+  const done = running && i>=SCENARIO.length;
+
+  const p = el(`
+    <div class="panel">
+      <h4>Full scenario — walk-in to settled</h4>
+      <div id="scBody"></div>
+      <details class="man"><summary>Manual events</summary>
+        <button id="s1">📱 Patient pays the open link</button>
+        <button id="s2">🩺 Doctor places orders</button>
+        <button id="s3">🛡 Payer returns the pending approval</button>
+      </details>
+      <button class="tgl" id="s5" style="width:100%;margin-top:6px">Hide</button>
+    </div>`);
+  const body = p.querySelector("#scBody");
+
+  if(!running){
+    body.appendChild(el(`<div class="sc-intro">A fresh patient walks in with nothing paid and no orders.
+      Eleven steps take her all the way to a settled visit.</div>`));
+    const go = el(`<button class="go">▶ Start the scenario</button>`);
+    go.onclick = startScenario;
+    body.appendChild(go);
+  } else {
+    const list = el(`<div class="sc-list"></div>`);
+    SCENARIO.forEach((st, n)=>{
+      const cls = n < i ? "past" : n===i ? "cur" : "next";
+      list.appendChild(el(`<div class="sc-step ${cls}">
+        <span class="n">${n < i ? "✓" : n+1}</span>
+        <span class="tx"><b>${st.t}</b>${n===i?`<i>${st.n}</i>`:""}</span>
+        <span class="wh ${st.who}">${st.who}</span>
+      </div>`));
+    });
+    body.appendChild(list);
+    if(done){
+      body.appendChild(el(`<div class="sc-intro" style="color:#7fe0a6">Journey complete — ${fmt(money(scenarioCase()).paid)} collected in 3 receptionist clicks.</div>`));
+    } else {
+      const go = el(`<button class="go">▶ ${SCENARIO[i].who==="reception"?"Do":"Play"}: ${SCENARIO[i].t}</button>`);
+      go.onclick = scenarioNext;
+      body.appendChild(go);
+    }
+    const rs = el(`<button class="restart">↺ Restart the scenario</button>`);
+    rs.onclick = startScenario;
+    body.appendChild(rs);
+  }
+
+  p.querySelector("#s1").onclick = ()=>receiveLinkPayment(c);
+  p.querySelector("#s2").onclick = ()=>simDoctorOrders(c);
+  p.querySelector("#s3").onclick = ()=>simApproval(c);
+  p.querySelector("#s5").onclick = ()=>{ state.simOpen=false; render(); };
+  host.appendChild(p);
+}
+
+document.getElementById("bell").onclick = ()=>{ state.bell = 0; render(); };
+render();
+</script>
+</body>
+</html>

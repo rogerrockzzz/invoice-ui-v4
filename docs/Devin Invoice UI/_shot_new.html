@@ -1,0 +1,15 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>html,body{margin:0}iframe{width:1560px;height:860px;border:0;display:block}</style></head><body>
+<script>
+const step=new URLSearchParams(location.search).get('s')||'1';
+const f=document.createElement('iframe');
+f.onload=()=>{const w=f.contentWindow,S=w.eval('state');
+  const q=s=>w.document.querySelector(s),qa=s=>[...w.document.querySelectorAll(s)],R=()=>w.eval('render')();
+  w.eval('openPatientTab')('7000667'); S.screen='ip'; S.ipAdmissionId=5; S.ipStatus='TODO'; R();
+  if(step==='1'){ w.scrollTo(0,235); }
+  if(step==='2'){ q('#gridExp').click(); w.scrollTo(0,235); }
+  if(step==='3'){ const mri=qa('table.chg.ip tbody tr').find(x=>x.textContent.includes('MRI Brain'));
+    S.ipSel[mri.querySelector('.ipChk').dataset.id]=true; R(); w.scrollTo(0,400); }
+  if(step==='4'){ q('#dueBtn').click(); }
+  document.title='SHOT-READY';};
+f.src='billing-ui-revamp-mockup-v4.html';document.body.appendChild(f);
+</script></body></html>

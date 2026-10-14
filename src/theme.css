@@ -1,0 +1,78 @@
+/* Tailwind CSS v4 — must be first */
+@import "tailwindcss";
+/* HeroUI v3 styles — after Tailwind */
+@import "@heroui/styles";
+
+/* VIDA brand on top of HeroUI's theme variables (names from `get_theme.mjs`, HeroUI v3.2.6).
+   Colours are the v3 prototype's (journey-opd-v3.html :root), converted to oklch. */
+:root,
+.light,
+[data-theme="light"] {
+  --accent: oklch(0.5291 0.129 248.8); /* #1f6fb2 VIDA blue — primary actions */
+  --accent-foreground: var(--snow);
+  --success: oklch(0.5591 0.1353 152.47); /* #1c8a4b — "Yes", confirm payment */
+  --success-foreground: var(--snow);
+  --warning: oklch(0.6092 0.1316 67.49); /* #b6710a — waiting, credit */
+  --warning-foreground: var(--snow);
+  --danger: oklch(0.5855 0.2231 29.08); /* #e2231a VIDA red — refunds, amounts due */
+  --danger-foreground: var(--snow);
+  --background: oklch(0.9593 0.0069 247.9); /* #eef2f6 */
+  --foreground: oklch(0.2705 0.0252 258.34); /* #1f2733 */
+  --muted: oklch(0.5616 0.0254 254.49); /* #6b7684 */
+  --border: oklch(0.9264 0.008 253.86); /* #e3e7ec */
+  --separator: oklch(0.9264 0.008 253.86);
+
+  --vida-navy: oklch(0.3401 0.0798 248.79); /* #0f3a5f — brand, active tab, headings */
+  --vida-red: oklch(0.5855 0.2231 29.08); /* #e2231a — logo mark, VIDA wordmark */
+  --vida-purple: oklch(0.4851 0.1517 297.92); /* #6b46a8 — interbranch */
+  --vida-purple-soft: oklch(0.9491 0.0209 304.03); /* #f1ebfa */
+}
+
+.dark,
+[data-theme="dark"] {
+  /* the light block also matches :root, so every base colour it sets is set again here
+     (HeroUI's dark defaults, tinted towards the VIDA navy) */
+  --background: oklch(0.16 0.012 250);
+  --foreground: var(--snow);
+  --muted: oklch(0.72 0.018 250);
+  --border: oklch(0.3 0.012 250);
+  --separator: oklch(0.27 0.012 250);
+
+  /* lifted so text and controls keep AA contrast on dark surfaces */
+  --accent: oklch(0.68 0.13 248.8);
+  --accent-foreground: oklch(0.2 0.03 250);
+  --success: oklch(0.7 0.15 152.47);
+  --success-foreground: oklch(0.2 0.03 152);
+  --warning: oklch(0.78 0.14 70);
+  --warning-foreground: var(--eclipse);
+  --danger: oklch(0.7 0.19 27);
+  --danger-foreground: oklch(0.2 0.03 27);
+
+  --vida-navy: oklch(0.84 0.06 248.79);
+  --vida-red: oklch(0.66 0.21 29.08);
+  --vida-purple: oklch(0.78 0.12 297.92);
+  --vida-purple-soft: oklch(0.32 0.06 297.92);
+}
+
+/* brand tokens as Tailwind colours: text-vida-navy, bg-vida-red, … */
+@theme inline {
+  --color-vida-navy: var(--vida-navy);
+  --color-vida-red: var(--vida-red);
+  --color-vida-purple: var(--vida-purple);
+  --color-vida-purple-soft: var(--vida-purple-soft);
+}
+
+html,
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+body {
+  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}

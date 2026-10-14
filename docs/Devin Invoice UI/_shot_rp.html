@@ -1,0 +1,12 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>html,body{margin:0}iframe{width:100vw;height:100vh;border:0;display:block}</style></head><body>
+<script>
+const n=new URLSearchParams(location.search).get('s')||'1';
+const f=document.createElement('iframe');
+f.onload=()=>{const w=f.contentWindow;
+  const q=s=>w.document.querySelector(s),qa=s=>[...w.document.querySelectorAll(s)];
+  if(n==='1'){ w.eval('openVisit')(4);
+    qa('.step .acts .btn').find(b=>/Refund a payment/.test(b.textContent)).click(); }
+  if(n==='2'){ w.eval('openPatient')('7000667'); }
+  document.title='SHOT-READY';};
+f.src='journey-opd-v2.html';document.body.appendChild(f);
+</script></body></html>

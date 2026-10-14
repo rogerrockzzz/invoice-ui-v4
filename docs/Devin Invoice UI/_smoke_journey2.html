@@ -1,0 +1,2087 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body><pre id="out">…</pre><script>
+const log=[];const f=document.createElement('iframe');f.style.cssText='width:1100px;height:1100px';
+f.onload=()=>{const w=f.contentWindow;w.onerror=(m,s,l)=>{log.push('RUNTIME-ERR @'+l+': '+m);return true;};
+ const q=s=>w.document.querySelector(s),qa=s=>[...w.document.querySelectorAll(s)];
+ const S=w.eval('state'), C=()=>w.eval('cases'), R=()=>w.eval('render')(), P=()=>w.eval('patients');
+ const pt2=(c)=>P()[c.mrn];
+ const wal=(c)=>P()[c.mrn].wallet;
+ const open=(id)=>{ w.eval('openVisit')(id); return C().find(c=>c.id===id); };
+ const stepQ=()=>q('.step h2').textContent.trim();
+ const goHomeAndSearch=(t)=>{ S.screen='home'; S.q=t; R(); };
+ const yes=()=>qa('.step .acts .btn')[0].click();
+ const step=(n,fn)=>{ try{ const r=fn(); log.push('OK   '+n+(r!==undefined?' -> '+r:'')); }
+   catch(e){ log.push('FAIL '+n+': '+e.message+' | '+(e.stack||'').split('\n')[1]); } };
+ try{
+  step('home loads nothing until you search', ()=>{
+    S.screen='home'; S.q=''; S.tabs=[]; S.activeMrn=null; S.caseId=null; R();
+    if(qa('.prow').length) throw new Error('nothing should be listed before a search');
+    if(!q('.blank')) throw new Error('expected the empty state');
+    if(!/Search for a patient/i.test(q('.blank').textContent)) throw new Error('no prompt to search');
+    if(!q('.hsearch input')) throw new Error('no search box');
+    return q('.blank .big').textContent.trim();
+  });
+  step('the patient row tags its pending work and expands to show it', ()=>{
+    S.expanded={}; S.q=''; R();
+    const box=q('#q'); box.value='mohammed'; box.dispatchEvent(new w.Event('input'));
+    const heads=qa('.hhead h1').map(h=>h.textContent.trim());
+    if(heads.length!==1 || heads[0]!=='Patients') throw new Error('there should be one section only: '+heads.join(' | '));
+    if(/Pending actions/.test(q('main').textContent) && qa('.hhead h1').length>1)
+      throw new Error('the separate pending-actions section should be gone');
+    const card=q('.pcard');
+    if(!card) throw new Error('no patient card');
+    const openVs=C().filter(c=>c.mrn==='7000667' && !c.closed);
+    const needing=openVs.filter(c=>w.eval('pendingSummary')(c).kind==='act').length;
+    /* the tag tells you there is work without opening anything */
+    if(!new RegExp(needing+' action').test(card.textContent))
+      throw new Error('the row should tag how many actions need doing: '+card.textContent.replace(/\s+/g,' '));
+    /* a single match opens itself, and the work sits inside the card */
+    if(!card.classList.contains('open')) throw new Error('a lone match should expand automatically');
+    const rows=qa('.pcard .pexp .arow');
+    if(rows.length!==openVs.length) throw new Error('expected '+openVs.length+' action rows inside the card, got '+rows.length);
+    if(!rows[0].closest('.pcard')) throw new Error('the actions should be nested in the patient card');
+    /* collapse and expand by clicking the row */
+    q('.pcard .prow').click();
+    if(qa('.pcard .pexp').length) throw new Error('clicking should collapse it');
+    q('.pcard .prow').click();
+    if(!qa('.pcard .pexp .arow').length) throw new Error('clicking should expand it again');
+    /* an action row opens that visit; the button opens the profile */
+    qa('.pcard .pexp .arow')[0].click();
+    if(S.screen!=='visit') throw new Error('the action row should open the visit');
+    goHomeAndSearch('mohammed');
+    q('[data-open]').click();
+    if(S.screen!=='patient') throw new Error('the button should open the patient profile');
+    return needing+' tagged, '+rows.length+' actions inside the card';
+  });
+  step('opening a patient shows every visit, newest first', ()=>{
+    goHomeAndSearch('mohammed');
+    q('[data-open]').click();
+    if(S.screen!=='patient') throw new Error('it should open the patient profile');
+    const rows=qa('.vrow');
+    const vs=w.eval('visitsOf')('7000667');
+    if(rows.length!==vs.length) throw new Error('expected '+vs.length+' visits, got '+rows.length);
+    const keys=vs.map(v=>v.sortKey);
+    if(keys.join()!==keys.slice().sort((a,b)=>b-a).join()) throw new Error('visits are not newest first');
+    if(!/Today/.test(rows[0].textContent)) throw new Error('today\'s visit should be at the top');
+    const last=vs[vs.length-1];
+    if(!rows[rows.length-1].textContent.includes(last.date)) throw new Error('the oldest visit should be last');
+    return rows.length+' visits, newest first';
+  });
+  step('clicking a visit opens the actions, and both ways back work', ()=>{
+    qa('.vrow')[0].click();
+    if(S.screen!=='visit') throw new Error('it should open the visit');
+    if(!q('.step')) throw new Error('no action card on the visit screen');
+    /* back to the patient */
+    q('.crumb #back').click();
+    if(S.screen!=='patient') throw new Error('the crumb should return to the patient profile');
+    /* and back to the homepage */
+    q('.crumb #bHome').click();
+    if(S.screen!=='home') throw new Error('the crumb should return home');
+    return 'visit → patient → home';
+  });
+  step('several patients stay open as tabs', ()=>{
+    w.eval('openPatient')('7000667');
+    w.eval('openPatient')('7000203');
+    w.eval('openVisit')(3);
+    const tabs=qa('.tabs .tab').map(t=>t.textContent.replace(/[✕⌂]/g,'').trim()).filter(x=>x && x!=='Home' && x!=='Invoices');
+    if(tabs.length!==3) throw new Error('expected three patients open, got '+tabs.join(' | '));
+    if(S.activeMrn!=='7100482') throw new Error('the newest should be active');
+    /* switching tabs moves between patients without losing the others */
+    qa('.tabs .tab').find(t=>/MOHAMMED/i.test(t.textContent)).click();
+    if(S.activeMrn!=='7000667' || S.screen!=='patient') throw new Error('the tab did not switch');
+    if(qa('.tabs .tab [data-close]').length!==3) throw new Error('the other tabs should still be there');
+    /* and one can be closed */
+    qa('.tabs .tab [data-close]').find(x=>x.dataset.close==='7000203').click();
+    if(S.tabs.includes('7000203')) throw new Error('the tab did not close');
+    if(S.tabs.length!==2) throw new Error('closing one should leave the rest');
+    return tabs.join(' | ')+' → closed one, '+S.tabs.length+' open';
+  });
+  step('a visit can be added from the home page for any patient', ()=>{
+    S.screen='home'; S.q=''; R();
+    if(!q('#addVisit')) throw new Error('no Add visit option on the home page');
+    q('#addVisit').click();
+    const pop=q('.pop');
+    if(!pop) throw new Error('the add-visit popup did not open');
+    if(!q('#nvGo').disabled) throw new Error('it should not create anything until a patient is picked');
+    /* every known patient is searchable, including one with no visit today */
+    const pick=qa('#nvPick [data-m]').map(x=>x.dataset.m);
+    if(pick.length!==Object.keys(P()).length) throw new Error('all patients should be listed');
+    if(!pick.includes('1063301')) throw new Error('a patient with no visit today should still be pickable');
+    /* a patient who already has an open visit can be given another */
+    const before=C().filter(x=>x.mrn==='7000667').length;
+    qa('#nvPick [data-m]').find(x=>x.dataset.m==='7000667').click();
+    if(!/already has/.test(q('.pop').textContent)) throw new Error('it should note the existing open visit');
+    const cl=q('#nvClinic'); cl.value='ENT'; cl.dispatchEvent(new w.Event('change'));
+    const ty=q('#nvType'); ty.value='Follow-up'; ty.dispatchEvent(new w.Event('change'));
+    q('#nvGo').click();
+    const after=C().filter(x=>x.mrn==='7000667');
+    if(after.length!==before+1) throw new Error('the visit was not created');
+    const fresh=C().find(x=>x.id===S.caseId);
+    if(fresh.clinic!=='ENT' || fresh.visitType!=='Follow-up') throw new Error('the new visit did not keep its details');
+    if(S.screen!=='visit') throw new Error('it should open the new visit');
+    if(fresh.consult.ins!=='pending') throw new Error('an insured visit should start awaiting approval');
+    if(!fresh.history.some(h=>/Visit created/.test(h.tx))) throw new Error('creation not recorded');
+    /* and the patient profile now lists both */
+    w.eval('openPatient')('7000667');
+    if(qa('.vrow').length!==after.length) throw new Error('the profile should list every visit');
+    return before+' → '+after.length+' visits for that patient';
+  });
+
+
+  /* ---- the sequence, on a patient whose approval has not arrived ---- */
+  step('1 · no approval yet — the system says wait, and will not invoice', ()=>{
+    const c=open(3);
+    if(w.eval('nextStep')(c).key!=='CONSULT_WAIT') throw new Error('expected the waiting step');
+    if(!/Approval not received/.test(stepQ())) throw new Error('wrong wording: '+stepQ());
+    if(qa('.step .acts .btn').some(b=>/invoice/i.test(b.textContent) && !/self-pay/i.test(b.textContent)))
+      throw new Error('invoicing must not be offered before the approval');
+    return stepQ();
+  });
+  step('the payer can be changed before the consultation is invoiced', ()=>{
+    const c=open(1);                                  // WADHA, approval already in, nothing invoiced
+    const btns=qa('.step .acts .btn').map(b=>b.textContent.trim());
+    if(btns.includes('Not yet')) throw new Error('the dead "Not yet" button should be gone');
+    /* no button on the step — the payer chip in the header is the way in */
+    if(btns.some(b=>/Change payer/.test(b))) throw new Error('the step should not carry a Change payer button: '+btns.join(' | '));
+    const chip=q('#payerBtn');
+    if(!chip) throw new Error('the payer chip should be a button');
+    if(!chip.classList.contains('edit')) throw new Error('it should be changeable before anything is invoiced');
+    if(!/NCCI/.test(chip.textContent) || !/deductible/.test(chip.textContent)) throw new Error('the chip should still show the payer details: '+chip.textContent);
+    if(!/Change/.test(chip.textContent)) throw new Error('the chip should say it can be changed');
+    chip.click();
+    const pop=q('.pop');
+    if(!pop) throw new Error('the payer popup did not open');
+    const rows=qa('.pop .payer');
+    const payers=P()[c.mrn].payers;
+    if(rows.length!==payers.length) throw new Error('every payer should be listed, got '+rows.length);
+    if(!/Cash \/ Self-pay/.test(pop.textContent)) throw new Error('cash must be one of the options');
+    if(!qa('.pop .payer.on').length) throw new Error('the current payer should be marked');
+    /* each option shows what this consultation would cost under it */
+    if(!/would be/.test(rows[0].textContent)) throw new Error('no estimate per payer');
+    /* switching to cash reprices and is recorded */
+    const before=w.eval('due')(c);
+    rows.find(r=>r.dataset.p==='CASH').click();
+    if(c.payerId!=='CASH') throw new Error('payer did not change');
+    if(!c.history.some(h=>/Payer changed/.test(h.tx))) throw new Error('the change was not recorded in history');
+    if(!/Cash \/ Self-pay/.test(q('.phead').textContent)) throw new Error('the header should name the new payer');
+    const cash=w.eval('nextStep')(c);
+    if(cash.amt<=0) throw new Error('a self-pay consultation should be fully chargeable');
+    /* a different insurer needs a fresh approval; going back to one that already answered keeps its answer */
+    const others=w.eval('pt')(c).payers.filter(p=>p.plan);
+    const fresh=others.find(p=>!(c.consult.appr||{})[p.id]);
+    if(fresh){
+      S.payerPop={c}; R();
+      qa('.pop .payer').find(r=>r.dataset.p===fresh.id).click();
+      if(c.consult.ins!=='pending') throw new Error('a new insurer needs a fresh approval, got '+c.consult.ins);
+      if(w.eval('nextStep')(c).key!=='CONSULT_WAIT') throw new Error('should be waiting for the new approval');
+    }
+    const answered=others.find(p=>(c.consult.appr||{})[p.id]);
+    if(answered){
+      S.payerPop={c}; R();
+      qa('.pop .payer').find(r=>r.dataset.p===answered.id).click();
+      if(c.consult.ins!==c.consult.appr[answered.id]) throw new Error('the earlier answer from '+answered.label+' should be kept');
+    }
+    if(w.eval('nextStep')(c).key==='CONSULT_WAIT') w.eval('simApproveConsult')(c);
+    return payers.length+' payers offered incl. cash; switching repriced and re-requested approval';
+  });
+  step('2 · approval arrives — now it asks whether to bill the consultation', ()=>{
+    const c=open(3);                                  /* back to the patient under test */
+    w.eval('simApproveConsult')(c);
+    if(w.eval('nextStep')(c).key!=='CONSULT_BILL') throw new Error('should now offer to invoice');
+    if(!/Approval received.*bill the consultation/i.test(stepQ())) throw new Error('wrong wording: '+stepQ());
+    if(!q('details.ext')) throw new Error('the charge contents should be expandable');
+    if(!/Approval received/.test(c.history[0].tx)) throw new Error('the approval was not recorded in history');
+    return stepQ();
+  });
+  step('3 · no invoice is raised — billing goes straight to the payment mode', ()=>{
+    const c=C().find(x=>x.id===3);
+    const amt=w.eval('nextStep')(c).amt;
+    const invBefore=c.invoices.length;
+    yes();
+    /* the charge is prepared, but nothing is invoiced yet */
+    if(!c.bill) throw new Error('the charge was not prepared');
+    if(c.invoices.length!==invBefore) throw new Error('an invoice must not exist before payment');
+    if(c.consult.invoiceId) throw new Error('the consultation should carry no invoice number yet');
+    if(c.history.some(h=>/invoiced/i.test(h.tx))) throw new Error('history should not claim an invoice was raised');
+    if(Math.abs(w.eval('due')(c)-amt)>0.02) throw new Error('the open charge should match what was asked');
+    const s2=w.eval('nextStep')(c);
+    if(s2.key!=='COLLECT') throw new Error('expected the collection step, got '+s2.key);
+    /* two buttons only — the modes live in the pop-up */
+    if(qa('.step .modes').length) throw new Error('the mode grid should not be on the step any more');
+    const btns=qa('.step .acts .btn').map(b=>b.textContent.trim());
+    if(btns.length!==2) throw new Error('expected exactly two buttons, got '+btns.join(' | '));
+    /* the desk is the commonest, so it leads */
+    if(btns[0]!=='Take payment at the desk') throw new Error('first button should be the desk: '+btns[0]);
+    if(btns[1]!=='Send payment link') throw new Error('second button should send the link: '+btns[1]);
+    if(!qa('.step .acts .btn')[0].classList.contains('yes')) throw new Error('the desk should be the primary button');
+    if(c.link) throw new Error('nothing should be sent before a button is pressed');
+    /* the desk button opens the pop-up with the modes inside it */
+    qa('.step .acts .btn')[0].click();
+    if(!q('.drawer')) throw new Error('the desk button should open the slide-in');
+    const modes=qa('.drawer [data-m]').map(x=>x.dataset.m);
+    ['Span','Visa','Master card','Cash','Credit'].forEach(m=>{
+      if(!modes.includes(m)) throw new Error('the pop-up is missing '+m); });
+    /* the rarer production modes sit behind "more", not on the face */
+    ['MADA','Amex','INTER_COMPANY_REFERRAL_PAYMENT','Cash From Finance'].forEach(m=>{
+      if(modes.includes(m)) throw new Error(m+' should be behind the more list, not on the face'); });
+    q('#dMore').click();
+    const hidden=qa('.drawer .modemenu [data-m]').map(x=>x.dataset.m);
+    ['MADA','Amex','INTER_COMPANY_REFERRAL_PAYMENT','Cash From Finance','DOCTOR','CLINIC'].forEach(m=>{
+      if(!hidden.includes(m)) throw new Error('the more list is missing '+m+': '+hidden.join(' | ')); });
+    q('#dCancel').click();
+    /* and the link button just sends the link */
+    qa('.step .acts .btn')[1].click();
+    if(!c.link) throw new Error('the link was not sent');
+    if(c.invoices.length!==invBefore) throw new Error('sending a link must not create an invoice');
+    return 'two buttons on the step; '+modes.length+' modes inside the pop-up';
+  });
+  step('the payment is what creates the invoice, in a single history line', ()=>{
+    const c=C().find(x=>x.id===3);
+    const invBefore=c.invoices.length, histBefore=c.history.length;
+    w.eval('simPaid')(c);
+    if(c.invoices.length!==invBefore+1) throw new Error('the payment should create exactly one invoice');
+    const inv=c.invoices[0];
+    if(!inv.paid || !inv.id) throw new Error('the invoice should be paid and numbered');
+    if(c.consult.invoiceId!==inv.id) throw new Error('the line was not linked to the new invoice');
+    if(c.bill) throw new Error('the open charge should be cleared');
+    /* exactly one new history entry, and it names the invoice created */
+    const added=c.history.length-histBefore;
+    if(added!==1) throw new Error('expected one history entry for the payment, got '+added);
+    if(!/Consultation paid/.test(c.history[0].tx)) throw new Error('wrong wording: '+c.history[0].tx);
+    if(!new RegExp('invoice '+inv.id+' created').test(c.history[0].sub)) throw new Error('the entry should name the invoice: '+c.history[0].sub);
+    if(c.history.filter(h=>/Consultation (paid|invoiced)/.test(h.tx)).length!==1)
+      throw new Error('the consultation should appear once, not twice');
+    return c.history[0].tx+' · '+c.history[0].sub;
+  });
+  step('4 · the doctor orders — mixed approvals are explained', ()=>{
+    const c=C().find(x=>x.id===3);
+    if(w.eval('due')(c)!==0) throw new Error('payment did not clear the balance');
+    w.eval('simOrders')(c);
+    const s=w.eval('nextStep')(c);
+    if(s.key!=='ORDERS_MIXED') throw new Error('expected the wait-or-invoice question, got '+s.key);
+    if(!/3 procedures were ordered/.test(s.q)) throw new Error('should state how many were ordered: '+s.q);
+    if(/\bhave approval\b.*\b1 do not\b/.test(s.q)) throw new Error('singular/plural slip: '+s.q);
+    if(!/have approval/.test(s.q)) throw new Error('should state how many are approved');
+    /* both choices are offered */
+    const btns=qa('.step .acts .btn').map(b=>b.textContent.trim());
+    if(!btns.some(b=>/Bill the 2 approved now/.test(b))) throw new Error('no "bill approved" choice: '+btns);
+    if(!btns.some(b=>/Wait for all approvals/.test(b))) throw new Error('no "wait for all" choice: '+btns);
+    /* and the orders can be expanded */
+    const ext=q('details.ext');
+    if(!ext) throw new Error('no expandable order list');
+    ext.open=true;
+    const rows=qa('details.ext tbody tr');
+    if(rows.length!==3) throw new Error('the extension should list all 3 orders');
+    if(qa('details.ext tbody tr.pend').length!==1) throw new Error('the pending order should be marked');
+    return s.q;
+  });
+  step('5 · billing the approved ones leaves the pending one alone', ()=>{
+    const c=C().find(x=>x.id===3);
+    const approvedCount=w.eval('approvedOrders')(c).length;
+    yes();
+    if(w.eval('nextStep')(c).key!=='COLLECT') throw new Error('should ask how it is being paid');
+    if(c.invoices.some(i=>i.scope==='orders')) throw new Error('no orders invoice should exist before payment');
+    qa('.step .acts .btn').find(b=>/Send payment link/.test(b.textContent)).click();            // send the link
+    w.eval('simPaid')(c);
+    if(w.eval('approvedOrders')(c).length!==0) throw new Error('approved orders were not billed');
+    if(w.eval('pendingOrders')(c).length!==1) throw new Error('the pending order should still be pending');
+    const inv=c.invoices.find(i=>i.scope==='orders');
+    if(!inv) throw new Error('the payment should have created the orders invoice');
+    if(inv.rows.length!==approvedCount) throw new Error('the invoice should carry only the approved lines');
+    if(c.history.filter(h=>/Orders (paid|invoiced)/.test(h.tx)).length!==1)
+      throw new Error('the orders should appear once in history, not twice');
+    return approvedCount+' billed and paid on one invoice, 1 held';
+  });
+  step('6 · only one button remains: Check approval', ()=>{
+    const c=C().find(x=>x.id===3);
+    const st=w.eval('nextStep')(c);
+    if(st.key!=='ORDERS_WAIT') throw new Error('expected the waiting step, got '+st.key);
+    const btns=qa('.step .acts .btn').map(b=>b.textContent.trim());
+    if(btns[0]!=='Check approval') throw new Error('checking should lead: '+btns.join(' | '));
+    /* the only other way out is to bill it as cash and move it onto the policy later */
+    /* the only other ways out are cash: this order alone, or the whole visit */
+    const extra=btns.slice(1);
+    const allowed=/^(Bill the \d+ pending order\(s\) as cash now|Replace orders with cash billing)$/;
+    const bad=extra.filter(b=>!allowed.test(b));
+    if(bad.length) throw new Error('unexpected extra buttons: '+btns.join(' | '));
+    if(/continue.*automatically/i.test(q('.step').textContent)) throw new Error('the auto-continue question should be gone');
+    return st.q+'  ['+btns[0]+']';
+  });
+  step('7 · first check warns that the approval has not arrived', ()=>{
+    const c=C().find(x=>x.id===3);
+    const pendBefore=w.eval('pendingOrders')(c).length;
+    qa('.step .acts .btn')[0].click();
+    if(w.eval('pendingOrders')(c).length!==pendBefore) throw new Error('the first check should not grant the approval');
+    if(!/no answer yet/.test(q('.step .sub').textContent)) throw new Error('no warning on the step: '+q('.step .sub').textContent);
+    if(!c.history.some(h=>/Approval checked/.test(h.tx))) throw new Error('the check was not recorded');
+    if(qa('.step .acts .btn')[0].textContent.trim()!=='Check approval') throw new Error('checking should still lead');
+    return q('.step .sub').textContent.replace(/\s+/g,' ').trim().slice(0,80);
+  });
+  step('8 · second check brings the approval and asks to bill and collect', ()=>{
+    const c=C().find(x=>x.id===3);
+    qa('.step .acts .btn')[0].click();
+    if(w.eval('pendingOrders')(c).length) throw new Error('the second check should grant the approval');
+    if(!c.history.some(h=>/Approval received/.test(h.tx))) throw new Error('approval not recorded');
+    const st=w.eval('nextStep')(c);
+    if(st.key!=='ORDERS_BILL') throw new Error('it should now ask to bill, got '+st.key);
+    if(!/Bill them\?/.test(st.q)) throw new Error('wrong wording: '+st.q);
+    /* and billing leads to the payment question as usual */
+    qa('.step .acts .btn')[0].click();
+    if(w.eval('nextStep')(c).key!=='COLLECT') throw new Error('billing should lead to collection');
+    qa('.step .acts .btn').find(b=>/Send payment link/.test(b.textContent)).click();     // send the link
+    w.eval('simPaid')(c);
+    if(w.eval('nextStep')(c).key!=='CLOSE') throw new Error('the visit should now be complete');
+    return 'checked twice → approved → billed → paid';
+  });
+  step('"Wait for all approvals" actually holds the approved ones back', ()=>{
+    /* rebuild a mixed visit: two approved, one pending */
+    const c=open(2);                                     /* render this patient's profile */
+    c.prefs={}; c.bill=null; c.link=null; c.closed=false; c.checks=0; c.lastCheck=null;
+    c.orders=[{ code:'L1', name:'Full Blood Count', price:120, ins:'approved', paid:false },
+              { code:'L2', name:'Lipid Profile',    price:200, ins:'approved', paid:false },
+              { code:'L3', name:'Thyroid Panel',    price:260, ins:'pending',  paid:false }];
+    R();
+    if(w.eval('nextStep')(c).key!=='ORDERS_MIXED') throw new Error('expected the mixed question');
+    qa('.step .acts .btn')[1].click();                   // "Wait for all approvals"
+    if(!c.prefs.waitAll) throw new Error('the choice was not stored');
+    const st=w.eval('nextStep')(c);
+    if(st.key!=='ORDERS_WAIT') throw new Error('it should now be waiting, not asking again — got '+st.key);
+    if(!/being held with them/.test(st.sub)) throw new Error('it should say the approved ones are held: '+st.sub);
+    if(!c.history.some(h=>/Holding for the remaining approvals/.test(h.tx))) throw new Error('not recorded');
+    /* the card separates what is known from what is still a guess */
+    const figs=qa('.step .amtrow .amt').map(x=>x.textContent.replace(/\s+/g,' ').trim());
+    if(figs.length!==2) throw new Error('expected a known figure and an estimate, got '+figs.join(' | '));
+    if(!/ready to bill/.test(figs[0])) throw new Error('the first figure should be the ready-to-bill amount: '+figs[0]);
+    if(!/if approved in full/.test(figs[1])) throw new Error('the estimate should be qualified: '+figs[1]);
+    /* the estimate is priced after the held orders, so the two add up to a combined bill */
+    const ready=st.amts[0].v, more=st.amts[1].v;
+    const heldLines=w.eval('approvedOrders')(c);
+    const pendLines=w.eval('pendingOrders')(c).map(o=>({...o, ins:'approved'}));
+    const combined=w.eval('priceLines')(c,[...heldLines,...pendLines]).patient;
+    if(Math.abs((ready+more)-combined)>0.02)
+      throw new Error('the two figures should add up to a combined bill: '+ready+' + '+more+' vs '+combined);
+    /* and the estimate must not assume a deductible the held orders will have eaten */
+    const naive=w.eval('priceLines')(c,pendLines).patient;
+    if(more > naive + 0.02) throw new Error('the estimate should not exceed the naive one: '+more+' vs '+naive);
+    /* while waiting, there is a way back to billing the approved ones */
+    const btns=qa('.step .acts .btn').map(b=>b.textContent.trim());
+    const back=btns.find(b=>/Bill the 2 approved order\(s\) now/.test(b));
+    if(!back) throw new Error('no way back to billing the approved orders: '+btns.join(' | '));
+    qa('.step .acts .btn').find(b=>/Bill the 2 approved/.test(b.textContent)).click();
+    if(c.prefs.waitAll) throw new Error('the hold should be lifted');
+    const back1=w.eval('nextStep')(c);
+    if(back1.key!=='ORDERS_MIXED') throw new Error('it should return to the billing screen, got '+back1.key);
+    if(!/Bill the 2 approved now/.test(qa('.step .acts .btn').map(b=>b.textContent).join(' | ')))
+      throw new Error('the invoice option should be back');
+    if(!c.history.some(h=>/released for billing/i.test(h.tx))) throw new Error('the change of mind was not recorded');
+    /* go back on hold, then let the approval land so everything bills together */
+    qa('.step .acts .btn').find(b=>/Wait for all approvals/.test(b.textContent)).click();
+    qa('.step .acts .btn')[0].click();                   // check 1 — nothing
+    qa('.step .acts .btn')[0].click();                   // check 2 — approved
+    const st2=w.eval('nextStep')(c);
+    if(st2.key!=='ORDERS_BILL') throw new Error('expected to bill all three, got '+st2.key);
+    if(w.eval('approvedOrders')(c).length!==3) throw new Error('all three should be billable together');
+    return 'held 2, waited, then billed all 3 together';
+  });
+  step('the whole visit is readable from the history', ()=>{
+    const c=open(3);                                     /* the patient we walked end to end */
+    const txt=qa('.hev .tx').map(x=>x.textContent).join(' | ');
+    ['Visit created','Approval received','Consultation paid','placed 3 orders','Orders paid']
+      .forEach(k=>{ if(!new RegExp(k,'i').test(txt)) throw new Error('history is missing: '+k); });
+    if(/invoiced/i.test(txt)) throw new Error('history should never say something was invoiced before payment');
+    if(qa('.hev').length < 8) throw new Error('expected a full trail, got '+qa('.hev').length+' entries');
+    return qa('.hev').length+' entries, newest first';
+  });
+  step('the desk button settles the charge inside the pop-up', ()=>{
+    const c=open(2);
+    yes();                                        // bill the approved orders
+    qa('.step .acts .btn').find(b=>/Take payment at the desk/.test(b.textContent)).click();
+    if(!q('.drawer')) throw new Error('the desk button should open the pop-up');
+    q('#dGo').click();
+    if(w.eval('due')(c)!==0) throw new Error('payment did not settle');
+    if(!c.history.some(h=>/paid/i.test(h.tx))) throw new Error('payment not recorded');
+    return 'settled inside the pop-up';
+  });
+  step('while a link is open, the desk button opens the pop-up with every mode', ()=>{
+    const c=open(1);
+    yes();                                        // bill the consultation
+    qa('.step .acts .btn').find(b=>/Send payment link/.test(b.textContent)).click();            // send the link
+    const st=w.eval('nextStep')(c);
+    if(st.key!=='COLLECT_WAIT') throw new Error('expected the waiting step, got '+st.key);
+    const btns=qa('.step .acts .btn').map(b=>b.textContent.trim());
+    if(!btns.includes('Take payment at the desk')) throw new Error('missing the desk option: '+btns.join(' | '));
+    qa('.step .acts .btn').find(b=>/Take payment at the desk/.test(b.textContent)).click();
+    if(!q('.drawer')) throw new Error('it should open the slide-in pop-up');
+    /* the modes are configured inside the pop-up, all five of them */
+    const modes=qa('.drawer [data-m]').map(x=>x.dataset.m);
+    ['Span','Visa','Master card','Cash','Credit'].forEach(m=>{
+      if(!modes.includes(m)) throw new Error('the pop-up is missing '+m); });
+    /* switching mode inside the pop-up swaps its fields */
+    qa('.drawer [data-m]').find(x=>x.dataset.m==='Visa').click();
+    if(!q('#dRef') || !q('#dRef2')) throw new Error('a card should ask for approval no. and last 4');
+    q('#dMore').click();
+    qa('.drawer .modemenu [data-m]').find(x=>x.dataset.m==='Cash From Finance').click();
+    if(!/voucher/i.test(q('.drawer').textContent)) throw new Error('cash from finance should ask for a voucher no.');
+    qa('.drawer [data-m]').find(x=>x.dataset.m==='Credit').click();
+    if(!/Credit after this/i.test(q('.advbox').textContent)) throw new Error('credit should preview the outstanding balance: '+q('.advbox').textContent.replace(/\s+/g,' '));
+    qa('.drawer [data-m]').find(x=>x.dataset.m==='Cash').click();
+    const tend=q('#dTend'); tend.value='100'; tend.dispatchEvent(new w.Event('change'));
+    if(!/Change to give back/.test(q('.drawer').textContent)) throw new Error('no change field');
+    const chg=qa('.drawer .fld').find(f=>/Change to give back/.test(f.textContent)).querySelector('input');
+    if(Math.abs(parseFloat(chg.value)-(100-w.eval('state').drawer.amount))>0.02) throw new Error('wrong change: '+chg.value);
+    /* completing it inside the pop-up creates the invoice and clears the link */
+    const invBefore=c.invoices.length;
+    q('#dGo').click();
+    if(q('.drawer')) throw new Error('the pop-up should close on confirm');
+    if(c.invoices.length!==invBefore+1) throw new Error('the payment should create the invoice');
+    if(c.link) throw new Error('the open link should be cancelled');
+    if(w.eval('due')(c)!==0) throw new Error('balance not cleared');
+    return modes.join(' | ');
+  });
+  step('advance inside the pop-up shows the draw and blocks when short', ()=>{
+    const c=open(3);
+    const wl=wal(c);
+    wl.advance.Open = 20;                          // deliberately not enough
+    /* give this visit a fresh charge to pay */
+    c.consult.paid=false; c.consult.invoiceId=null; c.consult.ins='approved'; c.bill=null; c.link=null; c.closed=false;
+    w.eval('startBill')(c,'consult',[c.consult]); R();
+    if(w.eval('nextStep')(c).key!=='COLLECT') throw new Error('expected the collection step');
+    qa('.step .acts .btn').find(b=>/Take payment at the desk/.test(b.textContent)).click();
+    if(!q('.drawer')) throw new Error('no pop-up');
+    qa('.drawer [data-m]').find(x=>x.dataset.m==='OPEN').click();
+    if(!q('.advbox.short')) throw new Error('it should warn that the advance is short');
+    if(!q('#dGo').disabled) throw new Error('confirm should be disabled when the wallet cannot cover it');
+    /* top the wallet up and it shows the draw per category */
+    wl.advance.Open = 5000; w.eval('render')();
+    if(q('.advbox.short')) throw new Error('the warning should clear');
+    if(!/Open advance/.test(q('.advbox').textContent)) throw new Error('the draw should be itemised');
+    const amt=w.eval('due')(c);
+    q('#dGo').click();
+    if(wl.advance.Open!==+(5000-amt).toFixed(2)) throw new Error('the wallet was not drawn down');
+    return 'short warning, then drawn '+w.eval('fmt')(amt)+' from Open advance';
+  });
+  step('the wallet shows advance by type and outstanding credit', ()=>{
+    const c=open(2);
+    const walBox=q('.wallet');
+    if(!walBox) throw new Error('no wallet panel on the profile');
+    const cats=qa('.wallet .wcat .t span').map(x=>x.textContent.trim());
+    ['Open advance','Doctor advance','Clinic advance'].forEach(k=>{
+      if(!cats.includes(k)) throw new Error('missing advance type: '+k); });
+    if(!/Outstanding credit/.test(walBox.textContent)) throw new Error('credit not shown');
+    if(!walBox.textContent.includes(w.eval('fmt')(w.eval('advTotal')(c)))) throw new Error('advance total wrong');
+    return cats.join(' | ');
+  });
+  step('add advance and settle credit are two separate options', ()=>{
+    const c=open(2);
+    if(!q('#wAdd') || !q('#wCred')) throw new Error('both options should be present');
+    /* add advance is its own drawer, nothing to do with the visit step */
+    const before=w.eval('advTotal')(c);
+    q('#wAdd').click();
+    if(!q('.drawer')) throw new Error('add advance should open its own drawer');
+    const cats=qa('.drawer [data-c]').map(x=>x.dataset.c);
+    if(cats.join()!=='Open,Doctor,Clinic') throw new Error('advance types missing: '+cats.join());
+    qa('.drawer [data-c]').find(x=>x.dataset.c==='Doctor').click();
+    const amt=q('#aAmt'); amt.value='150'; amt.dispatchEvent(new w.Event('input'));
+    q('#aGo').click();
+    if(wal(c).advance.Doctor!==150) throw new Error('doctor advance not credited');
+    if(w.eval('advTotal')(c)!==before+150) throw new Error('wallet total did not move');
+    if(!c.history.some(h=>/Advance added/.test(h.tx))) throw new Error('not recorded in history');
+    /* settle credit is the other, independent option — its picker has its own check */
+    if(!q('#wCred')) throw new Error('the settle-credit option should be present next to Add advance');
+    if(q('#wCred').disabled) throw new Error('this patient has credit, so it should be enabled');
+    return 'advance +150 to Doctor; settle credit sits beside it';
+  });
+  step('every history row opens a detail pop-up with the facts of that event', ()=>{
+    const c=open(2);
+    if(!qa('.hev').length) throw new Error('no history rows');
+    const payIdx=c.history.findIndex(h=>h.type==='PAYMENT');
+    qa('.hev')[payIdx].click();
+    const pop=q('.pop');
+    if(!pop) throw new Error('the row did not open a pop-up');
+    const txt=pop.textContent;
+    ['Recorded by','Patient','Visit','Payment mode','Invoice'].forEach(k=>{
+      if(!txt.includes(k)) throw new Error('the detail is missing "'+k+'"'); });
+    if(!txt.includes(c.history[payIdx].mode)) throw new Error('the payment mode is not shown');
+    if(!txt.includes(c.history[payIdx].invoiceId)) throw new Error('the invoice number is not shown');
+    const btns=qa('.pop .foot .btn').map(b=>b.textContent.trim());
+    if(!btns.some(b=>/Preview invoice/.test(b))) throw new Error('no invoice preview button: '+btns.join(' | '));
+    if(!btns.some(b=>/Go to invoices/.test(b))) throw new Error('no redirect to the invoices screen: '+btns.join(' | '));
+    q('#evClose').click();
+    const ordIdx=c.history.findIndex(h=>h.type==='ORDERS');
+    qa('.hev')[ordIdx].click();
+    if(!qa('.pop table.ord tbody tr').length) throw new Error('the orders event should list its lines');
+    q('#evClose').click();
+    return 'payment + orders events both detailed';
+  });
+  step('the button in the event pop-up redirects to the invoices screen', ()=>{
+    const c=open(2);
+    qa('.hev')[c.history.findIndex(h=>h.type==='PAYMENT')].click();
+    q('#evAll').click();
+    if(S.screen!=='invoices') throw new Error('it should land on the invoices screen');
+    if(S.invQ!==pt2(c).mrn) throw new Error('it should be filtered to this patient');
+    if(!qa('.invtable tbody tr').length) throw new Error('no invoices listed');
+    return qa('.invtable tbody tr').length+' invoice(s) for that patient';
+  });
+  step('the invoices screen lists, views and reprints', ()=>{
+    S.screen='invoices'; S.invQ=''; R();
+    const rows=qa('.invtable tbody tr');
+    const total=w.eval('allInvoices')().length;
+    if(rows.length!==total) throw new Error('expected every invoice, got '+rows.length+' of '+total);
+    const head=qa('.invtable thead th').map(t=>t.textContent.trim());
+    ['Invoice','Patient','Visit','For','Mode','Status'].forEach(h=>{
+      if(!head.includes(h)) throw new Error('missing column '+h); });
+    const id=w.eval('allInvoices')()[0].inv.id;
+    const box=q('#iq'); box.value=id; box.dispatchEvent(new w.Event('input'));
+    if(qa('.invtable tbody tr').length!==1) throw new Error('search by invoice number did not narrow');
+    q('[data-view]').click();
+    if(!q('.pop .inv-doc')) throw new Error('View did not open the invoice preview');
+    if(!/TAX INVOICE/.test(q('.inv-doc').textContent)) throw new Error('the preview does not look like an invoice');
+    if(!qa('.inv-doc tbody tr').length) throw new Error('the preview has no lines');
+    q('#ivClose').click();
+    const hit=w.eval('findInvoice')(id);
+    const before=hit.c.history.length;
+    q('[data-print]').click();
+    if(hit.c.history.length!==before+1) throw new Error('the reprint was not recorded');
+    if(!/reprinted/i.test(hit.c.history[0].tx)) throw new Error('wrong wording: '+hit.c.history[0].tx);
+    S.invQ=''; R();
+    return total+' invoices, searchable, previewable, reprint logged';
+  });
+  step('clicking the invoice number in a history row opens the preview', ()=>{
+    const c=open(2);
+    const link=q('.hev a.invlink');
+    if(!link) throw new Error('no invoice link in the history');
+    const id=link.dataset.inv;
+    link.click();
+    if(!q('.pop .inv-doc')) throw new Error('the number should open the invoice preview');
+    if(!q('.inv-doc').textContent.includes(id)) throw new Error('the wrong invoice opened');
+    if(q('.evrows')) throw new Error('the event pop-up opened as well — the click should not bubble');
+    q('#ivClose').click();
+    return id+' previewed straight from the history';
+  });
+  step('invoices sit in the tab row beside Home, not in the header', ()=>{
+    S.screen='home'; R();
+    if(q('#navInv')) throw new Error('the header should no longer carry an Invoices link');
+    if(/Invoices/.test(w.document.querySelector('header').textContent))
+      throw new Error('Invoices should not appear in the header at all');
+    const tab=q('#tabInv');
+    if(!tab) throw new Error('no Invoices tab in the tab row');
+    const tabs=qa('.tabs .tab').map(t=>t.textContent.trim());
+    if(tabs[0].indexOf('Home')<0) throw new Error('Home should be first: '+tabs.join(' | '));
+    if(tabs[tabs.length-1]!=='Invoices') throw new Error('Invoices should be last: '+tabs.join(' | '));
+    /* and pushed to the far right of the row */
+    const bar=q('.tabs').getBoundingClientRect(), it=q('#tabInv').getBoundingClientRect();
+    if(bar.right - it.right > 4) throw new Error('the Invoices tab should sit at the far end');
+    const prev=qa('.tabs .tab')[qa('.tabs .tab').length-2].getBoundingClientRect();
+    if(it.left - prev.right < 40) throw new Error('it should be separated from the patient tabs, not tucked beside them');
+    tab.click();
+    if(S.screen!=='invoices') throw new Error('the tab did not navigate');
+    if(!q('#tabInv').classList.contains('on')) throw new Error('the tab should show as active');
+    return 'tab row: '+tabs.join(' | ')+' (Invoices at the far end)';
+  });
+  step('the header carries a hospital picker', ()=>{
+    S.screen='home'; R();
+    const sel=q('#branchSel');
+    if(!sel) throw new Error('no hospital dropdown in the header');
+    const who=q('header .who').getBoundingClientRect(), sr=sel.getBoundingClientRect();
+    if(sr.left >= who.left) throw new Error('it should sit to the left of the profile name');
+    if(sel.options.length<2) throw new Error('expected several hospitals');
+    const other=[...sel.options].map(o=>o.value).find(v=>v!==w.eval('settings').branch);
+    sel.value=other; sel.dispatchEvent(new w.Event('change'));
+    if(w.eval('settings').branch!==other) throw new Error('changing it did not switch hospital');
+    return sel.options.length+' hospitals · now '+other;
+  });
+  step('the wallet sits in line with the actions and collapses away', ()=>{
+    const c=open(2);
+    S.walletOpen = true; R();
+    const stepBox=q('.pgrid > .step'), walBox=q('.pgrid > .wallet'), head=q('.phead'), hist=q('.hist');
+    if(!stepBox || !walBox) throw new Error('the step and wallet should share the row');
+    if(head.closest('.pgrid')) throw new Error('the patient header should be full width above the row');
+    if(hist.closest('.pgrid')) throw new Error('the history should sit below, full width');
+    const sr=stepBox.getBoundingClientRect(), wr=walBox.getBoundingClientRect();
+    if(wr.left <= sr.right - 5) throw new Error('the wallet should be to the right of the actions');
+    /* in line with the action section: the label matches the step's tag */
+    const tag=q('.step .tag').getBoundingClientRect(), lbl=q('.wallet .wh .k').getBoundingClientRect();
+    if(Math.abs(tag.top - lbl.top) > 6) throw new Error('the wallet label is not in line with the action header ('+Math.round(tag.top)+' vs '+Math.round(lbl.top)+')');
+    /* collapse it — the actions widen and a chip appears in the header to bring it back */
+    const narrow = sr.width;
+    if(!q('#wCollapse')) throw new Error('no collapse button on the wallet');
+    q('#wCollapse').click();
+    if(q('.wallet')) throw new Error('the wallet should be hidden');
+    const wide = q('.pgrid > .step').getBoundingClientRect().width;
+    if(wide <= narrow + 100) throw new Error('the action section did not widen ('+Math.round(narrow)+' → '+Math.round(wide)+')');
+    const chip=q('#wOpen');
+    if(!chip) throw new Error('no way to bring the wallet back');
+    if(!/Wallet/.test(chip.textContent) || !/credit/i.test(chip.textContent))
+      throw new Error('the chip should still show the balances: '+chip.textContent);
+    chip.click();
+    if(!q('.pgrid > .wallet')) throw new Error('the chip did not restore the wallet');
+    return 'in line with the actions; collapse widens '+Math.round(narrow)+'px → '+Math.round(wide)+'px';
+  });
+  step('settle credit asks which invoices to settle, then carries on', ()=>{
+    const c=open(2);
+    const list=w.eval('creditInvoices')(c.mrn);
+    if(list.length<2) throw new Error('need at least two credit invoices to test the picker');
+    const total=w.eval('creditTotal')(c.mrn);
+    if(!q('.wallet .cr').textContent.includes(w.eval('fmt')(total))) throw new Error('the wallet should show the credit total');
+    if(!/invoice\(s\)/.test(q('.wallet .cr').textContent)) throw new Error('the wallet should say how many invoices are on credit');
+    q('#wCred').click();
+    if(!/Which invoices/.test(q('.step h2').textContent)) throw new Error('it should ask which invoices: '+q('.step h2').textContent);
+    const rows=qa('.crrow');
+    if(rows.length!==list.length) throw new Error('every credit invoice should be listed');
+    /* all ticked by default, and the amount follows the selection */
+    if(!qa('.crChk').every(x=>x.checked)) throw new Error('they should start ticked');
+    const shown=()=>parseFloat(q('.step .amt').textContent.replace(/[^0-9.]/g,''));
+    if(Math.abs(shown()-total)>0.02) throw new Error('the amount should equal the selected invoices');
+    /* untick one — the amount drops by exactly that invoice */
+    const first=list[0].inv;
+    qa('.crChk')[0].click();
+    if(Math.abs(shown()-(total-first.patient))>0.02) throw new Error('unticking did not reduce the amount');
+    if(!/1 of 2 invoice\(s\) selected/.test(q('.step .amt').textContent)) throw new Error('the count should be shown');
+    /* each row can be previewed without settling */
+    q('.crrow .invlink').click();
+    if(!q('.pop .inv-doc')) throw new Error('the view link should open the invoice');
+    q('#ivClose').click();
+    /* settle just the ticked one at the desk */
+    qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click();
+    if(!q('.drawer')) throw new Error('the payment pop-up should open');
+    q('#dGo').click();
+    const left=w.eval('creditInvoices')(c.mrn);
+    if(left.length!==1) throw new Error('exactly one invoice should remain on credit, got '+left.length);
+    if(left[0].inv.id!==first.id) throw new Error('the wrong invoice was settled');
+    if(Math.abs(w.eval('creditTotal')(c.mrn)-first.patient)>0.02) throw new Error('the credit total did not drop correctly');
+    /* the settlement is recorded on the patient's current visit, whichever that is */
+    const logged=w.eval('visitsOf')(c.mrn).some(v=>v.history.some(h=>/Credit settled/.test(h.tx)));
+    if(!logged) throw new Error('the settlement was not recorded on any of the patient\'s visits');
+    return 'picked 1 of '+list.length+', settled, '+w.eval('fmt')(w.eval('creditTotal')(c.mrn))+' still on credit';
+  });
+  step('a paid invoice can be refunded, line by line', ()=>{
+    S.screen='invoices'; S.invQ=''; R();
+    /* refund is offered only where money was actually taken */
+    const rows=qa('.invtable tbody tr');
+    const all=w.eval('allInvoices')();
+    all.forEach(({inv})=>{
+      const btn=q('[data-refund="'+inv.id+'"]');
+      const should=w.eval('refundable')(inv);
+      if(should && !btn) throw new Error(inv.id+' is refundable but has no button');
+      if(!should && btn) throw new Error(inv.id+' should not offer a refund ('+(inv.via)+', paid='+inv.paid+')');
+    });
+    /* pick a paid invoice with more than one line if we can */
+    const target=all.filter(x=>w.eval('refundable')(x.inv)).sort((a,b)=>b.inv.rows.length-a.inv.rows.length)[0];
+    q('[data-refund="'+target.inv.id+'"]').click();
+    const pop=q('.pop');
+    if(!pop) throw new Error('the refund pop-up did not open');
+    if(!/Refund /.test(q('.pop h3').textContent)) throw new Error('wrong heading: '+q('.pop h3').textContent);
+    if(qa('.rfChk').length!==target.inv.rows.length) throw new Error('every line should be listed');
+    /* a reason is required */
+    if(!q('#rfGo').disabled===false && !q('#rfReason')) throw new Error('no reason field');
+    q('#rfReason').value=''; q('#rfReason').dispatchEvent(new w.Event('input')); R();
+    if(!q('#rfGo').disabled) throw new Error('it should refuse to refund without a reason');
+    /* the pop-up picks lines only — no payment modes on it any more */
+    if(qa('.pop [data-m]').length) throw new Error('the mode chips should not be on the refund pop-up');
+    /* leave only the first line ticked, so the amount is predictable */
+    const codes=qa('.rfChk').map(x=>x.dataset.code);
+    codes.slice(1).forEach(code=>{
+      const box=qa('.rfChk').find(x=>x.dataset.code===code);
+      if(box && box.checked) box.click();
+    });
+    if(qa('.rfChk').filter(x=>x.checked).length!==1) throw new Error('expected a single line ticked');
+    const line=target.inv.rows.find(r=>r.code===codes[0]);
+    const rs=q('#rfReason'); rs.value='procedure cancelled by the doctor'; rs.dispatchEvent(new w.Event('input')); R();
+    const dedBefore=target.c.dedUsed, colBefore=w.eval('collected')(target.c);
+    if(q('#rfGo').disabled) throw new Error('it should allow the refund now');
+    q('#rfGo').click();
+    if(q('.pop')) throw new Error('the pop-up should hand over to the slide-in');
+    /* the mode is chosen in the slide-in, like a payment */
+    if(!q('.drawer')) throw new Error('the payment slide-in should open for the refund');
+    if(!/Refund/.test(q('.drawer .dw-head').textContent)) throw new Error('the slide-in should say it is a refund');
+    const modes=qa('.drawer [data-m]').map(x=>x.dataset.m);
+    ['Cash','Span','Visa','Master card','Advance wallet'].forEach(m=>{
+      if(!modes.includes(m)) throw new Error('missing refund mode '+m+': '+modes.join(' | ')); });
+    if(modes.includes('Credit')) throw new Error('credit is not a way to refund');
+    q('#dGo').click();
+    if(!(target.inv.refunds||[]).length) throw new Error('the refund was not recorded on the invoice');
+    if(Math.abs(w.eval('refundedOf')(target.inv)-line.calc.patientWithTax)>0.02)
+      throw new Error('refunded '+w.eval('refundedOf')(target.inv)+', expected '+line.calc.patientWithTax);
+    if(w.eval('collected')(target.c) >= colBefore) throw new Error('the collected figure should drop');
+    if(line.calc.deductible && target.c.dedUsed >= dedBefore) throw new Error('the deductible should be released');
+    if(!target.c.history.some(h=>/Refunded/.test(h.tx))) throw new Error('not written to the visit history');
+    return 'refunded '+w.eval('fmt')(line.calc.patientWithTax)+' of '+target.inv.id+' ('+w.eval('refundState')(target.inv)+')';
+  });
+  step('the refund shows on the invoice, and the wallet route credits the advance', ()=>{
+    S.screen='invoices'; S.invQ=''; R();
+    const target=w.eval('allInvoices')().find(x=>(x.inv.refunds||[]).length);
+    w.eval('openInvoice')(target.inv.id);
+    const txt=q('.inv-doc').textContent;
+    if(!/Refunds against this invoice/.test(txt)) throw new Error('the preview should list the refund');
+    if(!/refunded|Refunded/.test(txt)) throw new Error('the status should say it was refunded');
+    q('#ivClose').click();
+    /* refunding to the wallet tops the advance up */
+    const other=w.eval('allInvoices')().filter(x=>w.eval('refundable')(x.inv))[0];
+    const before=wal(other.c).advance.Open;
+    w.eval('openRefund')(other.inv.id);
+    const rs=q('#rfReason'); rs.value='charged in error'; rs.dispatchEvent(new w.Event('input')); R();
+    const amt=parseFloat(q('.rfsum .big').textContent.replace(/[^0-9.]/g,''));
+    q('#rfGo').click();
+    qa('.drawer [data-m]').find(x=>x.dataset.m==='Advance wallet').click();
+    if(!/advance wallet/i.test(q('.drawer').textContent)) throw new Error('the slide-in should say it goes to the wallet');
+    q('#dGo').click();
+    if(Math.abs(wal(other.c).advance.Open-(before+amt))>0.02) throw new Error('the advance wallet was not credited');
+    return 'refund listed on the invoice; '+w.eval('fmt')(amt)+' credited to the wallet';
+  });
+  step('refunding from a visit lists that visit\'s invoices in the action section', ()=>{
+    /* pick a visit that still holds refundable money at this point in the run */
+    const target=C().find(x=>x.invoices.some(w.eval('refundable')) && !w.eval('due')(x) && !x.bill);
+    if(!target) throw new Error('no visit with refundable invoices to test against');
+    const c=open(target.id);
+    const st=w.eval('nextStep')(c);
+    const btns=qa('.step .acts .btn').map(b=>b.textContent.trim());
+    if(!btns.some(b=>/Invoices & Refund/.test(b))) throw new Error('no refund option on '+st.key+': '+btns.join(' | '));
+    qa('.step .acts .btn').find(b=>/Invoices & Refund/.test(b.textContent)).click();
+    /* it stays on the visit — no jump to the invoices screen, no pop-up yet */
+    if(S.screen!=='visit') throw new Error('it should not leave the visit, went to '+S.screen);
+    if(q('.pop')) throw new Error('it should list the invoices first, not open a refund straight away');
+    if(!/invoice\(s\) on this visit/.test(q('.step h2').textContent)) throw new Error('wrong heading: '+q('.step h2').textContent);
+    if(!/Invoices & Refund/.test(q('.step .tag').textContent)) throw new Error('the tag should read Invoices & Refund');
+    const rows=qa('.step .crrow');
+    if(rows.length!==c.invoices.length) throw new Error('every invoice on the visit should be listed, got '+rows.length+' of '+c.invoices.length);
+    /* only the refundable ones offer the button */
+    const buttons=qa('.step [data-refund]').map(b=>b.dataset.refund);
+    const should=c.invoices.filter(w.eval('refundable')).map(i=>i.id);
+    if(buttons.sort().join()!==should.sort().join()) throw new Error('refund buttons do not match the refundable invoices');
+    /* the invoice number opens it */
+    q('.step .crrow .invlink').click();
+    if(!q('.pop .inv-doc')) throw new Error('the invoice number did not open the invoice');
+    q('#ivClose').click();
+    /* and so does clicking anywhere on the row */
+    q('.step .crrow .d span').click();
+    if(!q('.pop .inv-doc')) throw new Error('clicking the row did not open the invoice');
+    q('#ivClose').click();
+    /* the refund button refunds rather than opening the invoice */
+    if(qa('.step .acts').length===0) throw new Error('the picker should still be on screen');
+    /* Back returns to whatever step the visit was on */
+    qa('.step .acts .btn').find(b=>/Back/.test(b.textContent)).click();
+    if(/invoice\(s\) on this visit/.test(q('.step h2').textContent)) throw new Error('Back did not leave the picker');
+    if(S.refundPick) throw new Error('the picker state should be cleared');
+    /* and choosing an invoice opens the refund itself */
+    qa('.step .acts .btn').find(b=>/Invoices & Refund/.test(b.textContent)).click();
+    qa('.step [data-refund]')[0].click();
+    if(!q('.pop')) throw new Error('the refund pop-up did not open');
+    if(!/Refund INV-/.test(q('.pop h3').textContent)) throw new Error('wrong pop-up: '+q('.pop h3').textContent);
+    q('#rfCancel').click();
+    if(S.screen!=='visit') throw new Error('cancelling should leave us on the visit');
+    return rows.length+' invoice(s) listed in the action section, '+should.length+' refundable';
+  });
+  step('payer and clinic live in the header, not in the action card', ()=>{
+    const c=open(1);                                     /* consultation, approval already in */
+    const head=q('.phead');
+    const ht=head.textContent;
+    if(!ht.includes(c.clinic)) throw new Error('the clinic should be in the header');
+    if(!ht.includes(c.doctor)) throw new Error('the doctor should be in the header');
+    if(!ht.includes(w.eval('payerOf')(c).label)) throw new Error('the payer should be in the header');
+    if(w.eval('planOf')(c)){
+      if(!/deductible/i.test(ht)) throw new Error('the plan terms should sit with the payer in the header');
+    } else if(!/no policy/i.test(ht)) throw new Error('a self-pay visit should say so in the header');
+    /* and none of it is repeated on the action card */
+    const step=q('.step').textContent;
+    if(step.includes(w.eval('payerOf')(c).label)) throw new Error('the payer is still on the action card');
+    if(step.includes(c.clinic)) throw new Error('the clinic is still on the action card');
+    if(step.includes(c.doctor)) throw new Error('the doctor is still on the action card');
+    return 'header: '+c.clinic+' · Dr '+c.doctor+' · '+w.eval('payerOf')(c).label;
+  });
+  step('the same holds on the orders and waiting steps', ()=>{
+    const c=open(2);
+    /* rebuild a mixed set of orders on this visit */
+    c.prefs={}; c.bill=null; c.link=null; c.closed=false; c.checks=0; c.lastCheck=null;
+    c.orders=[{ code:'M1', name:'Full Blood Count', price:120, ins:'approved', paid:false },
+              { code:'M2', name:'Thyroid Panel',    price:260, ins:'pending',  paid:false }];
+    R();
+    const s1=w.eval('nextStep')(c);
+    if(s1.q.includes(c.doctor.split(' ')[0])) throw new Error('the doctor should not be in the question: '+s1.q);
+    if(!/procedures were ordered/.test(s1.q)) throw new Error('unexpected wording: '+s1.q);
+    /* now leave only the pending one, to reach the waiting step */
+    c.orders=[{ code:'M2', name:'Thyroid Panel', price:260, ins:'pending', paid:false }];
+    R();
+    const s2=w.eval('nextStep')(c);
+    if(s2.q.includes(w.eval('payerName')(c))) throw new Error('the payer should not be in the waiting question: '+s2.q);
+    if(!/Waiting for approval/.test(s2.q)) throw new Error('unexpected wording: '+s2.q);
+    return s1.q+'  ·  '+s2.q;
+  });
+  step('an interbranch visit skips the consultation and bills the orders raised elsewhere', ()=>{
+    const c=open(20);
+    if(!c.interbranch) throw new Error('expected the interbranch visit');
+    /* the consultation was billed at the other branch, so it is not asked for here */
+    if(!w.eval('consultDone')(c)) throw new Error('a consultation billed elsewhere should count as done');
+    const st=w.eval('nextStep')(c);
+    if(st.key!=='ORDERS_MIXED') throw new Error('it should go straight to the orders, got '+st.key);
+    if(!st.q.includes(c.fromBranch)) throw new Error('the question should name the origin hospital: '+st.q);
+    if(!/on behalf of/.test(st.sub)) throw new Error('it should say the money is collected on behalf of them: '+st.sub);
+    /* the header and the line list both mark where it came from */
+    if(!/Received from/.test(q('.phead').textContent)) throw new Error('no interbranch marker in the header');
+    q('details.ext').open = true; R();
+    if(!qa('details.ext .ibtag').length) throw new Error('the order lines should be tagged with the branch');
+    /* bill the approved one — the invoice records where the work was done */
+    qa('.step .acts .btn')[0].click();
+    qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click();
+    q('#dGo').click();
+    const inv=c.invoices[0];
+    if(!inv) throw new Error('no invoice raised');
+    if(inv.branch!==c.fromBranch) throw new Error('the invoice should record the performing branch');
+    if(!c.history.some(h=>/performed at/i.test(h.sub||""))) throw new Error('the history should note the origin branch');
+    /* and it reads that way on the printed invoice */
+    w.eval('openInvoice')(inv.id);
+    const doc=q('.inv-doc').textContent;
+    if(!/Performed at/.test(doc)) throw new Error('the preview should show where it was performed');
+    if(!doc.includes(c.fromBranch)) throw new Error('the origin hospital is missing from the preview');
+    if(!doc.includes(w.eval('settings').branch)) throw new Error('the billing branch is missing from the preview');
+    q('#ivClose').click();
+    return st.q.replace(/<[^>]+>/g,'')+' → invoice '+inv.id+' performed at '+inv.branch;
+  });
+  step('interbranch visits are visible from the patient profile and the search', ()=>{
+    w.eval('openPatient')('7000667');
+    const rows=qa('.vrow');
+    const ib=rows.filter(r=>/⇄/.test(r.textContent));
+    if(!ib.length) throw new Error('the interbranch visit should be tagged in the visits list');
+    if(!/AL TAKHASSUSI/.test(ib[0].textContent)) throw new Error('the origin hospital should be named');
+    /* and inside the expanded patient card on the home page */
+    S.expanded={}; goHomeAndSearch('mohammed');
+    const acts=qa('.pcard .pexp .arow');
+    if(!acts.some(r=>/⇄/.test(r.textContent))) throw new Error('the expanded action row should carry the tag too');
+    /* the older interbranch visit shows its paid invoice with the branch */
+    S.screen='invoices'; S.invQ='INV-690221'; R();
+    const row=q('.invtable tbody tr');
+    if(!row || !/AL RAYAN/.test(row.textContent)) throw new Error('the invoices screen should show the performing branch');
+    S.invQ=''; S.q=''; R();
+    return ib.length+' interbranch visit(s) tagged, invoice shows the branch';
+  });
+  step('the profile shows the patient invoices, folded away until asked for', ()=>{
+    S.pinvOpen=false;
+    w.eval('openPatient')('7000667');
+    if(qa('.ledger').length) throw new Error('the statements should not be duplicated on the profile');
+    const inv=q('.pinv');
+    if(!inv) throw new Error('no invoices section on the patient profile');
+    /* collapsed by default, but the headline figures are still there */
+    if(qa('.pinv tbody tr').length) throw new Error('the invoices should not load until expanded');
+    if(!/on file/.test(inv.textContent)) throw new Error('the collapsed header should still summarise: '+inv.textContent);
+    q('#piHead').click();
+    const rows=qa('.pinv tbody tr');
+    const mine=[]; w.eval('visitsOf')('7000667').forEach(c=>c.invoices.forEach(i=>mine.push(i)));
+    if(rows.length!==mine.length) throw new Error('expected '+mine.length+' invoices, got '+rows.length);
+    if(q('.pinv .lsum')) throw new Error('the summary strip duplicates the header figures');
+    if(!/on file/.test(q('.pinv h3 .cnt').textContent)) throw new Error('the header should carry the figures');
+    /* the actions work from here too */
+    if(!q('.pinv [data-view]')) throw new Error('no view action');
+    if(!q('.pinv [data-print]')) throw new Error('no reprint action');
+    q('.pinv [data-view]').click();
+    if(!q('.pop .inv-doc')) throw new Error('view did not open the preview');
+    q('#ivClose').click();
+    /* collapsing hides them again */
+    q('#piHead').click();
+    if(qa('.pinv tbody tr').length) throw new Error('it should collapse again');
+    q('#piHead').click();
+    /* and a link through to the full invoices screen, filtered to this patient */
+    q('#piAll').click();
+    if(S.screen!=='invoices' || S.invQ!=='7000667') throw new Error('the link should open the filtered invoices screen');
+    return rows.length+' invoices on the profile, statements only behind the wallet';
+  });
+  step('advance and credit have separate statements', ()=>{
+    const c=open(2);
+    q('#wLedgerAdv').click();
+    const advBox=q('.pop .ledger.adv');
+    if(!advBox) throw new Error('the advance statement did not open');
+    qa('.lgtabs .lt').find(b=>b.dataset.k==='CREDIT').click();
+    const crBox=q('.pop .ledger.cred');
+    if(!crBox) throw new Error('the credit statement did not open');
+    if(!advBox.querySelector('thead').textContent.includes('Advance left')) throw new Error('the advance statement is not labelled');
+    if(!crBox.querySelector('thead').textContent.includes('Credit left')) throw new Error('the credit statement is not labelled');
+    /* neither table carries the other account's movements */
+    const advTypes=w.eval('ledgerRows')('7000667','ADV').map(r=>r.type);
+    const crTypes=w.eval('ledgerRows')('7000667','CREDIT').map(r=>r.type);
+    if(advTypes.some(t=>t.startsWith('CREDIT'))) throw new Error('credit movements leaked into the advance statement');
+    if(crTypes.some(t=>t.startsWith('ADV')||t==='REFUND_IN')) throw new Error('advance movements leaked into the credit statement');
+    if(/Put on credit/.test(advBox.querySelector('tbody').textContent)) throw new Error('the advance table shows a credit movement');
+    if(/Advance received/.test(crBox.querySelector('tbody').textContent)) throw new Error('the credit table shows an advance movement');
+    /* each has a single running balance of its own, ending at the real figure */
+    const a=w.eval('ledgerRows')('7000667','ADV'), cr=w.eval('ledgerRows')('7000667','CREDIT');
+    if(Math.abs(a[0].balance - w.eval('advTotal')({mrn:'7000667'}))>0.02)
+      throw new Error('advance balance '+a[0].balance+' does not match the wallet');
+    if(Math.abs(cr[0].balance - w.eval('creditTotal')('7000667'))>0.02)
+      throw new Error('credit balance '+cr[0].balance+' does not match the outstanding credit');
+    /* replay each independently */
+    [['ADV',a],['CREDIT',cr]].forEach(([k,list])=>{
+      let bal=0;
+      [...list].reverse().forEach(r=>{
+        bal = +(r.inflow ? bal+r.amount : bal-r.amount).toFixed(2);
+        if(Math.abs(bal-r.balance)>0.02) throw new Error(k+' balance wrong at '+r.at+': '+r.balance+' vs '+bal);
+      });
+    });
+    /* invoice links still work from the credit statement */
+    const link=crBox.querySelector('a.invlink');
+    if(!link) throw new Error('credit movements should link to their invoice');
+    link.click();
+    if(!q('.pop .inv-doc')) throw new Error('the link did not open the invoice');
+    q('#ivClose').click();
+    return a.length+' advance movement(s) · '+cr.length+' credit movement(s), balances '+a[0].balance+' / '+cr[0].balance;
+  });
+  step('the wallet card links to each statement, and the pop-up keeps them on tabs', ()=>{
+    const c=open(2);
+    if(!q('#wLedgerAdv') || !q('#wLedgerCr')) throw new Error('both statement links should be on the wallet card');
+    q('#wLedgerCr').click();
+    if(!/Credit statement/.test(q('.pop h3').textContent)) throw new Error('the credit statement did not open');
+    if(!q('.pop .ledger.cred')) throw new Error('wrong account shown');
+    /* the tabs switch between the two without mixing them */
+    qa('.lgtabs .lt').find(b=>b.dataset.k==='ADV').click();
+    if(!q('.pop .ledger.adv')) throw new Error('the advance tab did not switch');
+    if(q('.pop .ledger.cred')) throw new Error('both accounts are showing at once');
+    q('#lgClose').click();
+    return 'separate links, tabs keep them apart';
+  });
+  step('adding advance and spending it both land in the statement', ()=>{
+    const c=open(2);
+    const before=w.eval('ledgerRows')(c.mrn,'ADV').length;
+    /* add advance */
+    q('#wAdd').click();
+    qa('.drawer [data-c]').find(x=>x.dataset.c==='Clinic').click();
+    const amt=q('#aAmt'); amt.value='400'; amt.dispatchEvent(new w.Event('input'));
+    q('#aGo').click();
+    let rows=w.eval('ledgerRows')(c.mrn,'ADV');
+    if(rows.length!==before+1) throw new Error('the advance was not logged');
+    if(rows[0].type!=='ADV_IN' || rows[0].cat!=='Clinic') throw new Error('wrong entry: '+JSON.stringify(rows[0]));
+    /* now spend it on a charge, and check the invoice number comes through */
+    c.prefs={}; c.bill=null; c.link=null; c.closed=false;
+    c.orders=[{ code:'S1', name:'Stress Test', price:300, ins:'approved', paid:false }];
+    R();
+    qa('.step .acts .btn')[0].click();                         // bill it
+    qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click();
+    qa('.drawer [data-m]').find(x=>x.dataset.m==='OPEN').click();
+    q('#dGo').click();
+    rows=w.eval('ledgerRows')(c.mrn,'ADV');
+    const used=rows[0];
+    if(used.type!=='ADV_USED') throw new Error('the spend was not logged: '+used.type);
+    if(!used.invoiceId) throw new Error('the spend should carry the invoice number');
+    if(!/orders/i.test(used.note)) throw new Error('the note should say what it paid for: '+used.note);
+    if(Math.abs(used.balance-w.eval('advTotal')(c))>0.02) throw new Error('the running balance is out of step');
+    return 'advance +400 (Clinic) then −'+used.amount+' against '+used.invoiceId;
+  });
+
+  step('after the consultation the visit stays open for the doctor', ()=>{
+    const c=open(1);
+    /* start this visit clean, since earlier checks have already used it */
+    c.consult={ name:"Paediatric Consultation", code:"CON-101", price:200, ins:"approved", paid:false };
+    c.orders=[]; c.invoices=[]; c.bill=null; c.link=null; c.closed=false; c.prefs={};
+    c.orderChecks=0; c.lastOrderCheck=null; c.dedUsed=0;
+    R();
+    /* bill and collect the consultation */
+    qa('.step .acts .btn')[0].click();
+    qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click();
+    q('#dGo').click();
+    const st=w.eval('nextStep')(c);
+    if(st.key!=='WAIT_DOCTOR') throw new Error('expected the doctor step, got '+st.key);
+    if(c.closed) throw new Error('the visit must not close itself');
+    if(!/is with the doctor/.test(st.q)) throw new Error('it should say the patient is with the doctor: '+st.q);
+    if(st.q.includes(c.doctor.split(' ')[0])) throw new Error('the doctor belongs in the header, not the question: '+st.q);
+    if(!/appear here/.test(st.sub)) throw new Error('it should say the orders will load here: '+st.sub);
+    /* closing is not the headline any more */
+    const btns=qa('.step .acts .btn').map(b=>b.textContent.trim());
+    if(btns.some(b=>/close the visit/i.test(b))) throw new Error('closing should not be offered: '+btns.join(' | '));
+    if(!btns.some(b=>/Check for new orders/.test(b))) throw new Error('no way to check for orders: '+btns.join(' | '));
+    if(btns.some(b=>/close the visit/i.test(b))) throw new Error('closing should not be offered any more: '+btns.join(' | '));
+    /* first check finds nothing, second brings the orders in */
+    qa('.step .acts .btn')[0].click();
+    if(c.orders.length) throw new Error('the first check should not invent orders');
+    if(!/nothing ordered yet/i.test(q('.step .sub').textContent)) throw new Error('no note after checking');
+    qa('.step .acts .btn')[0].click();
+    if(!c.orders.length) throw new Error('the second check should load the orders');
+    const st2=w.eval('nextStep')(c);
+    if(!['ORDERS_MIXED','ORDERS_BILL'].includes(st2.key)) throw new Error('orders should now be billable, got '+st2.key);
+    return st.q+' → '+c.orders.length+' orders loaded';
+  });
+  step('a zero-priced follow-up is recorded, not collected', ()=>{
+    const c=open(13);
+    if(c.consult.price!==0) throw new Error('expected the nil-charge follow-up');
+    const s1=w.eval('nextStep')(c);
+    if(s1.key!=='CONSULT_BILL') throw new Error('expected the billing step, got '+s1.key);
+    if(!/no charge/.test(s1.sub)) throw new Error('it should say there is no charge: '+s1.sub);
+    qa('.step .acts .btn')[0].click();
+    const s2=w.eval('nextStep')(c);
+    if(s2.key!=='COLLECT_ZERO') throw new Error('expected the nil-charge confirmation, got '+s2.key);
+    if(qa('.step .acts .btn').length!==1) throw new Error('no payment mode should be asked for');
+    qa('.step .acts .btn')[0].click();
+    if(!c.invoices.length) throw new Error('an invoice should still be raised for the record');
+    if(c.invoices[0].patient!==0) throw new Error('it should be a nil invoice');
+    if(w.eval('nextStep')(c).key!=='WAIT_DOCTOR') throw new Error('it should then wait for the doctor');
+    if(c.closed) throw new Error('the visit must stay open');
+    return 'recorded '+c.invoices[0].id+' at SAR 0.00, waiting for the doctor';
+  });
+  step('closed visits from before are listed without being greyed out', ()=>{
+    const done=C().find(x=>x.closed);
+    w.eval('openPatient')(done.mrn);
+    const row=qa('.vrow').find(r=>/Closed/.test(r.textContent));
+    if(!row) throw new Error('no closed visit in the list');
+    const op=parseFloat(w.getComputedStyle(row).opacity);
+    if(op < 0.99) throw new Error('closed visits should not be greyed out (opacity '+op+')');
+    return 'closed rows at full opacity';
+  });
+  step('the patient profile shows the active payer and can hide the wallet', ()=>{
+    S.walletOpen = true;
+    w.eval('openPatient')('7000667');
+    const head=q('.phead');
+    const cur=w.eval('visitsOf')('7000667').find(x=>!x.closed) || w.eval('visitsOf')('7000667')[0];
+    const label=w.eval('payerOf')(cur).label;
+    if(!head.textContent.includes(label)) throw new Error('the active payer should be in the profile header');
+    if(!/Active payer/.test(head.textContent)) throw new Error('it should be labelled as the active payer');
+    if(!/deductible/i.test(head.textContent)) throw new Error('the plan terms should show beside it');
+    if(!/payers on file/.test(head.textContent)) throw new Error('it should note there are other payers on file');
+    /* the wallet collapses and can be brought back from the header, as on the visit screen */
+    if(!q('.pgrid > .wallet')) throw new Error('the wallet should be showing');
+    const narrow=q('.pgrid > .vlist').getBoundingClientRect().width;
+    q('#wCollapse').click();
+    if(q('.wallet')) throw new Error('the wallet should be hidden');
+    const wide=q('.pgrid > .vlist').getBoundingClientRect().width;
+    if(wide <= narrow + 100) throw new Error('the visits list should widen ('+Math.round(narrow)+' → '+Math.round(wide)+')');
+    const chip=q('#wOpen');
+    if(!chip) throw new Error('no way to bring the wallet back on the profile');
+    chip.click();
+    if(!q('.pgrid > .wallet')) throw new Error('the chip did not restore the wallet');
+    return label+' · wallet '+Math.round(narrow)+'px → '+Math.round(wide)+'px and back';
+  });
+  step('a self-pay visit never mentions approvals', ()=>{
+    const c=open(4);                       /* Ahmed Bin Salem — cash / self-pay */
+    if(w.eval('planOf')(c)) throw new Error('expected a self-pay visit');
+    /* give it a fresh consultation and a set of orders */
+    c.consult={ name:"Orthopaedic Consultation", code:"CON-310", price:250, ins:"notinsured", paid:false };
+    c.orders=[]; c.invoices=[]; c.bill=null; c.link=null; c.closed=false; c.prefs={}; c.dedUsed=0;
+    R();
+    const s1=w.eval('nextStep')(c);
+    if(s1.key!=='CONSULT_BILL') throw new Error('expected the consultation step, got '+s1.key);
+    if(/approv/i.test(s1.q)) throw new Error('the question should not mention approval: '+s1.q);
+    if(/approval received|awaiting approval|are approved/i.test(s1.sub)) throw new Error('the note should not mention approval: '+s1.sub);
+    if(!/self-pay/i.test(s1.sub)) throw new Error('it should say self-pay: '+s1.sub);
+    /* bill and pay it, then let the doctor order */
+    qa('.step .acts .btn')[0].click();
+    qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click();
+    q('#dGo').click();
+    w.eval('simOrders')(c);
+    const s2=w.eval('nextStep')(c);
+    if(s2.key!=='ORDERS_BILL') throw new Error('a self-pay visit has nothing pending, got '+s2.key);
+    if(/approv/i.test(s2.q)) throw new Error('the orders question should not mention approval: '+s2.q);
+    if(/waiting on approval|are approved/i.test(s2.sub)) throw new Error('the orders note should not mention approval: '+s2.sub);
+    if(!/self-pay/i.test(s2.sub)) throw new Error('it should say self-pay: '+s2.sub);
+    /* the rendered card carries no "approved" anywhere */
+    const card=q('.step').textContent;
+    if(/approved/i.test(card)) throw new Error('the word "approved" is still on the card: '+card.replace(/\s+/g,' ').slice(0,160));
+    /* nor does the history entry for the orders */
+    const h=c.history.find(x=>/placed \d+ orders/.test(x.tx));
+    if(/approv/i.test(h.sub)) throw new Error('the history should not mention approval: '+h.sub);
+    /* and an insured visit in the same position still does */
+    const ins=open(2);
+    ins.prefs={}; ins.bill=null; ins.link=null; ins.closed=false;
+    ins.orders=[{ code:'Z1', name:'Full Blood Count', price:120, ins:'approved', paid:false }];
+    R();
+    const insStep=w.eval('nextStep')(ins);
+    if(insStep.key!=='ORDERS_BILL') throw new Error('expected the insured orders step, got '+insStep.key);
+    if(!/are approved/.test(insStep.q)) throw new Error('an insured visit should still say the orders are approved: '+insStep.q);
+    return 'self-pay: “'+s2.q+'”';
+  });
+  step('the doctor can keep ordering after the first invoice is settled', ()=>{
+    /* take a visit all the way to settled */
+    const c=open(1);
+    c.consult={ name:"Paediatric Consultation", code:"CON-101", price:200, ins:"approved", paid:false };
+    c.orders=[]; c.invoices=[]; c.bill=null; c.link=null; c.closed=false; c.prefs={};
+    c.orderRounds=0; c.orderChecks=0; c.lastOrderCheck=null; c.dedUsed=0;
+    R();
+    qa('.step .acts .btn')[0].click();                                  // bill the consultation
+    qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click();
+    q('#dGo').click();
+    w.eval('simOrders')(c);                                             // first round
+    const firstRound=c.orders.length;
+    /* clear the pending one so the visit can reach "settled" */
+    c.orders=c.orders.filter(o=>o.ins!=='pending'); R();
+    qa('.step .acts .btn')[0].click();                                  // bill the orders
+    qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click();
+    q('#dGo').click();
+    const st=w.eval('nextStep')(c);
+    if(st.key!=='CLOSE') throw new Error('expected the settled step, got '+st.key);
+    /* the check is available here, and closing is no longer the only option */
+    const btns=qa('.step .acts .btn').map(b=>b.textContent.trim());
+    if(!btns.some(b=>/Check for new orders/.test(b))) throw new Error('no way to check for further orders: '+btns.join(' | '));
+    if(btns[0]!=='Check for new orders') throw new Error('checking should be the primary action: '+btns.join(' | '));
+    if(!(st.acts||[]).some(a=>/Check for new orders/.test(a.label)))
+      throw new Error('checking for new orders should still be offered: '+(st.acts||[]).map(a=>a.label).join(' | '));
+    /* first press finds nothing and says so */
+    qa('.step .acts .btn')[0].click();
+    if(c.orders.length!==firstRound-1) throw new Error('the first check should not invent orders');
+    if(!/nothing new from the doctor/i.test(q('.step .sub').textContent)) throw new Error('no note after checking');
+    /* second press brings a fresh batch, with codes that do not clash */
+    const before=c.orders.map(o=>o.code);
+    qa('.step .acts .btn')[0].click();
+    const added=c.orders.filter(o=>!before.includes(o.code));
+    if(!added.length) throw new Error('the second check should bring new orders');
+    if(new Set(c.orders.map(o=>o.code)).size!==c.orders.length) throw new Error('order codes must stay unique');
+    /* and the flow returns to billing them */
+    const st2=w.eval('nextStep')(c);
+    if(!['ORDERS_MIXED','ORDERS_BILL'].includes(st2.key)) throw new Error('the new orders should be billable, got '+st2.key);
+    if(!c.history.some(h=>/more order/i.test(h.tx))) throw new Error('the later round should be recorded as more orders');
+    return firstRound+' then +'+added.length+' more · '+st2.q;
+  });
+  step('settling credit is written to the visit you are on, with previewable invoices', ()=>{
+    /* give this patient fresh credit to settle */
+    const c=open(2);
+    const other=w.eval('visitsOf')(c.mrn).find(v=>v.id!==c.id && v.invoices.some(i=>i.via==='Credit'));
+    w.eval('creditInvoices')(c.mrn).forEach(x=>{ x.inv.settled=false; x.inv.paid=false; });
+    if(!w.eval('creditTotal')(c.mrn)) throw new Error('no credit to settle');
+    R();
+    const ids=w.eval('creditInvoices')(c.mrn).map(x=>x.inv.id);
+    const before=c.history.length;
+    q('#wCred').click();
+    qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click();
+    q('#dGo').click();
+    /* the entry is on this visit, not on whichever other visit raised the credit */
+    if(c.history.length!==before+1) throw new Error('the settlement was not recorded on this visit');
+    const h=c.history[0];
+    if(!/Credit settled/.test(h.tx)) throw new Error('wrong entry: '+h.tx);
+    ids.forEach(id=>{ if(!h.sub.includes(id)) throw new Error('the entry should name '+id+': '+h.sub); });
+    if((h.invoiceIds||[]).length!==ids.length) throw new Error('the entry should carry every settled invoice');
+    /* those numbers are clickable in the history row */
+    const link=qa('.hev a.invlink').find(a=>ids.includes(a.dataset.inv));
+    if(!link) throw new Error('the settled invoice numbers should be links in the history');
+    link.click();
+    if(!q('.pop .inv-doc')) throw new Error('the link should open the invoice preview');
+    if(!q('.inv-doc').textContent.includes(link.dataset.inv)) throw new Error('the wrong invoice opened');
+    q('#ivClose').click();
+    /* and the event detail lists each one with its own View */
+    qa('.hev')[0].click();
+    const rows=qa('.pop table.ord tbody tr');
+    if(rows.length!==ids.length) throw new Error('the detail should list every settled invoice, got '+rows.length);
+    if(qa('.pop [data-view]').length!==ids.length) throw new Error('each one should be viewable');
+    qa('.pop [data-view]')[0].click();
+    if(!q('.pop .inv-doc')) throw new Error('View did not open the invoice');
+    q('#ivClose').click();
+    return ids.length+' invoice(s) settled, logged on this visit and previewable';
+  });
+  step('a consultation put on credit is never billed twice', ()=>{
+    const c=open(1);
+    c.consult={ name:"Paediatric Consultation", code:"CON-101", price:200, ins:"approved", paid:false };
+    c.orders=[]; c.invoices=[]; c.bill=null; c.link=null; c.closed=false; c.prefs={};
+    c.orderRounds=0; c.orderChecks=0; c.lastOrderCheck=null; c.dedUsed=0;
+    R();
+    qa('.step .acts .btn')[0].click();                       // bill it
+    qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click();
+    qa('.drawer [data-m]').find(x=>x.dataset.m==='Credit').click();
+    q('#dGo').click();                                       // put it on credit
+    if(c.invoices.length!==1) throw new Error('one invoice should exist');
+    if(c.invoices[0].via!=='Credit' || c.invoices[0].paid) throw new Error('it should be an unsettled credit invoice');
+    if(!c.consult.invoiceId) throw new Error('the consultation should carry its invoice number');
+    /* the flow must move on, not ask for the consultation again */
+    const st=w.eval('nextStep')(c);
+    if(['CONSULT_BILL','COLLECT','COLLECT_ZERO'].includes(st.key))
+      throw new Error('it is asking to bill or collect the consultation again: '+st.key+' — '+st.q);
+    if(!w.eval('consultDone')(c)) throw new Error('an invoiced consultation should count as done');
+    if(w.eval('due')(c)!==0) throw new Error('nothing more should be owed on this visit');
+    /* the same holds for orders put on credit */
+    w.eval('simOrders')(c);
+    c.orders=c.orders.filter(o=>o.ins!=='pending'); R();
+    qa('.step .acts .btn')[0].click();
+    qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click();
+    qa('.drawer [data-m]').find(x=>x.dataset.m==='Credit').click();
+    q('#dGo').click();
+    if(w.eval('approvedOrders')(c).length) throw new Error('orders on credit should not come back to be billed');
+    const st2=w.eval('nextStep')(c);
+    if(['ORDERS_BILL','ORDERS_MIXED'].includes(st2.key)) throw new Error('it is asking to bill the orders again: '+st2.q);
+    return 'consultation + orders on credit, flow moved to '+st2.key;
+  });
+  step('there is no close-visit option anywhere', ()=>{
+    const c=open(1);
+    const seen=[];
+    [1,2,4,13,20].forEach(id=>{
+      const v=C().find(x=>x.id===id); if(!v) return;
+      open(id);
+      qa('.step .acts .btn').forEach(b=>{ if(/close the visit/i.test(b.textContent)) seen.push(id+': '+b.textContent.trim()); });
+    });
+    if(seen.length) throw new Error('close still offered on '+seen.join(' | '));
+    return 'no close-visit button on any step';
+  });
+  step('nothing can be booked from a package until it is paid', ()=>{
+    /* rebuild today's cardiology visit with the package un-billed */
+    const c=open(2);
+    c.prefs={}; c.bill=null; c.link=null; c.closed=false; c.dedUsed=57;
+    c.invoices=c.invoices.filter(i=>i.scope==='consult');
+    c.orders=[{ code:'LAB-010', name:'Full Blood Count', price:120, ins:'approved', paid:false },
+              { code:'PKG-100', name:'Cardiac Care Package', price:1500, ins:'approved', paid:false, package:true,
+                children:[{ code:'PKG-100-A', name:'Treadmill Stress Test' },
+                          { code:'PKG-100-B', name:'Echocardiogram Review' },
+                          { code:'PKG-100-C', name:'Lipid Profile Recheck' },
+                          { code:'PKG-100-D', name:'Cardiology Follow-up Review' }] }];
+    R();
+    if(w.eval('packageItems')('7000667').length) throw new Error('an unpaid package should offer nothing to book');
+    w.eval('openPatient')('7000667');
+    if(q('.pkgbox')) throw new Error('the package section should not appear before the package is paid');
+    open(2);
+    const btns=qa('.step .acts .btn').map(b=>b.textContent.trim());
+    if(btns.some(b=>/Book a package procedure/.test(b))) throw new Error('booking should not be offered yet');
+    /* the package and its contents are visible on the billing step */
+    q('details.ext').open = true; R();
+    if(!qa('details.ext .kids span').length) throw new Error('the package contents should be listed on the order');
+    return 'package unpaid → nothing bookable';
+  });
+  step('paying the package opens its procedures for booking', ()=>{
+    const c=open(2);
+    const st=w.eval('nextStep')(c);
+    if(!['ORDERS_BILL','ORDERS_MIXED'].includes(st.key)) throw new Error('expected the orders step, got '+st.key);
+    qa('.step .acts .btn')[0].click();                       // bill them
+    qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click();
+    q('#dGo').click();                                       // pay by cash
+    /* the invoice carries the package contents */
+    const inv=c.invoices.find(i=>(i.rows||[]).some(r=>r.package));
+    if(!inv) throw new Error('the package should be on an invoice');
+    const row=inv.rows.find(r=>r.package);
+    if(!row.children || row.children.length!==4) throw new Error('the invoice should carry the 4 child procedures');
+    /* and they become bookable straight away */
+    const items=w.eval('packageItems')('7000667');
+    if(items.length!==4) throw new Error('expected 4 bookable procedures, got '+items.length);
+    if(!c.history.some(h=>/can now be booked/.test(h.tx))) throw new Error('the visit should say the procedures can be booked');
+    const btns=qa('.step .acts .btn').map(b=>b.textContent.trim());
+    if(!btns.some(b=>/Book a package procedure · 4 left/.test(b)))
+      throw new Error('booking should be offered on the very next step ('+w.eval('nextStep')(c).key+'): '+btns.join(' | '));
+    /* and it stays offered as the visit moves on */
+    ['ORDERS_WAIT','CLOSE','WAIT_DOCTOR'].forEach(k=>{
+      const st2=w.eval('nextStep')(c);
+      if(st2.key===k && !(st2.acts||[]).some(a=>/Book a package procedure/.test(a.label)))
+        throw new Error('booking should also be offered on '+k);
+    });
+    return 'paid '+inv.id+' → 4 procedures bookable, offered on '+w.eval('nextStep')(c).key;
+  });
+  step('a paid package lists its procedures, each bookable as its own visit', ()=>{
+    w.eval('openPatient')('7000667');
+    const box=q('.pkgbox');
+    if(!box) throw new Error('no package section on the profile');
+    const items=w.eval('packageItems')('7000667');
+    if(items.length!==4) throw new Error('expected the 4 children of the package, got '+items.length);
+    if(qa('.pkgbox tbody tr').length!==items.length) throw new Error('every child should be listed');
+    if(!/Not booked/.test(box.textContent)) throw new Error('unbooked children should say so');
+    /* the package invoice still shows its children */
+    q('.pkgbox a.invlink').click();
+    if(!q('.pop .inv-doc')) throw new Error('the package invoice should open');
+    if(!qa('.inv-doc .kids span').length) throw new Error('the invoice should list the child procedures');
+    q('#ivClose').click();
+    return items.length+' package procedures listed';
+  });
+  step('booking a package procedure makes a nil-priced visit without touching the package', ()=>{
+    w.eval('openPatient')('7000667');
+    const before=w.eval('visitsOf')('7000667').length;
+    const items=w.eval('packageItems')('7000667');
+    const target=items.find(x=>!x.child.visitId);
+    const parentVisit=target.c, parentInv=target.inv;
+    const parentLinesBefore=parentVisit.orders.length;
+    const invRowsBefore=parentInv.rows.length;
+    q('[data-book]').click();
+    if(!q('.pop')) throw new Error('the booking pop-up did not open');
+    if(!/no charge/i.test(q('.pop').textContent)) throw new Error('it should say the visit carries no charge');
+    /* the one clicked is pre-ticked; book it */
+    if(!qa('.pbChk').some(x=>x.checked)) throw new Error('the chosen procedure should be pre-ticked');
+    q('#pbGo').click();
+    /* a new visit exists, opened, at nil charge */
+    const after=w.eval('visitsOf')('7000667');
+    if(after.length!==before+1) throw new Error('the visit was not created');
+    const v=C().find(x=>x.id===S.caseId);
+    if(v.visitType!=='Package procedure') throw new Error('wrong visit type: '+v.visitType);
+    if(v.consult.price!==0) throw new Error('the consultation should be nil-priced');
+    if(!v.orders.length || v.orders.some(o=>o.price!==0)) throw new Error('the procedure should carry no charge');
+    if(!v.orders[0].fromPackage) throw new Error('the order should point back at the package');
+    /* nothing was removed from the package or from the visit that billed it */
+    if(parentVisit.orders.length!==parentLinesBefore) throw new Error('the original visit lost a line');
+    if(parentInv.rows.length!==invRowsBefore) throw new Error('the package invoice changed');
+    if(w.eval('packageItems')('7000667').length!==items.length) throw new Error('the package lost a child');
+    const still=w.eval('packageItems')('7000667').find(x=>x.child.code===target.child.code);
+    if(!still) throw new Error('the child should still belong to the package');
+    if(still.child.visitId!==v.id) throw new Error('the child should be linked to the new visit');
+    /* and it drops out of the "to book" list */
+    if(w.eval('packageItemsLeft')('7000667').some(x=>x.child.code===target.child.code))
+      throw new Error('a booked procedure should not be offered again');
+    /* both visits record it */
+    if(!v.history.some(h=>/package procedure/i.test(h.tx))) throw new Error('the new visit should record the booking');
+    if(!parentVisit.history.some(h=>/booked for another day/i.test(h.tx))) throw new Error('the original visit should record it too');
+    return 'booked '+target.child.name+' as visit '+v.id+', package intact';
+  });
+  step('a package visit asks nothing about the consultation — it goes straight to the print', ()=>{
+    const v=C().find(x=>x.visitType==='Package procedure');
+    open(v.id);
+    const st=w.eval('nextStep')(v);
+    if(st.key==='CONSULT_BILL' || st.key==='COLLECT_ZERO')
+      throw new Error('it should not ask about a consultation on a package visit: '+st.key);
+    if(st.key!=='PKG_PRINT') throw new Error('expected the print step, got '+st.key);
+    /* worded as a print, not a charge */
+    if(/bill/i.test(st.q)) throw new Error('the question should not talk about billing: '+st.q);
+    if(!/Print the invoice/.test(st.q)) throw new Error('wrong wording: '+st.q);
+    if(!/already paid inside/.test(st.sub)) throw new Error('it should say the package already paid: '+st.sub);
+    const btns=qa('.step .acts .btn').map(b=>b.textContent.trim());
+    if(btns[0]!=='Yes, print it') throw new Error('the action should be a print: '+btns.join(' | '));
+    /* nothing was recorded for a consultation */
+    if(v.invoices.length) throw new Error('no invoice should exist before the print');
+    if(v.history.some(h=>/consultation/i.test(h.tx))) throw new Error('a consultation event should not be recorded');
+    return st.q;
+  });
+  step('printing the child records a nil invoice and leaves the package alone', ()=>{
+    const v=C().find(x=>x.visitType==='Package procedure');
+    open(v.id);
+    const pkgInvId=(v.orders[0].fromPackage||{}).invoiceId;
+    const pkgBefore=w.eval('findInvoice')(pkgInvId).inv.patient;
+    qa('.step .acts .btn')[0].click();
+    const inv=v.invoices[0];
+    if(!inv) throw new Error('no invoice produced');
+    if(inv.patient!==0) throw new Error('the printed invoice should be SAR 0.00');
+    if(!inv.packagePrint) throw new Error('it should record which package paid for it');
+    if(!v.orders[0].invoiceId) throw new Error('the procedure should be linked to it');
+    /* the history calls it a print, not an invoicing or a payment */
+    const h=v.history[0];
+    if(!/printed/i.test(h.tx)) throw new Error('the event should read as a print: '+h.tx);
+    if(/paid —|invoiced/i.test(h.tx)) throw new Error('it should not read as a payment or invoicing: '+h.tx);
+    if(!/already paid inside/.test(h.sub)) throw new Error('the note should point at the package: '+h.sub);
+    /* the package invoice is untouched, and the step settles into a done state */
+    if(w.eval('findInvoice')(pkgInvId).inv.patient!==pkgBefore) throw new Error('the package invoice was altered');
+    const st=w.eval('nextStep')(v);
+    if(st.key!=='PKG_DONE') throw new Error('expected the done step, got '+st.key);
+    if(!/no charge/.test(st.sub)) throw new Error('it should say no charge was made: '+st.sub);
+    /* the print can be undone, and there is no reprint offered */
+    const btns=qa('.step .acts .btn').map(b=>b.textContent.trim());
+    if(btns.some(b=>/^Reprint/.test(b))) throw new Error('reprint should be gone: '+btns.join(' | '));
+    if(!btns.some(b=>/Undo the print/.test(b))) throw new Error('no undo option: '+btns.join(' | '));
+    /* the printed invoice says where it was paid */
+    w.eval('openInvoice')(inv.id);
+    const doc=q('.inv-doc').textContent;
+    if(!/Paid inside/.test(doc)) throw new Error('the printed invoice should name the package');
+    if(!/No charge/.test(doc)) throw new Error('the printed invoice should show no charge');
+    q('#ivClose').click();
+    return 'printed '+inv.id+' at SAR 0.00, package intact';
+  });
+  step('a package visit needs action until the procedure is printed', ()=>{
+    /* book a fresh one so it starts unprinted */
+    w.eval('openPatient')('7000667');
+    const left=w.eval('packageItemsLeft')('7000667');
+    if(!left.length) throw new Error('no package procedure left to book');
+    w.eval('openPkgBook')('7000667', left[0].child.code);
+    q('#pbGo').click();
+    const v=C().find(x=>x.id===S.caseId);
+    if(w.eval('pendingSummary')(v).kind!=='act')
+      throw new Error('an unprinted package visit should read as action needed, got '+w.eval('pendingSummary')(v).kind);
+    /* it says so on the patient profile too */
+    w.eval('openPatient')('7000667');
+    const row=qa('.vrow').find(r=>r.textContent.includes('Print the invoice'));
+    if(!row) throw new Error('the unprinted visit should be listed with its print question');
+    if(!/Action needed/.test(row.textContent)) throw new Error('it should be flagged as action needed: '+row.textContent.replace(/\s+/g,' '));
+    /* print it, and it turns settled */
+    open(v.id);
+    qa('.step .acts .btn')[0].click();
+    if(w.eval('pendingSummary')(v).kind!=='done') throw new Error('once printed it should read as done');
+    w.eval('openPatient')('7000667');
+    const row2=qa('.vrow').find(r=>r.textContent.includes('has been recorded'));
+    if(!row2 || !/Settled/.test(row2.textContent)) throw new Error('the printed visit should read as settled');
+    return 'action needed → printed → settled';
+  });
+  step('undoing the print voids the invoice and hands the procedure back', ()=>{
+    const v=C().find(x=>x.visitType==='Package procedure' && x.invoices.some(i=>!i.voided));
+    open(v.id);
+    const inv=v.invoices.find(i=>!i.voided);
+    const code=inv.rows[0].code;
+    qa('.step .acts .btn').find(b=>/Undo the print/.test(b.textContent)).click();
+    const pop=q('.pop');
+    if(!pop) throw new Error('the undo confirmation did not open');
+    if(!/no money was charged/i.test(pop.textContent.replace(/\s+/g,' ')))
+      throw new Error('it should explain nothing was charged: '+pop.textContent.slice(0,120));
+    if(!q('#vdGo').disabled) throw new Error('a reason should be required');
+    const rs=q('#vdReason'); rs.value='printed on the wrong visit'; rs.dispatchEvent(new w.Event('input'));
+    q('#vdGo').click();
+    /* the invoice is void, not deleted */
+    if(!inv.voided) throw new Error('the invoice should be marked void');
+    if(w.eval('refundState')(inv)!=='Void') throw new Error('it should read as Void');
+    if(w.eval('refundable')(inv)) throw new Error('a void invoice must not be refundable');
+    /* the procedure is unlinked and printable again */
+    const line=v.orders.find(o=>o.code===code);
+    if(line.invoiceId) throw new Error('the procedure should be unlinked from the void invoice');
+    const st=w.eval('nextStep')(v);
+    if(st.key!=='PKG_PRINT') throw new Error('it should be printable again, got '+st.key);
+    if(w.eval('pendingSummary')(v).kind!=='act') throw new Error('and back to action needed');
+    /* it still belongs to the package, and the void is recorded */
+    const still=w.eval('packageItems')('7000667').find(x=>x.child.code===code);
+    if(!still) throw new Error('the child should still belong to the package');
+    if(!v.history.some(h=>/print undone/i.test(h.tx))) throw new Error('the void was not recorded');
+    return 'voided '+inv.id+', procedure printable again';
+  });
+  step('an insurance patient is not switched to cash mid-visit', ()=>{
+    const v=C().find(x=>x.mrn==='7100482');
+    open(v.id); v.prefs={}; v.bill=null; v.invoices=[]; v.dedUsed=0;
+    v.consult={ name:'Dermatology Consultation', code:'CON-402', price:250, priceIns:250, priceCash:215, ins:'pending', paid:false };
+    R();
+    if(w.eval('nextStep')(v).key!=='CONSULT_WAIT') throw new Error('expected the waiting step');
+    const labels=qa('.step .acts .btn').map(b=>b.textContent.trim());
+    if(labels.some(l=>/self-pay/i.test(l))) throw new Error('there should be no mid-visit switch to self-pay: '+labels.join(' | '));
+    if(!q('#payerBtn.edit')) throw new Error('changing the payer before billing should remain, from the header');
+    return labels.join(' | ');
+  });
+  step('cash is taken by counting notes, pre-picked and adjustable', ()=>{
+    const c=open(1);
+    c.prefs={}; c.bill=null; c.link=null; c.invoices=[]; c.dedUsed=0;
+    c.consult={ name:'Paediatric Consultation', code:'CON-101', price:200, priceIns:200, priceCash:170, ins:'approved', paid:false };
+    c.orders=[]; c.payerId='NCCI-A'; R();
+    qa('.step .acts .btn')[0].click();
+    qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click();
+    const amount=w.eval('state').drawer.amount;
+    /* the notes are pre-picked to the fewest that cover the amount */
+    const notes=qa('.drawer [data-note]');
+    if(!notes.length) throw new Error('no note picker on the cash mode');
+    const d=()=>w.eval('state').drawer;
+    const suggested=w.eval('suggestNotes')(amount);
+    const tot=w.eval('notesTotal')(suggested);
+    if(tot < amount - 0.004) throw new Error('the suggestion must cover the amount: '+tot+' vs '+amount);
+    if(Math.abs(w.eval('notesTotal')(d().notes)-tot)>0.004) throw new Error('the drawer should open with the suggestion');
+    /* it is labelled amount tendered, and shows the change */
+    if(!/Cash handed over/.test(q('.drawer').textContent)) throw new Error('the tendered field is missing');
+    const tendInput=q('#dTend');
+    if(Math.abs(parseFloat(tendInput.value)-tot)>0.004) throw new Error('the tendered box should follow the notes');
+    /* adding a note the patient actually gave changes the tender and the change */
+    const five=notes.find(n=>n.dataset.note==='500');
+    five.click();
+    if(Math.abs(w.eval('notesTotal')(d().notes)-(tot+500))>0.004) throw new Error('tapping a note should add it');
+    if(Math.abs(parseFloat(q('#dTend').value)-(tot+500))>0.004) throw new Error('the tendered amount should follow');
+    /* three separate fields: what is owed, what was handed over, what goes back */
+    const fldVal=(lbl)=>{ const f=qa('.drawer .fld').find(x=>x.querySelector('label') &&
+        new RegExp(lbl).test(x.querySelector('label').textContent)); return f?parseFloat(f.querySelector('input').value):null; };
+    if(Math.abs(fldVal('Amount to pay')-amount)>0.004) throw new Error('the amount to pay should be its own field');
+    if(Math.abs(fldVal('Cash handed over')-(tot+500))>0.004) throw new Error('the tendered field should follow the notes');
+    if(Math.abs(fldVal('Change to give back')-(tot+500-amount))>0.004) throw new Error('the change should be its own field');
+    if(!qa('.drawer .fld').find(x=>/Notes handed over/.test(x.textContent))) throw new Error('the notes should be their own field');
+    /* and taking it away again */
+    q('.drawer [data-less="500"]').click();
+    if(Math.abs(w.eval('notesTotal')(d().notes)-tot)>0.004) throw new Error('the minus should remove one');
+    /* too little is called out rather than silently accepted */
+    q('#dClear').click();
+    qa('.drawer [data-note]').find(n=>n.dataset.note==='1').click();
+    if(!/Still to allocate/.test(q('.drawer').textContent)) throw new Error('an underpayment should be flagged');
+    if(!q('.drawer input.ro.bad')) throw new Error('the shortfall should be shown in the red field');
+    /* a typed amount overrides the count */
+    q('#dExact').click();
+    const ti=q('#dTend'); ti.value='300'; ti.dispatchEvent(new w.Event('change'));
+    if(!/typed in by hand/i.test(q('.drawer').textContent)) throw new Error('a hand-typed tender should say so');
+    if(Math.abs(parseFloat(q('#dTend').value)-300)>0.004) throw new Error('the typed amount should stand');
+    /* what was handed over, and the change, are recorded on the payment */
+    q('#dGo').click();
+    const inv=c.invoices[0];
+    if(!inv) throw new Error('the payment did not go through');
+    if(!/tendered SAR 300/.test(inv.viaDetail)) throw new Error('the tender was not recorded: '+inv.viaDetail);
+    const expChange=+(300-inv.patient).toFixed(2);
+    if(expChange>0.004 && !new RegExp('change').test(inv.viaDetail)) throw new Error('the change was not recorded: '+inv.viaDetail);
+    if(!c.history.some(h=>/tendered SAR 300/.test(h.sub||''))) throw new Error('the history should show what was handed over');
+    return 'suggested '+tot+' for '+amount+', tendered 300, '+inv.viaDetail;
+  });
+  step('the note count is recorded when the notes are used as picked', ()=>{
+    const c=C().find(x=>x.id===1);
+    open(1);
+    c.prefs={}; c.bill=null; c.link=null; c.invoices=[]; c.dedUsed=0;
+    c.consult={ name:'Paediatric Consultation', code:'CON-101', price:200, priceIns:200, priceCash:170, ins:'approved', paid:false };
+    R();
+    qa('.step .acts .btn')[0].click();
+    qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click();
+    q('#dGo').click();
+    const inv=c.invoices[0];
+    if(!/×SAR/.test(inv.viaDetail)) throw new Error('the notes counted should be listed: '+inv.viaDetail);
+    return inv.viaDetail;
+  });
+  step('a pending order can be billed as cash on its own, at the cash price', ()=>{
+    const c=open(1);
+    c.prefs={}; c.bill=null; c.link=null; c.invoices=[]; c.dedUsed=0; c.checks=0; c.lastCheck=null;
+    c.payerId='NCCI-A';
+    c.consult={ name:'Paediatric Consultation', code:'CON-101', price:200, priceIns:200, priceCash:170, ins:'approved', paid:false };
+    c.orders=[{ code:'LAB-077', name:'Thyroid Panel', price:260, priceIns:260, priceCash:220, ins:'pending', paid:false }];
+    R();
+    /* consultation on insurance first */
+    qa('.step .acts .btn')[0].click(); qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click(); q('#dGo').click();
+    const consultInv=c.invoices[0];
+    if(consultInv.company<=0) throw new Error('the consultation should be on the policy');
+    /* now waiting on the order, with the cash option offered */
+    if(w.eval('nextStep')(c).key!=='ORDERS_WAIT') throw new Error('expected the waiting step, got '+w.eval('nextStep')(c).key);
+    const btn=qa('.step .acts .btn').find(b=>/Bill the 1 pending order\(s\) as cash now/.test(b.textContent));
+    if(!btn) throw new Error('no order-only cash option: '+qa('.step .acts .btn').map(b=>b.textContent.trim()).join(' | '));
+    btn.click();
+    /* it is charged at the cash price, with no payer share and no payer discount */
+    const st=w.eval('nextStep')(c);
+    if(st.key!=='COLLECT') throw new Error('expected to collect for the order, got '+st.key);
+    const expect=+(220*1.15).toFixed(2);
+    if(Math.abs(w.eval('due')(c)-expect)>0.02) throw new Error('cash price not used: '+w.eval('due')(c)+' vs '+expect);
+    if(c.bill.company!==0) throw new Error('no payer share on a cash order');
+    if(c.bill.deductible!==0) throw new Error('a cash order must not eat the deductible pool');
+    qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click(); q('#dGo').click();
+    const cashInv=c.invoices.find(i=>i.cashOnly);
+    if(!cashInv) throw new Error('no cash-only invoice raised');
+    if(cashInv.billType!=='cash') throw new Error('it should be typed as a cash invoice');
+    if(cashInv.rows.length!==1) throw new Error('only the order should be on it');
+    /* the consultation stays on the policy — the visit payer is untouched */
+    if(w.eval('planOf')(c)==null) throw new Error('the visit should still carry the policy');
+    if(c.invoices.find(i=>i.id===consultInv.id).company<=0) throw new Error('the consultation invoice changed');
+    if(!c.history.some(h=>/billed as cash while the approval is outstanding/i.test(h.tx)))
+      throw new Error('the urgent cash billing was not recorded');
+    /* and the visit says the approval is still outstanding */
+    if(w.eval('nextStep')(c).key!=='CASH_WAIT') throw new Error('expected the cash-waiting step, got '+w.eval('nextStep')(c).key);
+    return 'order billed at cash '+cashInv.patient+' on '+cashInv.id+', consultation still insured';
+  });
+  step('a later round of orders lists only what is still to be billed', ()=>{
+    const c=open(1);
+    c.prefs={}; c.bill=null; c.link=null; c.invoices=[]; c.dedUsed=0; c.checks=0; c.lastCheck=null; c.orderRound=0;
+    c.payerId='NCCI-A';
+    c.consult={ name:'Paediatric Consultation', code:'CON-101', price:200, priceIns:200, priceCash:170, ins:'approved', paid:true, invoiceId:'INV-OLD', via:'Cash' };
+    c.invoices=[{ id:'INV-OLD', scope:'consult', at:'09:20', patient:46, company:184, deductible:40, paid:true, via:'Cash',
+      payer:'NCCI · CLASS A', billType:'insurance', rows:[{ name:'Paediatric Consultation', code:'CON-101',
+        calc:{ gross:200, discount:0, net:200, deductible:40, patient:40, company:160, patientWithTax:46, companyWithTax:184 } }] }];
+    /* round one: billed and paid */
+    c.orders=[{ code:'LAB-001', name:'Round One Panel', price:150, priceIns:150, priceCash:130, ins:'approved', ordered:'09:30', paid:false }];
+    R();
+    qa('.step .acts .btn')[0].click();
+    qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click(); q('#dGo').click();
+    const billedCode='LAB-001';
+    if(!c.orders[0].invoiceId) throw new Error('round one should be billed');
+    /* round two arrives: one approved, one pending */
+    c.orders.push({ code:'LAB-002', name:'Round Two Approved', price:120, priceIns:120, priceCash:100, ins:'approved', ordered:'10:10', paid:false });
+    c.orders.push({ code:'LAB-003', name:'Round Two Pending', price:300, priceIns:300, priceCash:260, ins:'pending', ordered:'10:10', paid:false });
+    R();
+    const st=w.eval('nextStep')(c);
+    if(st.key!=='ORDERS_MIXED') throw new Error('expected the mixed step, got '+st.key);
+    /* the question and the list agree: two orders, not three */
+    if(!/^2 procedures were ordered/.test(st.q)) throw new Error('the question should count the new round: '+st.q);
+    if(st.ext.lines.length!==2) throw new Error('the expander should list only the unbilled orders, got '+st.ext.lines.length);
+    if(st.ext.lines.some(l=>l.code===billedCode)) throw new Error('an already-billed order must not be listed again');
+    if(!/2 order\(s\) still to bill/.test(st.ext.title)) throw new Error('wrong title: '+st.ext.title);
+    if(!/1 earlier order\(s\)/.test(st.ext.note||'')) throw new Error('it should mention the earlier round: '+st.ext.note);
+    /* on screen: two rows, and the total covers only the approved new one */
+    q('details.ext').open=true; R();
+    const rows=qa('.step .ext table.ord tbody tr');
+    if(rows.length!==2) throw new Error('two rows expected, got '+rows.length);
+    const foot=q('.step .ext table.ord tfoot tr').textContent;
+    const expect=w.eval('priceLines')(c, [c.orders.find(o=>o.code==='LAB-002')]).patient;
+    const shown=parseFloat(foot.replace(/[^0-9.]/g,'').slice(0,0)||'0');
+    const cells=[...q('.step .ext table.ord tfoot tr').querySelectorAll('td')].map(td=>td.textContent);
+    const footPatient=parseFloat(cells[1].replace(/[^0-9.]/g,''));
+    if(Math.abs(footPatient-expect)>0.02) throw new Error('"Charged now" should exclude billed rows: '+footPatient+' vs '+expect);
+    return '2 of 3 listed, charged now '+footPatient.toFixed(2);
+  });
+  step('a payment can be split across modes, with the commonest partner suggested', ()=>{
+    const c=open(1);
+    c.prefs={}; c.bill=null; c.link=null; c.invoices=[]; c.dedUsed=0; c.payerId='CASH';
+    c.consult={ name:'Paediatric Consultation', code:'CON-101', price:400, priceIns:400, priceCash:400, ins:'notinsured', paid:false };
+    c.orders=[]; R();
+    qa('.step .acts .btn')[0].click();
+    qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click();
+    const total=w.eval('state').drawer.amount;
+    const d=()=>w.eval('state').drawer;
+    /* part one: Span for 150 — typing less than the total offers to add the rest */
+    qa('.drawer [data-m]').find(x=>x.dataset.m==='Span').click();
+    const pin=q('#dPart');
+    if(!pin) throw new Error('no amount field for the chosen mode');
+    if(Math.abs(parseFloat(pin.value)-total)>0.02) throw new Error('it should default to the whole amount');
+    pin.value='150'; pin.dispatchEvent(new w.Event('change'));
+    if(!q('#dAdd')) throw new Error('an under-payment should offer to add another mode');
+    if(!q('#dGo').disabled) throw new Error('an unallocated balance must block the confirm');
+    q('#dAdd').click();
+    /* it is now shown as taken, and the next mode is pre-selected from the production combos */
+    if(d().parts.length!==1) throw new Error('the first part should be taken');
+    if(d().parts[0].mode!=='Span' || Math.abs(d().parts[0].amount-150)>0.02)
+      throw new Error('wrong first part: '+JSON.stringify(d().parts[0]));
+    if(!/Taken so far/.test(q('.drawer .taken').textContent)) throw new Error('taken payments should be listed');
+    if(!/Span/.test(q('.drawer .taken').textContent)) throw new Error('the taken part should name its mode');
+    if(d().mode!=='Span') throw new Error('Span should suggest Span as the partner, got '+d().mode);
+    if(Math.abs(w.eval('payRemaining')(d())-(total-150))>0.02) throw new Error('the remainder is wrong');
+    /* part two: cash for the rest, counted in notes */
+    qa('.drawer [data-m]').find(x=>x.dataset.m==='Cash').click();
+    if(!/Still to pay/.test(q('.drawer').textContent)) throw new Error('the cash block should work on what is left');
+    const parts=w.eval('payParts')(d());
+    if(parts.length!==2) throw new Error('expected two parts, got '+parts.length);
+    if(Math.abs(parts[0].amount+parts[1].amount-total)>0.02) throw new Error('the parts must add up to the total');
+    /* confirm, and the invoice records both modes */
+    if(!/Confirm 2 payments/.test(q('#dGo').textContent)) throw new Error('the button should say two payments: '+q('#dGo').textContent);
+    q('#dGo').click();
+    const inv=c.invoices[0];
+    if(!inv) throw new Error('no invoice raised');
+    if(inv.via!=='Span + Cash') throw new Error('the invoice should name both modes: '+inv.via);
+    if(Math.abs(inv.payments[0].amount-150)>0.02) throw new Error('the first part should be 150: '+inv.payments[0].amount);
+    if(!inv.payments || inv.payments.length!==2) throw new Error('the invoice should carry both parts');
+    if(Math.abs(inv.payments.reduce((a,x)=>a+x.amount,0)-inv.patient)>0.02)
+      throw new Error('the parts should add up to the invoice: '+JSON.stringify(inv.payments));
+    if(!c.history.some(h=>/Span SAR/.test(h.sub||''))) throw new Error('the history should show the split: '+(c.history[0].sub||''));
+    return inv.via+' — '+inv.payments.map(x=>x.mode+' '+x.amount).join(' + ');
+  });
+  step('a split can draw on a named advance pot', ()=>{
+    const c=open(1);
+    const wl=w.eval('patients')[c.mrn].wallet;
+    wl.advance.Open=0; wl.advance.Doctor=100; wl.advance.Clinic=0;
+    c.prefs={}; c.bill=null; c.link=null; c.invoices=[]; c.dedUsed=0; c.payerId='CASH';
+    c.consult={ name:'Paediatric Consultation', code:'CON-101', price:300, priceIns:300, priceCash:300, ins:'notinsured', paid:false };
+    c.orders=[]; R();
+    qa('.step .acts .btn')[0].click();
+    qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click();
+    /* only the pot with money is on the face */
+    const face=qa('.drawer .modes [data-m]').map(x=>x.dataset.m);
+    if(!face.includes('DOCTOR')) throw new Error('a funded pot should be offered up front: '+face.join(' | '));
+    if(face.includes('OPEN')) throw new Error('an empty pot should stay in the more list');
+    /* take 100 from the doctor pot first, then the rest on Span */
+    qa('.drawer [data-m]').find(x=>x.dataset.m==='DOCTOR').click();
+    const pin=q('#dPart'); pin.value='400'; pin.dispatchEvent(new w.Event('change'));
+    if(!q('.advbox.short')) throw new Error('drawing more than the doctor pot holds should warn');
+    if(!q('#dGo').disabled) throw new Error('and block the confirm');
+    pin.value='100'; pin.dispatchEvent(new w.Event('change'));
+    if(q('.advbox.short')) throw new Error('the warning should clear at 100');
+    q('#dAdd').click();
+    qa('.drawer [data-m]').find(x=>x.dataset.m==='Span').click();
+    q('#dGo').click();
+    if(Math.abs(wl.advance.Doctor)>0.02) throw new Error('the doctor pot should be drawn down, left '+wl.advance.Doctor);
+    if(wl.advance.Open!==0) throw new Error('other pots must not be touched');
+    const inv=c.invoices[0];
+    if(inv.via!=='DOCTOR + Span') throw new Error('unexpected mode string: '+inv.via);
+    return inv.via+', doctor pot drawn to 0';
+  });
+  step('only the ticked orders are invoiced, and the total follows the ticks', ()=>{
+    const c=open(1);
+    c.sel={}; c.prefs={}; c.bill=null; c.link=null; c.invoices=[]; c.dedUsed=0; c.payerId='CASH';
+    c.consult={ name:'Paediatric Consultation', code:'CON-101', price:200, priceIns:200, priceCash:200, ins:'notinsured', paid:true, invoiceId:'INV-S', via:'Cash' };
+    c.invoices=[{ id:'INV-S', scope:'consult', at:'09:15', patient:230, company:0, deductible:0, paid:true, via:'Cash',
+      payer:'Cash / Self-pay', billType:'cash', rows:[{ name:'Paediatric Consultation', code:'CON-101',
+        calc:{ gross:200, discount:0, net:200, deductible:0, patient:200, company:0, patientWithTax:230, companyWithTax:0 } }] }];
+    c.orders=[{ code:'A-1', name:'Alpha Test', price:100, priceIns:100, priceCash:100, ins:'notinsured', paid:false },
+              { code:'B-2', name:'Beta Test',  price:200, priceIns:200, priceCash:200, ins:'notinsured', paid:false },
+              { code:'C-3', name:'Gamma Test', price:300, priceIns:300, priceCash:300, ins:'notinsured', paid:false }];
+    R();
+    const st0=w.eval('nextStep')(c);
+    if(st0.key!=='ORDERS_BILL') throw new Error('expected the order billing step, got '+st0.key);
+    const all=+(600*1.15).toFixed(2);
+    if(Math.abs(st0.amt-all)>0.02) throw new Error('all three should be priced by default: '+st0.amt);
+    /* every line starts ticked */
+    q('details.ext').open=true; R();
+    const boxes=qa('.step .lnChk');
+    if(boxes.length!==3) throw new Error('expected a tick per order, got '+boxes.length);
+    if(!boxes.every(b=>b.checked)) throw new Error('all lines should start ticked');
+    /* unticking one re-prices the top figure and the table footer */
+    boxes.find(b=>b.dataset.code==='C-3').click();
+    const st1=w.eval('nextStep')(c);
+    const two=+(300*1.15).toFixed(2);
+    if(Math.abs(st1.amt-two)>0.02) throw new Error('the patient share should drop to '+two+', got '+st1.amt);
+    if(!/2 of 3 ticked/.test(st1.amtLabel||'')) throw new Error('the label should say what is ticked: '+st1.amtLabel);
+    const foot=[...q('.step .ext table.ord tfoot tr').querySelectorAll('td')].map(td=>td.textContent);
+    if(Math.abs(parseFloat(foot[1].replace(/[^0-9.]/g,''))-two)>0.02) throw new Error('the footer should follow: '+foot[1]);
+    if(!/2 of 3 line\(s\) ticked/.test(foot[0].replace(/\s+/g,' '))) throw new Error('the footer should count the ticks: '+foot[0]);
+    /* billing takes only those two; the third stays on the visit unbilled */
+    if(!/bill the 2 ticked/i.test(st1.yes.label)) throw new Error('the button should say so: '+st1.yes.label);
+    qa('.step .acts .btn')[0].click();
+    if(Math.abs(w.eval('due')(c)-two)>0.02) throw new Error('the prepared charge should be the two ticked');
+    qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click(); q('#dGo').click();
+    const inv=c.invoices.find(i=>i.scope==='orders');
+    if(inv.rows.length!==2) throw new Error('the invoice should carry two lines, got '+inv.rows.length);
+    if(inv.rows.some(r=>r.code==='C-3')) throw new Error('the unticked line must not be invoiced');
+    const left=c.orders.find(o=>o.code==='C-3');
+    if(left.invoiceId || left.paid) throw new Error('the unticked order should still be unbilled');
+    /* and it comes back round to be billed on its own */
+    c.sel={}; R();
+    const st2=w.eval('nextStep')(c);
+    if(st2.key!=='ORDERS_BILL') throw new Error('the remaining order should be offered, got '+st2.key);
+    if(Math.abs(st2.amt-(300*1.15))>0.02) throw new Error('and priced on its own: '+st2.amt);
+    /* the last line cannot be unticked — there would be nothing to bill */
+    q('details.ext').open=true; R();
+    const last=q('.step .lnChk');
+    if(last){ last.click(); if(w.eval('selectedLines')(c, [left]).length!==1) throw new Error('the final line must stay ticked'); }
+    return 'billed 2 of 3, the third still waiting at '+st2.amt;
+  });
+  step('a cash visit makes no insurance suggestion', ()=>{
+    const c=open(1);
+    c.sel={}; c.prefs={}; c.bill=null; c.link=null; c.invoices=[]; c.dedUsed=0; c.payerId='CASH';
+    c.consult={ name:'Paediatric Consultation', code:'CON-101', price:170, priceIns:200, priceCash:170, ins:'notinsured', paid:false };
+    c.orders=[{ code:'LAB-022', name:'Urea & Electrolytes', price:150, priceIns:180, priceCash:150, ins:'notinsured', insWas:'approved', paid:false }];
+    R();
+    if(q('.step .insband')) throw new Error('no policy suggestion on the consultation step');
+    if(/is on file for this patient|Bill to NCCI instead/.test(q('.step').textContent)) throw new Error('the suggestion text should be gone');
+    qa('.step .acts .btn')[0].click();
+    if(q('.step .insband')) throw new Error('no policy suggestion on the payment step');
+    return 'no insurance band on a cash visit';
+  });
+  step('a short cash tender cannot be confirmed', ()=>{
+    const c=open(1);
+    c.sel={}; c.prefs={}; c.bill=null; c.link=null; c.invoices=[]; c.dedUsed=0; c.payerId='CASH';
+    c.consult={ name:'Paediatric Consultation', code:'CON-101', price:400, priceIns:400, priceCash:400, ins:'notinsured', paid:false };
+    c.orders=[]; R();
+    qa('.step .acts .btn')[0].click();
+    qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click();
+    const total=w.eval('state').drawer.amount;
+    /* the suggestion covers it, so it can be taken */
+    if(q('#dGo').disabled) throw new Error('the suggested notes should allow the payment');
+    /* hand over less than the bill and it must refuse */
+    q('#dClear').click();
+    qa('.drawer [data-note]').find(n=>n.dataset.note==='100').click();
+    if(!/Still to allocate/.test(q('.drawer').textContent)) throw new Error('it should say what is unallocated');
+    if(!q('#dGo').disabled) throw new Error('an unpaid balance must not be confirmable');
+    const invBefore=c.invoices.length;
+    q('#dGo').click();
+    if(c.invoices.length!==invBefore) throw new Error('clicking a disabled confirm must not invoice');
+    /* typing a short amount by hand is refused too */
+    const ti=q('#dTend'); ti.value=String(total-10); ti.dispatchEvent(new w.Event('change'));
+    if(!q('#dGo').disabled) throw new Error('a short typed tender must not be confirmable either');
+    /* covering it clears the block */
+    ti.value=String(total); ti.dispatchEvent(new w.Event('change'));
+    if(q('#dGo').disabled) throw new Error('an exact tender should be allowed');
+    q('#dGo').click();
+    if(c.invoices.length!==invBefore+1) throw new Error('the payment should go through');
+    return 'an unpaid balance blocks the confirm at '+total;
+  });
+  step('the split is spelled out mode by mode', ()=>{
+    const c=open(1);
+    c.sel={}; c.prefs={}; c.bill=null; c.link=null; c.invoices=[]; c.dedUsed=0; c.payerId='CASH';
+    c.consult={ name:'Paediatric Consultation', code:'CON-101', price:400, priceIns:400, priceCash:400, ins:'notinsured', paid:false };
+    c.orders=[]; R();
+    qa('.step .acts .btn')[0].click();
+    qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click();
+    const total=w.eval('state').drawer.amount;
+    qa('.drawer [data-m]').find(x=>x.dataset.m==='Span').click();
+    const pin=q('#dPart'); pin.value='120'; pin.dispatchEvent(new w.Event('change'));
+    q('#dAdd').click();
+    qa('.drawer [data-m]').find(x=>x.dataset.m==='Visa').click();
+    /* the part already taken is listed with its mode and amount */
+    const box=q('.drawer .taken').textContent.replace(/\s+/g,' ');
+    if(!/Taken so far/.test(box)) throw new Error('the taken list should be headed: '+box);
+    if(!/Span/.test(box) || !/120\.00/.test(box)) throw new Error('the taken part should be named with its amount: '+box);
+    if(!new RegExp(w.eval('fmt')(total-120).replace(/[.]/g,'\\.')+' still to pay').test(box))
+      throw new Error('it should say what is left: '+box);
+    /* and the prompt above the chips asks for the rest */
+    if(!new RegExp('remaining '+w.eval('fmt')(total-120).replace(/[.]/g,'\\.')).test(q('.drawer').textContent))
+      throw new Error('the chips should be introduced as paying the remainder');
+    /* the drawer total repeats the breakdown */
+    const tot=q('.drawer .dw-tot').textContent.replace(/\s+/g,' ');
+    if(!/Span .* \+ Visa /.test(tot)) throw new Error('the footer should repeat the split: '+tot);
+    /* a part can never be given more than is left */
+    const pin2=q('#dPart'); pin2.value=String(total+50); pin2.dispatchEvent(new w.Event('change'));
+    const parts=w.eval('payParts')(w.eval('state').drawer);
+    if(parts.reduce((a,x)=>a+x.amount,0)>total+0.02) throw new Error('the parts must never exceed the total');
+    if(q('#dGo').disabled) throw new Error('a clamped split is still payable');
+    /* removing a taken part hands its amount back */
+    q('.drawer [data-undo]').click();
+    if(w.eval('payTaken')(w.eval('state').drawer).length) throw new Error('the part should be removed');
+    if(Math.abs(w.eval('payRemaining')(w.eval('state').drawer)-total)>0.02) throw new Error('the full amount should be back');
+    return 'taken parts listed with amounts, remainder prompted, removal returns it';
+  });
+  step('part of a payment can be left on credit', ()=>{
+    const c=open(1);
+    c.sel={}; c.prefs={}; c.bill=null; c.link=null; c.invoices=[]; c.dedUsed=0; c.payerId='CASH';
+    c.consult={ name:'Paediatric Consultation', code:'CON-101', price:400, priceIns:400, priceCash:400, ins:'notinsured', paid:false };
+    c.orders=[]; R();
+    const creditBefore=w.eval('creditTotal')(c.mrn);
+    qa('.step .acts .btn')[0].click();
+    qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click();
+    const total=w.eval('state').drawer.amount;
+    /* take 100 in cash, leave the rest on credit */
+    qa('.drawer [data-m]').find(x=>x.dataset.m==='Cash').click();
+    q('#dClear').click();
+    qa('.drawer [data-note]').find(x=>x.dataset.note==='100').click();
+    q('#dAdd').click();
+    qa('.drawer [data-m]').find(x=>x.dataset.m==='Credit').click();
+    if(!/Credit after this/.test(q('.drawer .advbox').textContent)) throw new Error('the credit part should preview the balance');
+    if(q('#dGo').disabled) throw new Error('credit covering the rest should be payable');
+    q('#dGo').click();
+    const inv=c.invoices[0];
+    if(!inv) throw new Error('no invoice raised');
+    if(inv.via!=='Cash + Credit') throw new Error('both parts should be named: '+inv.via);
+    /* only the cash part counts as collected; the rest is outstanding credit */
+    if(Math.abs(w.eval('collected')(c)-100)>0.02) throw new Error('only the cash should be collected: '+w.eval('collected')(c));
+    if(Math.abs(w.eval('creditOf')(inv)-(total-100))>0.02) throw new Error('the credit part is wrong: '+w.eval('creditOf')(inv));
+    if(Math.abs(w.eval('creditTotal')(c.mrn)-(creditBefore+total-100))>0.02)
+      throw new Error('the patient credit should rise by the unpaid part');
+    if(inv.paid) throw new Error('an invoice with credit on it is not paid in full');
+    if(!c.history.some(h=>/part paid/i.test(h.tx))) throw new Error('the history should say it was part paid: '+c.history[0].tx);
+    /* and it can still be refunded for what was actually taken */
+    if(!w.eval('refundable')(inv)) throw new Error('the cash part should be refundable');
+    /* settling the credit clears it */
+    const st=w.eval('nextStep')(c);
+    if(!(st.acts||[]).some(a=>/Settle credit/.test(a.label))) throw new Error('settling should be offered');
+    return 'cash '+100+' + credit '+(total-100).toFixed(2)+' on '+inv.id;
+  });
+  step('a payment already taken can be opened and changed', ()=>{
+    const c=open(1);
+    c.sel={}; c.prefs={}; c.bill=null; c.link=null; c.invoices=[]; c.dedUsed=0; c.payerId='CASH';
+    c.consult={ name:'Paediatric Consultation', code:'CON-101', price:400, priceIns:400, priceCash:400, ins:'notinsured', paid:false };
+    c.orders=[]; R();
+    qa('.step .acts .btn')[0].click();
+    qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click();
+    const total=w.eval('state').drawer.amount;
+    const d=()=>w.eval('state').drawer;
+    /* take Span 150 with a reference, then Visa for the rest */
+    qa('.drawer [data-m]').find(x=>x.dataset.m==='Span').click();
+    q('#dRef').value='884120'; q('#dRef').dispatchEvent(new w.Event('input'));
+    const pin=q('#dPart'); pin.value='150'; pin.dispatchEvent(new w.Event('change'));
+    q('#dAdd').click();
+    qa('.drawer [data-m]').find(x=>x.dataset.m==='Visa').click();
+    /* click the taken Span row to change it */
+    const row=qa('.drawer .taken .tk').find(r=>/Span/.test(r.textContent));
+    if(!row) throw new Error('the taken Span payment should be listed');
+    row.click();
+    if(d().parts.length!==0) throw new Error('editing should take it back out of the taken list');
+    if(d().mode!=='Span') throw new Error('the editor should switch to that mode, got '+d().mode);
+    if(d().ref!=='884120') throw new Error('its reference should come back, got '+d().ref);
+    if(Math.abs(parseFloat(q('#dPart').value)-150)>0.02) throw new Error('its amount should come back');
+    if(!/Changing the span payment/i.test(q('.drawer').textContent)) throw new Error('it should say it is being changed');
+    /* change the amount and put it back */
+    const pin2=q('#dPart'); pin2.value='200'; pin2.dispatchEvent(new w.Event('change'));
+    q('#dAdd').click();
+    if(Math.abs(d().parts[0].amount-200)>0.02) throw new Error('the changed amount should stick: '+d().parts[0].amount);
+    if(d().parts[0].ref!=='884120') throw new Error('the reference should survive the edit');
+    if(Math.abs(w.eval('payRemaining')(d())-(total-200))>0.02) throw new Error('the remainder should follow');
+    /* the ✕ still removes outright */
+    q('.drawer [data-undo]').click();
+    if(d().parts.length) throw new Error('the cross should remove the payment');
+    return 'Span 150 → 200 by clicking it, reference kept';
+  });
+  step('releasing the held orders sits right beside Check approval', ()=>{
+    const c=open(1);
+    c.sel={}; c.prefs={ waitAll:true }; c.bill=null; c.link=null; c.dedUsed=0; c.checks=0; c.lastCheck=null;
+    c.payerId='NCCI-A';
+    c.consult={ name:'Paediatric Consultation', code:'CON-101', price:200, priceIns:200, priceCash:170, ins:'approved', paid:true, invoiceId:'INV-H', via:'Cash' };
+    c.invoices=[{ id:'INV-H', scope:'consult', at:'09:15', patient:46, company:184, deductible:40, paid:true, via:'Cash',
+      payer:'NCCI · CLASS A', billType:'insurance', rows:[{ name:'Paediatric Consultation', code:'CON-101',
+        calc:{ gross:200, discount:0, net:200, deductible:40, patient:40, company:160, patientWithTax:46, companyWithTax:184 } }] }];
+    c.orders=[{ code:'X-1', name:'Approved One', price:100, priceIns:100, priceCash:90, ins:'approved', paid:false },
+              { code:'X-2', name:'Approved Two', price:100, priceIns:100, priceCash:90, ins:'approved', paid:false },
+              { code:'X-3', name:'Still Pending', price:100, priceIns:100, priceCash:90, ins:'pending', paid:false }];
+    R();
+    if(w.eval('nextStep')(c).key!=='ORDERS_WAIT') throw new Error('expected the waiting step');
+    const btns=qa('.step .acts .btn').map(b=>b.textContent.trim());
+    if(btns[0]!=='Check approval') throw new Error('Check approval should lead: '+btns.join(' | '));
+    if(!/^Bill the 2 approved order\(s\) now$/.test(btns[1])) throw new Error('the release should be second: '+btns.join(' | '));
+    return btns.slice(0,2).join(' · ');
+  });
+  step('a prepared charge can be backed out of before any money moves', ()=>{
+    const c=open(1);
+    c.sel={}; c.prefs={}; c.bill=null; c.link=null; c.invoices=[]; c.dedUsed=0; c.payerId='NCCI-A';
+    c.consult={ name:'Paediatric Consultation', code:'CON-101', price:200, priceIns:200, priceCash:170, ins:'approved', paid:false };
+    c.orders=[]; R();
+    const first=w.eval('nextStep')(c).key;
+    if(q('.step .stepback')) throw new Error('there is no back on a question — only on a prepared charge');
+    qa('.step .acts .btn')[0].click();
+    if(w.eval('nextStep')(c).key!=='COLLECT') throw new Error('expected the payment question');
+    const back=q('.step .stepback');
+    if(!back) throw new Error('no back option on the payment step');
+    if(qa('.step .acts .btn').length!==2) throw new Error('back must not crowd the action row');
+    back.click();
+    if(c.bill || c.invoices.length) throw new Error('the prepared charge should be cleared with no invoice');
+    if(w.eval('nextStep')(c).key!==first) throw new Error('it should return to '+first);
+    /* also once a link has gone out, and it says so */
+    qa('.step .acts .btn')[0].click();
+    qa('.step .acts .btn').find(b=>/Send payment link/.test(b.textContent)).click();
+    q('.step .stepback').click();
+    if(c.bill || c.link) throw new Error('the link and the charge should both be gone');
+    if(!c.history.some(h=>/Payment link cancelled/.test(h.tx))) throw new Error('cancelling a sent link should be recorded');
+    return 'backed out of the charge and of a sent link';
+  });
+  step('backing out of an urgent cash bill restores the insured order', ()=>{
+    const c=open(1);
+    c.sel={}; c.prefs={ waitAll:true }; c.bill=null; c.link=null; c.dedUsed=0; c.checks=0; c.lastCheck=null; c.payerId='NCCI-A';
+    c.consult={ name:'Paediatric Consultation', code:'CON-101', price:200, priceIns:200, priceCash:170, ins:'approved', paid:true, invoiceId:'INV-Z', via:'Cash' };
+    c.invoices=[{ id:'INV-Z', scope:'consult', at:'09:20', patient:46, company:184, deductible:40, paid:true, via:'Cash',
+      payer:'NCCI · CLASS A', billType:'insurance', rows:[{ name:'Paediatric Consultation', code:'CON-101',
+        calc:{ gross:200, discount:0, net:200, deductible:40, patient:40, company:160, patientWithTax:46, companyWithTax:184 } }] }];
+    c.orders=[{ code:'LAB-077', name:'Thyroid Panel', price:260, priceIns:260, priceCash:220, ins:'pending', paid:false }];
+    R();
+    qa('.step .acts .btn').find(b=>/as cash now/.test(b.textContent)).click();
+    q('.step .stepback').click();
+    const l=c.orders[0];
+    if(l.ins!=='pending') throw new Error('the order should be awaiting approval again, got '+l.ins);
+    if(l.price!==260) throw new Error('the tariff price should be restored, got '+l.price);
+    if(l.urgentCash) throw new Error('the cash hold should be cleared');
+    return 'urgent cash bill reverted, order back to pending at tariff price';
+  });
+  step('there is no back to an earlier event', ()=>{
+    const c=open(1);
+    c.sel={}; c.prefs={}; c.bill=null; c.link=null; c.dedUsed=0; c.payerId='NCCI-A';
+    c.consult={ name:'Paediatric Consultation', code:'CON-101', price:200, priceIns:200, priceCash:170, ins:'approved', paid:true, invoiceId:'INV-N', via:'Cash' };
+    c.invoices=[{ id:'INV-N', scope:'consult', at:'09:15', patient:46, company:184, deductible:40, paid:true, via:'Cash',
+      payer:'NCCI · CLASS A', billType:'insurance', rows:[{ name:'Paediatric Consultation', code:'CON-101',
+        calc:{ gross:200, discount:0, net:200, deductible:40, patient:40, company:160, patientWithTax:46, companyWithTax:184 } }] }];
+    c.orders=[{ code:'Z-1', name:'Approved One', price:100, priceIns:100, priceCash:90, ins:'approved', paid:false },
+              { code:'Z-2', name:'Pending One',  price:100, priceIns:100, priceCash:90, ins:'pending',  paid:false }];
+    R();
+    ['ORDERS_MIXED'].forEach(k=>{ if(w.eval('nextStep')(c).key!==k) throw new Error('expected '+k); });
+    if(q('.step .stepback')) throw new Error('an order step must not offer back to an earlier event');
+    c.prefs.waitAll=true; R();
+    if(q('.step .stepback')) throw new Error('the waiting step must not offer back either');
+    c.orders=[]; c.prefs={}; R();
+    if(q('.step .stepback')) throw new Error('the with-the-doctor step must not offer back either');
+    return 'no event back on order, waiting or with-the-doctor steps';
+  });
+  step('replace lives only beside Refund — no step offers it', ()=>{
+    const seen=[];
+    C().forEach(v=>{ open(v.id); qa('.step .acts .btn').forEach(b=>{ if(/Replace/.test(b.textContent)) seen.push(v.id+': '+b.textContent.trim()); }); });
+    if(seen.length) throw new Error('replace should not be on any step: '+seen.join(' | '));
+    return 'no Replace on any of '+C().length+' visits';
+  });
+  step('an insurance patient replaces a cash-billed order once its approval arrives', ()=>{
+    const c=open(1);
+    c.sel={}; c.prefs={ waitAll:true }; c.bill=null; c.link=null; c.dedUsed=0; c.checks=0; c.lastCheck=null; c.payerId='NCCI-A';
+    c.consult={ name:'Paediatric Consultation', code:'CON-101', price:200, priceIns:200, priceCash:170, ins:'approved', paid:false };
+    c.invoices=[];
+    c.orders=[{ code:'LAB-440', name:'Thyroid Panel', price:260, priceIns:260, priceCash:220, ins:'pending', paid:false }];
+    R();
+    const pay=()=>{ qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click(); q('#dGo').click(); };
+    qa('.step .acts .btn')[0].click(); pay();                       // consultation on NCCI
+    qa('.step .acts .btn').find(b=>/as cash now/.test(b.textContent)).click(); pay();   // thyroid as cash
+    const consInv=c.invoices.find(i=>i.scope==='consult'), cashInv=c.invoices.find(i=>i.cashOnly);
+    /* before the approval: the cash invoice says why it cannot be replaced yet */
+    qa('.step .acts .btn').find(b=>/Invoices & Refund/.test(b.textContent)).click();
+    const rowOf=(id)=>qa('.step .crrow').find(r=>r.dataset.open===id);
+    if(rowOf(consInv.id).querySelector('[data-replace]')) throw new Error('the consultation invoice must not offer replace');
+    if(rowOf(cashInv.id).querySelector('[data-replace]')) throw new Error('replace must wait for the approval');
+    if(!/approval outstanding/.test(rowOf(cashInv.id).textContent)) throw new Error('it should say the approval is outstanding');
+    q('#rpBack').click();
+    /* the approval arrives — no guided replace step, the flow simply carries on */
+    qa('.step .acts .btn').find(b=>/Check approval/.test(b.textContent)).click();
+    qa('.step .acts .btn').find(b=>/Check approval/.test(b.textContent)).click();
+    if(w.eval('nextStep')(c).key==='CASH_TO_INS') throw new Error('there should be no replace step any more');
+    if(!c.history.some(h=>/replace it from Invoices & Refund/.test(h.sub||''))) throw new Error('the history should point to the invoice list');
+    /* now the cash invoice offers Replace beside Refund */
+    qa('.step .acts .btn').find(b=>/Invoices & Refund/.test(b.textContent)).click();
+    const btn=rowOf(cashInv.id).querySelector('[data-replace]');
+    if(!btn) throw new Error('replace should be offered once approved');
+    if(!rowOf(cashInv.id).querySelector('[data-refund]')) throw new Error('refund should sit beside it');
+    btn.click();
+    if(!new RegExp('Replace '+cashInv.id+' with an insurance invoice').test(q('.pop h3').textContent)) throw new Error('wrong pop-up: '+q('.pop h3').textContent);
+    if(!/Approvals received/.test(q('.pop .apprline').textContent)) throw new Error('it should confirm the approval is in');
+    if(q('#rpGo').disabled) throw new Error('an approved order should be replaceable');
+    q('#rpGo').click();
+    if(q('.drawer')) q('#dGo').click();
+    else { qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click(); q('#dGo').click(); }
+    if(!c.invoices.find(i=>i.id===cashInv.id).replaced) throw new Error('the cash invoice should be replaced');
+    const fresh=c.invoices.find(i=>i.replaces && i.replaces.includes(cashInv.id));
+    if(!fresh || fresh.billType!=='insurance' || fresh.company<=0) throw new Error('an insurance invoice should be raised');
+    if(fresh.rows.length!==1) throw new Error('only the order should be on it');
+    if(c.invoices.find(i=>i.id===consInv.id).replaced) throw new Error('the consultation invoice must be untouched');
+    return cashInv.id+' (cash) → '+fresh.id+' (insurance), consultation untouched';
+  });
+  step('a cash patient replaces every invoice onto an insurer, once that insurer has approved them', ()=>{
+    const c=open(1);
+    c.sel={}; c.prefs={}; c.bill=null; c.link=null; c.dedUsed=0; c.checks=0; c.lastCheck=null; c.insChecks={};
+    c.payerId='NCCI-A';
+    c.consult={ name:'Paediatric Consultation', code:'CON-101', price:200, priceIns:200, priceCash:170, ins:'approved', paid:false };
+    c.invoices=[]; c.orders=[]; R();
+    /* NCCI had approved the consultation before the patient went to cash */
+    w.eval('setPayer')(c,'CASH'); c.consult.price=170;
+    c.orders=[{ code:'LAB-022', name:'Urea & Electrolytes', price:150, priceIns:180, priceCash:150, ins:'notinsured', paid:false }];
+    R();
+    const pay=()=>{ qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click(); q('#dGo').click(); };
+    qa('.step .acts .btn')[0].click(); pay();
+    qa('.step .acts .btn')[0].click(); pay();
+    const cashPaid=w.eval('collected')(c);
+    qa('.step .acts .btn').find(b=>/Invoices & Refund/.test(b.textContent)).click();
+    const reps=qa('.step [data-replace]');
+    if(reps.length!==2) throw new Error('every invoice should offer replace on a cash visit, got '+reps.length);
+    reps[0].click();
+    if(!/Replace all 2 invoice\(s\) on this visit with insurance/.test(q('.pop h3').textContent)) throw new Error('wrong pop-up: '+q('.pop h3').textContent);
+    /* the insurer list says what each one has approved */
+    const opts=[...q('#rpPayer').options].map(o=>o.textContent);
+    if(!opts.some(o=>/NCCI.*1 of 2 approved/.test(o))) throw new Error('NCCI should show 1 of 2 approved: '+opts.join(' | '));
+    if(q('#rpPayer').value!=='NCCI-A') throw new Error('the insurer with the most approvals should be chosen');
+    if(!q('#rpGo').disabled) throw new Error('replace must wait until every line is approved');
+    if(!/1 of 2/.test(q('.pop .apprline').textContent)) throw new Error('the approval line should say 1 of 2');
+    /* ask NCCI — it answers on the second check */
+    q('#rpCheck').click();
+    if(!q('#rpGo').disabled) throw new Error('the first check should not grant it');
+    q('#rpCheck').click();
+    if(!/Approvals received/.test(q('.pop .apprline').textContent)) throw new Error('the approval should now be in');
+    if(q('#rpGo').disabled) throw new Error('replace should now be allowed');
+    q('#rpGo').click();
+    if(q('.drawer')) q('#dGo').click();
+    else { qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click(); q('#dGo').click(); }
+    if(!w.eval('planOf')(c)) throw new Error('the patient should now be on NCCI');
+    const fresh=c.invoices.find(i=>i.billType==='insurance' && i.replaces);
+    if(!fresh || fresh.replaces.length!==2) throw new Error('one insurance invoice should replace both');
+    return 'cash '+cashPaid+' → NCCI '+fresh.patient+' replacing '+fresh.replaces.join(', ');
+  });
+  step('walking away from the refund of a replacement abandons it cleanly', ()=>{
+    const c=open(1);
+    c.sel={}; c.prefs={}; c.bill=null; c.link=null; c.dedUsed=0; c.insChecks={};
+    c.payerId='CASH';
+    c.consult={ name:'Paediatric Consultation', code:'CON-101', price:170, priceIns:200, priceCash:170, ins:'notinsured', paid:false,
+      appr:{ 'NCCI-A':'approved' } };
+    c.invoices=[]; c.orders=[]; R();
+    qa('.step .acts .btn')[0].click(); qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click(); q('#dGo').click();
+    const before=c.invoices.map(i=>i.id+':'+(i.replaced?'r':'l')).join('|'), coll=w.eval('collected')(c);
+    qa('.step .acts .btn').find(b=>/Invoices & Refund/.test(b.textContent)).click();
+    q('.step [data-replace]').click();
+    q('#rpGo').click();
+    if(!q('.drawer')) throw new Error('insurance is cheaper, so a refund slide-in should open');
+    q('#dCancel').click();
+    if(c.bill) throw new Error('the replacement should be abandoned, not left in hand');
+    if(c.invoices.map(i=>i.id+':'+(i.replaced?'r':'l')).join('|')!==before) throw new Error('the invoices changed');
+    if(Math.abs(w.eval('collected')(c)-coll)>0.004) throw new Error('collected changed');
+    if(w.eval('planOf')(c)) throw new Error('the patient should still be cash');
+    if(!c.history.some(h=>/Replacement cancelled/.test(h.tx))) throw new Error('the cancellation should be recorded');
+    return 'refund cancelled → replacement abandoned, nothing changed';
+  });
+  step('the home search finds patients by doctor too', ()=>{
+    S.screen='home'; S.q=''; R();
+    if(!/doctor/i.test(q('#q').placeholder)) throw new Error('the search box should mention doctor: '+q('#q').placeholder);
+    const doc=C()[0].doctor;                                   // e.g. LINA FAROUK
+    const word=doc.split(' ')[0].toLowerCase();
+    const expect=[...new Set(C().filter(c=>c.doctor.toLowerCase().includes(word)).map(c=>c.mrn))];
+    const inp=q('#q'); inp.value=word; inp.dispatchEvent(new w.Event('input'));
+    const shown=qa('.pcard [data-open]').map(b=>b.dataset.open);
+    expect.forEach(m=>{ if(!shown.includes(m)) throw new Error('patient '+m+' seen by Dr '+doc+' is missing'); });
+    if(!qa('.pcard .badge.blue').some(b=>new RegExp(doc.split(' ')[0],'i').test(b.textContent)))
+      throw new Error('the card should say which doctor matched');
+    /* "Dr" is optional */
+    const inp2=q('#q'); inp2.value='Dr '+word; inp2.dispatchEvent(new w.Event('input'));
+    const shown2=qa('.pcard [data-open]').map(b=>b.dataset.open);
+    /* with "Dr" it is the doctor alone; without it, a patient of the same name also matches */
+    if(shown2.slice().sort().join()!==expect.slice().sort().join())
+      throw new Error('"Dr '+word+'" should find exactly that doctor\'s patients: ['+shown2.join()+'] vs ['+expect.join()+']');
+    /* name, MRN and mobile still work */
+    const p=w.eval('patients')['7000667'];
+    const inp3=q('#q'); inp3.value=p.mrn; inp3.dispatchEvent(new w.Event('input'));
+    if(!qa('.pcard [data-open]').some(b=>b.dataset.open===p.mrn)) throw new Error('MRN search broke');
+    S.q=''; R();
+    return expect.length+' patient(s) found by Dr '+doc;
+  });
+  step('the visit history folds away and opens again', ()=>{
+    const c=open(2);
+    S.histOpen=undefined; R();
+    const n=c.history.length;
+    if(qa('.hist .hev').length!==n) throw new Error('history should start open with every event listed');
+    q('#hiHead').click();
+    if(qa('.hist .hev').length) throw new Error('collapsing should hide the events');
+    const head=q('.hist h3').textContent;
+    if(!new RegExp(n+' event').test(head)) throw new Error('the folded header should count the events: '+head);
+    if(!/last:/.test(head)) throw new Error('it should show the latest event: '+head);
+    /* the choice holds on another visit */
+    open(1);
+    if(qa('.hist .hev').length) throw new Error('the folded state should carry to the next visit');
+    q('#hiHead').click();
+    if(qa('.hist .hev').length!==C().find(x=>x.id===1).history.length) throw new Error('expanding should show the events again');
+    /* rows still open their detail */
+    q('.hist .hev').click();
+    if(!q('.pop')) throw new Error('an event should still open its detail');
+    q('.pop .x').click();
+    return n+' events folded to one line and back';
+  });
+  step('the payer is locked once something has been invoiced', ()=>{
+    const c=open(1);
+    c.sel={}; c.prefs={}; c.bill=null; c.link=null; c.invoices=[]; c.dedUsed=0; c.payerId='NCCI-A';
+    c.consult={ name:'Paediatric Consultation', code:'CON-101', price:200, priceIns:200, priceCash:170, ins:'approved', paid:false };
+    c.orders=[]; R();
+    if(!q('#payerBtn.edit')) throw new Error('changeable before billing');
+    qa('.step .acts .btn')[0].click();                     // a charge is prepared
+    if(q('#payerBtn.edit')) throw new Error('not while a charge is in hand');
+    qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click(); q('#dGo').click();
+    const chip=q('#payerBtn');
+    if(!chip.classList.contains('locked')) throw new Error('it should be locked after invoicing');
+    if(!/NCCI/.test(chip.textContent)) throw new Error('the details should still show');
+    chip.click();
+    if(S.payerPop) throw new Error('a locked chip must not open the pop-up');
+    return 'chip editable → locked after invoicing, details still shown';
+  });
+  step('nothing is ever asked twice — one step on screen at a time', ()=>{
+    open(2);
+    if(qa('.step').length!==1) throw new Error('more than one step card is showing');
+    return 'single step card';
+  });
+ }catch(e){ log.push('RUNTIME-ERR outer: '+e.message); }
+ const fails=log.filter(l=>l.startsWith('FAIL')||l.startsWith('RUNTIME')).length;
+ document.getElementById('out').textContent='### RESULT: '+(fails?fails+' PROBLEM(S)':'ALL '+log.length+' CHECKS PASSED')+' ###\n'+log.join('\n');
+ document.title='DONE';};
+f.src='journey-opd-v2.html';document.body.appendChild(f);
+</script></body></html>

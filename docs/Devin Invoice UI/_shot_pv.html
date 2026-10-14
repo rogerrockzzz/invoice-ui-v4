@@ -1,0 +1,13 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>html,body{margin:0}iframe{width:100vw;height:100vh;border:0;display:block}</style></head><body>
+<script>
+const n=new URLSearchParams(location.search).get('s')||'1';
+const f=document.createElement('iframe');
+f.onload=()=>{const w=f.contentWindow; const S=w.eval('state');
+  const q=s=>w.document.querySelector(s),qa=s=>[...w.document.querySelectorAll(s)],R=()=>w.eval('render')(),C=()=>w.eval('cases');
+  if(n==='1'){ S.screen='profile'; S.caseId=1; R();
+    qa('.step .acts .btn').find(b=>/Change payer/.test(b.textContent)).click(); }
+  if(n==='2'){ q('#addVisit').click();
+    qa('#nvPick [data-m]').find(x=>x.dataset.m==='7000667').click(); }
+  document.title='SHOT-READY';};
+f.src='journey-opd-v2.html';document.body.appendChild(f);
+</script></body></html>

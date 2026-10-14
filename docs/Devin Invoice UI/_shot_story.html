@@ -1,0 +1,16 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>html,body{margin:0}iframe{width:100vw;height:100vh;border:0;display:block}</style></head><body>
+<pre id="err" style="position:fixed;bottom:0;left:0;background:#fee;font-size:11px;z-index:99"></pre>
+<script>
+window.addEventListener('error',e=>document.getElementById('err').textContent+=e.message+'\n');
+const n=new URLSearchParams(location.search).get('s')||'1';
+const f=document.createElement('iframe');
+f.onload=()=>{const w=f.contentWindow; w.onerror=(m)=>{document.getElementById('err').textContent+=m+'\n';};
+  const q=s=>w.document.querySelector(s),qa=s=>[...w.document.querySelectorAll(s)];
+  try{
+  w.eval('openVisit')(4);
+  if(n==='2') qa('.stories [data-story]').find(b=>b.dataset.story==='refund').click();
+  if(n==='3') q('#storyMap').click();
+  }catch(e){ document.getElementById('err').textContent+=e.stack; }
+  document.title='SHOT-READY';};
+f.src='journey-opd-v3.html';document.body.appendChild(f);
+</script></body></html>

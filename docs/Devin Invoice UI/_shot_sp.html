@@ -1,0 +1,18 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>html,body{margin:0}iframe{width:100vw;height:100vh;border:0;display:block}</style></head><body>
+<script>
+const f=document.createElement('iframe');
+f.onload=()=>{const w=f.contentWindow; const S=w.eval('state');
+  const q=s=>w.document.querySelector(s),qa=s=>[...w.document.querySelectorAll(s)];
+  q('#mrnBox').value='7000203'; q('#goIc').click();
+  qa('#visitList .visit-opt').find(o=>o.textContent.includes('Admission No')).click();
+  const adm=w.eval('ipAdm')();
+  qa('table.chg.ip tbody tr').filter(r=>r.textContent.includes('PACKAGE')).forEach(r=>r.querySelector('.ipChk').click());
+  q('#acceptGo').click(); if(q('#pkgGo')) q('#pkgGo').click();
+  S.ipStatus='TODO'; S.ipCat='MED'; S.ipSel={}; w.eval('render')();
+  adm.ipOrders.filter(o=>o.cat==='MED'&&o.state==='NEW').forEach(o=>{ S.ipSel[o.id]=true; });
+  w.eval('render')();
+  q('#acceptGo').click();
+  if(new URLSearchParams(location.search).get('s')==='2') qa('.pkg-opt').find(o=>o.dataset.m==='ZERO').click();
+  document.title='SHOT-READY';};
+f.src='billing-ui-revamp-mockup-v4.html';document.body.appendChild(f);
+</script></body></html>

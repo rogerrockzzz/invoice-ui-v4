@@ -1,0 +1,23 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>html,body{margin:0}iframe{width:1560px;height:900px;border:0;display:block}</style></head><body>
+<script>
+const step=new URLSearchParams(location.search).get('s')||'1';
+const f=document.createElement('iframe');
+f.onload=()=>{const w=f.contentWindow,S=w.eval('state');
+  const q=s=>w.document.querySelector(s),qa=s=>[...w.document.querySelectorAll(s)],R=()=>w.eval('render')();
+  const acc=()=>{ q('#acceptGo').click(); if(q('#pkgGo')) q('#pkgGo').click(); };
+  w.eval('openPatientTab')('7000667'); S.screen='ip'; S.ipAdmissionId=5; S.ipStatus='TODO'; R();
+  if(step==='1'){ q('[data-exp]').click(); w.scrollTo(0,200); }
+  if(step==='2'){
+    const pkRow=qa('table.chg.ip tbody tr').find(r=>r.textContent.includes('Appendectomy Surgical Package'));
+    S.ipSel[pkRow.querySelector('.ipChk').dataset.id]=true; R(); acc();
+    S.ipStatus='TODO'; S.ipCat='MED'; S.ipSel={}; R();
+    qa('table.chg.ip tbody tr').filter(r=>!r.textContent.includes('PACKAGE')).forEach(r=>{const c=r.querySelector('.ipChk'); if(c) S.ipSel[c.dataset.id]=true;});
+    R(); acc();
+    S.ipStatus='ACCEPTED'; S.ipCat='ALL'; S.ipSel={}; S.ipExpand={}; R();
+    const pk=w.eval('ipPackages')(w.eval('ipAdm')()).find(p=>p.accepted);
+    S.ipExpand['PKG-'+pk.id]=true; S.ipExpand['PKGB-'+pk.id+'-MED']=true; R();
+    w.scrollTo(0,230);
+  }
+  document.title='SHOT-READY';};
+f.src='billing-ui-revamp-mockup-v4.html';document.body.appendChild(f);
+</script></body></html>

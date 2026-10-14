@@ -1,0 +1,8237 @@
+{
+ "build": "no-invoice-until-payment",
+ "generatedAt": "2026-10-13T08:05:13.618Z",
+ "calc": [
+  {
+   "plan": "none",
+   "ins": "approved",
+   "dLeft": 0,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "approved",
+   "dLeft": 0,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "approved",
+   "dLeft": 0,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "approved",
+   "dLeft": 0,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "approved",
+   "dLeft": 10,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "approved",
+   "dLeft": 10,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "approved",
+   "dLeft": 10,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "approved",
+   "dLeft": 10,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "approved",
+   "dLeft": 143,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "approved",
+   "dLeft": 143,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "approved",
+   "dLeft": 143,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "approved",
+   "dLeft": 143,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "approved",
+   "dLeft": 1000,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "approved",
+   "dLeft": 1000,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "approved",
+   "dLeft": 1000,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "approved",
+   "dLeft": 1000,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "partial",
+   "dLeft": 0,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "partial",
+   "dLeft": 0,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "partial",
+   "dLeft": 0,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "partial",
+   "dLeft": 0,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "partial",
+   "dLeft": 10,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "partial",
+   "dLeft": 10,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "partial",
+   "dLeft": 10,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "partial",
+   "dLeft": 10,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "partial",
+   "dLeft": 143,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "partial",
+   "dLeft": 143,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "partial",
+   "dLeft": 143,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "partial",
+   "dLeft": 143,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "partial",
+   "dLeft": 1000,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "partial",
+   "dLeft": 1000,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "partial",
+   "dLeft": 1000,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "partial",
+   "dLeft": 1000,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "pending",
+   "dLeft": 0,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "pending",
+   "dLeft": 0,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "pending",
+   "dLeft": 0,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "pending",
+   "dLeft": 0,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "pending",
+   "dLeft": 10,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "pending",
+   "dLeft": 10,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "pending",
+   "dLeft": 10,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "pending",
+   "dLeft": 10,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "pending",
+   "dLeft": 143,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "pending",
+   "dLeft": 143,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "pending",
+   "dLeft": 143,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "pending",
+   "dLeft": 143,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "pending",
+   "dLeft": 1000,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "pending",
+   "dLeft": 1000,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "pending",
+   "dLeft": 1000,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "pending",
+   "dLeft": 1000,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "rejected",
+   "dLeft": 0,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "rejected",
+   "dLeft": 0,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "rejected",
+   "dLeft": 0,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "rejected",
+   "dLeft": 0,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "rejected",
+   "dLeft": 10,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "rejected",
+   "dLeft": 10,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "rejected",
+   "dLeft": 10,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "rejected",
+   "dLeft": 10,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "rejected",
+   "dLeft": 143,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "rejected",
+   "dLeft": 143,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "rejected",
+   "dLeft": 143,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "rejected",
+   "dLeft": 143,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "rejected",
+   "dLeft": 1000,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "rejected",
+   "dLeft": 1000,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "rejected",
+   "dLeft": 1000,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "rejected",
+   "dLeft": 1000,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notcovered",
+   "dLeft": 0,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notcovered",
+   "dLeft": 0,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notcovered",
+   "dLeft": 0,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notcovered",
+   "dLeft": 0,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notcovered",
+   "dLeft": 10,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notcovered",
+   "dLeft": 10,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notcovered",
+   "dLeft": 10,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notcovered",
+   "dLeft": 10,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notcovered",
+   "dLeft": 143,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notcovered",
+   "dLeft": 143,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notcovered",
+   "dLeft": 143,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notcovered",
+   "dLeft": 143,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notcovered",
+   "dLeft": 1000,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notcovered",
+   "dLeft": 1000,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notcovered",
+   "dLeft": 1000,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notcovered",
+   "dLeft": 1000,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notinsured",
+   "dLeft": 0,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notinsured",
+   "dLeft": 0,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notinsured",
+   "dLeft": 0,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notinsured",
+   "dLeft": 0,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notinsured",
+   "dLeft": 10,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notinsured",
+   "dLeft": 10,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notinsured",
+   "dLeft": 10,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notinsured",
+   "dLeft": 10,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notinsured",
+   "dLeft": 143,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notinsured",
+   "dLeft": 143,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notinsured",
+   "dLeft": 143,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notinsured",
+   "dLeft": 143,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notinsured",
+   "dLeft": 1000,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notinsured",
+   "dLeft": 1000,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notinsured",
+   "dLeft": 1000,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "none",
+   "ins": "notinsured",
+   "dLeft": 1000,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "approved",
+   "dLeft": 0,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 4.5,
+    "net": 85.5,
+    "deductible": 0,
+    "patient": 0,
+    "company": 85.5,
+    "patientWithTax": 0,
+    "companyWithTax": 98.32
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "approved",
+   "dLeft": 0,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 12.5,
+    "net": 237.5,
+    "deductible": 0,
+    "patient": 0,
+    "company": 237.5,
+    "patientWithTax": 0,
+    "companyWithTax": 273.13
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "approved",
+   "dLeft": 0,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 75,
+    "net": 1425,
+    "deductible": 0,
+    "patient": 0,
+    "company": 1425,
+    "patientWithTax": 0,
+    "companyWithTax": 1638.75
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "approved",
+   "dLeft": 0,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 16.67,
+    "net": 316.66,
+    "deductible": 0,
+    "patient": 0,
+    "company": 316.66,
+    "patientWithTax": 0,
+    "companyWithTax": 364.16
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "approved",
+   "dLeft": 10,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 4.5,
+    "net": 85.5,
+    "deductible": 10,
+    "patient": 10,
+    "company": 75.5,
+    "patientWithTax": 11.5,
+    "companyWithTax": 86.82
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "approved",
+   "dLeft": 10,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 12.5,
+    "net": 237.5,
+    "deductible": 10,
+    "patient": 10,
+    "company": 227.5,
+    "patientWithTax": 11.5,
+    "companyWithTax": 261.63
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "approved",
+   "dLeft": 10,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 75,
+    "net": 1425,
+    "deductible": 10,
+    "patient": 10,
+    "company": 1415,
+    "patientWithTax": 11.5,
+    "companyWithTax": 1627.25
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "approved",
+   "dLeft": 10,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 16.67,
+    "net": 316.66,
+    "deductible": 10,
+    "patient": 10,
+    "company": 306.66,
+    "patientWithTax": 11.5,
+    "companyWithTax": 352.66
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "approved",
+   "dLeft": 143,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 4.5,
+    "net": 85.5,
+    "deductible": 17.1,
+    "patient": 17.1,
+    "company": 68.4,
+    "patientWithTax": 19.66,
+    "companyWithTax": 78.66
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "approved",
+   "dLeft": 143,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 12.5,
+    "net": 237.5,
+    "deductible": 47.5,
+    "patient": 47.5,
+    "company": 190,
+    "patientWithTax": 54.62,
+    "companyWithTax": 218.5
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "approved",
+   "dLeft": 143,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 75,
+    "net": 1425,
+    "deductible": 143,
+    "patient": 143,
+    "company": 1282,
+    "patientWithTax": 164.45,
+    "companyWithTax": 1474.3
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "approved",
+   "dLeft": 143,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 16.67,
+    "net": 316.66,
+    "deductible": 63.33,
+    "patient": 63.33,
+    "company": 253.33,
+    "patientWithTax": 72.83,
+    "companyWithTax": 291.33
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "approved",
+   "dLeft": 1000,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 4.5,
+    "net": 85.5,
+    "deductible": 17.1,
+    "patient": 17.1,
+    "company": 68.4,
+    "patientWithTax": 19.66,
+    "companyWithTax": 78.66
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "approved",
+   "dLeft": 1000,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 12.5,
+    "net": 237.5,
+    "deductible": 47.5,
+    "patient": 47.5,
+    "company": 190,
+    "patientWithTax": 54.62,
+    "companyWithTax": 218.5
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "approved",
+   "dLeft": 1000,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 75,
+    "net": 1425,
+    "deductible": 285,
+    "patient": 285,
+    "company": 1140,
+    "patientWithTax": 327.75,
+    "companyWithTax": 1311
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "approved",
+   "dLeft": 1000,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 16.67,
+    "net": 316.66,
+    "deductible": 63.33,
+    "patient": 63.33,
+    "company": 253.33,
+    "patientWithTax": 72.83,
+    "companyWithTax": 291.33
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "partial",
+   "dLeft": 0,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 4.5,
+    "net": 85.5,
+    "deductible": 0,
+    "patient": 34.2,
+    "company": 51.3,
+    "patientWithTax": 39.33,
+    "companyWithTax": 58.99
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "partial",
+   "dLeft": 0,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 12.5,
+    "net": 237.5,
+    "deductible": 0,
+    "patient": 95,
+    "company": 142.5,
+    "patientWithTax": 109.25,
+    "companyWithTax": 163.88
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "partial",
+   "dLeft": 0,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 75,
+    "net": 1425,
+    "deductible": 0,
+    "patient": 570,
+    "company": 855,
+    "patientWithTax": 655.5,
+    "companyWithTax": 983.25
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "partial",
+   "dLeft": 0,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 16.67,
+    "net": 316.66,
+    "deductible": 0,
+    "patient": 126.66,
+    "company": 190,
+    "patientWithTax": 145.66,
+    "companyWithTax": 218.5
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "partial",
+   "dLeft": 10,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 4.5,
+    "net": 85.5,
+    "deductible": 10,
+    "patient": 44.2,
+    "company": 41.3,
+    "patientWithTax": 50.83,
+    "companyWithTax": 47.49
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "partial",
+   "dLeft": 10,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 12.5,
+    "net": 237.5,
+    "deductible": 10,
+    "patient": 105,
+    "company": 132.5,
+    "patientWithTax": 120.75,
+    "companyWithTax": 152.38
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "partial",
+   "dLeft": 10,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 75,
+    "net": 1425,
+    "deductible": 10,
+    "patient": 580,
+    "company": 845,
+    "patientWithTax": 667,
+    "companyWithTax": 971.75
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "partial",
+   "dLeft": 10,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 16.67,
+    "net": 316.66,
+    "deductible": 10,
+    "patient": 136.66,
+    "company": 180,
+    "patientWithTax": 157.16,
+    "companyWithTax": 207
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "partial",
+   "dLeft": 143,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 4.5,
+    "net": 85.5,
+    "deductible": 10.26,
+    "patient": 44.46,
+    "company": 41.04,
+    "patientWithTax": 51.13,
+    "companyWithTax": 47.2
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "partial",
+   "dLeft": 143,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 12.5,
+    "net": 237.5,
+    "deductible": 28.5,
+    "patient": 123.5,
+    "company": 114,
+    "patientWithTax": 142.02,
+    "companyWithTax": 131.1
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "partial",
+   "dLeft": 143,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 75,
+    "net": 1425,
+    "deductible": 143,
+    "patient": 713,
+    "company": 712,
+    "patientWithTax": 819.95,
+    "companyWithTax": 818.8
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "partial",
+   "dLeft": 143,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 16.67,
+    "net": 316.66,
+    "deductible": 38,
+    "patient": 164.66,
+    "company": 152,
+    "patientWithTax": 189.36,
+    "companyWithTax": 174.8
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "partial",
+   "dLeft": 1000,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 4.5,
+    "net": 85.5,
+    "deductible": 10.26,
+    "patient": 44.46,
+    "company": 41.04,
+    "patientWithTax": 51.13,
+    "companyWithTax": 47.2
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "partial",
+   "dLeft": 1000,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 12.5,
+    "net": 237.5,
+    "deductible": 28.5,
+    "patient": 123.5,
+    "company": 114,
+    "patientWithTax": 142.02,
+    "companyWithTax": 131.1
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "partial",
+   "dLeft": 1000,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 75,
+    "net": 1425,
+    "deductible": 171,
+    "patient": 741,
+    "company": 684,
+    "patientWithTax": 852.15,
+    "companyWithTax": 786.6
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "partial",
+   "dLeft": 1000,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 16.67,
+    "net": 316.66,
+    "deductible": 38,
+    "patient": 164.66,
+    "company": 152,
+    "patientWithTax": 189.36,
+    "companyWithTax": 174.8
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "pending",
+   "dLeft": 0,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 4.5,
+    "net": 85.5,
+    "deductible": 0,
+    "patient": 85.5,
+    "company": 0,
+    "patientWithTax": 98.32,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "pending",
+   "dLeft": 0,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 12.5,
+    "net": 237.5,
+    "deductible": 0,
+    "patient": 237.5,
+    "company": 0,
+    "patientWithTax": 273.13,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "pending",
+   "dLeft": 0,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 75,
+    "net": 1425,
+    "deductible": 0,
+    "patient": 1425,
+    "company": 0,
+    "patientWithTax": 1638.75,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "pending",
+   "dLeft": 0,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 16.67,
+    "net": 316.66,
+    "deductible": 0,
+    "patient": 316.66,
+    "company": 0,
+    "patientWithTax": 364.16,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "pending",
+   "dLeft": 10,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 4.5,
+    "net": 85.5,
+    "deductible": 0,
+    "patient": 85.5,
+    "company": 0,
+    "patientWithTax": 98.32,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "pending",
+   "dLeft": 10,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 12.5,
+    "net": 237.5,
+    "deductible": 0,
+    "patient": 237.5,
+    "company": 0,
+    "patientWithTax": 273.13,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "pending",
+   "dLeft": 10,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 75,
+    "net": 1425,
+    "deductible": 0,
+    "patient": 1425,
+    "company": 0,
+    "patientWithTax": 1638.75,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "pending",
+   "dLeft": 10,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 16.67,
+    "net": 316.66,
+    "deductible": 0,
+    "patient": 316.66,
+    "company": 0,
+    "patientWithTax": 364.16,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "pending",
+   "dLeft": 143,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 4.5,
+    "net": 85.5,
+    "deductible": 0,
+    "patient": 85.5,
+    "company": 0,
+    "patientWithTax": 98.32,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "pending",
+   "dLeft": 143,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 12.5,
+    "net": 237.5,
+    "deductible": 0,
+    "patient": 237.5,
+    "company": 0,
+    "patientWithTax": 273.13,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "pending",
+   "dLeft": 143,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 75,
+    "net": 1425,
+    "deductible": 0,
+    "patient": 1425,
+    "company": 0,
+    "patientWithTax": 1638.75,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "pending",
+   "dLeft": 143,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 16.67,
+    "net": 316.66,
+    "deductible": 0,
+    "patient": 316.66,
+    "company": 0,
+    "patientWithTax": 364.16,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "pending",
+   "dLeft": 1000,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 4.5,
+    "net": 85.5,
+    "deductible": 0,
+    "patient": 85.5,
+    "company": 0,
+    "patientWithTax": 98.32,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "pending",
+   "dLeft": 1000,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 12.5,
+    "net": 237.5,
+    "deductible": 0,
+    "patient": 237.5,
+    "company": 0,
+    "patientWithTax": 273.13,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "pending",
+   "dLeft": 1000,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 75,
+    "net": 1425,
+    "deductible": 0,
+    "patient": 1425,
+    "company": 0,
+    "patientWithTax": 1638.75,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "pending",
+   "dLeft": 1000,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 16.67,
+    "net": 316.66,
+    "deductible": 0,
+    "patient": 316.66,
+    "company": 0,
+    "patientWithTax": 364.16,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "rejected",
+   "dLeft": 0,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 4.5,
+    "net": 85.5,
+    "deductible": 0,
+    "patient": 85.5,
+    "company": 0,
+    "patientWithTax": 98.32,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "rejected",
+   "dLeft": 0,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 12.5,
+    "net": 237.5,
+    "deductible": 0,
+    "patient": 237.5,
+    "company": 0,
+    "patientWithTax": 273.13,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "rejected",
+   "dLeft": 0,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 75,
+    "net": 1425,
+    "deductible": 0,
+    "patient": 1425,
+    "company": 0,
+    "patientWithTax": 1638.75,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "rejected",
+   "dLeft": 0,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 16.67,
+    "net": 316.66,
+    "deductible": 0,
+    "patient": 316.66,
+    "company": 0,
+    "patientWithTax": 364.16,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "rejected",
+   "dLeft": 10,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 4.5,
+    "net": 85.5,
+    "deductible": 0,
+    "patient": 85.5,
+    "company": 0,
+    "patientWithTax": 98.32,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "rejected",
+   "dLeft": 10,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 12.5,
+    "net": 237.5,
+    "deductible": 0,
+    "patient": 237.5,
+    "company": 0,
+    "patientWithTax": 273.13,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "rejected",
+   "dLeft": 10,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 75,
+    "net": 1425,
+    "deductible": 0,
+    "patient": 1425,
+    "company": 0,
+    "patientWithTax": 1638.75,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "rejected",
+   "dLeft": 10,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 16.67,
+    "net": 316.66,
+    "deductible": 0,
+    "patient": 316.66,
+    "company": 0,
+    "patientWithTax": 364.16,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "rejected",
+   "dLeft": 143,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 4.5,
+    "net": 85.5,
+    "deductible": 0,
+    "patient": 85.5,
+    "company": 0,
+    "patientWithTax": 98.32,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "rejected",
+   "dLeft": 143,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 12.5,
+    "net": 237.5,
+    "deductible": 0,
+    "patient": 237.5,
+    "company": 0,
+    "patientWithTax": 273.13,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "rejected",
+   "dLeft": 143,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 75,
+    "net": 1425,
+    "deductible": 0,
+    "patient": 1425,
+    "company": 0,
+    "patientWithTax": 1638.75,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "rejected",
+   "dLeft": 143,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 16.67,
+    "net": 316.66,
+    "deductible": 0,
+    "patient": 316.66,
+    "company": 0,
+    "patientWithTax": 364.16,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "rejected",
+   "dLeft": 1000,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 4.5,
+    "net": 85.5,
+    "deductible": 0,
+    "patient": 85.5,
+    "company": 0,
+    "patientWithTax": 98.32,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "rejected",
+   "dLeft": 1000,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 12.5,
+    "net": 237.5,
+    "deductible": 0,
+    "patient": 237.5,
+    "company": 0,
+    "patientWithTax": 273.13,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "rejected",
+   "dLeft": 1000,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 75,
+    "net": 1425,
+    "deductible": 0,
+    "patient": 1425,
+    "company": 0,
+    "patientWithTax": 1638.75,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "rejected",
+   "dLeft": 1000,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 16.67,
+    "net": 316.66,
+    "deductible": 0,
+    "patient": 316.66,
+    "company": 0,
+    "patientWithTax": 364.16,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notcovered",
+   "dLeft": 0,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 4.5,
+    "net": 85.5,
+    "deductible": 0,
+    "patient": 85.5,
+    "company": 0,
+    "patientWithTax": 98.32,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notcovered",
+   "dLeft": 0,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 12.5,
+    "net": 237.5,
+    "deductible": 0,
+    "patient": 237.5,
+    "company": 0,
+    "patientWithTax": 273.13,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notcovered",
+   "dLeft": 0,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 75,
+    "net": 1425,
+    "deductible": 0,
+    "patient": 1425,
+    "company": 0,
+    "patientWithTax": 1638.75,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notcovered",
+   "dLeft": 0,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 16.67,
+    "net": 316.66,
+    "deductible": 0,
+    "patient": 316.66,
+    "company": 0,
+    "patientWithTax": 364.16,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notcovered",
+   "dLeft": 10,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 4.5,
+    "net": 85.5,
+    "deductible": 0,
+    "patient": 85.5,
+    "company": 0,
+    "patientWithTax": 98.32,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notcovered",
+   "dLeft": 10,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 12.5,
+    "net": 237.5,
+    "deductible": 0,
+    "patient": 237.5,
+    "company": 0,
+    "patientWithTax": 273.13,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notcovered",
+   "dLeft": 10,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 75,
+    "net": 1425,
+    "deductible": 0,
+    "patient": 1425,
+    "company": 0,
+    "patientWithTax": 1638.75,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notcovered",
+   "dLeft": 10,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 16.67,
+    "net": 316.66,
+    "deductible": 0,
+    "patient": 316.66,
+    "company": 0,
+    "patientWithTax": 364.16,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notcovered",
+   "dLeft": 143,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 4.5,
+    "net": 85.5,
+    "deductible": 0,
+    "patient": 85.5,
+    "company": 0,
+    "patientWithTax": 98.32,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notcovered",
+   "dLeft": 143,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 12.5,
+    "net": 237.5,
+    "deductible": 0,
+    "patient": 237.5,
+    "company": 0,
+    "patientWithTax": 273.13,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notcovered",
+   "dLeft": 143,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 75,
+    "net": 1425,
+    "deductible": 0,
+    "patient": 1425,
+    "company": 0,
+    "patientWithTax": 1638.75,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notcovered",
+   "dLeft": 143,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 16.67,
+    "net": 316.66,
+    "deductible": 0,
+    "patient": 316.66,
+    "company": 0,
+    "patientWithTax": 364.16,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notcovered",
+   "dLeft": 1000,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 4.5,
+    "net": 85.5,
+    "deductible": 0,
+    "patient": 85.5,
+    "company": 0,
+    "patientWithTax": 98.32,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notcovered",
+   "dLeft": 1000,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 12.5,
+    "net": 237.5,
+    "deductible": 0,
+    "patient": 237.5,
+    "company": 0,
+    "patientWithTax": 273.13,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notcovered",
+   "dLeft": 1000,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 75,
+    "net": 1425,
+    "deductible": 0,
+    "patient": 1425,
+    "company": 0,
+    "patientWithTax": 1638.75,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notcovered",
+   "dLeft": 1000,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 16.67,
+    "net": 316.66,
+    "deductible": 0,
+    "patient": 316.66,
+    "company": 0,
+    "patientWithTax": 364.16,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notinsured",
+   "dLeft": 0,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 4.5,
+    "net": 85.5,
+    "deductible": 0,
+    "patient": 85.5,
+    "company": 0,
+    "patientWithTax": 98.32,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notinsured",
+   "dLeft": 0,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 12.5,
+    "net": 237.5,
+    "deductible": 0,
+    "patient": 237.5,
+    "company": 0,
+    "patientWithTax": 273.13,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notinsured",
+   "dLeft": 0,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 75,
+    "net": 1425,
+    "deductible": 0,
+    "patient": 1425,
+    "company": 0,
+    "patientWithTax": 1638.75,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notinsured",
+   "dLeft": 0,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 16.67,
+    "net": 316.66,
+    "deductible": 0,
+    "patient": 316.66,
+    "company": 0,
+    "patientWithTax": 364.16,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notinsured",
+   "dLeft": 10,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 4.5,
+    "net": 85.5,
+    "deductible": 0,
+    "patient": 85.5,
+    "company": 0,
+    "patientWithTax": 98.32,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notinsured",
+   "dLeft": 10,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 12.5,
+    "net": 237.5,
+    "deductible": 0,
+    "patient": 237.5,
+    "company": 0,
+    "patientWithTax": 273.13,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notinsured",
+   "dLeft": 10,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 75,
+    "net": 1425,
+    "deductible": 0,
+    "patient": 1425,
+    "company": 0,
+    "patientWithTax": 1638.75,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notinsured",
+   "dLeft": 10,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 16.67,
+    "net": 316.66,
+    "deductible": 0,
+    "patient": 316.66,
+    "company": 0,
+    "patientWithTax": 364.16,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notinsured",
+   "dLeft": 143,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 4.5,
+    "net": 85.5,
+    "deductible": 0,
+    "patient": 85.5,
+    "company": 0,
+    "patientWithTax": 98.32,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notinsured",
+   "dLeft": 143,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 12.5,
+    "net": 237.5,
+    "deductible": 0,
+    "patient": 237.5,
+    "company": 0,
+    "patientWithTax": 273.13,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notinsured",
+   "dLeft": 143,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 75,
+    "net": 1425,
+    "deductible": 0,
+    "patient": 1425,
+    "company": 0,
+    "patientWithTax": 1638.75,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notinsured",
+   "dLeft": 143,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 16.67,
+    "net": 316.66,
+    "deductible": 0,
+    "patient": 316.66,
+    "company": 0,
+    "patientWithTax": 364.16,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notinsured",
+   "dLeft": 1000,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 4.5,
+    "net": 85.5,
+    "deductible": 0,
+    "patient": 85.5,
+    "company": 0,
+    "patientWithTax": 98.32,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notinsured",
+   "dLeft": 1000,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 12.5,
+    "net": 237.5,
+    "deductible": 0,
+    "patient": 237.5,
+    "company": 0,
+    "patientWithTax": 273.13,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notinsured",
+   "dLeft": 1000,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 75,
+    "net": 1425,
+    "deductible": 0,
+    "patient": 1425,
+    "company": 0,
+    "patientWithTax": 1638.75,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "notinsured",
+   "dLeft": 1000,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 16.67,
+    "net": 316.66,
+    "deductible": 0,
+    "patient": 316.66,
+    "company": 0,
+    "patientWithTax": 364.16,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "approved",
+   "dLeft": 0,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 0,
+    "company": 90,
+    "patientWithTax": 0,
+    "companyWithTax": 103.5
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "approved",
+   "dLeft": 0,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 0,
+    "company": 250,
+    "patientWithTax": 0,
+    "companyWithTax": 287.5
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "approved",
+   "dLeft": 0,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 0,
+    "company": 1500,
+    "patientWithTax": 0,
+    "companyWithTax": 1725
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "approved",
+   "dLeft": 0,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 0,
+    "company": 333.33,
+    "patientWithTax": 0,
+    "companyWithTax": 383.33
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "approved",
+   "dLeft": 10,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 10,
+    "patient": 10,
+    "company": 80,
+    "patientWithTax": 11.5,
+    "companyWithTax": 92
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "approved",
+   "dLeft": 10,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 10,
+    "patient": 10,
+    "company": 240,
+    "patientWithTax": 11.5,
+    "companyWithTax": 276
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "approved",
+   "dLeft": 10,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 10,
+    "patient": 10,
+    "company": 1490,
+    "patientWithTax": 11.5,
+    "companyWithTax": 1713.5
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "approved",
+   "dLeft": 10,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 10,
+    "patient": 10,
+    "company": 323.33,
+    "patientWithTax": 11.5,
+    "companyWithTax": 371.83
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "approved",
+   "dLeft": 143,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 18,
+    "patient": 18,
+    "company": 72,
+    "patientWithTax": 20.7,
+    "companyWithTax": 82.8
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "approved",
+   "dLeft": 143,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 50,
+    "patient": 50,
+    "company": 200,
+    "patientWithTax": 57.5,
+    "companyWithTax": 230
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "approved",
+   "dLeft": 143,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 143,
+    "patient": 143,
+    "company": 1357,
+    "patientWithTax": 164.45,
+    "companyWithTax": 1560.55
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "approved",
+   "dLeft": 143,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 66.67,
+    "patient": 66.67,
+    "company": 266.66,
+    "patientWithTax": 76.67,
+    "companyWithTax": 306.66
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "approved",
+   "dLeft": 1000,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 18,
+    "patient": 18,
+    "company": 72,
+    "patientWithTax": 20.7,
+    "companyWithTax": 82.8
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "approved",
+   "dLeft": 1000,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 50,
+    "patient": 50,
+    "company": 200,
+    "patientWithTax": 57.5,
+    "companyWithTax": 230
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "approved",
+   "dLeft": 1000,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 300,
+    "patient": 300,
+    "company": 1200,
+    "patientWithTax": 345,
+    "companyWithTax": 1380
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "approved",
+   "dLeft": 1000,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 66.67,
+    "patient": 66.67,
+    "company": 266.66,
+    "patientWithTax": 76.67,
+    "companyWithTax": 306.66
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "partial",
+   "dLeft": 0,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 36,
+    "company": 54,
+    "patientWithTax": 41.4,
+    "companyWithTax": 62.1
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "partial",
+   "dLeft": 0,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 100,
+    "company": 150,
+    "patientWithTax": 115,
+    "companyWithTax": 172.5
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "partial",
+   "dLeft": 0,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 600,
+    "company": 900,
+    "patientWithTax": 690,
+    "companyWithTax": 1035
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "partial",
+   "dLeft": 0,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 133.33,
+    "company": 200,
+    "patientWithTax": 153.33,
+    "companyWithTax": 230
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "partial",
+   "dLeft": 10,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 10,
+    "patient": 46,
+    "company": 44,
+    "patientWithTax": 52.9,
+    "companyWithTax": 50.6
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "partial",
+   "dLeft": 10,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 10,
+    "patient": 110,
+    "company": 140,
+    "patientWithTax": 126.5,
+    "companyWithTax": 161
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "partial",
+   "dLeft": 10,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 10,
+    "patient": 610,
+    "company": 890,
+    "patientWithTax": 701.5,
+    "companyWithTax": 1023.5
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "partial",
+   "dLeft": 10,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 10,
+    "patient": 143.33,
+    "company": 190,
+    "patientWithTax": 164.83,
+    "companyWithTax": 218.5
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "partial",
+   "dLeft": 143,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 10.8,
+    "patient": 46.8,
+    "company": 43.2,
+    "patientWithTax": 53.82,
+    "companyWithTax": 49.68
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "partial",
+   "dLeft": 143,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 30,
+    "patient": 130,
+    "company": 120,
+    "patientWithTax": 149.5,
+    "companyWithTax": 138
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "partial",
+   "dLeft": 143,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 143,
+    "patient": 743,
+    "company": 757,
+    "patientWithTax": 854.45,
+    "companyWithTax": 870.55
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "partial",
+   "dLeft": 143,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 40,
+    "patient": 173.33,
+    "company": 160,
+    "patientWithTax": 199.33,
+    "companyWithTax": 184
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "partial",
+   "dLeft": 1000,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 10.8,
+    "patient": 46.8,
+    "company": 43.2,
+    "patientWithTax": 53.82,
+    "companyWithTax": 49.68
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "partial",
+   "dLeft": 1000,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 30,
+    "patient": 130,
+    "company": 120,
+    "patientWithTax": 149.5,
+    "companyWithTax": 138
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "partial",
+   "dLeft": 1000,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 180,
+    "patient": 780,
+    "company": 720,
+    "patientWithTax": 897,
+    "companyWithTax": 828
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "partial",
+   "dLeft": 1000,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 40,
+    "patient": 173.33,
+    "company": 160,
+    "patientWithTax": 199.33,
+    "companyWithTax": 184
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "pending",
+   "dLeft": 0,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "pending",
+   "dLeft": 0,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "pending",
+   "dLeft": 0,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "pending",
+   "dLeft": 0,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "pending",
+   "dLeft": 10,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "pending",
+   "dLeft": 10,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "pending",
+   "dLeft": 10,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "pending",
+   "dLeft": 10,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "pending",
+   "dLeft": 143,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "pending",
+   "dLeft": 143,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "pending",
+   "dLeft": 143,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "pending",
+   "dLeft": 143,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "pending",
+   "dLeft": 1000,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "pending",
+   "dLeft": 1000,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "pending",
+   "dLeft": 1000,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "pending",
+   "dLeft": 1000,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "rejected",
+   "dLeft": 0,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "rejected",
+   "dLeft": 0,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "rejected",
+   "dLeft": 0,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "rejected",
+   "dLeft": 0,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "rejected",
+   "dLeft": 10,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "rejected",
+   "dLeft": 10,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "rejected",
+   "dLeft": 10,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "rejected",
+   "dLeft": 10,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "rejected",
+   "dLeft": 143,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "rejected",
+   "dLeft": 143,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "rejected",
+   "dLeft": 143,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "rejected",
+   "dLeft": 143,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "rejected",
+   "dLeft": 1000,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "rejected",
+   "dLeft": 1000,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "rejected",
+   "dLeft": 1000,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "rejected",
+   "dLeft": 1000,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notcovered",
+   "dLeft": 0,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notcovered",
+   "dLeft": 0,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notcovered",
+   "dLeft": 0,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notcovered",
+   "dLeft": 0,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notcovered",
+   "dLeft": 10,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notcovered",
+   "dLeft": 10,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notcovered",
+   "dLeft": 10,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notcovered",
+   "dLeft": 10,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notcovered",
+   "dLeft": 143,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notcovered",
+   "dLeft": 143,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notcovered",
+   "dLeft": 143,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notcovered",
+   "dLeft": 143,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notcovered",
+   "dLeft": 1000,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notcovered",
+   "dLeft": 1000,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notcovered",
+   "dLeft": 1000,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notcovered",
+   "dLeft": 1000,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notinsured",
+   "dLeft": 0,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notinsured",
+   "dLeft": 0,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notinsured",
+   "dLeft": 0,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notinsured",
+   "dLeft": 0,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notinsured",
+   "dLeft": 10,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notinsured",
+   "dLeft": 10,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notinsured",
+   "dLeft": 10,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notinsured",
+   "dLeft": 10,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notinsured",
+   "dLeft": 143,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notinsured",
+   "dLeft": 143,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notinsured",
+   "dLeft": 143,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notinsured",
+   "dLeft": 143,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notinsured",
+   "dLeft": 1000,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notinsured",
+   "dLeft": 1000,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notinsured",
+   "dLeft": 1000,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "ncciA",
+   "ins": "notinsured",
+   "dLeft": 1000,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "approved",
+   "dLeft": 0,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 0,
+    "company": 90,
+    "patientWithTax": 0,
+    "companyWithTax": 103.5
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "approved",
+   "dLeft": 0,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 0,
+    "company": 250,
+    "patientWithTax": 0,
+    "companyWithTax": 287.5
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "approved",
+   "dLeft": 0,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 0,
+    "company": 1500,
+    "patientWithTax": 0,
+    "companyWithTax": 1725
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "approved",
+   "dLeft": 0,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 0,
+    "company": 333.33,
+    "patientWithTax": 0,
+    "companyWithTax": 383.33
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "approved",
+   "dLeft": 10,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 10,
+    "patient": 10,
+    "company": 80,
+    "patientWithTax": 11.5,
+    "companyWithTax": 92
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "approved",
+   "dLeft": 10,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 10,
+    "patient": 10,
+    "company": 240,
+    "patientWithTax": 11.5,
+    "companyWithTax": 276
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "approved",
+   "dLeft": 10,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 10,
+    "patient": 10,
+    "company": 1490,
+    "patientWithTax": 11.5,
+    "companyWithTax": 1713.5
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "approved",
+   "dLeft": 10,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 10,
+    "patient": 10,
+    "company": 323.33,
+    "patientWithTax": 11.5,
+    "companyWithTax": 371.83
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "approved",
+   "dLeft": 143,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 22.5,
+    "patient": 22.5,
+    "company": 67.5,
+    "patientWithTax": 25.87,
+    "companyWithTax": 77.63
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "approved",
+   "dLeft": 143,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 62.5,
+    "patient": 62.5,
+    "company": 187.5,
+    "patientWithTax": 71.88,
+    "companyWithTax": 215.62
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "approved",
+   "dLeft": 143,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 143,
+    "patient": 143,
+    "company": 1357,
+    "patientWithTax": 164.45,
+    "companyWithTax": 1560.55
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "approved",
+   "dLeft": 143,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 83.33,
+    "patient": 83.33,
+    "company": 250,
+    "patientWithTax": 95.83,
+    "companyWithTax": 287.5
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "approved",
+   "dLeft": 1000,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 22.5,
+    "patient": 22.5,
+    "company": 67.5,
+    "patientWithTax": 25.87,
+    "companyWithTax": 77.63
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "approved",
+   "dLeft": 1000,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 62.5,
+    "patient": 62.5,
+    "company": 187.5,
+    "patientWithTax": 71.88,
+    "companyWithTax": 215.62
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "approved",
+   "dLeft": 1000,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 375,
+    "patient": 375,
+    "company": 1125,
+    "patientWithTax": 431.25,
+    "companyWithTax": 1293.75
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "approved",
+   "dLeft": 1000,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 83.33,
+    "patient": 83.33,
+    "company": 250,
+    "patientWithTax": 95.83,
+    "companyWithTax": 287.5
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "partial",
+   "dLeft": 0,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 36,
+    "company": 54,
+    "patientWithTax": 41.4,
+    "companyWithTax": 62.1
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "partial",
+   "dLeft": 0,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 100,
+    "company": 150,
+    "patientWithTax": 115,
+    "companyWithTax": 172.5
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "partial",
+   "dLeft": 0,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 600,
+    "company": 900,
+    "patientWithTax": 690,
+    "companyWithTax": 1035
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "partial",
+   "dLeft": 0,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 133.33,
+    "company": 200,
+    "patientWithTax": 153.33,
+    "companyWithTax": 230
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "partial",
+   "dLeft": 10,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 10,
+    "patient": 46,
+    "company": 44,
+    "patientWithTax": 52.9,
+    "companyWithTax": 50.6
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "partial",
+   "dLeft": 10,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 10,
+    "patient": 110,
+    "company": 140,
+    "patientWithTax": 126.5,
+    "companyWithTax": 161
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "partial",
+   "dLeft": 10,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 10,
+    "patient": 610,
+    "company": 890,
+    "patientWithTax": 701.5,
+    "companyWithTax": 1023.5
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "partial",
+   "dLeft": 10,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 10,
+    "patient": 143.33,
+    "company": 190,
+    "patientWithTax": 164.83,
+    "companyWithTax": 218.5
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "partial",
+   "dLeft": 143,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 13.5,
+    "patient": 49.5,
+    "company": 40.5,
+    "patientWithTax": 56.92,
+    "companyWithTax": 46.57
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "partial",
+   "dLeft": 143,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 37.5,
+    "patient": 137.5,
+    "company": 112.5,
+    "patientWithTax": 158.13,
+    "companyWithTax": 129.38
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "partial",
+   "dLeft": 143,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 143,
+    "patient": 743,
+    "company": 757,
+    "patientWithTax": 854.45,
+    "companyWithTax": 870.55
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "partial",
+   "dLeft": 143,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 50,
+    "patient": 183.33,
+    "company": 150,
+    "patientWithTax": 210.83,
+    "companyWithTax": 172.5
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "partial",
+   "dLeft": 1000,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 13.5,
+    "patient": 49.5,
+    "company": 40.5,
+    "patientWithTax": 56.92,
+    "companyWithTax": 46.57
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "partial",
+   "dLeft": 1000,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 37.5,
+    "patient": 137.5,
+    "company": 112.5,
+    "patientWithTax": 158.13,
+    "companyWithTax": 129.38
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "partial",
+   "dLeft": 1000,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 225,
+    "patient": 825,
+    "company": 675,
+    "patientWithTax": 948.75,
+    "companyWithTax": 776.25
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "partial",
+   "dLeft": 1000,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 50,
+    "patient": 183.33,
+    "company": 150,
+    "patientWithTax": 210.83,
+    "companyWithTax": 172.5
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "pending",
+   "dLeft": 0,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "pending",
+   "dLeft": 0,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "pending",
+   "dLeft": 0,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "pending",
+   "dLeft": 0,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "pending",
+   "dLeft": 10,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "pending",
+   "dLeft": 10,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "pending",
+   "dLeft": 10,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "pending",
+   "dLeft": 10,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "pending",
+   "dLeft": 143,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "pending",
+   "dLeft": 143,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "pending",
+   "dLeft": 143,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "pending",
+   "dLeft": 143,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "pending",
+   "dLeft": 1000,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "pending",
+   "dLeft": 1000,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "pending",
+   "dLeft": 1000,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "pending",
+   "dLeft": 1000,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "rejected",
+   "dLeft": 0,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "rejected",
+   "dLeft": 0,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "rejected",
+   "dLeft": 0,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "rejected",
+   "dLeft": 0,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "rejected",
+   "dLeft": 10,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "rejected",
+   "dLeft": 10,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "rejected",
+   "dLeft": 10,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "rejected",
+   "dLeft": 10,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "rejected",
+   "dLeft": 143,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "rejected",
+   "dLeft": 143,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "rejected",
+   "dLeft": 143,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "rejected",
+   "dLeft": 143,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "rejected",
+   "dLeft": 1000,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "rejected",
+   "dLeft": 1000,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "rejected",
+   "dLeft": 1000,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "rejected",
+   "dLeft": 1000,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notcovered",
+   "dLeft": 0,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notcovered",
+   "dLeft": 0,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notcovered",
+   "dLeft": 0,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notcovered",
+   "dLeft": 0,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notcovered",
+   "dLeft": 10,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notcovered",
+   "dLeft": 10,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notcovered",
+   "dLeft": 10,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notcovered",
+   "dLeft": 10,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notcovered",
+   "dLeft": 143,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notcovered",
+   "dLeft": 143,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notcovered",
+   "dLeft": 143,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notcovered",
+   "dLeft": 143,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notcovered",
+   "dLeft": 1000,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notcovered",
+   "dLeft": 1000,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notcovered",
+   "dLeft": 1000,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notcovered",
+   "dLeft": 1000,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notinsured",
+   "dLeft": 0,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notinsured",
+   "dLeft": 0,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notinsured",
+   "dLeft": 0,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notinsured",
+   "dLeft": 0,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notinsured",
+   "dLeft": 10,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notinsured",
+   "dLeft": 10,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notinsured",
+   "dLeft": 10,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notinsured",
+   "dLeft": 10,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notinsured",
+   "dLeft": 143,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notinsured",
+   "dLeft": 143,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notinsured",
+   "dLeft": 143,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notinsured",
+   "dLeft": 143,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notinsured",
+   "dLeft": 1000,
+   "price": 90,
+   "out": {
+    "gross": 90,
+    "discount": 0,
+    "net": 90,
+    "deductible": 0,
+    "patient": 90,
+    "company": 0,
+    "patientWithTax": 103.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notinsured",
+   "dLeft": 1000,
+   "price": 250,
+   "out": {
+    "gross": 250,
+    "discount": 0,
+    "net": 250,
+    "deductible": 0,
+    "patient": 250,
+    "company": 0,
+    "patientWithTax": 287.5,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notinsured",
+   "dLeft": 1000,
+   "price": 1500,
+   "out": {
+    "gross": 1500,
+    "discount": 0,
+    "net": 1500,
+    "deductible": 0,
+    "patient": 1500,
+    "company": 0,
+    "patientWithTax": 1725,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "tawSilver",
+   "ins": "notinsured",
+   "dLeft": 1000,
+   "price": 333.33,
+   "out": {
+    "gross": 333.33,
+    "discount": 0,
+    "net": 333.33,
+    "deductible": 0,
+    "patient": 333.33,
+    "company": 0,
+    "patientWithTax": 383.33,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "approved",
+   "dLeft": 143,
+   "price": 300,
+   "selfPay": true,
+   "out": {
+    "gross": 300,
+    "discount": 0,
+    "net": 300,
+    "deductible": 0,
+    "patient": 300,
+    "company": 0,
+    "patientWithTax": 345,
+    "companyWithTax": 0
+   }
+  },
+  {
+   "plan": "bupaGold",
+   "ins": "partial",
+   "dLeft": 143,
+   "price": 300,
+   "selfPay": true,
+   "out": {
+    "gross": 300,
+    "discount": 0,
+    "net": 300,
+    "deductible": 0,
+    "patient": 300,
+    "company": 0,
+    "patientWithTax": 345,
+    "companyWithTax": 0
+   }
+  }
+ ],
+ "visits": [
+  {
+   "id": 1,
+   "mrn": "7000203",
+   "visitNo": "V100001",
+   "dedPool": {
+    "cap": 150,
+    "used": 0,
+    "left": 150
+   },
+   "priceConsult": {
+    "patient": 46,
+    "company": 184,
+    "deductible": 40,
+    "rows": [
+     {
+      "code": "CON-101",
+      "calc": {
+       "gross": 200,
+       "discount": 0,
+       "net": 200,
+       "deductible": 40,
+       "patient": 40,
+       "company": 160,
+       "patientWithTax": 46,
+       "companyWithTax": 184
+      }
+     }
+    ]
+   },
+   "priceApproved": {
+    "patient": 0,
+    "company": 0,
+    "deductible": 0,
+    "rows": []
+   },
+   "priceAllApproved": {
+    "patient": 0,
+    "company": 0,
+    "deductible": 0,
+    "rows": []
+   },
+   "step": {
+    "key": "CONSULT_BILL",
+    "tone": "",
+    "tag": "Consultation",
+    "q": "Approval received. Do you wish to bill the consultation?",
+    "sub": "Paediatric Consultation · <b>Approved</b> · orders stay locked until this is settled.",
+    "amt": 46,
+    "amtLabel": "patient share",
+    "amts": [],
+    "ext": {
+     "title": "What is being charged",
+     "codes": [
+      "CON-101"
+     ],
+     "selectable": false,
+     "note": null
+    },
+    "buttons": [
+     "Yes, bill it"
+    ],
+    "back": false
+   },
+   "stories": [
+    "visit",
+    "orders",
+    "addorders"
+   ],
+   "main": "visit",
+   "stages": {
+    "visit": {
+     "index": 1,
+     "skipped": []
+    },
+    "orders": {
+     "index": 0,
+     "skipped": [],
+     "locked": true
+    },
+    "addorders": {
+     "index": 0,
+     "skipped": []
+    }
+   },
+   "pending": {
+    "kind": "act",
+    "owed": 0
+   },
+   "collected": 0,
+   "parent": null,
+   "root": 1,
+   "badges": {
+    "visit": "Bill consultation",
+    "orders": "Opens when the doctor sees the patient",
+    "addorders": "Packages & tests"
+   },
+   "locks": {
+    "visit": "",
+    "orders": "Locked until the visit is invoiced and the doctor sees the patient",
+    "pkgvisit": "",
+    "refund": "",
+    "replace": "",
+    "package": "",
+    "credit": "",
+    "payer": "",
+    "addorders": "",
+    "advadd": "",
+    "advrefund": "",
+    "walkin": ""
+   },
+   "invoices": []
+  },
+  {
+   "id": 2,
+   "mrn": "7000667",
+   "visitNo": "V100002",
+   "dedPool": {
+    "cap": 200,
+    "used": 57,
+    "left": 143
+   },
+   "priceConsult": {
+    "patient": 65.55,
+    "company": 262.2,
+    "deductible": 57,
+    "rows": [
+     {
+      "code": "CON-204",
+      "calc": {
+       "gross": 300,
+       "discount": 15,
+       "net": 285,
+       "deductible": 57,
+       "patient": 57,
+       "company": 228,
+       "patientWithTax": 65.55,
+       "companyWithTax": 262.2
+      }
+     }
+    ]
+   },
+   "priceApproved": {
+    "patient": 273.69,
+    "company": 1769.27,
+    "deductible": 143,
+    "rows": [
+     {
+      "code": "LAB-010",
+      "calc": {
+       "gross": 120,
+       "discount": 6,
+       "net": 114,
+       "deductible": 22.8,
+       "patient": 22.8,
+       "company": 91.2,
+       "patientWithTax": 26.22,
+       "companyWithTax": 104.88
+      }
+     },
+     {
+      "code": "RAD-050",
+      "calc": {
+       "gross": 250,
+       "discount": 12.5,
+       "net": 237.5,
+       "deductible": 28.5,
+       "patient": 123.5,
+       "company": 114,
+       "patientWithTax": 142.02,
+       "companyWithTax": 131.1
+      }
+     },
+     {
+      "code": "PKG-100",
+      "calc": {
+       "gross": 1500,
+       "discount": 75,
+       "net": 1425,
+       "deductible": 91.7,
+       "patient": 91.7,
+       "company": 1333.3,
+       "patientWithTax": 105.45,
+       "companyWithTax": 1533.29
+      }
+     }
+    ]
+   },
+   "priceAllApproved": {
+    "patient": 164.44,
+    "company": 2861.77,
+    "deductible": 143,
+    "rows": [
+     {
+      "code": "LAB-010",
+      "calc": {
+       "gross": 120,
+       "discount": 6,
+       "net": 114,
+       "deductible": 22.8,
+       "patient": 22.8,
+       "company": 91.2,
+       "patientWithTax": 26.22,
+       "companyWithTax": 104.88
+      }
+     },
+     {
+      "code": "RAD-050",
+      "calc": {
+       "gross": 250,
+       "discount": 12.5,
+       "net": 237.5,
+       "deductible": 47.5,
+       "patient": 47.5,
+       "company": 190,
+       "patientWithTax": 54.62,
+       "companyWithTax": 218.5
+      }
+     },
+     {
+      "code": "CAR-330",
+      "calc": {
+       "gross": 900,
+       "discount": 45,
+       "net": 855,
+       "deductible": 72.7,
+       "patient": 72.7,
+       "company": 782.3,
+       "patientWithTax": 83.6,
+       "companyWithTax": 899.64
+      }
+     },
+     {
+      "code": "PKG-100",
+      "calc": {
+       "gross": 1500,
+       "discount": 75,
+       "net": 1425,
+       "deductible": 0,
+       "patient": 0,
+       "company": 1425,
+       "patientWithTax": 0,
+       "companyWithTax": 1638.75
+      }
+     }
+    ]
+   },
+   "step": {
+    "key": "ORDERS_MIXED",
+    "tone": "",
+    "tag": "Doctor's orders",
+    "q": "4 procedures were ordered. 3 have approval, 1 does not.",
+    "sub": "Bill the approved ones now, or wait and bill them together.",
+    "amt": 273.69,
+    "amtLabel": "3 approved · patient share",
+    "amts": [],
+    "ext": {
+     "title": "4 order(s) still to bill",
+     "codes": [
+      "LAB-010",
+      "RAD-050",
+      "PKG-100",
+      "CAR-330"
+     ],
+     "selectable": true,
+     "note": null
+    },
+    "buttons": [
+     "Bill the 3 approved now",
+     "Wait for all approvals"
+    ],
+    "back": false
+   },
+   "stories": [
+    "visit",
+    "orders",
+    "refund",
+    "credit",
+    "addorders"
+   ],
+   "main": "orders",
+   "stages": {
+    "visit": {
+     "index": 4,
+     "skipped": [],
+     "complete": true
+    },
+    "orders": {
+     "index": 2,
+     "skipped": []
+    },
+    "refund": {
+     "index": 0,
+     "skipped": []
+    },
+    "credit": {
+     "index": 0,
+     "skipped": []
+    },
+    "addorders": {
+     "index": 0,
+     "skipped": []
+    }
+   },
+   "pending": {
+    "kind": "act",
+    "owed": 0
+   },
+   "collected": 65.55,
+   "parent": null,
+   "root": 2,
+   "badges": {
+    "visit": "Invoiced · with the doctor",
+    "orders": "Bill orders",
+    "refund": "1 invoice(s)",
+    "credit": "SAR 300.00",
+    "addorders": "Packages & tests"
+   },
+   "locks": {
+    "visit": "",
+    "orders": "",
+    "pkgvisit": "",
+    "refund": "",
+    "replace": "",
+    "package": "",
+    "credit": "",
+    "payer": "",
+    "addorders": "",
+    "advadd": "",
+    "advrefund": "",
+    "walkin": ""
+   },
+   "invoices": [
+    {
+     "id": "INV-771204",
+     "refundable": false,
+     "state": "",
+     "type": "Consultation",
+     "status": "Paid",
+     "mode": "Payment link",
+     "payerType": "Insurance",
+     "date": "2026-10-13",
+     "credit": 0
+    }
+   ]
+  },
+  {
+   "id": 3,
+   "mrn": "7100482",
+   "visitNo": "V100003",
+   "dedPool": {
+    "cap": 250,
+    "used": 0,
+    "left": 250
+   },
+   "priceConsult": {
+    "patient": 287.5,
+    "company": 0,
+    "deductible": 0,
+    "rows": [
+     {
+      "code": "CON-402",
+      "calc": {
+       "gross": 250,
+       "discount": 0,
+       "net": 250,
+       "deductible": 0,
+       "patient": 250,
+       "company": 0,
+       "patientWithTax": 287.5,
+       "companyWithTax": 0
+      }
+     }
+    ]
+   },
+   "priceApproved": {
+    "patient": 0,
+    "company": 0,
+    "deductible": 0,
+    "rows": []
+   },
+   "priceAllApproved": {
+    "patient": 0,
+    "company": 0,
+    "deductible": 0,
+    "rows": []
+   },
+   "step": {
+    "key": "CONSULT_WAIT",
+    "tone": "wait",
+    "tag": "Consultation",
+    "q": "Approval not received for the consultation — please wait.",
+    "sub": "The request is with TAWUNIYA.",
+    "amt": null,
+    "amtLabel": null,
+    "amts": [],
+    "ext": null,
+    "buttons": [
+     "Check for approval"
+    ],
+    "back": false
+   },
+   "stories": [
+    "visit",
+    "orders",
+    "refund",
+    "addorders"
+   ],
+   "main": "visit",
+   "stages": {
+    "visit": {
+     "index": 0,
+     "skipped": []
+    },
+    "orders": {
+     "index": 0,
+     "skipped": [],
+     "locked": true
+    },
+    "refund": {
+     "index": 0,
+     "skipped": []
+    },
+    "addorders": {
+     "index": 0,
+     "skipped": []
+    }
+   },
+   "pending": {
+    "kind": "wait",
+    "owed": 0
+   },
+   "collected": 0,
+   "parent": null,
+   "root": 3,
+   "badges": {
+    "visit": "Consultation approval",
+    "orders": "Opens when the doctor sees the patient",
+    "refund": "0 invoice(s)",
+    "addorders": "Packages & tests"
+   },
+   "locks": {
+    "visit": "",
+    "orders": "Locked until the visit is invoiced and the doctor sees the patient",
+    "pkgvisit": "",
+    "refund": "",
+    "replace": "",
+    "package": "",
+    "credit": "",
+    "payer": "",
+    "addorders": "",
+    "advadd": "",
+    "advrefund": "",
+    "walkin": ""
+   },
+   "invoices": []
+  },
+  {
+   "id": 4,
+   "mrn": "8825140",
+   "visitNo": "V100004",
+   "dedPool": {
+    "cap": 0,
+    "used": 0,
+    "left": 0
+   },
+   "priceConsult": {
+    "patient": 287.5,
+    "company": 0,
+    "deductible": 0,
+    "rows": [
+     {
+      "code": "CON-310",
+      "calc": {
+       "gross": 250,
+       "discount": 0,
+       "net": 250,
+       "deductible": 0,
+       "patient": 250,
+       "company": 0,
+       "patientWithTax": 287.5,
+       "companyWithTax": 0
+      }
+     }
+    ]
+   },
+   "priceApproved": {
+    "patient": 0,
+    "company": 0,
+    "deductible": 0,
+    "rows": []
+   },
+   "priceAllApproved": {
+    "patient": 207,
+    "company": 0,
+    "deductible": 0,
+    "rows": [
+     {
+      "code": "RAD-120",
+      "calc": {
+       "gross": 180,
+       "discount": 0,
+       "net": 180,
+       "deductible": 0,
+       "patient": 180,
+       "company": 0,
+       "patientWithTax": 207,
+       "companyWithTax": 0
+      }
+     }
+    ]
+   },
+   "step": {
+    "key": "CLOSE",
+    "tone": "done",
+    "tag": "Orders complete",
+    "q": "Everything ordered so far has been billed and paid.",
+    "sub": "Collected <b>SAR 494.50</b> across 2 invoice(s).",
+    "amt": null,
+    "amtLabel": null,
+    "amts": [],
+    "ext": null,
+    "buttons": [
+     "Check for new orders"
+    ],
+    "back": false
+   },
+   "stories": [
+    "visit",
+    "orders",
+    "refund",
+    "addorders"
+   ],
+   "main": "orders",
+   "stages": {
+    "visit": {
+     "index": 4,
+     "skipped": [
+      0
+     ],
+     "complete": true
+    },
+    "orders": {
+     "index": 4,
+     "skipped": [
+      1
+     ]
+    },
+    "refund": {
+     "index": 0,
+     "skipped": []
+    },
+    "addorders": {
+     "index": 0,
+     "skipped": []
+    }
+   },
+   "pending": {
+    "kind": "done",
+    "owed": 0
+   },
+   "collected": 494.5,
+   "parent": null,
+   "root": 4,
+   "badges": {
+    "visit": "Invoiced · with the doctor",
+    "orders": "Orders complete",
+    "refund": "2 invoice(s)",
+    "addorders": "Packages & tests"
+   },
+   "locks": {
+    "visit": "",
+    "orders": "",
+    "pkgvisit": "",
+    "refund": "",
+    "replace": "",
+    "package": "",
+    "credit": "",
+    "payer": "",
+    "addorders": "",
+    "advadd": "",
+    "advrefund": "",
+    "walkin": ""
+   },
+   "invoices": [
+    {
+     "id": "INV-660310",
+     "refundable": false,
+     "state": "",
+     "type": "Consultation",
+     "status": "Paid",
+     "mode": "Cash",
+     "payerType": "Cash",
+     "date": "2026-10-13",
+     "credit": 0
+    },
+    {
+     "id": "INV-660477",
+     "refundable": false,
+     "state": "",
+     "type": "Doctor's orders",
+     "status": "Paid",
+     "mode": "Payment link",
+     "payerType": "Cash",
+     "date": "2026-10-13",
+     "credit": 0
+    }
+   ]
+  },
+  {
+   "id": 10,
+   "mrn": "7000667",
+   "visitNo": "V100010",
+   "dedPool": {
+    "cap": 200,
+    "used": 0,
+    "left": 200
+   },
+   "priceConsult": {
+    "patient": 65.55,
+    "company": 262.2,
+    "deductible": 57,
+    "rows": [
+     {
+      "code": "CON-204",
+      "calc": {
+       "gross": 300,
+       "discount": 15,
+       "net": 285,
+       "deductible": 57,
+       "patient": 57,
+       "company": 228,
+       "patientWithTax": 65.55,
+       "companyWithTax": 262.2
+      }
+     }
+    ]
+   },
+   "priceApproved": {
+    "patient": 0,
+    "company": 0,
+    "deductible": 0,
+    "rows": []
+   },
+   "priceAllApproved": {
+    "patient": 87.4,
+    "company": 349.6,
+    "deductible": 76,
+    "rows": [
+     {
+      "code": "CAR-410",
+      "calc": {
+       "gross": 400,
+       "discount": 20,
+       "net": 380,
+       "deductible": 76,
+       "patient": 76,
+       "company": 304,
+       "patientWithTax": 87.4,
+       "companyWithTax": 349.6
+      }
+     }
+    ]
+   },
+   "step": {
+    "key": "CLOSED",
+    "tone": "done",
+    "tag": "Closed",
+    "q": "This visit is closed.",
+    "sub": "Collected <b>SAR 65.55</b>.",
+    "amt": null,
+    "amtLabel": null,
+    "amts": [],
+    "ext": null,
+    "buttons": [
+     "Reopen"
+    ],
+    "back": false
+   },
+   "stories": [
+    "visit",
+    "orders",
+    "refund",
+    "credit"
+   ],
+   "main": "orders",
+   "stages": {
+    "visit": {
+     "index": 4,
+     "skipped": [],
+     "complete": true
+    },
+    "orders": {
+     "index": 4,
+     "skipped": []
+    },
+    "refund": {
+     "index": 0,
+     "skipped": []
+    },
+    "credit": {
+     "index": 0,
+     "skipped": []
+    }
+   },
+   "pending": {
+    "kind": "done",
+    "owed": 0
+   },
+   "collected": 65.55,
+   "parent": null,
+   "root": 10,
+   "badges": {
+    "visit": "Invoiced · with the doctor",
+    "orders": "Orders complete",
+    "refund": "2 invoice(s)",
+    "credit": "SAR 300.00"
+   },
+   "locks": {
+    "visit": "",
+    "orders": "",
+    "pkgvisit": "",
+    "refund": "",
+    "replace": "",
+    "package": "",
+    "credit": "",
+    "payer": "",
+    "addorders": "",
+    "advadd": "",
+    "advrefund": "",
+    "walkin": ""
+   },
+   "invoices": [
+    {
+     "id": "INV-742118",
+     "refundable": false,
+     "state": "",
+     "type": "Doctor's orders",
+     "status": "On credit",
+     "mode": "Credit",
+     "payerType": "Insurance",
+     "date": "2026-08-12",
+     "credit": 180
+    },
+    {
+     "id": "INV-742001",
+     "refundable": false,
+     "state": "",
+     "type": "Consultation",
+     "status": "Paid",
+     "mode": "Card",
+     "payerType": "Insurance",
+     "date": "2026-08-12",
+     "credit": 0
+    }
+   ]
+  },
+  {
+   "id": 11,
+   "mrn": "7000667",
+   "visitNo": "V100011",
+   "dedPool": {
+    "cap": 200,
+    "used": 0,
+    "left": 200
+   },
+   "priceConsult": {
+    "patient": 273.13,
+    "company": 0,
+    "deductible": 0,
+    "rows": [
+     {
+      "code": "CON-205",
+      "calc": {
+       "gross": 250,
+       "discount": 12.5,
+       "net": 237.5,
+       "deductible": 0,
+       "patient": 237.5,
+       "company": 0,
+       "patientWithTax": 273.13,
+       "companyWithTax": 0
+      }
+     }
+    ]
+   },
+   "priceApproved": {
+    "patient": 0,
+    "company": 0,
+    "deductible": 0,
+    "rows": []
+   },
+   "priceAllApproved": {
+    "patient": 0,
+    "company": 0,
+    "deductible": 0,
+    "rows": []
+   },
+   "step": {
+    "key": "CLOSED",
+    "tone": "done",
+    "tag": "Closed",
+    "q": "This visit is closed.",
+    "sub": "Collected <b>SAR 0.00</b>.",
+    "amt": null,
+    "amtLabel": null,
+    "amts": [],
+    "ext": null,
+    "buttons": [
+     "Reopen"
+    ],
+    "back": false
+   },
+   "stories": [
+    "visit",
+    "orders",
+    "refund",
+    "credit"
+   ],
+   "main": "visit",
+   "stages": {
+    "visit": {
+     "index": 4,
+     "skipped": [],
+     "complete": true
+    },
+    "orders": {
+     "index": 0,
+     "skipped": [],
+     "locked": true
+    },
+    "refund": {
+     "index": 0,
+     "skipped": []
+    },
+    "credit": {
+     "index": 0,
+     "skipped": []
+    }
+   },
+   "pending": {
+    "kind": "done",
+    "owed": 0
+   },
+   "collected": 0,
+   "parent": null,
+   "root": 11,
+   "badges": {
+    "visit": "Invoiced · with the doctor",
+    "orders": "Opens when the doctor sees the patient",
+    "refund": "1 invoice(s)",
+    "credit": "SAR 300.00"
+   },
+   "locks": {
+    "visit": "",
+    "orders": "Locked until the visit is invoiced and the doctor sees the patient",
+    "pkgvisit": "",
+    "refund": "",
+    "replace": "",
+    "package": "",
+    "credit": "",
+    "payer": "",
+    "addorders": "",
+    "advadd": "",
+    "advrefund": "",
+    "walkin": ""
+   },
+   "invoices": [
+    {
+     "id": "INV-731044",
+     "refundable": false,
+     "state": "",
+     "type": "Consultation",
+     "status": "On credit",
+     "mode": "Credit",
+     "payerType": "Insurance",
+     "date": "2026-07-28",
+     "credit": 120
+    }
+   ]
+  },
+  {
+   "id": 12,
+   "mrn": "7000203",
+   "visitNo": "V100012",
+   "dedPool": {
+    "cap": 150,
+    "used": 40,
+    "left": 110
+   },
+   "priceConsult": {
+    "patient": 46,
+    "company": 184,
+    "deductible": 40,
+    "rows": [
+     {
+      "code": "CON-101",
+      "calc": {
+       "gross": 200,
+       "discount": 0,
+       "net": 200,
+       "deductible": 40,
+       "patient": 40,
+       "company": 160,
+       "patientWithTax": 46,
+       "companyWithTax": 184
+      }
+     }
+    ]
+   },
+   "priceApproved": {
+    "patient": 0,
+    "company": 0,
+    "deductible": 0,
+    "rows": []
+   },
+   "priceAllApproved": {
+    "patient": 0,
+    "company": 0,
+    "deductible": 0,
+    "rows": []
+   },
+   "step": {
+    "key": "CLOSED",
+    "tone": "done",
+    "tag": "Closed",
+    "q": "This visit is closed.",
+    "sub": "Collected <b>SAR 46.00</b>.",
+    "amt": null,
+    "amtLabel": null,
+    "amts": [],
+    "ext": null,
+    "buttons": [
+     "Reopen"
+    ],
+    "back": false
+   },
+   "stories": [
+    "visit",
+    "orders",
+    "refund"
+   ],
+   "main": "visit",
+   "stages": {
+    "visit": {
+     "index": 4,
+     "skipped": [],
+     "complete": true
+    },
+    "orders": {
+     "index": 0,
+     "skipped": [],
+     "locked": true
+    },
+    "refund": {
+     "index": 0,
+     "skipped": []
+    }
+   },
+   "pending": {
+    "kind": "done",
+    "owed": 0
+   },
+   "collected": 46,
+   "parent": null,
+   "root": 12,
+   "badges": {
+    "visit": "Invoiced · with the doctor",
+    "orders": "Opens when the doctor sees the patient",
+    "refund": "1 invoice(s)"
+   },
+   "locks": {
+    "visit": "",
+    "orders": "Locked until the visit is invoiced and the doctor sees the patient",
+    "pkgvisit": "",
+    "refund": "",
+    "replace": "",
+    "package": "",
+    "credit": "",
+    "payer": "",
+    "addorders": "",
+    "advadd": "",
+    "advrefund": "",
+    "walkin": ""
+   },
+   "invoices": [
+    {
+     "id": "INV-702255",
+     "refundable": false,
+     "state": "",
+     "type": "Consultation",
+     "status": "Paid",
+     "mode": "Cash",
+     "payerType": "Insurance",
+     "date": "2026-09-02",
+     "credit": 0
+    }
+   ]
+  },
+  {
+   "id": 20,
+   "mrn": "7000667",
+   "visitNo": "V100020",
+   "dedPool": {
+    "cap": 200,
+    "used": 0,
+    "left": 200
+   },
+   "priceConsult": {
+    "patient": 0,
+    "company": 0,
+    "deductible": 0,
+    "rows": [
+     {
+      "code": "CON-901",
+      "calc": {
+       "gross": 0,
+       "discount": 0,
+       "net": 0,
+       "deductible": 0,
+       "patient": 0,
+       "company": 0,
+       "patientWithTax": 0,
+       "companyWithTax": 0
+      }
+     }
+    ]
+   },
+   "priceApproved": {
+    "patient": 230,
+    "company": 1081,
+    "deductible": 200,
+    "rows": [
+     {
+      "code": "RAD-220",
+      "calc": {
+       "gross": 1200,
+       "discount": 60,
+       "net": 1140,
+       "deductible": 200,
+       "patient": 200,
+       "company": 940,
+       "patientWithTax": 230,
+       "companyWithTax": 1081
+      }
+     }
+    ]
+   },
+   "priceAllApproved": {
+    "patient": 230,
+    "company": 1277.65,
+    "deductible": 200,
+    "rows": [
+     {
+      "code": "RAD-220",
+      "calc": {
+       "gross": 1200,
+       "discount": 60,
+       "net": 1140,
+       "deductible": 200,
+       "patient": 200,
+       "company": 940,
+       "patientWithTax": 230,
+       "companyWithTax": 1081
+      }
+     },
+     {
+      "code": "LAB-118",
+      "calc": {
+       "gross": 180,
+       "discount": 9,
+       "net": 171,
+       "deductible": 0,
+       "patient": 0,
+       "company": 171,
+       "patientWithTax": 0,
+       "companyWithTax": 196.65
+      }
+     }
+    ]
+   },
+   "step": {
+    "key": "ORDERS_MIXED",
+    "tone": "",
+    "tag": "Interbranch orders",
+    "q": "2 procedures were ordered at AL TAKHASSUSI HOSPITAL. 1 has approval, 1 does not.",
+    "sub": "Collected here on behalf of AL TAKHASSUSI HOSPITAL.",
+    "amt": 230,
+    "amtLabel": "1 approved · patient share",
+    "amts": [],
+    "ext": {
+     "title": "2 order(s) still to bill",
+     "codes": [
+      "RAD-220",
+      "LAB-118"
+     ],
+     "selectable": true,
+     "note": null
+    },
+    "buttons": [
+     "Bill the 1 approved now",
+     "Wait for all approvals"
+    ],
+    "back": false
+   },
+   "stories": [
+    "orders",
+    "credit"
+   ],
+   "main": "orders",
+   "stages": {
+    "orders": {
+     "index": 2,
+     "skipped": []
+    },
+    "credit": {
+     "index": 0,
+     "skipped": []
+    }
+   },
+   "pending": {
+    "kind": "act",
+    "owed": 0
+   },
+   "collected": 0,
+   "parent": null,
+   "root": 20,
+   "badges": {
+    "orders": "Bill orders",
+    "credit": "SAR 300.00"
+   },
+   "locks": {
+    "visit": "",
+    "orders": "",
+    "pkgvisit": "",
+    "refund": "",
+    "replace": "",
+    "package": "",
+    "credit": "",
+    "payer": "",
+    "addorders": "",
+    "advadd": "",
+    "advrefund": "",
+    "walkin": ""
+   },
+   "invoices": []
+  },
+  {
+   "id": 21,
+   "mrn": "7000203",
+   "visitNo": "V100021",
+   "dedPool": {
+    "cap": 150,
+    "used": 0,
+    "left": 150
+   },
+   "priceConsult": {
+    "patient": 0,
+    "company": 0,
+    "deductible": 0,
+    "rows": [
+     {
+      "code": "CON-902",
+      "calc": {
+       "gross": 0,
+       "discount": 0,
+       "net": 0,
+       "deductible": 0,
+       "patient": 0,
+       "company": 0,
+       "patientWithTax": 0,
+       "companyWithTax": 0
+      }
+     }
+    ]
+   },
+   "priceApproved": {
+    "patient": 0,
+    "company": 0,
+    "deductible": 0,
+    "rows": []
+   },
+   "priceAllApproved": {
+    "patient": 73.6,
+    "company": 294.4,
+    "deductible": 64,
+    "rows": [
+     {
+      "code": "LAB-330",
+      "calc": {
+       "gross": 320,
+       "discount": 0,
+       "net": 320,
+       "deductible": 64,
+       "patient": 64,
+       "company": 256,
+       "patientWithTax": 73.6,
+       "companyWithTax": 294.4
+      }
+     }
+    ]
+   },
+   "step": {
+    "key": "CLOSED",
+    "tone": "done",
+    "tag": "Closed",
+    "q": "This visit is closed.",
+    "sub": "Collected <b>SAR 73.60</b>.",
+    "amt": null,
+    "amtLabel": null,
+    "amts": [],
+    "ext": null,
+    "buttons": [
+     "Reopen"
+    ],
+    "back": false
+   },
+   "stories": [
+    "orders",
+    "refund"
+   ],
+   "main": "orders",
+   "stages": {
+    "orders": {
+     "index": 4,
+     "skipped": []
+    },
+    "refund": {
+     "index": 0,
+     "skipped": []
+    }
+   },
+   "pending": {
+    "kind": "done",
+    "owed": 0
+   },
+   "collected": 73.6,
+   "parent": null,
+   "root": 21,
+   "badges": {
+    "orders": "Orders complete",
+    "refund": "1 invoice(s) · 1 refundable"
+   },
+   "locks": {
+    "visit": "",
+    "orders": "",
+    "pkgvisit": "",
+    "refund": "",
+    "replace": "",
+    "package": "",
+    "credit": "",
+    "payer": "",
+    "addorders": "",
+    "advadd": "",
+    "advrefund": "",
+    "walkin": ""
+   },
+   "invoices": [
+    {
+     "id": "INV-690221",
+     "refundable": true,
+     "state": "",
+     "type": "Doctor's orders",
+     "status": "Paid",
+     "mode": "Cash",
+     "payerType": "Insurance",
+     "date": "2026-09-05",
+     "credit": 0
+    }
+   ]
+  },
+  {
+   "id": 13,
+   "mrn": "7000203",
+   "visitNo": "V100013",
+   "dedPool": {
+    "cap": 150,
+    "used": 0,
+    "left": 150
+   },
+   "priceConsult": {
+    "patient": 0,
+    "company": 0,
+    "deductible": 0,
+    "rows": [
+     {
+      "code": "CON-110",
+      "calc": {
+       "gross": 0,
+       "discount": 0,
+       "net": 0,
+       "deductible": 0,
+       "patient": 0,
+       "company": 0,
+       "patientWithTax": 0,
+       "companyWithTax": 0
+      }
+     }
+    ]
+   },
+   "priceApproved": {
+    "patient": 0,
+    "company": 0,
+    "deductible": 0,
+    "rows": []
+   },
+   "priceAllApproved": {
+    "patient": 0,
+    "company": 0,
+    "deductible": 0,
+    "rows": []
+   },
+   "step": {
+    "key": "CONSULT_BILL",
+    "tone": "",
+    "tag": "Consultation",
+    "q": "Approval received. Do you wish to bill the consultation?",
+    "sub": "Paediatric Follow-up · <b>no charge</b> for this visit type.",
+    "amt": 0,
+    "amtLabel": "patient share",
+    "amts": [],
+    "ext": {
+     "title": "What is being charged",
+     "codes": [
+      "CON-110"
+     ],
+     "selectable": false,
+     "note": null
+    },
+    "buttons": [
+     "Yes, bill it"
+    ],
+    "back": false
+   },
+   "stories": [
+    "visit",
+    "orders",
+    "addorders"
+   ],
+   "main": "visit",
+   "stages": {
+    "visit": {
+     "index": 1,
+     "skipped": []
+    },
+    "orders": {
+     "index": 0,
+     "skipped": [],
+     "locked": true
+    },
+    "addorders": {
+     "index": 0,
+     "skipped": []
+    }
+   },
+   "pending": {
+    "kind": "act",
+    "owed": 0
+   },
+   "collected": 0,
+   "parent": 12,
+   "root": 12,
+   "badges": {
+    "visit": "Bill consultation",
+    "orders": "Opens when the doctor sees the patient",
+    "addorders": "Packages & tests"
+   },
+   "locks": {
+    "visit": "",
+    "orders": "Locked until the visit is invoiced and the doctor sees the patient",
+    "pkgvisit": "",
+    "refund": "",
+    "replace": "",
+    "package": "",
+    "credit": "",
+    "payer": "",
+    "addorders": "",
+    "advadd": "",
+    "advrefund": "",
+    "walkin": ""
+   },
+   "invoices": []
+  },
+  {
+   "id": 30,
+   "mrn": "7000667",
+   "visitNo": "V100030",
+   "dedPool": {
+    "cap": 200,
+    "used": 0,
+    "left": 200
+   },
+   "priceConsult": {
+    "patient": 163.88,
+    "company": 0,
+    "deductible": 0,
+    "rows": [
+     {
+      "code": "CON-205",
+      "calc": {
+       "gross": 150,
+       "discount": 7.5,
+       "net": 142.5,
+       "deductible": 0,
+       "patient": 142.5,
+       "company": 0,
+       "patientWithTax": 163.88,
+       "companyWithTax": 0
+      }
+     }
+    ]
+   },
+   "priceApproved": {
+    "patient": 0,
+    "company": 0,
+    "deductible": 0,
+    "rows": []
+   },
+   "priceAllApproved": {
+    "patient": 0,
+    "company": 0,
+    "deductible": 0,
+    "rows": []
+   },
+   "step": {
+    "key": "CONSULT_WAIT",
+    "tone": "wait",
+    "tag": "Consultation",
+    "q": "Approval not received for the consultation — please wait.",
+    "sub": "The request is with BUPA.",
+    "amt": null,
+    "amtLabel": null,
+    "amts": [],
+    "ext": null,
+    "buttons": [
+     "Check for approval"
+    ],
+    "back": false
+   },
+   "stories": [
+    "visit",
+    "orders",
+    "credit",
+    "addorders"
+   ],
+   "main": "visit",
+   "stages": {
+    "visit": {
+     "index": 0,
+     "skipped": []
+    },
+    "orders": {
+     "index": 0,
+     "skipped": [],
+     "locked": true
+    },
+    "credit": {
+     "index": 0,
+     "skipped": []
+    },
+    "addorders": {
+     "index": 0,
+     "skipped": []
+    }
+   },
+   "pending": {
+    "kind": "wait",
+    "owed": 0
+   },
+   "collected": 0,
+   "parent": 2,
+   "root": 2,
+   "badges": {
+    "visit": "Consultation approval",
+    "orders": "Opens when the doctor sees the patient",
+    "credit": "SAR 300.00",
+    "addorders": "Packages & tests"
+   },
+   "locks": {
+    "visit": "",
+    "orders": "Locked until the visit is invoiced and the doctor sees the patient",
+    "pkgvisit": "",
+    "refund": "",
+    "replace": "",
+    "package": "",
+    "credit": "",
+    "payer": "",
+    "addorders": "",
+    "advadd": "",
+    "advrefund": "",
+    "walkin": ""
+   },
+   "invoices": []
+  },
+  {
+   "id": 31,
+   "mrn": "7000203",
+   "visitNo": "V100031",
+   "dedPool": {
+    "cap": 150,
+    "used": 0,
+    "left": 150
+   },
+   "priceConsult": {
+    "patient": 46,
+    "company": 184,
+    "deductible": 40,
+    "rows": [
+     {
+      "code": "CON-101",
+      "calc": {
+       "gross": 200,
+       "discount": 0,
+       "net": 200,
+       "deductible": 40,
+       "patient": 40,
+       "company": 160,
+       "patientWithTax": 46,
+       "companyWithTax": 184
+      }
+     }
+    ]
+   },
+   "priceApproved": {
+    "patient": 0,
+    "company": 0,
+    "deductible": 0,
+    "rows": []
+   },
+   "priceAllApproved": {
+    "patient": 0,
+    "company": 0,
+    "deductible": 0,
+    "rows": []
+   },
+   "step": {
+    "key": "CONSULT_BILL",
+    "tone": "",
+    "tag": "Consultation",
+    "q": "Approval received. Do you wish to bill the consultation?",
+    "sub": "Paediatric Consultation · <b>Approved</b> · orders stay locked until this is settled.",
+    "amt": 46,
+    "amtLabel": "patient share",
+    "amts": [],
+    "ext": {
+     "title": "What is being charged",
+     "codes": [
+      "CON-101"
+     ],
+     "selectable": false,
+     "note": null
+    },
+    "buttons": [
+     "Yes, bill it"
+    ],
+    "back": false
+   },
+   "stories": [
+    "visit",
+    "orders",
+    "addorders"
+   ],
+   "main": "visit",
+   "stages": {
+    "visit": {
+     "index": 1,
+     "skipped": []
+    },
+    "orders": {
+     "index": 0,
+     "skipped": [],
+     "locked": true
+    },
+    "addorders": {
+     "index": 0,
+     "skipped": []
+    }
+   },
+   "pending": {
+    "kind": "act",
+    "owed": 0
+   },
+   "collected": 0,
+   "parent": null,
+   "root": 31,
+   "badges": {
+    "visit": "Bill consultation",
+    "orders": "Opens when the doctor sees the patient",
+    "addorders": "Packages & tests"
+   },
+   "locks": {
+    "visit": "",
+    "orders": "Locked until the visit is invoiced and the doctor sees the patient",
+    "pkgvisit": "",
+    "refund": "",
+    "replace": "",
+    "package": "",
+    "credit": "",
+    "payer": "",
+    "addorders": "",
+    "advadd": "",
+    "advrefund": "",
+    "walkin": ""
+   },
+   "invoices": []
+  }
+ ],
+ "patients": [
+  {
+   "mrn": "1063301",
+   "creditTotal": 0,
+   "ledgerADV": [],
+   "ledgerCREDIT": [],
+   "walletDocs": [],
+   "visitOrder": [],
+   "pending": {
+    "today": [],
+    "upcoming": [],
+    "earlier": []
+   },
+   "activePayer": {
+    "id": "CASH",
+    "from": ""
+   }
+  },
+  {
+   "mrn": "7000203",
+   "creditTotal": 0,
+   "ledgerADV": [],
+   "ledgerCREDIT": [],
+   "walletDocs": [],
+   "visitOrder": [
+    31,
+    13,
+    1,
+    21,
+    12
+   ],
+   "pending": {
+    "today": [
+     13,
+     1
+    ],
+    "upcoming": [
+     31
+    ],
+    "earlier": []
+   },
+   "activePayer": {
+    "id": "NCCI-A",
+    "from": "from the open visit Today 09:50"
+   }
+  },
+  {
+   "mrn": "7000667",
+   "creditTotal": 300,
+   "ledgerADV": [
+    {
+     "type": "ADV_IN",
+     "amount": 500,
+     "balance": 500,
+     "inflow": true,
+     "docId": "ADV-400102",
+     "invoiceId": null
+    }
+   ],
+   "ledgerCREDIT": [
+    {
+     "type": "CREDIT_RAISED",
+     "amount": 180,
+     "balance": 300,
+     "inflow": true,
+     "docId": "CRED-400103",
+     "invoiceId": "INV-742118"
+    },
+    {
+     "type": "CREDIT_RAISED",
+     "amount": 120,
+     "balance": 120,
+     "inflow": true,
+     "docId": "CRED-400101",
+     "invoiceId": "INV-731044"
+    }
+   ],
+   "walletDocs": [
+    {
+     "id": "CRED-400101",
+     "wtype": "CREDIT_RAISED",
+     "amount": 120,
+     "visitId": 11,
+     "invoiceId": "INV-731044"
+    },
+    {
+     "id": "ADV-400102",
+     "wtype": "ADV_IN",
+     "amount": 500,
+     "visitId": 10,
+     "invoiceId": null
+    },
+    {
+     "id": "CRED-400103",
+     "wtype": "CREDIT_RAISED",
+     "amount": 180,
+     "visitId": 10,
+     "invoiceId": "INV-742118"
+    }
+   ],
+   "visitOrder": [
+    30,
+    20,
+    2,
+    10,
+    11
+   ],
+   "pending": {
+    "today": [
+     20,
+     2
+    ],
+    "upcoming": [
+     30
+    ],
+    "earlier": []
+   },
+   "activePayer": {
+    "id": "BUPA-GOLD",
+    "from": "from the open visit Today 11:05"
+   }
+  },
+  {
+   "mrn": "7100482",
+   "creditTotal": 0,
+   "ledgerADV": [
+    {
+     "type": "ADV_IN",
+     "amount": 200,
+     "balance": 200,
+     "inflow": true,
+     "docId": "ADV-400104",
+     "invoiceId": null
+    }
+   ],
+   "ledgerCREDIT": [],
+   "walletDocs": [
+    {
+     "id": "ADV-400104",
+     "wtype": "ADV_IN",
+     "amount": 200,
+     "visitId": 3,
+     "invoiceId": null
+    }
+   ],
+   "visitOrder": [
+    3
+   ],
+   "pending": {
+    "today": [
+     3
+    ],
+    "upcoming": [],
+    "earlier": []
+   },
+   "activePayer": {
+    "id": "TAW-SILVER",
+    "from": "from the open visit Today 09:35"
+   }
+  },
+  {
+   "mrn": "8825140",
+   "creditTotal": 0,
+   "ledgerADV": [],
+   "ledgerCREDIT": [],
+   "walletDocs": [],
+   "visitOrder": [
+    4
+   ],
+   "pending": {
+    "today": [],
+    "upcoming": [],
+    "earlier": []
+   },
+   "activePayer": {
+    "id": "CASH",
+    "from": "from the open visit Today 08:05"
+   }
+  }
+ ],
+ "notes": [
+  {
+   "amount": 0.05,
+   "out": {
+    "0.5": 1
+   }
+  },
+  {
+   "amount": 46,
+   "out": {
+    "1": 1,
+    "5": 1,
+    "10": 4
+   }
+  },
+  {
+   "amount": 65.55,
+   "out": {
+    "1": 1,
+    "5": 1,
+    "10": 1,
+    "50": 1
+   }
+  },
+  {
+   "amount": 273.69,
+   "out": {
+    "1": 4,
+    "10": 2,
+    "50": 1,
+    "200": 1
+   }
+  },
+  {
+   "amount": 999.99,
+   "out": {
+    "500": 2
+   }
+  },
+  {
+   "amount": 1234.5,
+   "out": {
+    "1": 4,
+    "10": 3,
+    "200": 1,
+    "500": 2,
+    "0.5": 1
+   }
+  }
+ ],
+ "queries": [
+  {
+   "q": "",
+   "f": {
+    "preset": "any",
+    "from": "",
+    "to": "",
+    "clinic": "",
+    "doctor": "",
+    "payer": "",
+    "type": "",
+    "status": "",
+    "mode": ""
+   },
+   "ids": [
+    "INV-731044",
+    "INV-742118",
+    "INV-742001",
+    "INV-660477",
+    "INV-771204",
+    "INV-660310",
+    "INV-690221",
+    "INV-702255"
+   ]
+  },
+  {
+   "q": "qahtani",
+   "f": {
+    "preset": "any",
+    "from": "",
+    "to": "",
+    "clinic": "",
+    "doctor": "",
+    "payer": "",
+    "type": "",
+    "status": "",
+    "mode": ""
+   },
+   "ids": [
+    "INV-731044",
+    "INV-742118",
+    "INV-742001",
+    "INV-771204"
+   ]
+  },
+  {
+   "q": "INV-771204",
+   "f": {
+    "preset": "any",
+    "from": "",
+    "to": "",
+    "clinic": "",
+    "doctor": "",
+    "payer": "",
+    "type": "",
+    "status": "",
+    "mode": ""
+   },
+   "ids": [
+    "INV-771204"
+   ]
+  },
+  {
+   "q": "7000203",
+   "f": {
+    "preset": "any",
+    "from": "",
+    "to": "",
+    "clinic": "",
+    "doctor": "",
+    "payer": "",
+    "type": "",
+    "status": "",
+    "mode": ""
+   },
+   "ids": [
+    "INV-690221",
+    "INV-702255"
+   ]
+  },
+  {
+   "q": "",
+   "f": {
+    "preset": "any",
+    "from": "",
+    "to": "",
+    "clinic": "",
+    "doctor": "",
+    "payer": "",
+    "type": "",
+    "status": "",
+    "mode": "Credit"
+   },
+   "ids": [
+    "INV-731044",
+    "INV-742118"
+   ]
+  },
+  {
+   "q": "",
+   "f": {
+    "preset": "any",
+    "from": "",
+    "to": "",
+    "clinic": "CARDIOLOGY",
+    "doctor": "",
+    "payer": "",
+    "type": "",
+    "status": "Paid",
+    "mode": ""
+   },
+   "ids": [
+    "INV-742001",
+    "INV-771204"
+   ]
+  },
+  {
+   "q": "",
+   "f": {
+    "preset": "any",
+    "from": "",
+    "to": "",
+    "clinic": "",
+    "doctor": "",
+    "payer": "Cash",
+    "type": "",
+    "status": "",
+    "mode": ""
+   },
+   "ids": [
+    "INV-660477",
+    "INV-660310"
+   ]
+  },
+  {
+   "q": "",
+   "f": {
+    "preset": "any",
+    "from": "",
+    "to": "",
+    "clinic": "",
+    "doctor": "",
+    "payer": "",
+    "type": "Consultation",
+    "status": "",
+    "mode": ""
+   },
+   "ids": [
+    "INV-731044",
+    "INV-742001",
+    "INV-771204",
+    "INV-660310",
+    "INV-702255"
+   ]
+  }
+ ],
+ "payerSearch": [
+  {
+   "f": {
+    "group": "bupa"
+   },
+   "ids": [
+    "BUPA-SIL"
+   ]
+  },
+  {
+   "f": {
+    "group": ""
+   },
+   "ids": [
+    "CH-HABIB",
+    "CH-ZAKAT",
+    "STAFF-FAM",
+    "RAJHI-B",
+    "MALATH-V",
+    "SAICO-C",
+    "WALAA-B",
+    "BUPA-SIL"
+   ]
+  },
+  {
+   "f": {
+    "group": "charity"
+   },
+   "ids": [
+    "CH-HABIB"
+   ]
+  },
+  {
+   "f": {
+    "contract": "61"
+   },
+   "ids": [
+    "RAJHI-B",
+    "MALATH-V",
+    "SAICO-C"
+   ]
+  },
+  {
+   "f": {
+    "policy": "class b"
+   },
+   "ids": [
+    "RAJHI-B",
+    "WALAA-B"
+   ]
+  },
+  {
+   "f": {
+    "group": "5101"
+   },
+   "ids": [
+    "RAJHI-B"
+   ]
+  }
+ ]
+}

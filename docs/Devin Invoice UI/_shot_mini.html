@@ -1,0 +1,9 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>html,body{margin:0}iframe{width:100vw;height:100vh;border:0;display:block}</style></head><body>
+<script>
+const f=document.createElement('iframe');
+f.onload=()=>{const w=f.contentWindow; const q=s=>w.document.querySelector(s),qa=s=>[...w.document.querySelectorAll(s)];
+  const i=q('#q'); i.value='w'; i.dispatchEvent(new w.Event('input'));
+  qa('.pcard [data-pend]').forEach(b=>b.click());
+  document.title='SHOT-READY';};
+f.src='journey-opd-v3.html';document.body.appendChild(f);
+</script></body></html>

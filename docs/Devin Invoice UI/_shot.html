@@ -1,0 +1,24 @@
+<!DOCTYPE html><html><head><style>html,body{margin:0;overflow:hidden}iframe{border:0;display:block}</style></head><body>
+<script>
+const f = document.createElement('iframe');
+f.style.cssText = 'width:1500px;height:940px';
+f.onload = () => {
+  const w = f.contentWindow;
+  ['S','ACT','findPt','findVis','sess','chargeCalc','chargeLines','allRows'].forEach(n=>{ try{w[n]=w.eval(n);}catch(e){} });
+  const q = new URLSearchParams(location.search);
+  const scene = q.get('s') || 'landing';
+  if(scene === 'step1'){ w.openSession('P1','V1A'); }
+  if(scene === 'step2'){ w.openSession('P1','V1A');
+                         w.ACT.openDrawer(); w.ACT.dwrFill({v:'rem'}); w.ACT.addTender();
+                         w.ACT.doInvoice(); w.ACT.mClose(); w.ACT.selAll();
+                         w.openSession('P2','V2A'); w.openSession('P5','V5A');
+                         w.S.active = w.S.sessions[0].id; w.paint(); }
+  if(scene === 'drawer'){ w.openSession('P1','V1A'); w.ACT.openDrawer(); w.ACT.dwrFill({v:'rem'});
+                          w.ACT.addTender(); w.ACT.doInvoice(); w.ACT.mClose();
+                          w.ACT.selAll(); w.ACT.openDrawer();
+                          w.ACT.dwrMode({m:'transfer'}); w.paint(); }
+  document.title = 'READY';
+};
+f.src = 'invoice-prototype.html';
+document.body.appendChild(f);
+</script></body></html>

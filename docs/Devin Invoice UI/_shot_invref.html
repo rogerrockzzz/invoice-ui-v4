@@ -1,0 +1,26 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>html,body{margin:0}iframe{width:100vw;height:100vh;border:0;display:block}</style></head><body>
+<script>
+const n=new URLSearchParams(location.search).get('s')||'1';
+const f=document.createElement('iframe');
+f.onload=()=>{const w=f.contentWindow; const q=s=>w.document.querySelector(s),qa=s=>[...w.document.querySelectorAll(s)];
+  const c=w.eval('cases').find(x=>x.id===1);
+  w.eval('openVisit')(1);
+  Object.assign(c,{payerId:'CASH', clinical:{at:'10:00'}});
+  c.consult={ name:'Paediatric Consultation', code:'CON-101', price:170, priceCash:170, ins:'notinsured', paid:false };
+  c.orders=[{ code:'LAB-022', name:'Urea & Electrolytes', price:140, priceCash:140, ins:'notinsured', ordered:'10:05', paid:false, performed:'10:40' },
+            { code:'RAD-018', name:'Abdominal Ultrasound', price:420, priceCash:420, ins:'notinsured', ordered:'10:05', paid:false },
+            { code:'LAB-440', name:'Thyroid Panel', price:260, priceCash:260, ins:'notinsured', ordered:'10:05', paid:false, performed:'10:55' }];
+  w.eval('render')();
+  const pay=()=>{ qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click(); q('#dGo').click(); };
+  const st=(id)=>qa('.stories [data-story]').find(b=>b.dataset.story===id).click();
+  st('visit'); qa('.step .acts .btn')[0].click(); pay();
+  st('orders'); qa('.step .acts .btn')[0].click(); pay();
+  w.document.getElementById('toasts').innerHTML='';
+  st('refund');
+  const ord=c.invoices.find(i=>i.scope==='orders');
+  if(n==='2'){ q('[data-refund="'+ord.id+'"]').click(); const d=q('details.rflines'); d.open=true; d.dispatchEvent(new w.Event('toggle')); }
+  if(n==='3'){ w.eval('openInvoice')(ord.id); }
+  w.scrollTo(0,150);
+  document.title='SHOT-READY';};
+f.src='journey-opd-v3.html';document.body.appendChild(f);
+</script></body></html>

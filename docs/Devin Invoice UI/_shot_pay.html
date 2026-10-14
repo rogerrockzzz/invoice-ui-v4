@@ -1,0 +1,20 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>html,body{margin:0}iframe{width:100vw;height:100vh;border:0;display:block}</style></head><body>
+<script>
+const n=new URLSearchParams(location.search).get('s')||'1';
+const f=document.createElement('iframe');
+f.onload=()=>{const w=f.contentWindow;
+  const q=s=>w.document.querySelector(s),qa=s=>[...w.document.querySelectorAll(s)],R=()=>w.eval('render')();
+  const c=w.eval('cases').find(x=>x.id===2);
+  w.eval('openVisit')(2);
+  qa('.step .acts .btn')[0].click();                                       // bill the approved orders
+  qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click();
+  if(n==='1'){ /* the modes as they open */ }
+  if(n==='2'){ q('#dMore').click(); }                                      // the more list
+  if(n==='3'){ qa('.drawer [data-m]').find(x=>x.dataset.m==='Span').click(); q('#dAdd').click();
+               const sel=q('.drawer .spMode'); sel.value='Cash'; sel.dispatchEvent(new w.Event('change'));
+               const i2=q('.drawer .spAmt'); i2.value='100'; i2.dispatchEvent(new w.Event('change')); }
+  if(n==='4'){ q('#dCancel').click(); qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click(); q('#dGo').click();
+               const b=q('.step .stepback'); if(b) b.click(); }            // parked view
+  document.title='SHOT-READY';};
+f.src='journey-opd-v2.html';document.body.appendChild(f);
+</script></body></html>

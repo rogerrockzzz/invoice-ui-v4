@@ -1,0 +1,985 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>
+<pre id="out">running…</pre>
+<script>
+const log = [];
+const f = document.createElement('iframe');
+f.style.cssText='width:1600px;height:1000px;border:0';
+f.onload = () => {
+  const w = f.contentWindow;
+  w.print=()=>{}; w.alert=(m)=>log.push('    (alert: '+m+')');
+  w.onerror=(m,s,l)=>{ log.push('RUNTIME-ERR @'+l+': '+m); return true; };
+  ['state','render','openPatientTab','getVisit','cp','cWallet','ipAdm','ipPayer','ipPayerPlan','ipCounts',
+   'ipLineCalc','ipAcceptSelected','ipFinalize','allAdmissions','IP_CATS','IP_ACCEPT_MODES',
+   'SURGERY_RULE','BULK_LINES','fmt','totalAdvance','advHistory','insuranceOf','todaysVisitRows','ipApplySurgeryDiscount','ipPackages','ipAcceptedPackages','ipPkgUsage','ipBulk','ipAcceptPackage','ipPackageForService','ipPackageMatches','ipPackageOrder','ipDetachPackage','seedIpPackageOrders','ipPkgBuckets','ipPkgContentRows','renderReconcilePromptModal','ipInvoiceItems','ipProgressPanels','ipPlanReconcile','ipAutoSurgery','ipColumns','ipCompareAcrossPayers','ipSurgeryScope','ipPackagesForService']
+   .forEach(n=>{ try{ w[n]=w.eval(n); }catch(e){ log.push('MISSING BINDING: '+n); } });
+  const S=w.state, q=s=>w.document.querySelector(s), qa=s=>[...w.document.querySelectorAll(s)];
+  const adm=()=>w.ipAdm();
+  const fmtish=(n)=>Number(n).toFixed(2);
+  /* accepting a package service now opens a prompt — confirm it when it shows */
+  const acceptNow=()=>{ q('#acceptGo').click(); if(q('#pkgGo')) q('#pkgGo').click(); if(q('#recGo')) q('#recGo').click(); };
+  /* package lines sit at the top of To accept — these helpers skip them */
+  const nonPkgRows=()=>qa('table.chg.ip tbody tr').filter(r=>!r.textContent.includes('PACKAGE'));
+  const colIdx=(name)=>qa('table.chg.ip thead th').findIndex(h=>h.textContent.trim()===name);
+  const cellOf=(row,name)=>row.children[colIdx(name)].textContent.trim();
+  const nonPkgChks=()=>nonPkgRows().map(r=>r.querySelector('.ipChk')).filter(Boolean);
+  const step=(n,fn)=>{ try{ const r=fn(); log.push('OK   '+n+(r!==undefined?' -> '+r:'')); }
+    catch(e){ log.push('FAIL '+n+': '+e.message+' | '+(e.stack||'').split('\n')[1]); } };
+  const finish=()=>{ const bad=log.filter(l=>/^(FAIL|RUNTIME|MISSING)/.test(l));
+    document.getElementById('out').textContent='### RESULT: '+(bad.length?bad.length+' PROBLEM(S)':'ALL '+log.length+' CHECKS PASSED')+' ###\n\n'+log.join('\n');
+    document.title='SMOKE-DONE'; };
+  try{
+
+  step("today's visits popup filters by clinic/doctor", ()=>{
+    S.screen='search'; w.render();
+    q('#todayBtn').click();
+    if(!q('.overlay')) throw new Error('popup did not open');
+    const total = qa('#tvBody tbody tr').length;
+    const clinicOpts = qa('#tvClinic option').length;
+    q('#tvDoctor').value='FAISAL AL-NAHDI'; q('#tvDoctor').dispatchEvent(new w.Event('change'));
+    const filtered = qa('#tvBody tbody tr').length;
+    if(filtered>=total) throw new Error('doctor filter did not narrow the list');
+    if(!qa('#tvBody tbody tr').some(r=>r.textContent.includes('IP'))) throw new Error('inpatient encounters missing from today list');
+    S.todayModal=null; w.render();
+    return total+' visits, '+(clinicOpts-1)+' clinics, filtered to '+filtered;
+  });
+  step('banner keeps every patient detail', ()=>{
+    w.openPatientTab('7000203'); S.screen='workspace'; S.activeVisitId=1; S.activeTab='visit'; w.render();
+    const t=q('.pbx').textContent;
+    ['WADHA','7000203','1271545707','86764w535','14/04/2026','0Y 4M 17D','08/03/1448','0555 401 220','NCCI']
+      .forEach(x=>{ if(!t.includes(x)) throw new Error('banner missing '+x); });
+    if(!q('#pbxIns')) throw new Error('insurance button missing');
+    const h=q('.pbx').getBoundingClientRect().height;
+    if(h>110) throw new Error('banner too tall: '+h);
+    return Math.round(h)+'px, all details present';
+  });
+  step('OPD flow still works (regression)', ()=>{
+    qa('.selAll').forEach(c=>c.click());
+    const t=w.eval('invoiceTotals')(w.getVisit(1));
+    if(t.count!==1) throw new Error('OPD selection broken, count '+t.count);
+    if(!q('#makePay')) throw new Error('OPD Make Payment missing');
+    S.sel={}; w.render();
+    return 'consultation selectable, totals '+t.invoiceTotal;
+  });
+
+  step('search popup lists admissions and opens the IP workspace', ()=>{
+    S.screen='search'; S.ipAdmissionId=null; w.render();
+    q('#mrnBox').value='7000667';
+    q('#goIc').click();                       /* the search icon is the only trigger now */
+    if(!q('#visitList')) throw new Error('select-visit popup did not open');
+    const opts=qa('#visitList .visit-opt');
+    const ipOpt=opts.find(o=>o.textContent.includes('Admission No'));
+    if(!ipOpt) throw new Error('the admission is missing from the patient search popup');
+    if(opts[0]!==ipOpt) throw new Error('the live admission should be listed first');
+    if(!ipOpt.querySelector('.badge.ipd')) throw new Error('admission should carry the IP badge');
+    ['Ward','Consultant','Orders','payers'].forEach(x=>{
+      if(!ipOpt.textContent.includes(x)) throw new Error('admission entry missing '+x); });
+    ipOpt.click();
+    if(S.screen!=='ip') throw new Error('clicking the admission should open the IP workspace, got '+S.screen);
+    if(S.ipAdmissionId!==5) throw new Error('wrong admission opened: '+S.ipAdmissionId);
+    return ipOpt.querySelector('.visit-meta').textContent.replace(/\s+/g,' ').trim().slice(0,110);
+  });
+  step('every admission uses the single layout', ()=>{
+    S.screen='inpatients'; w.render();
+    const adms=w.allAdmissions();
+    if(adms.length!==3) throw new Error('expected 3 admissions, got '+adms.length);
+    if(adms.some(a=>a.adm.uiLayout)) throw new Error('uiLayout should be gone from the data');
+    return adms.map(a=>a.p.info.name.split(' ')[0]+' · '+a.adm.admissionNo).join(' | ');
+  });
+  step('inpatient list shows per-payer counters', ()=>{
+    S.screen='inpatients'; w.render();
+    const rows=qa('.ip-row');
+    if(rows.length!==3) throw new Error('expected 3 admissions, got '+rows.length);
+    const kpis=[...rows[0].querySelectorAll('.ip-kpis .kpi')].map(k=>k.textContent.trim());
+    if(kpis.length!==4) throw new Error('expected 4 KPIs per row, got '+kpis.length);
+    return kpis.join(' | ');
+  });
+  step('single surface + right rail, no count tabs', ()=>{
+    w.openPatientTab('7000667'); S.screen='ip'; S.ipAdmissionId=5; S.ipTab='orders'; S.ipStatus='TODO'; S.ipSel={}; w.render();
+    if(!q('.ip-a')) throw new Error('layout A grid missing');
+    if(!q('.ip-a .rail-col')) throw new Error('right rail missing');
+    if(qa('.ip-tabs2 .t').length!==4) throw new Error('needs the Orders / Invoices / Advances / Credit tabs');
+    if(!q('.pbx-more')) throw new Error('admission header strip missing');
+    const railCards=qa('.rail-card .rc-head').map(h=>h.textContent.trim());
+    return 'rail: '+railCards.join(' | ');
+  });
+  step('status chips: no separate approval-pending tab', ()=>{
+    const chips=qa('.chip-rows [data-s]').map(d=>d.textContent.trim());
+    if(chips.length!==4) throw new Error('expected 4 status chips, got '+chips.join(','));
+    if(chips.some(c=>/approval pending/i.test(c))) throw new Error('approval-pending chip should be gone');
+    qa('.chip-rows [data-s]')[1].click();     // Accepted
+    if(S.ipStatus!=='ACCEPTED') throw new Error('chip did not switch the view');
+    const acceptedRows=qa('table.chg.ip tbody tr').length;
+    qa('.chip-rows [data-s]')[0].click();     // back to To accept
+    if(qa('table.chg.ip tbody tr').length===acceptedRows) throw new Error('status chip did not filter');
+    return chips.join(' | ');
+  });
+  step('admission detail moved into the collapsible header strip', ()=>{
+    if(!q('.pbx-wrap .pbx-more')) throw new Error('no header strip');
+    const summary=q('.pbx-more .hdr').textContent;
+    if(!summary.includes(adm().admissionNo)) throw new Error('admission no not in the header summary');
+    if(q('#layToggle')) throw new Error('the layout switcher should be gone');
+    if(!q('.pbx-more #admDetails')) throw new Error('payer & approval details belongs in the header strip');
+    if(q('.ip-line')) throw new Error('the separate layout row should be gone');
+    S.hdrOpen=true; w.render();
+    const fields=qa('.pbx-more .body .f .k').map(k=>k.textContent);
+    if(fields.length<10) throw new Error('expected the full admission detail set, got '+fields.length);
+    if(!fields.includes('Packages')) throw new Error('packages summary missing from the header');
+    S.hdrOpen=false; w.render();
+    return fields.join(', ');
+  });
+  step('payer + approval details popup', ()=>{
+    q('#railPayerInfo').click();
+    const t=q('.overlay').textContent;
+    ['Open approvals','Package Reconciliation','Not accepted','BUPA','TAWUNIYA','Cash'].forEach(x=>{
+      if(!t.includes(x)) throw new Error('missing '+x); });
+    if(/Deductible/i.test(q('.overlay').textContent)) throw new Error('no deductible applies to inpatient');
+    const stats=qa('.pay-card .pc-stats .s span').map(x=>x.textContent.trim());
+    ['Open approvals','Approved','Consumed','Remaining','Orders accepted','Invoices raised'].forEach(x=>{
+      if(!stats.includes(x)) throw new Error('missing stat tile: '+x); });
+    q('#admClose').click();
+    return 'payer cards with tiles: '+[...new Set(stats)].join(', ');
+  });
+  step('orders unified with category chips (no 3 separate tabs)', ()=>{
+    const chips=qa('.cat-tabs.sub div').map(d=>d.textContent.trim());
+    if(chips.length!==4) throw new Error('expected All + 3 categories, got '+chips.join(','));
+    qa('.cat-tabs.sub div')[2].click();
+    const medRows=qa('table.chg.ip tbody tr').length;
+    const medCount=adm().ipOrders.filter(o=>o.cat==='MED'&&o.state==='NEW').length;
+    if(medRows!==medCount) throw new Error('med filter gave '+medRows+', data has '+medCount);
+    qa('.cat-tabs.sub div')[0].click();
+    return chips.join(' | ');
+  });
+  step('pending-approval orders stay in To accept and are tickable', ()=>{
+    const hdr=qa('table.chg.ip thead th').map(h=>h.textContent.trim());
+    if(hdr.some(h=>/availab/i.test(h))) throw new Error('availability column should be gone');
+    const pendRow=qa('table.chg.ip tbody tr').find(r=>r.textContent.includes('Inpatient Consultation - Internal'));
+    if(!pendRow) throw new Error('pending order missing from the To accept list');
+    if(!pendRow.querySelector('.ipChk')) throw new Error('pending order should be selectable (open approval)');
+    if(!q('.locked-msg').textContent.includes('open approval')) throw new Error('no open-approval note');
+    return 'pending order listed and tickable; note: '+q('.locked-msg').textContent.replace(/\s+/g,' ').trim().slice(0,80);
+  });
+  step('accepting a pending order books it as an open approval', ()=>{
+    const pendRow=qa('table.chg.ip tbody tr').find(r=>r.textContent.includes('Inpatient Consultation - Internal'));
+    S.ipSel[pendRow.querySelector('.ipChk').dataset.id]=true; w.render();
+    if(!q('.ab-suggest.warn')) throw new Error('no open-approval warning on the action bar');
+    acceptNow();
+    const o=adm().ipOrders.find(x=>x.name.includes('Inpatient Consultation - Internal'));
+    if(!o.openApproval) throw new Error('order not flagged as open approval');
+    const ap=w.ipApproval(adm(), w.ipPayer(adm()));
+    if(ap.openCount!==1) throw new Error('payer open count is '+ap.openCount);
+    S.ipStatus='TODO'; S.ipSel={}; w.render();
+    return 'open approval booked, payer shows '+ap.openCount+' open ('+ap.openValue+')';
+  });
+  step('open coverage audit per approval request', ()=>{
+    q('#railPayerInfo').click();
+    const det=qa('.ap-audit');
+    if(det.length===0) throw new Error('no open-coverage audit section');
+    const sum=det[0].querySelector('summary').textContent;
+    if(!/Open coverages from the approval module/.test(sum)) throw new Error('audit summary wrong: '+sum);
+    const hdr=[...det[0].querySelectorAll('thead th')].map(h=>h.textContent.trim());
+    ['Approval No','Raised On','Requested','Approved','Consumed','Balance','Status'].forEach(x=>{
+      if(!hdr.includes(x)) throw new Error('audit missing column '+x); });
+    const rows=det[0].querySelectorAll('tbody tr');
+    if(rows.length!==2) throw new Error('expected 2 open coverages for BUPA, got '+rows.length);
+    const ap=w.ipApproval(adm(), w.ipPayer(adm()));
+    if(ap.approved!==4200) throw new Error('total approved should be the sum of the requests, got '+ap.approved);
+    q('#admClose').click();
+    return sum.replace(/\s+/g,' ').trim();
+  });
+  step('rail shows each payer approval position at a glance', ()=>{
+    const cards=qa('.rc-payer').map(c=>c.textContent.replace(/\s+/g,' ').trim());
+    if(!cards.some(c=>/approval left/.test(c))) throw new Error('no approval-left glimpse');
+    if(!cards.some(c=>/open approval/.test(c))) throw new Error('open approvals not surfaced in the rail');
+    if(!q('.rc-payer .apbar')) throw new Error('no approval consumption bar');
+    return cards[0];
+  });
+  step('open-approval warning still shows on the action bar', ()=>{
+    const pend=adm().ipOrders.find(o=>o.state==='NEW'&&o.ins==='pending');
+    if(pend){ S.ipSel={ [pend.id]:true }; w.render();
+      if(!q('.ab-suggest.warn')) throw new Error('missing open-approval warning');
+    }
+    S.ipSel={}; w.render();
+    return pend ? 'warned for '+pend.name : 'no pending order at this point';
+  });
+  step('one Accept button with auto advance/credit, rest under More', ()=>{
+    S.ipSel={}; nonPkgChks().slice(0,2).forEach(c=>{ S.ipSel[c.dataset.id]=true; }); w.render();
+    if(!q('#acceptGo')) throw new Error('no single Accept button');
+    if(qa('.act-bar [data-mode]').length) throw new Error('mode buttons should not be on the bar');
+    if(!q('#moreBtn')) throw new Error('no More menu');
+    /* the settlement hint only appears when the patient actually owes something */
+    const dueTxt=q('.tot-strip .ts.due b').textContent;
+    const owes=parseFloat(dueTxt.replace(/[^0-9.]/g,''))>0;
+    if(owes && !q('.tot-strip .ts.due i')) throw new Error('no advance/credit hint for a non-zero due');
+    if(!owes && q('.tot-strip .ts.due i')) throw new Error('settlement hint shown with nothing due');
+    q('#moreBtn').click();
+    const items=qa('.more-menu .mi b').map(b=>b.textContent);
+    if(!items.some(t=>t.includes('Accept · Credit'))) throw new Error('mode override missing from More');
+    if(!items.some(t=>t.includes('Convert to cash'))) throw new Error('convert to cash missing');
+    if(items.some(t=>/duplicate/i.test(t))) throw new Error('Duplicate should be removed');
+    q('#moreBtn').click();
+    return 'Accept + More('+items.length+' items): '+items.join(', ');
+  });
+  step('inpatient applies no deductible — approved lines are fully on the payer', ()=>{
+    const adm2=adm();
+    const approved=adm2.ipOrders.find(o=>o.ins==='approved' && o.cat!=='PACKAGE');
+    const ca=w.ipLineCalc(adm2, approved, w.ipPayer(adm2));
+    if(ca.deductible!==0) throw new Error('a deductible was applied to an inpatient line');
+    if(ca.patient!==0) throw new Error('an approved inpatient line should not charge the patient, got '+ca.patient);
+    if(ca.company!==ca.net) throw new Error('the payer should carry the whole net');
+    /* a partially approved line still leaves the uncovered share with the patient */
+    const partial=adm2.ipOrders.find(o=>o.ins==='partial');
+    if(partial){
+      const cp2=w.ipLineCalc(adm2, partial, w.ipPayer(adm2));
+      if(cp2.patient<=0) throw new Error('a partially approved line should leave a patient share');
+      if(Math.abs((cp2.patient+cp2.company)-cp2.net)>0.02) throw new Error('shares do not add up to the net');
+    }
+    return 'approved → payer '+ca.company+', patient 0'+(partial?'; partial → patient '+w.ipLineCalc(adm2,partial,w.ipPayer(adm2)).patient:'');
+  });
+  step('grid columns: id, name, qty and surgery discount are their own columns', ()=>{
+    const hdr=qa('table.chg.ip thead th').map(h=>h.textContent.trim());
+    ['Order ID','Order','Qty','Surgery Disc','Patient','Patient + Tax','Company','Company + Tax','Disc %'].forEach(x=>{
+      if(!hdr.includes(x)) throw new Error('missing column '+x); });
+    if(hdr.includes('Performed') || hdr.includes('Accepted By')) throw new Error('accepted-only columns leaked into To accept');
+    /* every row must line up with the header, groups and children included */
+    const cells=qa('table.chg.ip tbody tr').map(r=>[...r.children].reduce((a,c)=>a+(parseInt(c.getAttribute('colspan'))||1),0));
+    if(cells.some(n=>n!==hdr.length)) throw new Error('row/header mismatch: '+cells.join(',')+' vs '+hdr.length);
+    const first=qa('table.chg.ip tbody tr')[0];
+    if(!first.querySelector('.ord-id') || !first.querySelector('.ord-nm')) throw new Error('id and name are not separate columns');
+    return hdr.join(', ');
+  });
+  step('surgery discount is recalculated automatically, before accepting', ()=>{
+    const scope=w.ipSurgeryScope(adm());
+    const primary=scope.filter(o=>o.surgeryRole==='PRIMARY');
+    if(primary.length!==1) throw new Error('expected one full-price procedure, got '+primary.length);
+    const dearest=[...scope].sort((a,b)=>(b.price*b.qty)-(a.price*a.qty))[0];
+    if(primary[0].id!==dearest.id) throw new Error('the dearest procedure should keep its full price');
+    if(scope.filter(o=>o.surgeryRole==='REDUCED').some(o=>o.discountPct!==w.SURGERY_RULE.pct))
+      throw new Error('reduction not applied to the rest');
+    const shown=qa('table.chg.ip tbody tr').map(r=>r.textContent).join(' ');
+    if(!shown.includes(w.SURGERY_RULE.pct+'%')) throw new Error('surgery column not populated in To accept');
+    /* adding an order re-elects automatically on the next render */
+    adm().ipOrders.push({ id:'O-TEST', cat:'SERVICE', code:'09999999', name:'Test Mega Procedure', qty:1, price:99999,
+      ins:'approved', orderedOn:'01-09-2026 09:00', state:'NEW' });
+    w.render();
+    const newPrimary=w.ipSurgeryScope(adm()).find(o=>o.surgeryRole==='PRIMARY');
+    if(newPrimary.id!=='O-TEST') throw new Error('a newly added dearer order did not become the primary');
+    adm().ipOrders=adm().ipOrders.filter(o=>o.id!=='O-TEST'); w.render();
+    return 'full price: '+dearest.name+', reduction '+w.SURGERY_RULE.pct+'% on the rest, re-elected on add';
+  });
+  step('expand button widens the grid and hides the side panels', ()=>{
+    if(!q('#gridExp')) throw new Error('no expand button on the tab row');
+    if(!q('.rail-col')) throw new Error('rail should be visible to begin with');
+    q('#gridExp').click();
+    if(q('.rail-col')) throw new Error('expanded grid should hide the side sections');
+    if(!q('.ip-a.wide')) throw new Error('grid did not switch to full width');
+    q('#gridExp').click();
+    if(!q('.rail-col')) throw new Error('collapse did not bring the panels back');
+    return 'toggles between grid + rail and full-width grid';
+  });
+  step('total due acts as a button and prints a due statement', ()=>{
+    q('#dueBtn').click();
+    const sheet=q('.print-sheet');
+    if(!sheet) throw new Error('due statement did not open');
+    const t=sheet.textContent.replace(/\s+/g,' ');
+    ['Still to be accepted','Credit outstanding to settle','Total due if everything is accepted',
+     'Less advance on the wallet','Remaining due if only the accepted orders are settled'].forEach(x=>{
+      if(!t.includes(x)) throw new Error('statement missing: '+x); });
+    if(!t.includes('surgery')) throw new Error('discounts should be visible on the statement');
+    q('#dueClose').click();
+    return 'statement lists pending orders, discounts, credit and the net payable';
+  });
+  step('action row guides the user when nothing is selected', ()=>{
+    S.ipSel={}; w.render();
+    const hint=q('.act-bar.idle');
+    if(!hint) throw new Error('no guidance row');
+    if(!/package|Tick the orders|ready to bill/i.test(hint.textContent)) throw new Error('guidance text not useful: '+hint.textContent);
+    return hint.textContent.trim().slice(0,90);
+  });
+  step('selecting an order flags approvals raised under another payer', ()=>{
+    const alt=adm().ipOrders.find(o=>o.state==='NEW' && (o.approvals||[]).some(a=>a.payerId!==adm().activePayerId));
+    if(!alt) throw new Error('no order with an approval under another payer');
+    S.ipSel={ [alt.id]:true }; w.render();
+    const row=q('.ab-main .ab-alt');
+    if(!row) throw new Error('cross-payer notice should sit in line with the accept button');
+    if(q('.ab-suggest.alt')) throw new Error('it should no longer be a separate row');
+    const cards=qa('.ab-alt .cmp .c');
+    if(cards.length<2) throw new Error('expected a share comparison per payer');
+    if(!q('#switchAlt')) throw new Error('no shortcut to switch to the other payer');
+    const cmp=w.ipCompareAcrossPayers(adm(), [alt]);
+    if(cmp.filter(c=>c.raised.length).length===0) throw new Error('comparison does not know about the raised approval');
+    S.ipSel={}; w.render();
+    return cards.map(c=>c.textContent.replace(/\s+/g,' ').trim()).join('  ||  ');
+  });
+  step('performing clinic / doctor selectable per procedure', ()=>{
+    const rows=nonPkgRows();
+    const sels=rows[0].querySelectorAll('[data-edit="performClinic"], [data-edit="performedBy"]');
+    if(sels.length!==2) throw new Error('each order row needs its own clinic + doctor picker');
+    const c=rows[1].querySelector('[data-edit="performClinic"]');
+    c.value='RADIOLOGY'; c.dispatchEvent(new w.Event('change'));
+    const o=adm().ipOrders.find(x=>x.id===c.dataset.id);
+    if(o.performClinic!=='RADIOLOGY') throw new Error('per-row clinic not saved');
+    return 'row-level pickers on '+rows.length+' orders; row 2 set to '+o.performClinic;
+  });
+  step('no category icons on the order lines', ()=>{
+    const names=nonPkgRows().map(r=>r.querySelector('.ord-nm').textContent);
+    if(names.some(t=>/[\u{1F300}-\u{1FAFF}]/u.test(t))) throw new Error('icon still rendered on an item line');
+    return names[0].replace(/\s+/g,' ').trim();
+  });
+  step('action bar carries actions only — no duplicated figures', ()=>{
+    S.ipSel={}; nonPkgChks().slice(0,1).forEach(c=>{ S.ipSel[c.dataset.id]=true; }); w.render();
+    if(q('#abClinic') || q('#abDoctor') || q('#abDate')) throw new Error('bulk performing fields should be removed');
+    if(q('.ab-left') || q('.ab-mid')) throw new Error('summary text should live in the totals strip only');
+    if(qa('[data-alt]').length) throw new Error('the active-approvals suggestion row should be gone');
+    if(!q('#acceptGo') || !q('#moreBtn')) throw new Error('the actions themselves must remain');
+    return 'buttons: '+qa('.act-bar button').map(b=>b.textContent.trim()).join(' | ');
+  });
+  step('bottom totals strip snapshots the money', ()=>{
+    const strip=q('.tot-strip');
+    if(!strip) throw new Error('no totals strip');
+    ['Price','Patient Share + Tax','Company Share + Tax','Discount','Medications','Consumables','Total Invoice','Total Due']
+      .forEach(x=>{ if(!strip.textContent.includes(x)) throw new Error('missing total: '+x); });
+    const due=parseFloat(q('.tot-strip .ts.due b').textContent.replace(/[^0-9.]/g,''));
+    if(due>0 && !q('.tot-strip .ts.due i')) throw new Error('the settlement hint should sit inside the strip');
+    return strip.textContent.replace(/\s+/g,' ').trim().slice(0,160);
+  });
+  step('accept services under BUPA with performing team', ()=>{
+    S.ipSel={}; nonPkgChks().slice(0,2).forEach(c=>{ S.ipSel[c.dataset.id]=true; }); w.render();
+    const rows=qa('table.chg.ip tbody tr').filter(r=>r.querySelector('.ipChk') && S.ipSel[r.querySelector('.ipChk').dataset.id]);
+    rows.forEach(r=>{ const c=r.querySelector('[data-edit="performClinic"]'); c.value='CARDIOLOGY'; c.dispatchEvent(new w.Event('change')); });
+    const before=adm().ipOrders.filter(o=>o.state==='ACCEPTED').length;
+    acceptNow();
+    const acc=adm().ipOrders.filter(o=>o.state==='ACCEPTED');
+    if(acc.length!==before+2) throw new Error('accepted '+(acc.length-before)+' instead of 2');
+    const fresh=acc.filter(o=>o.performClinic==='CARDIOLOGY');
+    if(fresh.length!==2) throw new Error('per-row clinic not carried through on accept, got '+fresh.length);
+    if(fresh.some(o=>o.payerId!=='PY-1')) throw new Error('accepted under the wrong payer');
+    if(S.ipStatus!=='ACCEPTED') throw new Error('should land on the Accepted filter, got '+S.ipStatus);
+    return fresh.length+' accepted under '+fresh[0].payerId+' via '+fresh[0].acceptMode+', performed by '+fresh[0].performedBy;
+  });
+  step('reconcile is blocked until a package is accepted — no premature bulk line', ()=>{
+    /* make sure no package is accepted at this point in the run */
+    w.ipPackages(adm()).forEach(pk=>{
+      if(!pk.accepted) return;
+      const line=w.ipPackageOrder(adm(), pk);
+      w.ipDetachPackage(adm(), pk);
+      Object.assign(line, { state:'NEW', payerId:null, acceptMode:null });
+    });
+    S.ipStatus='TODO'; S.ipCat='MED'; S.ipSel={}; w.render();
+    if(w.ipAcceptedPackages(adm()).length) throw new Error('no package should be accepted yet');
+    const c=nonPkgChks()[0];
+    const id=c.dataset.id; S.ipSel[id]=true; w.render();
+    if(q('#acceptGo').textContent.trim()!=='⇄ Reconcile') throw new Error('medications should offer Reconcile, not Accept');
+    if(q('#moreBtn')) throw new Error('medications should not carry a More menu in To accept');
+    q('#acceptGo').click();
+    if(!q('#recOpts')) throw new Error('the reconcile prompt should open');
+    const opts=qa('.pkg-opt .t b').map(b=>b.textContent.trim());
+    if(opts.join('/')!=='Reconcile/Zero reconcile') throw new Error('expected both reconcile options, got '+opts.join('/'));
+    if(!q('.pkg-opt.off')) throw new Error('value reconciliation should be unavailable with no package accepted');
+    if(q('.pkg-opt.on .t b').textContent.trim()!=='Zero reconcile') throw new Error('zero reconcile should be preselected');
+    q('#recCancel').click();
+    const o=adm().ipOrders.find(x=>x.id===id);
+    if(o.state!=='NEW') throw new Error('cancelling should leave the order alone');
+    if(w.ipBulk(adm(),'MED').lines.length) throw new Error('no Inpatient Medication line should exist yet');
+    S.ipSel={}; S.ipCat='ALL'; w.render();
+    return 'prompt offers '+opts.join(' / ')+'; value blocked until a package is accepted';
+  });
+  step('a package expands to its child services and the two accumulating buckets', ()=>{
+    S.ipStatus='TODO'; S.ipCat='ALL'; S.ipSel={}; S.ipExpand={}; w.render();
+    const caret=qa('[data-exp]').find(c=>c.dataset.exp.startsWith('PKG-'));
+    if(!caret) throw new Error('package row has no expander');
+    caret.click();
+    const kidText=qa('table.chg.ip tbody tr.kid').map(r=>r.textContent).join(' || ');
+    const kids=qa('table.chg.ip tbody tr.kid').map(r=>r.querySelector('.ord-nm b, .chg-name b').textContent.replace('↳ ','').trim());
+    const pk=w.ipPackages(adm()).find(p=>('PKG-'+p.id)===caret.dataset.exp);
+    pk.services.forEach(def=>{ if(!kidText.includes(def.name)) throw new Error('missing child service '+def.name); });
+    if(!kidText.includes('Inpatient Medications')) throw new Error('no in-package Inpatient Medications service');
+    if(!kidText.includes('Inpatient Consumables')) throw new Error('no in-package Inpatient Consumables service');
+    const kidCells=[...qa('table.chg.ip tbody tr.kid')[0].children].reduce((a,c)=>a+(parseInt(c.getAttribute('colspan'))||1),0);
+    const headCells=qa('table.chg.ip thead th').length;
+    if(kidCells!==headCells) throw new Error('child rows should use the same columns ('+kidCells+' vs '+headCells+')');
+    const buckets=qa('tr.kid.bucket').map(r=>r.textContent);
+    if(!buckets.some(t=>t.includes(w.fmt(pk.medLimit)))) throw new Error('medication bucket does not show its amount');
+    if(!buckets.some(t=>t.includes(w.fmt(pk.consLimit)))) throw new Error('consumable bucket does not show its amount');
+    if(qa('tr.kid.bucket .mini-bar').length) throw new Error('the in-package bar should be gone — the rail charts it');
+    S.ipExpand={}; w.render();
+    return kids.join(' | ');
+  });
+  step('each package is itself a service order awaiting acceptance', ()=>{
+    S.ipStatus='TODO'; S.ipCat='ALL'; S.ipSel={}; w.render();
+    const lines=adm().ipOrders.filter(o=>o.cat==='PACKAGE');
+    if(lines.length!==2) throw new Error('expected an order line per package, got '+lines.length);
+    if(lines.some(o=>o.state!=='NEW')) throw new Error('package lines should start in To accept');
+    const badged=qa('table.chg.ip tbody tr').filter(r=>r.textContent.includes('PACKAGE'));
+    if(badged.length!==2) throw new Error('package rows are not flagged in the grid');
+    if(!badged[0].querySelector('.badge.ipd')) throw new Error('package row should carry the PACKAGE badge');
+    return lines.map(o=>o.name+' @ '+o.price).join(' | ');
+  });
+  step('accepting the package service is what opens reconciliation', ()=>{
+    const pkRow=qa('table.chg.ip tbody tr').find(r=>r.textContent.includes('Appendectomy Surgical Package'));
+    S.ipSel[pkRow.querySelector('.ipChk').dataset.id]=true; w.render();
+    acceptNow();
+    const pk=w.ipPackages(adm()).find(p=>p.id==='PK-A2');
+    if(!pk.accepted) throw new Error('accepting the line did not accept the package');
+    if(pk.payerId!==adm().activePayerId) throw new Error('package not tied to the billing payer');
+    const line=w.ipPackageOrder(adm(), pk);
+    if(line.state!=='ACCEPTED') throw new Error('package order line state is '+line.state);
+    return pk.name+' accepted for '+pk.payerId+' at '+pk.price;
+  });
+  step('revoking the package service releases everything inside it', ()=>{
+    /* reconcile some meds first */
+    S.ipStatus='TODO'; S.ipCat='MED'; S.ipSel={}; w.render();
+    nonPkgChks().forEach(c=>{ S.ipSel[c.dataset.id]=true; });
+    w.render(); acceptNow();
+    const pk=w.ipPackages(adm()).find(p=>p.id==='PK-A2');
+    const inside=w.ipPkgUsage(adm(), pk).medUsed;
+    if(inside<=0) throw new Error('nothing reconciled to release');
+    S.ipStatus='ACCEPTED'; S.ipCat='ALL'; S.ipSel={}; w.render();
+    const line=w.ipPackageOrder(adm(), pk);
+    S.ipSel[line.id]=true; w.render();
+    q('#revokeBtn').click();
+    if(pk.accepted) throw new Error('package still accepted after revoking its line');
+    if(w.ipPkgUsage(adm(), pk).medUsed!==0) throw new Error('contents still attached to the package');
+    if(w.ipBulk(adm(),'MED').lines.length) throw new Error('the bulk Inpatient Medication line should be revoked too');
+    if(adm().ipOrders.filter(o=>o.cat==='MED'&&o.state==='NEW').length===0)
+      throw new Error('released medications should be back in New Orders');
+    if(adm().ipOrders.some(o=>o.state==='SPLIT'))
+      throw new Error('split parts should have been merged back into their original order');
+    /* put it back for the remaining steps */
+    S.ipStatus='TODO'; S.ipCat='ALL'; S.ipSel={ [line.id]:true }; w.render(); acceptNow();
+    return 'released '+inside+' back to bulk, package re-accepted for the rest of the run';
+  });
+  step('the reconcile prompt warns which lines will spill to the bulk service', ()=>{
+    const pk=w.ipAcceptedPackages(adm())[0];
+    if(!pk) return 'no accepted package at this point';
+    /* put every medication back so the selection overshoots the package amount */
+    adm().ipOrders = adm().ipOrders.filter(o=>!(o.cat==='MED' && o.splitFrom));
+    adm().ipOrders.filter(o=>o.cat==='MED').forEach(o=>Object.assign(o,
+      { state:'NEW', payerId:null, pkg:null, packageId:null, acceptMode:null, zeroPriced:false }));
+    S.ipStatus='TODO'; S.ipCat='MED'; S.ipSel={}; w.render();
+    nonPkgChks().forEach(c=>{ S.ipSel[c.dataset.id]=true; });
+    w.render();
+    q('#acceptGo').click();
+    const items=Object.keys(S.reconcilePrompt.ids ? S.reconcilePrompt : {}).length ? null : null;
+    const lines=S.reconcilePrompt.ids.map(id=>adm().ipOrders.find(o=>o.id===id));
+    const plan=w.ipPlanReconcile(adm(), lines);
+    if(plan.spill.length===0) throw new Error('this selection should overshoot the package amount');
+    const note=q('.rec-note');
+    if(!note) throw new Error('no note about the lines that cannot fit');
+    if(!note.textContent.includes(w.BULK_LINES.MED.name))
+      throw new Error('the note should name the bulk service: '+note.textContent);
+    plan.spill.forEach(o=>{ if(!note.textContent.includes(o.name)) throw new Error('note omits '+o.name); });
+    /* the table says where each line goes, and it matches the plan */
+    const hdr=qa('.modal table.reg thead th').map(h=>h.textContent.trim());
+    if(!hdr.includes('Goes to')) throw new Error('no destination column');
+    const rows=qa('.modal table.reg tbody tr');
+    rows.forEach(r=>{
+      const code=r.children[0].textContent.trim();
+      const o=lines.find(x=>x.code===code);
+      const want=plan.assign[o.id]==='BULK' ? w.BULK_LINES[o.cat].name
+        : w.ipPackages(adm()).find(p=>p.id===plan.assign[o.id]).name;
+      if(r.children[5].textContent.trim()!==want)
+        throw new Error(code+' shows '+r.children[5].textContent.trim()+', plan says '+want);
+    });
+    /* zero reconcile needs no such warning — nothing is charged either way */
+    qa('.pkg-opt').find(o=>o.dataset.m==='ZERO').click();
+    if(q('.rec-note')) throw new Error('the spill warning should not show for zero reconcile');
+    qa('.pkg-opt').find(o=>o.dataset.m==='VALUE').click();
+    /* and what was previewed is what happens */
+    const expect={}; lines.forEach(o=>{ expect[o.id]=plan.assign[o.id]; });
+    q('#recGo').click();
+    Object.keys(expect).forEach(id=>{
+      const o=adm().ipOrders.find(x=>x.id===id);
+      const got=o.packageId || 'BULK';
+      if(got!==expect[id]) throw new Error(o.name+' landed in '+got+', preview said '+expect[id]);
+    });
+    S.ipCat='ALL'; S.ipSel={}; w.render();
+    return plan.spill.length+' line(s) flagged for '+w.BULK_LINES.MED.name+', '+plan.intoPkg.length+' inside the package';
+  });
+  step('zero reconcile records the item at nil value', ()=>{
+    S.ipStatus='TODO'; S.ipCat='MED'; S.ipSel={}; w.render();
+    const pick=nonPkgChks().slice(0,1);
+    if(!pick.length) return 'no medication left to zero reconcile';
+    const id=pick[0].dataset.id; S.ipSel={ [id]:true }; w.render();
+    const bulkBefore=w.ipBulk(adm(),'MED').total;
+    q('#acceptGo').click();
+    qa('.pkg-opt').find(o=>o.dataset.m==='ZERO').click();
+    q('#recGo').click();
+    const o=adm().ipOrders.find(x=>x.id===id);
+    if(!o.zeroPriced) throw new Error('item was not zero reconciled');
+    if(o.state!=='ACCEPTED') throw new Error('zero reconcile should still accept the line');
+    const c=w.ipLineCalc(adm(), o);
+    if(c.patientWithTax!==0 || c.companyWithTax!==0 || c.gross!==0) throw new Error('a zero reconciled line must bill nothing');
+    if(w.ipBulk(adm(),'MED').total!==bulkBefore) throw new Error('zero items must not add value to the bulk line');
+    S.ipCat='ALL'; S.ipSel={}; w.render();
+    return o.name+' recorded at nil against '+(o.packageId||w.BULK_LINES.MED.name);
+  });
+  step('zero reconciled items show at 0.00 inside the expanded parent', ()=>{
+    S.ipStatus='ACCEPTED'; S.ipCat='ALL'; S.ipSel={}; S.ipExpand={}; w.render();
+    const z=adm().ipOrders.find(o=>o.zeroPriced);
+    if(!z) return 'nothing zero reconciled at this point';
+    if(z.packageId){ S.ipExpand['PKG-'+z.packageId]=true; S.ipExpand['PKGB-'+z.packageId+'-'+z.cat]=true; }
+    else S.ipExpand['BULK-'+z.cat]=true;
+    w.render();
+    const row=qa('tr.kid, tr.kid2').find(r=>r.textContent.includes(z.name));
+    if(!row) throw new Error('the zero item is not listed inside its parent');
+    if(!/0\.00/.test(row.textContent)) throw new Error('it should be shown at 0.00');
+    if(!row.textContent.includes('ZERO') && !row.textContent.includes('zero reconciled'))
+      throw new Error('the row should be flagged as zero reconciled');
+    S.ipExpand={}; w.render();
+    return z.name+' listed at 0.00 under '+(z.packageId||w.BULK_LINES[z.cat].name);
+  });
+  step('with no package on the admission, value reconciliation goes straight to the bulk service', ()=>{
+    const saved=adm().packages;
+    adm().packages=[];                                  /* an admission without packages */
+    S.ipStatus='TODO'; S.ipCat='CONS'; S.ipSel={}; w.render();
+    const chk=nonPkgChks()[0];
+    if(!chk){ adm().packages=saved; return 'no consumable left to test with'; }
+    S.ipSel={ [chk.dataset.id]:true }; w.render();
+    q('#acceptGo').click();
+    if(q('.pkg-opt.off')) throw new Error('value reconciliation should be available when there is no package');
+    if(q('.pkg-opt.on .t b').textContent.trim()!=='Reconcile') throw new Error('value should be the default here');
+    q('#recGo').click();
+    const o=adm().ipOrders.find(x=>x.id===chk.dataset.id);
+    if(o.pkg!=='BULK') throw new Error('expected the standalone service, got '+o.pkg);
+    if(w.ipBulk(adm(),'CONS').total<=0) throw new Error(w.BULK_LINES.CONS.name+' should carry the value');
+    adm().packages=saved; S.ipCat='ALL'; S.ipSel={}; w.render();
+    return o.name+' billed on '+w.BULK_LINES.CONS.name+' ('+w.ipBulk(adm(),'CONS').total+')';
+  });
+  step('rail reports package usage only — no accepting from the sidebar', ()=>{
+    S.ipStatus='TODO'; S.ipCat='ALL'; S.ipSel={}; w.render();
+    const names=qa('.rc-pkgcard .ph b').map(b=>b.textContent);
+    if(names.length!==2) throw new Error('expected 2 packages, got '+names.length);
+    const prices=w.ipPackages(adm()).map(p=>p.price);
+    if(names[0]!==w.ipPackages(adm()).find(p=>p.price===Math.max(...prices)).name)
+      throw new Error('dearest package should be listed first');
+    if(q('[data-pkacc]')) throw new Error('the rail should no longer accept packages — it only reports usage');
+    if(!q('.rc-pkgcard .rc-pkg')) throw new Error('the rail should show consumed / remaining per package');
+    return names.join(' | ');
+  });
+  step('under the limit stays inside the package — no bulk line', ()=>{
+    const pk=w.ipAcceptedPackages(adm())[0];
+    if(!pk) throw new Error('needs an accepted package');
+    /* reset the meds, then reconcile just one cheap line */
+    adm().ipOrders = adm().ipOrders.filter(o=>!(o.cat==='MED' && o.splitFrom));
+    adm().ipOrders.filter(o=>o.cat==='MED').forEach(o=>Object.assign(o,
+      { state:'NEW', payerId:null, pkg:null, packageId:null, acceptMode:null }));
+    S.ipStatus='TODO'; S.ipCat='MED'; S.ipSel={}; w.render();
+    const cheap=adm().ipOrders.filter(o=>o.cat==='MED'&&o.state==='NEW').sort((a,b)=>a.price*a.qty-b.price*b.qty)[0];
+    S.ipSel={ [cheap.id]:true }; w.render();
+    acceptNow();
+    const after=adm().ipOrders.find(o=>o.id===cheap.id);
+    if(after.pkg!=='RECONCILED') throw new Error('a line under the limit should reconcile, got '+after.pkg);
+    if(w.ipBulk(adm(),'MED').lines.length) throw new Error(w.BULK_LINES.MED.name+' should not be raised under the limit');
+    S.ipCat='ALL'; w.render();
+    return cheap.name+' ('+(cheap.price*cheap.qty)+') inside '+pk.name+' · no bulk line';
+  });
+  step('over the limit raises the Inpatient Medication line', ()=>{
+    S.ipStatus='TODO'; S.ipCat='MED'; S.ipSel={}; w.render();
+    nonPkgChks().forEach(c=>{ S.ipSel[c.dataset.id]=true; });
+    if(Object.keys(S.ipSel).length===0) return 'no medications left to reconcile';
+    w.render(); acceptNow();
+    const pk=w.ipAcceptedPackages(adm())[0];
+    const used=w.ipPkgUsage(adm(), pk).medUsed;
+    const bulk=w.ipBulk(adm(),'MED');
+    if(used>pk.medLimit) throw new Error('package limit exceeded: '+used+'>'+pk.medLimit);
+    if(bulk.lines.length===0) throw new Error('the excess should have raised '+w.BULK_LINES.MED.name);
+    S.ipCat='ALL'; w.render();
+    return used+'/'+pk.medLimit+' inside the package, '+bulk.total+' over '+bulk.lines.length+' bulk line(s)';
+  });
+  step('a medication goes wholly into one package, leaving the smallest balance', ()=>{
+    /* accept both packages, reset the meds, then reconcile them all at once */
+    w.ipPackages(adm()).forEach(pk=>{
+      const line=w.ipPackageOrder(adm(), pk);
+      if(!pk.accepted){ Object.assign(line, { state:'NEW' }); w.ipAcceptPackage(adm(), pk, S.ipAcceptForm); }
+    });
+    const acc=w.ipAcceptedPackages(adm());
+    if(acc.length!==2) throw new Error('expected both packages accepted, got '+acc.length);
+    adm().ipOrders = adm().ipOrders.filter(o=>!(o.cat==='MED' && o.splitFrom));
+    adm().ipOrders.filter(o=>o.cat==='MED').forEach(o=>Object.assign(o,
+      { state:'NEW', payerId:null, pkg:null, packageId:null, acceptMode:null, zeroPriced:false }));
+    S.ipStatus='TODO'; S.ipCat='MED'; S.ipSel={}; w.render();
+    nonPkgChks().forEach(c=>{ S.ipSel[c.dataset.id]=true; });
+    w.render(); acceptNow();
+
+    const meds=adm().ipOrders.filter(o=>o.cat==='MED'&&o.state==='ACCEPTED');
+    if(adm().ipOrders.some(o=>o.cat==='MED'&&o.splitFrom)) throw new Error('a medication line was split across packages');
+    meds.filter(o=>o.packageId).forEach(o=>{
+      const u=w.ipPkgUsage(adm(), acc.find(p=>p.id===o.packageId));
+      if(u.medUsed>acc.find(p=>p.id===o.packageId).medLimit) throw new Error('package amount exceeded');
+    });
+    /* best fit: nothing in the bulk line could have fitted a package that still has room */
+    const balances={}; acc.forEach(p=>{ balances[p.id]=w.ipPkgUsage(adm(),p).medLeft; });
+    w.ipBulk(adm(),'MED').lines.forEach(o=>{
+      const total=o.price*o.qty;
+      acc.forEach(p=>{ if(balances[p.id]>=total) throw new Error(o.name+' ('+total+') should have gone into '+p.name+' — '+balances[p.id]+' free'); });
+    });
+    /* and each placement left the tightest balance available at the time */
+    S.ipCat='ALL'; S.ipSel={}; w.render();
+    return acc.map(p=>p.name.split(' ')[0]+' balance '+w.ipPkgUsage(adm(),p).medLeft).join(' · ')
+      +' · bulk '+w.ipBulk(adm(),'MED').total;
+  });
+  step('accepted medications list their package by name', ()=>{
+    S.ipStatus='ACCEPTED'; S.ipCat='MED'; S.ipSel={}; w.render();
+    const rows=qa('table.chg.ip tbody tr');
+    if(rows.length===0) throw new Error('reconciled medications should be listed under the Medications tab');
+    const pi=[...qa('table.chg.ip thead th')].findIndex(h=>h.textContent.trim()==='Package');
+    const shown=rows.map(r=>r.children[pi].textContent.trim());
+    if(shown.some(t=>t==='' || t==='—')) throw new Error('every reconciled line should name its parent');
+    const names=w.ipPackages(adm()).map(p=>p.name).concat([w.BULK_LINES.MED.name]);
+    shown.forEach(t=>{ if(!names.includes(t)) throw new Error('unexpected package label: '+t); });
+    S.ipCat='ALL'; w.render();
+    return [...new Set(shown)].join(' | ');
+  });
+  step('a procedure bundled in two packages offers both plus standalone', ()=>{
+    /* the shared procedure may already be accepted by an earlier step — put it back */
+    let shared=adm().ipOrders.find(o=>o.state==='NEW' && o.cat==='SERVICE'
+      && w.ipPackagesForService(adm(), o.code).length>1);
+    if(!shared){
+      shared=adm().ipOrders.find(o=>o.cat==='SERVICE' && w.ipPackagesForService(adm(), o.code).length>1);
+      if(!shared) throw new Error('no procedure belongs to two packages');
+      Object.assign(shared, { state:'NEW', payerId:null, pkg:null, packageId:null, acceptMode:null, replacedNote:null });
+    }
+    S.ipStatus='TODO'; S.ipCat='SERVICE'; S.ipSel={}; w.render();
+    const pks=w.ipPackagesForService(adm(), shared.code);
+    S.ipSel={ [shared.id]:true }; w.render();
+    q('#acceptGo').click();
+    if(!q('#pkgChoices')) throw new Error('package prompt did not open');
+    const opts=qa('.pkg-opt .t b').map(b=>b.textContent.trim());
+    pks.forEach(pk=>{ if(!opts.includes(pk.name)) throw new Error('missing option for '+pk.name); });
+    if(!opts.includes('Standalone procedure')) throw new Error('no standalone option');
+    if(opts.length!==pks.length+1) throw new Error('expected one option per package plus standalone, got '+opts.join('/'));
+    /* pick the second package explicitly */
+    const target=pks[1];
+    qa('.pkg-opt').find(o=>o.dataset.c===target.id).click();
+    q('#pkgGo').click();
+    const after=adm().ipOrders.find(o=>o.id===shared.id);
+    if(after.packageId!==target.id) throw new Error('went into '+after.packageId+' instead of '+target.id);
+    return shared.name+' offered '+opts.join(' / ')+' → chose '+target.name;
+  });
+  step('replace within package asks which package when there is a choice', ()=>{
+    /* accept a package procedure standalone first */
+    S.ipStatus='TODO'; S.ipCat='SERVICE'; S.ipSel={}; w.render();
+    let cand=adm().ipOrders.find(o=>o.state==='NEW' && o.cat==='SERVICE' && w.ipPackagesForService(adm(), o.code).length);
+    if(!cand){
+      cand=adm().ipOrders.find(o=>o.cat==='SERVICE' && w.ipPackagesForService(adm(), o.code).length);
+      if(!cand) return 'no package procedure available';
+      Object.assign(cand, { state:'NEW', payerId:null, pkg:null, packageId:null, acceptMode:null, replacedNote:null });
+      w.render();
+    }
+    S.ipSel={ [cand.id]:true }; w.render();
+    q('#acceptGo').click();
+    const sa=qa('.pkg-opt').find(o=>o.dataset.c==='STANDALONE'); if(sa) sa.click();
+    q('#pkgGo').click();
+    const std=adm().ipOrders.find(o=>o.id===cand.id);
+    if(std.packageId) throw new Error('should have been accepted standalone');
+    /* now replace it into a package */
+    S.ipStatus='ACCEPTED'; S.ipCat='ALL'; S.ipSel={ [std.id]:true }; w.render();
+    q('#moreBtn').click();
+    qa('.more-menu .mi').find(m=>m.textContent.includes('within package')).click();
+    if(!q('#pkgChoices')) throw new Error('replace did not prompt for the package');
+    const opts=qa('.pkg-opt .t b').map(b=>b.textContent.trim());
+    const pks=w.ipPackagesForService(adm(), std.code);
+    pks.forEach(pk=>{ if(!opts.includes(pk.name)) throw new Error('replace prompt missing '+pk.name); });
+    qa('.pkg-opt')[0].click();
+    q('#pkgGo').click();
+    const after=adm().ipOrders.find(o=>o.id===std.id);
+    if(after.pkg!=='RECONCILED' || !after.packageId) throw new Error('not moved into a package');
+    const into=w.ipPackages(adm()).find(p=>p.id===after.packageId);
+    return std.name+' → '+into.name+' ('+after.replacedNote+')';
+  });
+  step('package and bulk rows collapse with expandable contents', ()=>{
+    S.ipStatus='ACCEPTED'; S.ipCat='ALL'; S.ipSel={}; w.render();
+    S.ipExpand={}; w.render();
+    const grp=qa('table.chg.ip tbody tr.grp');
+    if(grp.length<2) throw new Error('expected a package group and a bulk group, got '+grp.length);
+    if(qa('table.chg.ip tbody tr.kid').length) throw new Error('children should be hidden until expanded');
+    const caret=q('[data-exp]');
+    caret.click();
+    if(!qa('table.chg.ip tbody tr.kid').length) throw new Error('expanding did not reveal the contents');
+    const kidNames=qa('table.chg.ip tbody tr.kid .chg-name b').map(b=>b.textContent.replace('↳ ',''));
+    caret.click();
+    return grp.length+' groups; expanded shows: '+kidNames.join(', ');
+  });
+  step('meds accumulate into the in-package bucket, which expands to them', ()=>{
+    const pk=w.ipPackages(adm()).find(p=>p.accepted);
+    if(w.ipPkgBuckets(adm(), pk).find(b=>b.key==='MED').used<=0){
+      /* reconcile whatever medications are pending so the bucket has contents */
+      S.ipStatus='TODO'; S.ipCat='MED'; S.ipSel={}; w.render();
+      nonPkgChks().forEach(c=>{ S.ipSel[c.dataset.id]=true; });
+      if(Object.keys(S.ipSel).length){ w.render(); acceptNow(); }
+    }
+    S.ipStatus='ACCEPTED'; S.ipCat='ALL'; S.ipSel={}; S.ipExpand={}; w.render();
+    const bucket=w.ipPkgBuckets(adm(), pk).find(b=>b.key==='MED');
+    if(bucket.used<=0) throw new Error('nothing accumulated into the in-package medication service');
+    if(bucket.used>bucket.limit) throw new Error('accumulated past the in-package amount');
+    const caret=qa('[data-exp]').find(c=>c.dataset.exp==='PKG-'+pk.id);
+    caret.click();
+    const bktCaret=qa('[data-exp]').find(c=>c.dataset.exp==='PKGB-'+pk.id+'-MED');
+    if(!bktCaret) throw new Error('the medication bucket cannot be expanded');
+    bktCaret.click();
+    const inside=qa('tr.kid2').map(r=>r.querySelector('.ord-nm b, .chg-name b').textContent.replace('↳ ','').trim());
+    if(inside.length!==bucket.lines.length) throw new Error('bucket contents do not match ('+inside.length+' vs '+bucket.lines.length+')');
+    S.ipExpand={}; w.render();
+    return bucket.name+' '+bucket.used+'/'+bucket.limit+' holding: '+inside.join(', ');
+  });
+  step('bulk group is the standalone Inpatient Medication service', ()=>{
+    const txt=qa('table.chg.ip tbody tr.grp').map(r=>r.textContent).join(' | ');
+    if(!txt.includes(w.BULK_LINES.MED.name)) throw new Error('no Inpatient Medication group row');
+    return w.BULK_LINES.MED.name+' present with '+w.ipBulk(adm(),'MED').lines.length+' item(s)';
+  });
+  step('accepted view carries the full billing + audit columns', ()=>{
+    S.ipStatus='ACCEPTED'; S.ipCat='ALL'; S.ipSel={}; w.render();
+    const hdr=qa('table.chg.ip thead th').map(h=>h.textContent.trim());
+    ['Disc %','Patient','Patient + Tax','Company','Company + Tax','Performed','Accepted By','Package','Settle']
+      .forEach(x=>{ if(!hdr.includes(x)) throw new Error('missing column '+x); });
+    const row=qa('table.chg.ip tbody tr')[0];
+    if(row.querySelector('[data-edit="discountPct"]')) throw new Error('the discount column should not be editable');
+    if(!row.querySelector('[data-edit="performedStatus"]')) throw new Error('no performed status field');
+    if(!/SAADAN/.test(row.textContent)) throw new Error('accepted-by not shown');
+    return hdr.join(', ');
+  });
+  step('performed status is settable; discount is calculated, not typed', ()=>{
+    const row=nonPkgRows().find(r=>r.querySelector('[data-edit="performedStatus"]'));
+    if(!row) throw new Error('no accepted row with a performed status');
+    if(qa('table.chg.ip [data-edit="discountPct"]').length) throw new Error('discount must not be editable anywhere');
+    const ps=row.querySelector('[data-edit="performedStatus"]');
+    ps.value='PERFORMED'; ps.dispatchEvent(new w.Event('change'));
+    const o=adm().ipOrders.find(x=>x.id===ps.dataset.id);
+    if(o.performedStatus!=='PERFORMED') throw new Error('performed status not saved');
+    /* the surgery rule still writes the discount */
+    const reduced=w.ipSurgeryScope(adm()).find(x=>x.surgeryRole==='REDUCED');
+    if(reduced && reduced.discountPct!==w.SURGERY_RULE.pct) throw new Error('surgery discount lost');
+    return 'status set to Performed; discount driven by the surgery rule only';
+  });
+  step('accepted view: performed-on / clinic / doctor editable inline', ()=>{
+    S.ipStatus='ACCEPTED'; S.ipCat='ALL'; S.ipSel={}; w.render();
+    const inp=q('[data-edit="performedOn"]');
+    if(!inp) throw new Error('no editable performed-on');
+    inp.value='30-08-2026'; inp.dispatchEvent(new w.Event('change'));
+    const o=adm().ipOrders.find(x=>x.id===inp.dataset.id);
+    if(o.performedOn!=='30-08-2026') throw new Error('edit not saved');
+    if(!q('[data-edit="performClinic"]') || !q('[data-edit="performedBy"]')) throw new Error('clinic/doctor not editable');
+    return 'performed on '+o.performedOn+' · '+o.performClinic+' · '+o.performedBy;
+  });
+  step('surgery discount button recalculates over the whole scope', ()=>{
+    S.ipStatus='ACCEPTED'; S.ipCat='ALL'; S.ipSel={}; w.render();
+    if(!q('#surgBtn')) throw new Error('no surgery discount button');
+    q('#surgBtn').click();
+    const scope=w.ipSurgeryScope(adm());
+    const primary=scope.filter(o=>o.surgeryRole==='PRIMARY');
+    const reduced=scope.filter(o=>o.surgeryRole==='REDUCED');
+    if(primary.length!==1) throw new Error('expected exactly 1 primary, got '+primary.length);
+    if(reduced.length!==scope.length-1) throw new Error('every other procedure should be reduced');
+    const dearest=[...scope].sort((a,b)=>(b.price*b.qty)-(a.price*a.qty))[0];
+    if(primary[0].id!==dearest.id) throw new Error('primary is not the dearest procedure');
+    if(primary[0].discountPct) throw new Error('primary must keep its full price');
+    if(reduced.some(o=>o.discountPct!==w.SURGERY_RULE.pct)) throw new Error('wrong reduction percentage');
+    return 'full price: '+primary[0].name+'; reduced @'+w.SURGERY_RULE.pct+'%: '+reduced.length+' procedure(s)';
+  });
+  step('revoking the dearest procedure re-elects the primary automatically', ()=>{
+    S.ipStatus='ACCEPTED'; S.ipCat='ALL'; S.ipSel={}; w.render();
+    const before=w.ipSurgeryScope(adm()).find(o=>o.surgeryRole==='PRIMARY');
+    const accepted=adm().ipOrders.filter(o=>o.state==='ACCEPTED'&&o.cat==='SERVICE'&&o.pkg!=='RECONCILED');
+    if(!accepted.length) return 'no accepted procedure to revoke at this point';
+    const target=accepted.sort((a,b)=>(b.price*b.qty)-(a.price*a.qty))[0];
+    S.ipSel={ [target.id]:true }; w.render();
+    q('#revokeBtn').click();
+    const after=w.ipSurgeryScope(adm()).find(o=>o.surgeryRole==='PRIMARY');
+    if(!after) throw new Error('no primary after revoking');
+    if(after.discountPct) throw new Error('the re-elected primary should be at full price');
+    S.ipSel={}; w.render();
+    return (before?before.name:'(none)')+' -> '+after.name;
+  });
+  step('Replace payer stays visible on accepted orders', ()=>{
+    S.ipStatus='ACCEPTED'; S.ipCat='ALL'; S.ipSel={}; w.render();
+    const c=qa('.ipChk')[0]; S.ipSel[c.dataset.id]=true; w.render();
+    if(!q('#replaceBtn')) throw new Error('no visible Replace payer button after accepting');
+    q('#replaceBtn').click();
+    if(!q('.overlay')) throw new Error('replace payer picker did not open');
+    const opts=qa('#rpList .visit-opt').length;
+    S.replacePayer=null; S.ipSel={}; w.render();
+    return 'Replace payer button + '+opts+' alternative payer(s)';
+  });
+  step('revoke is a first-class button, ahead of replace payer', ()=>{
+    S.ipStatus='ACCEPTED'; S.ipCat='ALL'; S.ipSel={}; w.render();
+    const chk=qa('table.chg.ip tbody .ipChk')[0];
+    S.ipSel[chk.dataset.id]=true; w.render();
+    const btns=qa('.act-bar .ab-right button').map(b=>b.textContent.trim());
+    if(btns[0]!=='↩ Revoke') throw new Error('revoke should be the first action, got '+btns.join(' | '));
+    if(btns[1]!=='⇄ Replace payer') throw new Error('replace payer should follow revoke, got '+btns.join(' | '));
+    if(btns[2]!=='More ▾') throw new Error('More should come last, got '+btns.join(' | '));
+    q('#moreBtn').click();
+    if(qa('.more-menu .mi').some(m=>m.textContent.includes('Revoke'))) throw new Error('revoke should be out of the More menu');
+    S.ipSel={}; w.render();
+    return btns.join(' | ');
+  });
+  step('no Duplicate action on accepted orders', ()=>{
+    const c=qa('.ipChk')[0]; S.ipSel[c.dataset.id]=true; w.render();
+    q('#moreBtn').click();
+    const items=qa('.more-menu .mi b').map(b=>b.textContent);
+    if(items.some(t=>/duplicate/i.test(t))) throw new Error('Duplicate still present');
+    q('#moreBtn').click(); S.ipSel={}; w.render();
+    return items.join(', ');
+  });
+  step('replace an accepted order onto cash (via More)', ()=>{
+    S.ipCat='ALL'; S.ipSel={}; w.render();
+    const first=nonPkgChks()[0]; S.ipSel[first.dataset.id]=true; w.render();
+    q('#moreBtn').click();
+    qa('.more-menu .mi').find(m=>m.textContent.includes('Replace → cash')).click();
+    const moved=adm().ipOrders.find(o=>o.payerId==='PY-CASH');
+    if(!moved) throw new Error('nothing moved to cash');
+    return moved.name+' -> '+moved.replacedNote;
+  });
+  step('switch payer in the rail to accept for another company', ()=>{
+    S.ipStatus='TODO'; S.ipCat='ALL'; S.ipSel={}; w.render();
+    qa('.rc-payer')[1].click();                      // TAWUNIYA
+    if(adm().activePayerId!=='PY-2') throw new Error('payer not switched');
+    const remaining=qa('table.chg.ip tbody .ipChk');
+    S.ipSel[remaining[0].dataset.id]=true; w.render();
+    q('#moreBtn').click();
+    qa('.more-menu .mi').find(m=>m.textContent.includes('Accept · Credit')).click();
+    const t2=adm().ipOrders.filter(o=>o.payerId==='PY-2'&&o.state==='ACCEPTED');
+    if(t2.length===0) throw new Error('nothing accepted under the second payer');
+    return t2.length+' order(s) under TAWUNIYA via '+t2[0].acceptMode;
+  });
+  step('revoke returns an order to the To accept list', ()=>{
+    S.ipStatus='ACCEPTED'; S.ipSel={}; w.render();
+    const before=adm().ipOrders.filter(o=>o.state==='NEW').length;
+    const c=qa('.ipChk')[0]; S.ipSel[c.dataset.id]=true; w.render();
+    q('#revokeBtn').click();
+    const after=adm().ipOrders.filter(o=>o.state==='NEW').length;
+    if(after!==before+1) throw new Error('revoke did not return the order');
+    return 'new orders '+before+' -> '+after;
+  });
+  step('accepted work is finalizable from the Invoiced view too', ()=>{
+    S.ipTab='orders'; S.ipStatus='INVOICED'; S.ipCat='ALL'; S.ipSel={}; w.render();
+    const accepted=adm().ipOrders.filter(o=>o.state==='ACCEPTED').length;
+    if(accepted===0) return 'nothing accepted at this point';
+    const heads=qa('main .panel h4').map(h=>h.textContent.replace(/\s+/g,' ').trim());
+    if(!heads.some(h=>/In progress/.test(h)))
+      throw new Error('the Invoiced view should surface the in-progress payer panel: '+heads.join(' || '));
+    if(!q('[data-fin]')) throw new Error('no Finalize button on the Invoiced view');
+    /* the same panel builder as the Invoices tab */
+    if(w.ipProgressPanels(adm()).length===0) throw new Error('no in-progress panels built');
+    S.ipStatus='ACCEPTED'; w.render();
+    return heads.filter(h=>/In progress/.test(h)).join(' || ');
+  });
+  step('the invoices tab lists the accepted orders waiting to be billed', ()=>{
+    S.ipTab='printed'; S.ipInvSub='progress'; w.render();
+    const table=q('table.inv-review');
+    if(!table) throw new Error('no review list of accepted orders');
+    const rows=[...table.querySelectorAll('tbody tr')];
+    if(rows.length===0) throw new Error('the review list is empty');
+    ['Code','Line','Qty','Type','Gross','Discount','Patient + Tax','Company + Tax'].forEach(h=>{
+      if(!table.textContent.includes(h)) throw new Error('review list missing column '+h); });
+    /* one panel per payer with accepted work — each must match what finalization would bill */
+    const tables=qa('table.inv-review');
+    const shown=tables.reduce((a,t)=>a+t.querySelectorAll('tbody tr').length,0);
+    const built=adm().payers.reduce((a,py)=>a+w.ipInvoiceItems(adm(), py.id).items.length,0);
+    if(shown!==built) throw new Error('review shows '+shown+' lines, invoices would carry '+built);
+    if(built===0) throw new Error('nothing accepted to review at this point');
+    if(!table.querySelector('tfoot')) throw new Error('no invoice total on the review');
+    return shown+' line(s) across '+tables.length+' payer panel(s)';
+  });
+  step('invoices: review the in-progress payer then finalize', ()=>{
+    S.ipSel={}; S.ipStatus='ACCEPTED'; w.render();
+    qa('.rc-payer')[0].click();                      // back to BUPA
+    if(q('#railFinalize')) throw new Error('old rail finalize button should be gone');
+    if(q('#railInvBtn')) throw new Error('the rail should no longer carry an invoices card');
+    const bupaAcc=adm().ipOrders.filter(o=>o.state==='ACCEPTED'&&o.payerId==='PY-1').length;
+    if(qa('.ip-tabs2 .t').length!==4) throw new Error('the 4 tabs should be present');
+    qa('.ip-tabs2 .t')[1].click();                 /* Invoices tab */
+    if(S.ipTab!=='printed') throw new Error('invoice tab did not open');
+    if(!q('#ipInvSeg')) throw new Error('no In Progress / Finalized switch — layout B concept missing');
+    const fin=q('[data-fin]');
+    if(!fin) throw new Error('no per-payer finalize button in the in-progress view');
+    fin.click();
+    const inv=adm().ipInvoices[0];
+    if(!inv) throw new Error('no invoice created');
+    if(inv.payerId!=='PY-1') throw new Error('wrong payer on invoice');
+    const stillAcc=adm().ipOrders.filter(o=>o.state==='ACCEPTED'&&o.payerId==='PY-1').length;
+    if(stillAcc!==0) throw new Error(stillAcc+' orders left unbilled');
+    const otherPayerAcc=adm().ipOrders.filter(o=>o.state==='ACCEPTED'&&o.payerId!=='PY-1').length;
+    if(otherPayerAcc===0) throw new Error('other payer orders should be untouched');
+    return inv.id+' · '+bupaAcc+' orders · total '+inv.amount+' (patient '+inv.patientShare+', company '+inv.companyShare+')';
+  });
+  step('bulk med/consumable lines are rolled up on the invoice', ()=>{
+    const inv=adm().ipInvoices[0];
+    const bulk=inv.items.filter(i=>i.bulk);
+    if(bulk.length===0) throw new Error('no bulk line on the invoice');
+    if(!bulk.some(b=>b.name===w.BULK_LINES.MED.name)) throw new Error('no Inpatient Medication bulk line');
+    const inPkg=inv.items.filter(i=>i.inPackage);
+    const pkgLine=inv.items.filter(i=>/Package/.test(i.name));
+    if(inPkg.length===0 && pkgLine.length===0) throw new Error('neither package charge nor reconciled lines reached the invoice');
+    return bulk.map(b=>b.name+' ('+b.rolledUp.length+' lines, '+b.calc.gross+')').join(' | ')
+      +'; '+inPkg.length+' in-package line(s); package charges: '+(pkgLine.map(i=>i.name).join(', ')||'none');
+  });
+  step('advance was applied and the shortfall went to credit', ()=>{
+    const inv=adm().ipInvoices[0];
+    if(inv.advanceAdjusted+inv.credit < inv.patientShare-0.01) throw new Error('settlement does not cover patient share');
+    return 'advance '+inv.advanceAdjusted+' + credit '+inv.credit+' = patient '+inv.patientShare;
+  });
+  step('invoices tab has In Progress / Finalized', ()=>{
+    const segs=qa('#ipInvSeg div').map(d=>d.textContent.trim());
+    if(segs.length!==2) throw new Error('expected 2 sub-tabs, got '+segs.join(','));
+    if(!/In Progress/i.test(segs[0]) || !/Finalized/i.test(segs[1])) throw new Error('wrong sub-tabs: '+segs.join(','));
+    return segs.join(' | ');
+  });
+  step('finalized invoice detail shown with the invoice card list', ()=>{
+    if(!q('.ip-inv-card')) throw new Error('no finalized invoice card');
+    if(qa('.chg.ip tbody tr').length===0) throw new Error('no invoice line items');
+    return q('.ip-inv-card').textContent.replace(/\s+/g,' ').trim();
+  });
+  step('three print formats available', ()=>{
+    const fmts=qa('#ipPrintFmt option').map(o=>o.textContent);
+    if(fmts.length!==3) throw new Error('expected 3 formats, got '+fmts.join(','));
+    q('#ipPrintFmt').value='Zatca Invoice';
+    q('#ipPrint').click();
+    if(!q('.print-sheet')) throw new Error('print preview did not open');
+    const zatca=q('.print-sheet').textContent.includes('VAT');
+    S.ipPrint=null; w.render();
+    return fmts.join(' | ')+(zatca?' (zatca renders VAT block)':'');
+  });
+  step('revoking a finalized invoice sends its orders back to To accept', ()=>{
+    S.ipTab='printed'; S.ipInvSub='final'; w.render();
+    const inv=adm().ipInvoices[0];
+    const lines=adm().ipOrders.filter(o=>o.invoiceId===inv.id);
+    if(lines.length===0) throw new Error('no invoiced orders to revoke');
+    const wal=w.cWallet();
+    const advBefore=w.totalAdvance(wal), credBefore=wal.creditOutstanding;
+    q('#ipRevoke').click();
+    if(inv.status!=='REVOKED') throw new Error('status '+inv.status);
+    /* every line goes back to New Orders, not to Accepted */
+    lines.forEach(o=>{
+      if(o.state!=='NEW') throw new Error(o.name+' is '+o.state+', expected NEW');
+      if(o.payerId || o.acceptMode || o.invoiceId) throw new Error('acceptance details not cleared on '+o.name);
+      if(o.pkg || o.packageId) throw new Error('package attachment not cleared on '+o.name);
+    });
+    if(adm().ipOrders.some(o=>o.state==='ACCEPTED' && o.invoiceId===inv.id)) throw new Error('an order stayed in Accepted');
+    /* a revoked package is open to be accepted again */
+    const pkgLine=lines.find(o=>o.cat==='PACKAGE');
+    if(pkgLine){
+      const pk=w.ipPackages(adm()).find(x=>x.id===pkgLine.packageOf);
+      if(pk.accepted) throw new Error('the package should be re-openable after revoking');
+    }
+    /* the wallet is put back */
+    if(inv.advanceAdjusted>0 && w.totalAdvance(w.cWallet())<=advBefore)
+      throw new Error('advance was not returned');
+    if(inv.credit>0 && w.cWallet().creditOutstanding>=credBefore)
+      throw new Error('credit was not reversed');
+    if(S.ipStatus!=='TODO') throw new Error('should land on the To accept list, got '+S.ipStatus);
+    return lines.length+' order(s) back in To accept · advance '+advBefore+' -> '+w.totalAdvance(w.cWallet());
+  });
+  step('OPD workspace unaffected after IP work', ()=>{
+    S.screen='workspace'; S.activeTab='visit'; S.activeVisitId=1; w.render();
+    if(!q('.panel')) throw new Error('OPD workspace broken');
+    if(qa('.tabbar .tab').length!==5) throw new Error('OPD tabs changed: '+qa('.tabbar .tab').length);
+    return 'OPD tabs: '+qa('.tabbar .tab').map(t=>t.textContent.trim()).join(' | ');
+  });
+
+  }catch(e){ log.push('RUNTIME-ERR outer: '+e.message+' | '+(e.stack||'').split('\n')[1]); }
+  finish();
+};
+f.src='billing-ui-revamp-mockup-v4.html';
+document.body.appendChild(f);
+</script></body></html>

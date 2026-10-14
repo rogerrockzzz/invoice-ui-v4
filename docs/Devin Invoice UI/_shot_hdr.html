@@ -1,0 +1,9 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>html,body{margin:0}iframe{width:100vw;height:100vh;border:0;display:block}</style></head><body>
+<script>
+const n=new URLSearchParams(location.search).get('s')||'1';
+const f=document.createElement('iframe');
+f.onload=()=>{const w=f.contentWindow;
+  w.eval('openVisit')(n==='2'?2:1);
+  document.title='SHOT-READY';};
+f.src='journey-opd-v2.html';document.body.appendChild(f);
+</script></body></html>

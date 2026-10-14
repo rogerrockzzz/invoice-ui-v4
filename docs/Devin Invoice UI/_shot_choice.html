@@ -1,0 +1,19 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>html,body{margin:0}iframe{width:1560px;height:880px;border:0;display:block}</style></head><body>
+<script>
+const step=new URLSearchParams(location.search).get('s')||'1';
+const f=document.createElement('iframe');
+f.onload=()=>{const w=f.contentWindow,S=w.eval('state');
+  const q=s=>w.document.querySelector(s),qa=s=>[...w.document.querySelectorAll(s)],R=()=>w.eval('render')();
+  w.eval('openPatientTab')('7000667'); S.screen='ip'; S.ipAdmissionId=5; S.ipStatus='TODO'; R();
+  const adm=w.eval('ipAdm')();
+  const cbc=qa('table.chg.ip tbody tr').find(r=>r.textContent.includes('02014011'));
+  S.ipSel[cbc.querySelector('.ipChk').dataset.id]=true; R();
+  q('#acceptGo').click();
+  if(step==='2'){ const sa=qa('.pkg-opt').find(o=>o.dataset.c==='STANDALONE'); sa.click(); q('#pkgGo').click();
+    S.ipStatus='ACCEPTED'; S.ipCat='ALL'; R();
+    const std=adm.ipOrders.find(o=>o.code==='02014011'&&o.state==='ACCEPTED');
+    S.ipSel={}; S.ipSel[std.id]=true; R(); q('#moreBtn').click();
+    qa('.more-menu .mi').find(m=>m.textContent.includes('within package')).click(); }
+  document.title='SHOT-READY';};
+f.src='billing-ui-revamp-mockup-v4.html';document.body.appendChild(f);
+</script></body></html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>html,body{margin:0}iframe{width:100vw;height:100vh;border:0;display:block}</style></head><body>
+<script>
+const n=new URLSearchParams(location.search).get('s')||'1';
+const f=document.createElement('iframe');
+f.onload=()=>{const w=f.contentWindow; const q=s=>w.document.querySelector(s),qa=s=>[...w.document.querySelectorAll(s)];
+  w.eval('openPatient')('7000667');
+  q('#wOpen').click();
+  if(n==='2'){ q('#wStmt').click(); }
+  if(n==='3'){ q('#wRefund').click(); const a=q('#wrAmt'); a.value='200'; a.dispatchEvent(new w.Event('input')); const r=q('#wrReason'); r.value='Patient travelling abroad'; r.dispatchEvent(new w.Event('input')); q('#wrGo').click(); }
+  if(n==='4'){ qa('[data-wt]')[1].click(); q('#wSettle').click(); }
+  w.scrollTo(0,60);
+  document.title='SHOT-READY';};
+f.src='journey-opd-v3.html';document.body.appendChild(f);
+</script></body></html>

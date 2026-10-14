@@ -1,0 +1,348 @@
+direction: down
+
+vars: {
+  d2-config: {
+    layout-engine: elk
+  }
+}
+
+classes: {
+  cond: {
+    shape: diamond
+    style.fill: "#d9d9df"
+    style.stroke: "#3a4550"
+    style.font-color: "#22282f"
+  }
+  delegate: {
+    style.stroke-dash: 4
+    style.italic: true
+    style.fill: "#f6f4ef"
+    style.stroke: "#5b6570"
+    style.font-color: "#5b6570"
+  }
+  legacy: {
+    style.fill: "#eeeae0"
+    style.stroke: "#5b6570"
+    style.font-color: "#22282f"
+  }
+  clinical: {
+    style.fill: "#dfeae5"
+    style.stroke: "#2f6f5e"
+    style.font-color: "#1d4a3d"
+  }
+  pharmacy: {
+    style.fill: "#e2ebf5"
+    style.stroke: "#3a6ea8"
+    style.font-color: "#22282f"
+  }
+  patientshare: {
+    style.fill: "#f3e3ef"
+    style.stroke: "#8a4a7a"
+    style.font-color: "#22282f"
+  }
+  dental: {
+    style.fill: "#f5e6d4"
+    style.stroke: "#a8621f"
+    style.font-color: "#22282f"
+  }
+  emergency: {
+    style.fill: "#f6e2de"
+    style.stroke: "#b34a3d"
+    style.font-color: "#22282f"
+  }
+  note: {
+    shape: page
+    style.fill: "#f6f4ef"
+    style.stroke: "#5b6570"
+    style.font-color: "#5b6570"
+    style.italic: true
+  }
+}
+
+# ============================================================
+# Deductibles v11 - section 3, Pharmacy Deductibles
+# Source: Deductibles-v11 (Vida 4), sections 2, 3.3, 3.4, 3.5, 3.6
+#
+# The two matrices in the document are decision tables, not flows. Each
+# one is reduced here to the minimal set of predicates that actually
+# changes the outcome; see the # Note: blocks for every row group that
+# justifies a collapse, and for the places where the two matrices
+# contradict each other.
+# ============================================================
+
+# ============================================================
+# 2. Deductible Types in Vida 4 - reference taxonomy, not a flow
+# ============================================================
+
+TAX: "Deductible types in Vida 4 (sec 2)" {
+  style.stroke-dash: 3
+  TH: "HOSPITAL" {class: legacy}
+  TP: "PHARMACY" {class: pharmacy}
+  TD: "DENTAL" {class: dental}
+  TH -> TP
+  TH -> TD
+}
+
+# ============================================================
+# Entry - scope of this mapping
+# ============================================================
+
+A: "order.getOrderType()\n== MEDICATION?" {class: cond}
+OOS: "Out of scope of sec 3\n(see hospital / dental\ndeductible mapping)" {class: delegate}
+
+# Note: sec 3.4 states "Pharmacy Generic Rule checkbox -> if checked ->
+# Brand Allowed policy is enabled", which would make Pharmacy Generic
+# Rule and policy type the same switch. Matrix 3.6 disproves that: all
+# 11 rows carry Pharmacy Generic Rule = checked while Policy Type varies
+# across Brand Allowed / Generic Restricted / Legacy. Modelled here as
+# what the matrices support - Pharmacy Generic Rule is a precondition
+# gate that merely enables the matrices, and policy type is read
+# separately from the insurance class.
+G0: "payerContract.pharmacyGenericRule()?\n(Billing Master -> Payer Contract)" {class: cond}
+L0: "LEGACY" {class: legacy}
+
+A -> G0: "yes"
+A -> OOS: "no" {style.stroke-dash: 4}
+G0 -> L0: "no (matrices do not apply)"
+G0 -> COV: "yes"
+
+# ============================================================
+# 3.3 Conditions to Determine Medication Coverage
+# All three must be TRUE for the line to be a Covered item.
+# ============================================================
+
+COV: "Coverage gate (sec 3.3)" {
+  V1: "General OR Exceptional coverage rule\nconfigured for the medication\nunder the payer?\n(Billing Master)" {class: cond}
+  V2: "Dispensed brand listed under\nMedication Coverage screen\nfor that payer?" {class: cond}
+  V3: "Dispensed brand's formulary\n(scientific name) listed in\nIDF screen?" {class: cond}
+  NC: "NOT COVERED\n(no payer deductible -\nfull patient share)" {class: patientshare}
+
+  V1 -> V2: "yes"
+  V1 -> NC: "no"
+  V2 -> V3: "yes"
+  V2 -> NC: "no"
+}
+
+# Note: V3 is the only one of the three 3.3 conditions that has a
+# non-terminal "no" branch. Failing V1 or V2 makes the line Not Covered
+# outright, but failing V3 (brand absent from IDF) is exactly the
+# "Non-Medication" population that sec 3.6 claims - "This logic is only
+# applicable for Non-Medications (Brands which are not listed in IDF)" -
+# so it routes into the 3.6 matrix rather than terminating.
+COV.V3 -> M: "yes (Covered)"
+COV.V3 -> NM: "no (brand not in IDF)"
+
+# ============================================================
+# 3.5 Deductible Matrix
+#     (Without Split Co-Payment & Enable PHC Referral)
+#
+# Preconditions stated by the document: Pharmacy Generic Rule enabled
+# (G0 above), Split Co-Payment disabled, Enforce PHC Referral disabled.
+# ============================================================
+
+M: "sec 3.5 Pharmacy matrix - Split Co-Payment OFF, Enforce PHC Referral OFF" {
+  # Note: 19 rows reduce to these three predicates. "Is Brand Allowed"
+  # and "Is Generic Restricted" are perfectly complementary across all
+  # 19 rows (never both ticked, never both blank), so they are one
+  # switch, not two independent flags.
+  D2: "class.policyType()?" {class: cond}
+  D3: "formulary.isUnreplaceable()?\n(IDF screen -> Un-Replacable)" {class: cond}
+  D4: "dispensedItem.typeOfTrade()?\n(IDF screen -> Trade Type)" {class: cond}
+  PH: "PHARMACY" {class: pharmacy}
+  BR: "BRAND" {class: pharmacy}
+
+  # Note: every Brand Allowed row lands on PHARMACY regardless of trade
+  # type, unreplaceable flag, or what the doctor ordered - rows 1, 4, 5,
+  # 6, 8, 9, 11, 12, 14, 16, 18. Row 11 (Type of Trade = N/A,
+  # Pharmacist Dispensed = N/A) is absorbed by this same edge, so no
+  # separate N/A guard is drawn.
+  D2 -> PH: "BRAND_ALLOWED"
+  D2 -> D3: "GENERIC_RESTRICTED"
+
+  # Note: Unreplacable outranks trade type. Rows 2 and 17 are Generic
+  # Restricted with a Brand trade type - the only difference from rows 3
+  # and 19, which yield BRAND - is Unreplacable = ticked, and both fall
+  # back to PHARMACY. Row 13 confirms the same for a Generic trade type.
+  #
+  # Note: RECONCILED with the code. The Java mapping now carries
+  # CR1 (order.UnreplaceableScientificName) with yes -> PHARMACY, which
+  # is this exact predicate and this exact outcome. The code evaluates
+  # it AFTER the trade-type switch (C1 -> CR1) while the matrix lists it
+  # BEFORE (D3 -> D4); the two orderings are logically equivalent, since
+  # both yield BRAND only when GENERIC_RESTRICTED && trade == BRAND &&
+  # !unreplaceable. Order here follows the matrix's column order.
+  D3 -> PH: "yes"
+  D3 -> D4: "no"
+
+  # Note: BRAND is reachable only here - rows 3, 7 and 19, i.e. Generic
+  # Restricted AND not Unreplacable AND dispensed trade type = Brand.
+  # Rows 10 and 15 are the Generic counterpart and give PHARMACY.
+  D4 -> BR: "BRAND"
+  D4 -> PH: "GENERIC"
+
+  # Note: sec 3.5 tabulates no Generic Restricted + Legacy policy row.
+  # Legacy only appears as a policy type in matrix 3.6, so this branch
+  # is drawn as a dashed exit to the shared top-level LEGACY bucket
+  # rather than inferred as a fourth matrix outcome.
+}
+
+M.D2 -> L0: "LEGACY" {style.stroke-dash: 4}
+
+# Note: the "Scenario" column (Doctor Orders Brand, rows 1-11, vs
+# Doctor Orders Generic, rows 12-19) is deliberately absent from this
+# box - it never changes the outcome. Rows 8/12, 9/14, 10/15 and 3/19
+# are pairwise identical in every other column and in the resulting
+# Deductible Type despite ordering opposite trade types. Only the
+# dispensed item is evaluated.
+
+# Note: rows 5, 6 and 7 split "Pharmacist Dispensed = Different Brand"
+# by IDF availability. "Listed under IDF Scientific Name" (row 5) and
+# "In IDF under a different scientific name" (rows 6, 7) both resolve
+# through the normal D2/D3/D4 path above - row 5 and row 6 both give
+# PHARMACY under Brand Allowed, row 7 gives BRAND under Generic
+# Restricted - so no extra node is needed for "different brand". Only
+# "Not in IDF" diverges, and it is already hoisted into COV.V3.
+
+# Note: CONTRADICTION between the two matrices, unresolved in v11.
+# Rows 6 and 7 of sec 3.5 say a dispensed brand that is "Not in IDF"
+# yields LEGACY. Rows 07 and 08 of sec 3.6 describe the same state -
+# IDF Availability unticked, Split Copayment unticked, Enforce PHC
+# Referral unticked - and yield Pharmacy Deductibles and Brand
+# Deductibles respectively, never Legacy. This diagram follows 3.6,
+# because 3.6 explicitly scopes itself to brands not listed in IDF,
+# and shows the 3.5 reading as the dashed edge below. Needs a product
+# decision before either is implemented.
+NM.S3 -> L0: "3.5 rows 6-7 reading:\nnot in IDF -> LEGACY" {style.stroke-dash: 4}
+
+# ============================================================
+# 3.6 Deductible Matrix
+#     (With Split Co-Payment & Enable PHC Referral)
+#
+# Applies to Non-Medications only: brands not listed in IDF.
+# IDF Availability is unticked in all 11 rows, so it is not a
+# predicate inside this box - it is the box's entry condition (COV.V3).
+# ============================================================
+
+NM: "sec 3.6 Non-Medication matrix - dispensed brand NOT in IDF" {
+  # Note: Split Copayment is the discriminator that decides which
+  # column is even read. In the 6 rows where it is ticked (01-06) the
+  # outcome tracks Enforce PHC Referral alone and Policy Type is inert
+  # - rows 01/04/05 all give CCHI Clinic Deductibles across Generic
+  # Restricted, Brand Allowed and Legacy alike, and rows 02/03/06 all
+  # give Legacy across the same three. In the 5 rows where it is
+  # unticked (07-11) the reverse holds: the outcome tracks Policy Type
+  # alone and Enforce PHC Referral is inert - rows 07/09 agree on
+  # Pharmacy and rows 08/10 agree on Brand despite opposite referral
+  # settings.
+  S1: "payerGroup.splitMedicationCopayment()?\n(Billing Master -> Payer Group)" {class: cond}
+  S2: "payerContract.enforcePHCReferral()?\n(Billing Master -> Payer Contract)" {class: cond}
+  S3: "class.policyType()?" {class: cond}
+  NP: "PHARMACY" {class: pharmacy}
+  NB: "BRAND" {class: pharmacy}
+
+  S1 -> S2: "yes (rows 01-06)"
+  S1 -> S3: "no (rows 07-11)"
+
+  # Note: rows 07-11 invert the sec 3.5 mapping of the same switch.
+  # Here Brand Allowed -> BRAND and Generic Restricted -> PHARMACY;
+  # in 3.5 Brand Allowed -> PHARMACY and Generic Restricted is the only
+  # route to BRAND. Both readings are taken verbatim from their
+  # respective tables and are not reconciled in v11.
+  S3 -> NP: "GENERIC_RESTRICTED (07, 09)"
+  S3 -> NB: "BRAND_ALLOWED (08, 10)"
+}
+
+NM.S2 -> RC: "yes (01, 04, 05)"
+NM.S2 -> L0: "no (02, 03, 06)"
+NM.S3 -> L0: "LEGACY (11)"
+
+# Note: the document's own preamble to 3.6 - "triggered only if both
+# Split Medication Copayment and Enable PHC Referral are enabled
+# together... if either is not enabled, the Split Medication Copayment
+# logic will not be applied" - describes only the S1-yes/S2-yes edge
+# into the CCHI box. It does not mean rows 02, 03, 06-11 are
+# unreachable; those rows are the "logic not applied" fallbacks, and
+# are drawn as such.
+
+# ============================================================
+# BRAND deductible granularity - shared by both matrices
+# ============================================================
+
+# Note: NOT from the v11 PDF. Sourced from the updated Java mapping
+# (CR2 / MBR1 / MBR2). Both matrices stop at the bucket name "Brand
+# Deductibles" and say nothing about how the brand accumulator is
+# scoped, so this box refines the BRAND outcome instead of replacing
+# it - the matrix results above stay intact and auditable against the
+# document.
+BRG: "BRAND deductible granularity (from code, not in v11)" {
+  style.stroke-dash: 3
+  CR2: "class.brandDeductibleType?" {class: cond}
+  MBR1: "BRAND (per visit)" {class: pharmacy}
+  MBR2: "BRAND (per item, visit)" {class: pharmacy}
+  MBR2_NOTE: "this feature is currently\nnot available in V4.\nuntil then, consider\nclass.brandDeductibleType\nalways = per visit" {
+    shape: text
+    style.font-size: 20
+    style.italic: true
+  }
+
+  CR2 -> MBR1: "per visit"
+  CR2 -> MBR2: "per item, visit"
+  MBR2_NOTE -> MBR2: {style.stroke-dash: 2}
+}
+
+# Note: entered from BOTH matrices. sec 3.5 reaches BRAND via rows 3, 7
+# and 19; sec 3.6 reaches it via rows 08 and 10. The granularity switch
+# is drawn once and shared rather than duplicated per matrix, matching
+# how the Java mapping merges its repeated switches into one box.
+#
+# Note: the sec 3.6 edge is an inference, not a documented fact. The
+# Java mapping only reaches CR2 from the medication-proper path; its
+# non-medication path (C -> N2) has no BRAND outcome at all. sec 3.6
+# rows 08/10 do produce "Brand Deductibles" for non-medications, so
+# they must land somewhere - but whether they are per-visit or
+# per-item is unstated in both sources. Confirm before implementing.
+M.BR -> BRG.CR2
+NM.NB -> BRG.CR2 {style.stroke-dash: 4}
+
+# ============================================================
+# CCHI Clinic Deductibles - the referral bucket reached from 3.6
+# ============================================================
+
+# Note: the matrix names one outcome "CCHI Clinic Deductibles" without
+# enumerating it. Expanded here into the four clinic buckets from the
+# existing hospital deductible mapping (ReferralContext.clinicBucket()),
+# since that is the shared resolver this outcome delegates to. The
+# enforcePHCReferral gate that normally guards it is already spent on
+# NM.S2, so entry is direct.
+RC: "CCHI Clinic Deductibles" {
+  R01: "visit.type == EMERGENCY?" {class: cond}
+  RC1: "visit.primaryClinic()?" {class: cond}
+  RC2: "visit.isValidReferral()?" {class: cond}
+  RPC: "PRIMARY_CARE" {class: clinical}
+  RSC: "SPECIALIZED_CLINIC" {class: clinical}
+  RWR: "WITHOUT_REFERRAL" {class: clinical}
+  RER: "EMERGENCY" {class: emergency}
+
+  R01 -> RER: "yes"
+  R01 -> RC1: "no"
+  RC1 -> RPC: "yes"
+  RC1 -> RC2: "no"
+  RC2 -> RSC: "yes"
+  RC2 -> RWR: "no"
+}
+
+# ============================================================
+# Amount calculation - applies to every bucket above
+# ============================================================
+
+# Note: kept unconnected on purpose. Sec 3.5's worked example (20%,
+# max 100 SAR, price 400 SAR -> 80 SAR patient / 320 SAR payer) is not
+# a branch of either matrix; the matrices only select WHICH deductible
+# configuration is read. Wiring it to all 9 terminal buckets would add
+# no information and would dominate the layout.
+CALC: "Amount calculation (sec 3.5 example)" {
+  style.stroke-dash: 3
+  CA: "deductible =\nmin(price x deductible%,\nmaxDeductibleAmount)" {class: note}
+  CB: "patient pays deductible\npayer pays remainder" {class: note}
+  CA -> CB
+}

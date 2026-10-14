@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(**)",
+      "Write(/home/roger/Documents/Roger_BK/Devin Invoice UI/**)",
+      "Exec(python3)",
+      "Exec(google-chrome)",
+      "Exec(ls)",
+      "Exec(cat)",
+      "Exec(sed)",
+      "Exec(grep)",
+      "Exec(wc)",
+      "Exec(cp)",
+      "Exec(diff)",
+      "Exec(ss)"
+    ],
+    "deny": [
+      "Exec(rm)",
+      "Exec(sudo)",
+      "Exec(git push)",
+      "Write(**/.env*)"
+    ]
+  }
+}

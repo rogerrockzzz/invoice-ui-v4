@@ -1,0 +1,23 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>html,body{margin:0}iframe{width:100vw;height:100vh;border:0;display:block}</style></head><body>
+<script>
+const n=new URLSearchParams(location.search).get('s')||'1';
+const f=document.createElement('iframe');
+f.onload=()=>{const w=f.contentWindow; const q=s=>w.document.querySelector(s),qa=s=>[...w.document.querySelectorAll(s)];
+  const c=w.eval('cases').find(x=>x.id===1);
+  w.eval('openVisit')(1);
+  const pay=()=>{ qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click(); q('#dGo').click(); };
+  const st=(id)=>qa('.stories [data-story]').find(b=>b.dataset.story===id).click();
+  qa('.step .acts .btn')[0].click(); pay();
+  c.clinical={at:'09:30'};
+  c.orders=[{ code:'RAD-BIG', name:'MRI Knee', price:1500, priceIns:1500, ins:'approved', ordered:'10:00', paid:false },
+            { code:'LAB-440', name:'Thyroid Panel', price:260, priceIns:260, ins:'pending', ordered:'10:20', paid:false }];
+  w.eval('record')(c,'i','<b>Doctor placed 2 orders</b>','MRI Knee, Thyroid Panel',{ type:'ORDERS', lines:[{code:'RAD-BIG'},{code:'LAB-440'}] });
+  w.eval('render')(); st('orders'); qa('.step .acts .btn').find(b=>/Bill the 1 approved/.test(b.textContent))?.click(); 
+  if(q('.step .acts .btn') && qa('.step .acts .btn').some(b=>/desk/i.test(b.textContent))) pay();
+  w.document.getElementById('toasts').innerHTML='';
+  q('.chatfab').click();
+  if(n==='1'){ w.eval('chatAsk')('Why is the deductible over?'); }
+  if(n==='2'){ w.eval('chatAsk')('Why is the approval still pending?'); w.eval('chatAsk')('When was Thyroid Panel last ordered?'); }
+  document.title='SHOT-READY';};
+f.src='journey-opd-v3.html';document.body.appendChild(f);
+</script></body></html>

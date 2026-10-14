@@ -1,0 +1,160 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body><pre id="out">…</pre><script>
+const log=[];const f=document.createElement('iframe');f.style.cssText='width:1400px;height:1000px';
+f.onload=()=>{const w=f.contentWindow;w.onerror=(m,s,l)=>{log.push('RUNTIME-ERR @'+l+': '+m);return true;};
+ const q=s=>w.document.querySelector(s),qa=s=>[...w.document.querySelectorAll(s)];
+ const S=w.eval('state');
+ const step=(n,fn)=>{ try{ const r=fn(); log.push('OK   '+n+(r!==undefined?' -> '+r:'')); }
+   catch(e){ log.push('FAIL '+n+': '+e.message+' | '+(e.stack||'').split('\n')[1]); } };
+ const C=()=>w.eval('cases');
+ const open=(id)=>{ S.screen='journey'; S.caseId=id; w.eval('render')(); return C().find(c=>c.id===id); };
+ try{
+  step('queue lists every patient with one suggestion each', ()=>{
+    S.screen='queue'; w.eval('render')();
+    const cards=qa('.jcard');
+    if(cards.length!==C().length) throw new Error('expected '+C().length+' cards');
+    cards.forEach(c=>{ if(!c.querySelector('.nx').textContent.trim()) throw new Error('a card has no suggestion'); });
+    if(!q('.q-strip .s.act')) throw new Error('no "need you now" counter');
+    return qa('.q-strip .s').map(s=>s.textContent.replace(/\s+/g,' ').trim()).join(' | ');
+  });
+  step('a fresh patient is asked for the consultation fee only', ()=>{
+    const c=open(1);
+    const t=q('.next h2').textContent.trim();
+    if(!/Collect/.test(t)) throw new Error('expected a collect suggestion, got: '+t);
+    const m=w.eval('money')(c);
+    if(m.dueNow!==+(200*0.2*1.15).toFixed(2)) throw new Error('patient share wrong: '+m.dueNow);
+    if(qa('.next .btn').length>2) throw new Error('too many choices on the main card');
+    if(!q('details.more')) throw new Error('invoice detail should exist but be folded away');
+    if(q('details.more').open) throw new Error('detail must start closed');
+    return t+' · '+q('.next .money .v').textContent;
+  });
+  step('sending the link switches the card to waiting, no manual steps', ()=>{
+    const c=C().find(x=>x.id===1);
+    qa('.next .btn').find(b=>/Send payment link/.test(b.textContent)).click();
+    if(!c.consult.link || c.consult.link.status!=='SENT') throw new Error('link not recorded');
+    if(!q('.next.wait')) throw new Error('card should show a waiting state');
+    if(!q('.linkbox')) throw new Error('no link status shown');
+    const acts=qa('.next .btn').map(b=>b.textContent.trim());
+    if(!acts.some(a=>/Resend/.test(a))) throw new Error('no resend fallback');
+    if(!acts.some(a=>/desk/.test(a))) throw new Error('no manual fallback for glitches');
+    return acts.join(' | ');
+  });
+  step('the app payment moves the journey on by itself', ()=>{
+    const c=C().find(x=>x.id===1);
+    w.eval('receiveLinkPayment')(c);
+    if(!c.consult.paid) throw new Error('payment not recorded');
+    if(w.eval('journeyState')(c)!=='DOCTOR') throw new Error('journey did not advance, at '+w.eval('journeyState')(c));
+    if(q('.next .step').textContent.trim()!=='With the doctor')
+      throw new Error('next step should be the doctor, got: '+q('.next .step').textContent);
+    if(!/Send/.test(q('.next h2').textContent)) throw new Error('should suggest sending the patient in');
+    return q('.next h2').textContent.trim();
+  });
+  step('doctor orders arrive and the system totals them itself', ()=>{
+    const c=C().find(x=>x.id===1);
+    w.eval('simDoctorOrders')(c);
+    const t=q('.next h2').textContent.trim();
+    if(!/Collect/.test(t)) throw new Error('should ask to collect: '+t);
+    if(qa('input[type=checkbox]').length) throw new Error('the receptionist should not be selecting orders');
+    const m=w.eval('money')(c);
+    const approved=c.orders.filter(o=>o.approval!=='PENDING');
+    const expect=+approved.reduce((a,o)=>a+w.eval('share')(o).patient,0).toFixed(2);
+    if(m.dueNow!==expect) throw new Error('due now '+m.dueNow+' should equal approved share '+expect);
+    if(m.later<=0) throw new Error('the pending order should sit in "once approved"');
+    return t+' · later '+m.later;
+  });
+  step('pending approvals are deferred, not blocked', ()=>{
+    const c=C().find(x=>x.id===1);
+    if(!/waiting on|awaiting|still with/i.test(q('.next .why').textContent))
+      throw new Error('the card should say the rest is waiting on the payer');
+    return q('.next .why').textContent.replace(/\s+/g,' ').trim().slice(0,90);
+  });
+  step('approval arriving triggers the link and tells the receptionist', ()=>{
+    const c=C().find(x=>x.id===1);
+    w.eval('receiveLinkPayment')(c);              // settle the approved ones first
+    const before=c.events.length;
+    w.eval('simApproval')(c);
+    if(c.orders.some(o=>o.approval==='PENDING')) throw new Error('approval not applied');
+    if(!c.orderLink || c.orderLink.status!=='SENT') throw new Error('link should be triggered automatically');
+    if(c.events.length<=before) throw new Error('nothing logged for the receptionist');
+    return 'auto-link for '+w.eval('fmt')(w.eval('money')(c).dueNow);
+  });
+  step('journey completes and says so', ()=>{
+    const c=C().find(x=>x.id===1);
+    w.eval('receiveLinkPayment')(c);
+    if(w.eval('journeyState')(c)!=='READY_TO_CLOSE') throw new Error('state is '+w.eval('journeyState')(c));
+    const t=q('.next h2').textContent;
+    if(!/settled/i.test(t)) throw new Error('should report completion: '+t);
+    qa('.next .btn').find(b=>/Close the journey/.test(b.textContent)).click();
+    if(!c.closed) throw new Error('close did not take');
+    if(!/complete/i.test(q('.next h2').textContent)) throw new Error('final state not shown');
+    return 'closed · collected '+w.eval('fmt')(w.eval('money')(c).paid);
+  });
+  step('timeline mirrors the journey', ()=>{
+    const c=C().find(x=>x.id===1);
+    const steps=qa('.tl .st');
+    if(steps.length!==w.eval('STEPS').length) throw new Error('timeline length mismatch');
+    if(qa('.tl .st.done').length===0) throw new Error('no completed steps marked');
+    return qa('.tl .st').map(s=>s.querySelector('.lb').textContent.trim()).join(' → ');
+  });
+  step('detail is available but never in the way', ()=>{
+    const c=open(2);
+    const d=q('details.more');
+    if(d.open) throw new Error('detail should be closed by default');
+    d.open=true; w.eval('render')();
+    const rows=qa('details.more table.mini tbody tr');
+    if(rows.length!==c.orders.length+1) throw new Error('expected consult + orders in the detail');
+    const heads=qa('details.more th').map(h=>h.textContent.trim());
+    ['Patient + VAT','Company + VAT','Status'].forEach(h=>{ if(!heads.includes(h)) throw new Error('missing '+h); });
+    return rows.length+' lines behind the disclosure';
+  });
+  step('an already-settled patient shows as complete', ()=>{
+    const c=open(3);
+    if(w.eval('journeyState')(c)!=='DONE') throw new Error('state '+w.eval('journeyState')(c));
+    if(!q('.next.done')) throw new Error('should render the completed tone');
+    return q('.next h2').textContent.trim();
+  });
+  step('the scripted scenario runs from walk-in to settled', ()=>{
+    w.eval('startScenario')();
+    const c=w.eval('scenarioCase')();
+    if(!c) throw new Error('scenario patient was not created');
+    if(c.consult.paid || c.orders.length || c.closed) throw new Error('the scenario must start at zero');
+    if(w.eval('journeyState')(c)!=='CONSULT') throw new Error('should start at the consultation fee');
+    const steps=w.eval('SCENARIO').length;
+    let receptionClicks=0;
+    for(let i=0;i<steps;i++){
+      const st=w.eval('SCENARIO')[i];
+      if(st.who==='reception') receptionClicks++;
+      w.eval('scenarioNext')();
+    }
+    if(!c.closed) throw new Error('the journey should end closed');
+    if(c.orders.some(o=>!o.paid)) throw new Error('every order should be paid by the end');
+    if(c.orders.some(o=>o.approval==='PENDING')) throw new Error('the pending approval should have arrived');
+    const m=w.eval('money')(c);
+    if(m.dueNow!==0 || m.later!==0) throw new Error('nothing should be outstanding: now '+m.dueNow+' later '+m.later);
+    const expect=+((250+120+250+900)*0.2*1.15).toFixed(2);
+    if(Math.abs(m.paid-expect)>0.02) throw new Error('collected '+m.paid+', expected '+expect);
+    /* the point of the exercise: very few decisions */
+    if(receptionClicks>4) throw new Error('too many receptionist steps: '+receptionClicks);
+    return steps+' steps, '+receptionClicks+' receptionist clicks, collected '+w.eval('fmt')(m.paid);
+  });
+  step('the scenario can be replayed from the start', ()=>{
+    w.eval('startScenario')();
+    const c=w.eval('scenarioCase')();
+    if(c.closed || c.orders.length) throw new Error('restart did not reset the patient');
+    if(w.eval('cases').filter(x=>x.id===99).length!==1) throw new Error('restart duplicated the scenario patient');
+    if(S.scenario!==0) throw new Error('step counter not reset');
+    return 'reset to step 1 of '+w.eval('SCENARIO').length;
+  });
+  step('money never asks the receptionist to compute anything', ()=>{
+    const c=open(2);
+    const m=w.eval('money')(c);
+    const shown=qa('.money3 .m b').map(b=>b.textContent.trim());
+    if(shown.length!==3) throw new Error('expected exactly three figures');
+    if(shown[1]!==w.eval('fmt')(m.dueNow)) throw new Error('"pays now" mismatch');
+    return shown.join(' | ');
+  });
+ }catch(e){ log.push('RUNTIME-ERR outer: '+e.message); }
+ const fails=log.filter(l=>l.startsWith('FAIL')||l.startsWith('RUNTIME')).length;
+ document.getElementById('out').textContent='### RESULT: '+(fails?fails+' PROBLEM(S)':'ALL '+log.length+' CHECKS PASSED')+' ###\n'+log.join('\n');
+ document.title='DONE';};
+f.src='journey-opd-v1.html';document.body.appendChild(f);
+</script></body></html>

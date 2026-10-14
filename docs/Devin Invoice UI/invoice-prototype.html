@@ -1,0 +1,2988 @@
+this <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VIDA · Billing Workspace (Prototype)</title>
+<style>
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root{
+  --bg:#f6f7f9;
+  --surface:#ffffff;
+  --surface-2:#fbfcfd;
+  --line:#e4e7ec;
+  --line-strong:#d0d5dd;
+  --ink:#101828;
+  --ink-2:#475467;
+  --ink-3:#98a2b3;
+  --accent:#0f766e;
+  --accent-ink:#ffffff;
+  --accent-soft:#e6f4f1;
+  --accent-line:#99d5cd;
+  --blue:#1a56db;
+  --blue-soft:#e8effc;
+  --amber:#b54708;
+  --amber-soft:#fef6ee;
+  --red:#b42318;
+  --red-soft:#fef3f2;
+  --green:#027a48;
+  --green-soft:#ecfdf3;
+  --purple:#5925dc;
+  --purple-soft:#f4f3ff;
+  --r:10px;
+  --r-sm:7px;
+  --shadow:0 1px 2px rgba(16,24,40,.05);
+  --shadow-md:0 4px 12px -2px rgba(16,24,40,.10),0 2px 4px -2px rgba(16,24,40,.06);
+  --shadow-lg:0 18px 40px -12px rgba(16,24,40,.28);
+  --rail:262px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font:13px/1.5 "Inter","Segoe UI",system-ui,-apple-system,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:none;padding:0}
+a{color:var(--blue);text-decoration:none}
+::-webkit-scrollbar{width:9px;height:9px}
+::-webkit-scrollbar-thumb{background:#cfd4dc;border-radius:9px;border:2px solid var(--bg)}
+::-webkit-scrollbar-track{background:transparent}
+.mono{font-family:"SF Mono",ui-monospace,"Cascadia Mono",Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+.num{font-variant-numeric:tabular-nums}
+
+/* ============================================================
+   APP FRAME
+   ============================================================ */
+#app{display:flex;flex-direction:column;height:100vh;overflow:hidden}
+
+.topbar{
+  height:52px;flex:0 0 52px;background:var(--surface);
+  border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:14px;padding:0 16px;z-index:30;
+}
+.brand{display:flex;align-items:center;gap:9px;font-weight:700;font-size:14px;letter-spacing:-.2px}
+.brand-mark{
+  width:26px;height:26px;border-radius:7px;background:var(--accent);color:#fff;
+  display:grid;place-items:center;font-size:12px;font-weight:800;letter-spacing:-.5px;
+}
+.brand small{display:block;font-weight:500;font-size:10.5px;color:var(--ink-3);letter-spacing:0}
+.topbar-sep{width:1px;height:24px;background:var(--line)}
+.spacer{flex:1}
+.chip-user{display:flex;align-items:center;gap:8px;padding:4px 8px;border-radius:99px}
+.chip-user:hover{background:var(--surface-2)}
+.avatar{width:27px;height:27px;border-radius:50%;background:var(--purple-soft);color:var(--purple);
+  display:grid;place-items:center;font-size:10.5px;font-weight:700}
+.u-name{font-weight:600;font-size:12px;line-height:1.25}
+.u-role{font-size:10.5px;color:var(--ink-3);line-height:1.25}
+
+/* form controls */
+.field{display:flex;flex-direction:column;gap:5px}
+.label{font-size:11px;font-weight:600;color:var(--ink-2);letter-spacing:.01em}
+.ctl{
+  height:34px;padding:0 10px;border:1px solid var(--line-strong);border-radius:var(--r-sm);
+  background:var(--surface);outline:none;transition:border-color .12s,box-shadow .12s;
+}
+select.ctl{padding-right:26px;appearance:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2398a2b3' stroke-width='2.2' stroke-linecap='round'><path d='M6 9l6 6 6-6'/></svg>");
+  background-repeat:no-repeat;background-position:right 7px center;cursor:pointer}
+.ctl:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.ctl:disabled{background:#f2f4f7;color:var(--ink-3);cursor:not-allowed}
+textarea.ctl{height:auto;padding:8px 10px;resize:vertical;min-height:62px;line-height:1.5}
+.ctl-sm{height:28px;font-size:12px;padding:0 7px}
+.hint{font-size:10.5px;color:var(--ink-3)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:34px;padding:0 13px;
+  border-radius:var(--r-sm);border:1px solid var(--line-strong);background:var(--surface);
+  font-weight:600;font-size:12.5px;white-space:nowrap;transition:background .12s,border-color .12s,box-shadow .12s}
+.btn:hover{background:var(--surface-2);border-color:#b9c0cc}
+.btn:active{transform:translateY(.5px)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-primary:hover{background:#0d6a62;border-color:#0d6a62}
+.btn-blue{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn-blue:hover{background:#1749c0;border-color:#1749c0}
+.btn-danger{background:var(--red);border-color:var(--red);color:#fff}
+.btn-danger:hover{background:#9c1c13}
+.btn-ghost{border-color:transparent;background:transparent}
+.btn-ghost:hover{background:#eff1f4;border-color:transparent}
+.btn-sm{height:28px;padding:0 9px;font-size:11.5px;border-radius:6px}
+.btn-xs{height:24px;padding:0 7px;font-size:11px;border-radius:5px;font-weight:600}
+.btn-block{width:100%}
+.btn-lg{height:40px;padding:0 18px;font-size:13.5px}
+.ico{width:15px;height:15px;flex:0 0 auto;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ico-sm{width:13px;height:13px}
+
+/* badges */
+.badge{display:inline-flex;align-items:center;gap:4px;height:19px;padding:0 7px;border-radius:5px;
+  font-size:10.5px;font-weight:700;letter-spacing:.02em;white-space:nowrap;
+  background:#f2f4f7;color:var(--ink-2);border:1px solid transparent}
+.b-green{background:var(--green-soft);color:var(--green)}
+.b-red{background:var(--red-soft);color:var(--red)}
+.b-amber{background:var(--amber-soft);color:var(--amber)}
+.b-blue{background:var(--blue-soft);color:var(--blue)}
+.b-purple{background:var(--purple-soft);color:var(--purple)}
+.b-teal{background:var(--accent-soft);color:var(--accent)}
+.dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex:0 0 auto}
+
+/* ============================================================
+   SESSION TAB STRIP
+   ============================================================ */
+.tabstrip{
+  flex:0 0 40px;height:40px;background:var(--surface);border-bottom:1px solid var(--line);
+  display:flex;align-items:stretch;padding:0 8px;gap:2px;overflow-x:auto;overflow-y:hidden;z-index:20;
+}
+.tabstrip::-webkit-scrollbar{height:0}
+.stab{
+  display:flex;align-items:center;gap:7px;padding:0 9px 0 11px;margin:4px 0 0;height:32px;
+  border:1px solid transparent;border-bottom:none;border-radius:8px 8px 0 0;
+  max-width:236px;flex:0 0 auto;color:var(--ink-2);position:relative;
+}
+.stab:hover{background:var(--surface-2)}
+.stab.on{background:var(--bg);border-color:var(--line);color:var(--ink)}
+.stab.on:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--bg)}
+.stab-t{font-weight:600;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stab-s{font-size:10px;color:var(--ink-3);font-weight:600;letter-spacing:.03em}
+.stab-x{width:17px;height:17px;border-radius:4px;display:grid;place-items:center;color:var(--ink-3);flex:0 0 auto}
+.stab-x:hover{background:#e4e7ec;color:var(--ink)}
+.stab-home{padding:0 11px}
+.stab-badge{position:absolute;top:2px;right:20px;width:6px;height:6px;border-radius:50%;background:var(--amber)}
+.tab-add{align-self:center;width:28px;height:28px;border-radius:7px;display:grid;place-items:center;
+  color:var(--ink-2);flex:0 0 auto;margin-left:2px}
+.tab-add:hover{background:var(--accent-soft);color:var(--accent)}
+
+/* ============================================================
+   MAIN / SCROLL BODY
+   ============================================================ */
+.body{flex:1;min-height:0;display:flex;overflow:hidden}
+
+/* ---------- LANDING ---------- */
+.landing{flex:1;overflow-y:auto}
+.landing-in{max-width:1080px;margin:0 auto;padding:40px 24px 64px}
+.hero{text-align:center;margin-bottom:26px}
+.hero h1{font-size:25px;font-weight:700;letter-spacing:-.5px;margin:0 0 5px}
+.hero p{margin:0;color:var(--ink-2);font-size:13px}
+.searchcard{
+  background:var(--surface);border:1px solid var(--line);border-radius:14px;
+  box-shadow:var(--shadow-md);padding:18px}
+.searchrow{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+.searchrow .f-hosp{width:210px}
+.searchrow .f-q{flex:1;min-width:260px}
+.keygroup{display:flex}
+.keygroup select.ctl{width:104px;border-radius:var(--r-sm) 0 0 var(--r-sm);border-right:none;
+  background-color:var(--surface-2);font-weight:600;font-size:12px}
+.keygroup .wrapq{position:relative;flex:1}
+.keygroup .wrapq input{width:100%;border-radius:0 var(--r-sm) var(--r-sm) 0;padding-right:34px}
+.keygroup .wrapq .mag{position:absolute;right:0;top:0;width:34px;height:34px;display:grid;place-items:center;color:var(--ink-3)}
+.quickrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
+.qbtn{display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 12px;border-radius:99px;
+  border:1px solid var(--line-strong);background:var(--surface);font-weight:600;font-size:12px;color:var(--ink-2)}
+.qbtn:hover{border-color:var(--accent-line);background:var(--accent-soft);color:var(--accent)}
+
+.results{margin-top:18px;display:flex;flex-direction:column;gap:9px}
+.rescard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.rescard.open{border-color:var(--accent-line);box-shadow:var(--shadow-md)}
+.reshead{display:flex;align-items:center;gap:13px;padding:11px 14px;width:100%;text-align:left}
+.reshead:hover{background:var(--surface-2)}
+.pav{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-weight:700;font-size:13px;flex:0 0 auto}
+.res-main{flex:1;min-width:0}
+.res-name{font-weight:700;font-size:13.5px;display:flex;align-items:center;gap:7px}
+.res-meta{font-size:11.5px;color:var(--ink-2);display:flex;gap:9px;flex-wrap:wrap;margin-top:2px}
+.res-meta b{color:var(--ink);font-weight:600}
+.res-right{display:flex;align-items:center;gap:9px;flex:0 0 auto}
+.res-kpi{text-align:right;line-height:1.25}
+.res-kpi .k{font-size:10px;color:var(--ink-3);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.res-kpi .v{font-size:12.5px;font-weight:700}
+.resbody{border-top:1px solid var(--line);background:var(--surface-2);padding:11px 14px 13px}
+.empty{text-align:center;padding:44px 18px;color:var(--ink-3)}
+.empty h4{margin:10px 0 3px;color:var(--ink-2);font-size:13.5px}
+.empty p{margin:0;font-size:12px}
+
+/* visit list rows */
+.vrow{display:flex;align-items:center;gap:11px;padding:8px 10px;border-radius:var(--r-sm);
+  border:1px solid var(--line);background:var(--surface);margin-bottom:6px;width:100%;text-align:left}
+.vrow:last-child{margin-bottom:0}
+.vrow:hover{border-color:var(--accent-line);background:var(--accent-soft)}
+.vtag{width:44px;height:26px;border-radius:6px;display:grid;place-items:center;font-size:10px;font-weight:800;flex:0 0 auto;letter-spacing:.03em}
+.vrow-main{flex:1;min-width:0}
+.vrow-t{font-weight:600;font-size:12.5px}
+.vrow-s{font-size:11px;color:var(--ink-2);margin-top:1px}
+
+/* ---------- SESSION LAYOUT ---------- */
+.session{flex:1;display:flex;min-width:0}
+.rail{
+  flex:0 0 var(--rail);width:var(--rail);background:var(--surface);border-right:1px solid var(--line);
+  overflow-y:auto;display:flex;flex-direction:column}
+.rail-head{padding:14px 13px 12px;border-bottom:1px solid var(--line)}
+.rail-pt{display:flex;gap:10px;align-items:flex-start}
+.rail-nm{font-weight:700;font-size:13.5px;letter-spacing:-.1px;line-height:1.3}
+.rail-mrn{font-size:11px;color:var(--ink-2);margin-top:2px}
+.rail-sec{padding:11px 13px;border-bottom:1px solid var(--line)}
+.rail-sec:last-child{border-bottom:none}
+.sec-t{font-size:10px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.07em;
+  margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
+.kv{display:flex;justify-content:space-between;gap:8px;font-size:11.5px;padding:3px 0}
+.kv .k{color:var(--ink-2)}
+.kv .v{font-weight:600;text-align:right}
+.meter{height:5px;border-radius:99px;background:#eaecf0;overflow:hidden;margin:6px 0 3px}
+.meter i{display:block;height:100%;border-radius:99px;background:var(--accent)}
+.meter i.warn{background:var(--amber)}
+.meter i.crit{background:var(--red)}
+.moneycard{border:1px solid var(--line);border-radius:var(--r-sm);padding:8px 9px;background:var(--surface-2);margin-bottom:6px}
+.moneycard:last-child{margin-bottom:0}
+.moneycard .mc-k{font-size:10.5px;color:var(--ink-2);font-weight:600;display:flex;align-items:center;gap:5px}
+.moneycard .mc-v{font-size:16px;font-weight:700;letter-spacing:-.3px;margin-top:1px}
+.vpick{display:flex;flex-direction:column;gap:4px}
+.vpick-i{display:flex;align-items:center;gap:8px;padding:6px 7px;border-radius:6px;text-align:left;width:100%;border:1px solid transparent}
+.vpick-i:hover{background:var(--surface-2);border-color:var(--line)}
+.vpick-i.on{background:var(--accent-soft);border-color:var(--accent-line)}
+.vpick-t{font-size:11.5px;font-weight:600;flex:1;min-width:0}
+.vpick-d{font-size:10.5px;color:var(--ink-3)}
+
+/* work area */
+.work{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden}
+.worktabs{flex:0 0 42px;height:42px;background:var(--surface);border-bottom:1px solid var(--line);
+  display:flex;align-items:stretch;gap:2px;padding:0 12px;overflow-x:auto}
+.worktabs::-webkit-scrollbar{height:0}
+.wtab{display:flex;align-items:center;gap:6px;padding:0 11px;font-weight:600;font-size:12.5px;color:var(--ink-2);
+  border-bottom:2px solid transparent;flex:0 0 auto}
+.wtab:hover{color:var(--ink)}
+.wtab.on{color:var(--accent);border-bottom-color:var(--accent)}
+.wtab .cnt{height:17px;min-width:17px;padding:0 4px;border-radius:99px;background:#eaecf0;color:var(--ink-2);
+  font-size:10px;font-weight:700;display:grid;place-items:center}
+.wtab.on .cnt{background:var(--accent);color:#fff}
+.workbody{flex:1;min-height:0;display:flex;overflow:hidden}
+.pane{flex:1;min-width:0;overflow-y:auto;padding:14px}
+
+/* cards + tables */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);margin-bottom:13px}
+.card:last-child{margin-bottom:0}
+.card-h{display:flex;align-items:center;gap:10px;padding:10px 13px;border-bottom:1px solid var(--line)}
+.card-h h3{margin:0;font-size:12.5px;font-weight:700;letter-spacing:-.1px}
+.card-h .sub{font-size:11px;color:var(--ink-3);font-weight:500}
+.card-b{padding:13px}
+.card-b.p0{padding:0}
+table{width:100%;border-collapse:collapse}
+th{font-size:10px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em;
+  text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);background:var(--surface-2);white-space:nowrap}
+td{padding:8px 10px;border-bottom:1px solid #f1f3f6;font-size:12px;vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr.hov:hover{background:var(--surface-2)}
+.r{text-align:right}.c{text-align:center}
+.t-strong{font-weight:600}
+.t-mut{color:var(--ink-2)}
+.t-xs{font-size:11px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}
+.row{display:flex;gap:9px;align-items:center}
+.row-b{display:flex;gap:9px;align-items:flex-end}
+.wrap{flex-wrap:wrap}
+.stat{border:1px solid var(--line);border-radius:var(--r-sm);padding:9px 11px;background:var(--surface)}
+.stat .s-k{font-size:10.5px;color:var(--ink-2);font-weight:600}
+.stat .s-v{font-size:17px;font-weight:700;letter-spacing:-.3px;margin-top:2px}
+.stat .s-x{font-size:10.5px;color:var(--ink-3);margin-top:1px}
+
+/* catalogue */
+.catbar{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:11px}
+.cattab{height:27px;padding:0 11px;border-radius:99px;border:1px solid var(--line-strong);
+  font-size:11.5px;font-weight:600;color:var(--ink-2);background:var(--surface)}
+.cattab:hover{background:var(--surface-2)}
+.cattab.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.itemgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(206px,1fr));gap:8px}
+.item{border:1px solid var(--line);border-radius:var(--r-sm);padding:9px 10px;background:var(--surface);text-align:left;
+  display:flex;flex-direction:column;gap:3px;transition:border-color .12s,box-shadow .12s}
+.item:hover{border-color:var(--accent-line);box-shadow:var(--shadow-md)}
+.item .i-n{font-weight:600;font-size:12px;line-height:1.35}
+.item .i-m{font-size:10.5px;color:var(--ink-3);display:flex;justify-content:space-between;gap:6px;align-items:center}
+.item .i-p{font-weight:700;font-size:12.5px}
+
+/* basket / right panel */
+.sidepanel{flex:0 0 322px;width:322px;border-left:1px solid var(--line);background:var(--surface);
+  display:flex;flex-direction:column;overflow:hidden}
+.sp-h{padding:11px 13px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px}
+.sp-h h3{margin:0;font-size:12.5px;font-weight:700}
+.sp-b{flex:1;overflow-y:auto;padding:12px 13px}
+.sp-f{border-top:1px solid var(--line);padding:12px 13px;background:var(--surface-2)}
+.sumline{display:flex;justify-content:space-between;font-size:12px;padding:3.5px 0}
+.sumline .sk{color:var(--ink-2)}
+.sumline .sv{font-weight:600}
+.sumline.big{border-top:1px solid var(--line-strong);margin-top:6px;padding-top:8px}
+.sumline.big .sk{font-weight:700;color:var(--ink);font-size:12.5px}
+.sumline.big .sv{font-weight:800;font-size:17px;letter-spacing:-.3px}
+.paymode{display:flex;align-items:center;gap:8px;padding:6px 8px;border:1px solid var(--line);
+  border-radius:var(--r-sm);margin-bottom:6px;background:var(--surface)}
+.paymode.on{border-color:var(--accent-line);background:var(--accent-soft)}
+.paymode .pm-n{flex:1;font-size:11.5px;font-weight:600}
+.paymode input[type=number]{width:82px;text-align:right}
+.pmchips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:9px}
+.pmchip{height:27px;padding:0 10px;border-radius:99px;border:1px solid var(--line-strong);font-size:11.5px;font-weight:600;color:var(--ink-2)}
+.pmchip:hover{background:var(--surface-2)}
+.pmchip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.pmchip:disabled{opacity:.4;cursor:not-allowed}
+
+/* alerts */
+.alert{display:flex;gap:9px;padding:9px 11px;border-radius:var(--r-sm);font-size:11.5px;line-height:1.45;margin-bottom:11px;border:1px solid}
+.alert b{font-weight:700}
+.a-amber{background:var(--amber-soft);border-color:#fcd9a8;color:#7a3c05}
+.a-red{background:var(--red-soft);border-color:#fdcdc7;color:#8e1b12}
+.a-blue{background:var(--blue-soft);border-color:#c6d7f9;color:#173f9e}
+.a-green{background:var(--green-soft);border-color:#b7ebc9;color:#026034}
+.alert .ico{margin-top:1px}
+
+/* ============================================================
+   MODAL / DRAWER / TOAST
+   ============================================================ */
+.scrim{position:fixed;inset:0;background:rgba(16,24,40,.45);z-index:100;display:flex;
+  align-items:center;justify-content:center;padding:24px;animation:fade .12s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.99)}to{opacity:1;transform:none}}
+.modal{background:var(--surface);border-radius:13px;box-shadow:var(--shadow-lg);width:560px;max-width:100%;
+  max-height:100%;display:flex;flex-direction:column;animation:pop .14s ease}
+.modal.w-sm{width:430px}
+.modal.w-lg{width:800px}
+.modal.w-xl{width:1000px}
+.m-h{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.m-h h2{margin:0;font-size:14.5px;font-weight:700;letter-spacing:-.2px;flex:1}
+.m-h .m-s{font-size:11.5px;color:var(--ink-3);font-weight:500}
+.m-b{padding:16px;overflow-y:auto;flex:1}
+.m-f{padding:12px 16px;border-top:1px solid var(--line);display:flex;gap:9px;justify-content:flex-end;
+  background:var(--surface-2);border-radius:0 0 13px 13px;align-items:center}
+.x-btn{width:28px;height:28px;border-radius:7px;display:grid;place-items:center;color:var(--ink-3)}
+.x-btn:hover{background:#eff1f4;color:var(--ink)}
+
+#toastRoot{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:300;
+  display:flex;flex-direction:column;gap:7px;align-items:center;pointer-events:none}
+.toast{display:flex;align-items:center;gap:9px;background:var(--ink);color:#fff;padding:9px 14px;
+  border-radius:99px;font-size:12.5px;font-weight:600;box-shadow:var(--shadow-lg);animation:pop .14s ease}
+.toast .ico{stroke:#6ee7b7}
+.toast.err .ico{stroke:#fda29b}
+
+/* segmented */
+.seg{display:inline-flex;background:#f2f4f7;border-radius:8px;padding:2px;gap:2px}
+.seg button{height:27px;padding:0 12px;border-radius:6px;font-size:11.5px;font-weight:600;color:var(--ink-2)}
+.seg button.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+
+/* checkbox */
+.cb{width:15px;height:15px;accent-color:var(--accent);cursor:pointer;margin:0}
+label.cbl{display:inline-flex;align-items:center;gap:7px;font-size:12px;cursor:pointer;user-select:none}
+
+/* type picker (visit types) */
+.tpick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tp{border:1px solid var(--line-strong);border-radius:var(--r-sm);padding:10px;text-align:left;background:var(--surface)}
+.tp:hover{border-color:var(--accent-line);background:var(--accent-soft)}
+.tp.on{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 2px var(--accent-soft)}
+.tp .tp-n{font-weight:700;font-size:12px;display:flex;align-items:center;gap:6px}
+.tp .tp-d{font-size:10.5px;color:var(--ink-2);margin-top:3px;line-height:1.4}
+
+/* ============================================================
+   STEPPER  (visit charge -> orders)
+   ============================================================ */
+.pane-scroll{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden}
+.pane-body{flex:1;overflow-y:auto;padding:16px 18px 18px}
+
+.stepper{display:flex;align-items:stretch;gap:0;background:var(--surface);
+  border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);margin-bottom:15px;overflow:hidden}
+.step{flex:1;display:flex;align-items:center;gap:11px;padding:12px 15px;position:relative;min-width:0}
+.step + .step{border-left:1px solid var(--line)}
+.step.done{background:linear-gradient(90deg,var(--green-soft),transparent)}
+.step.active{background:linear-gradient(90deg,var(--accent-soft),transparent)}
+.step.locked{opacity:.62}
+.step-n{width:27px;height:27px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;
+  font-size:11.5px;font-weight:800;background:#eaecf0;color:var(--ink-3);border:2px solid transparent}
+.step.active .step-n{background:var(--accent);color:#fff}
+.step.done .step-n{background:var(--green);color:#fff}
+.step-x{min-width:0;flex:1}
+.step-t{font-size:12.5px;font-weight:700;letter-spacing:-.1px;display:flex;align-items:center;gap:7px}
+.step-d{font-size:10.5px;color:var(--ink-2);margin-top:1px;line-height:1.4}
+.step-go{flex:0 0 auto}
+
+/* full-width charge table */
+.chg-t td{padding:9px 10px}
+.chg-t .cell-n{font-weight:600;font-size:12.5px;line-height:1.35}
+.chg-t .cell-c{font-size:10.5px;color:var(--ink-3)}
+.qi{width:54px;text-align:center}
+.di{width:66px;text-align:right;padding-right:19px}
+.di-wrap{position:relative;display:inline-block}
+.di-wrap span{position:absolute;right:7px;top:5px;font-size:10px;color:var(--ink-3);pointer-events:none}
+tfoot th{background:var(--surface-2);border-top:1px solid var(--line-strong);
+  border-bottom:none;color:var(--ink);font-size:11px;text-transform:none;letter-spacing:0;padding:9px 10px}
+
+/* sticky totals bar */
+.totbar{flex:0 0 auto;background:var(--surface);border-top:1px solid var(--line);
+  box-shadow:0 -3px 12px -6px rgba(16,24,40,.16);padding:11px 18px;display:flex;align-items:center;gap:20px}
+.tb-i{line-height:1.25}
+.tb-i .tb-k{font-size:10px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em}
+.tb-i .tb-v{font-size:13.5px;font-weight:700;margin-top:1px}
+.tb-due .tb-k{color:var(--accent)}
+.tb-due .tb-v{font-size:22px;letter-spacing:-.5px}
+.tb-sep{width:1px;align-self:stretch;background:var(--line)}
+
+/* ============================================================
+   SLIDE-OVER PAYMENT DRAWER
+   ============================================================ */
+.dwr-scrim{position:fixed;inset:0;background:rgba(16,24,40,.42);z-index:90;animation:fade .14s ease}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:432px;max-width:100%;background:var(--surface);
+  z-index:95;display:flex;flex-direction:column;box-shadow:-12px 0 40px -12px rgba(16,24,40,.34);
+  animation:slidein .2s cubic-bezier(.32,.72,.35,1)}
+@keyframes slidein{from{transform:translateX(100%)}to{transform:none}}
+.dwr-h{padding:15px 18px 14px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:10px}
+.dwr-h .dh-k{font-size:11px;font-weight:700;color:var(--ink-2);text-transform:uppercase;letter-spacing:.05em}
+.dwr-h .dh-v{font-size:27px;font-weight:800;letter-spacing:-.7px;line-height:1.15;margin-top:2px}
+.dwr-h .dh-s{font-size:11px;color:var(--ink-3);margin-top:3px}
+.dwr-tabs{display:flex;gap:2px;padding:0 18px;border-bottom:1px solid var(--line);background:var(--surface)}
+.dwr-tab{padding:10px 14px;font-size:12.5px;font-weight:700;color:var(--ink-2);border-bottom:2px solid transparent}
+.dwr-tab:hover{color:var(--ink)}
+.dwr-tab.on{color:var(--accent);border-bottom-color:var(--accent)}
+.dwr-tab:disabled{opacity:.4;cursor:not-allowed}
+.dwr-b{flex:1;overflow-y:auto;padding:15px 18px}
+.dwr-f{border-top:1px solid var(--line);background:var(--surface-2);padding:0}
+.dwr-tot{display:flex;justify-content:space-between;align-items:baseline;padding:13px 18px}
+.dwr-tot .dt-k{font-size:12.5px;font-weight:700}
+.dwr-tot .dt-v{font-size:23px;font-weight:800;letter-spacing:-.6px}
+.dwr-btns{display:flex;border-top:1px solid var(--line)}
+.dwr-btns button{flex:1;height:48px;font-size:13.5px;font-weight:700;border-radius:0}
+.dwr-btns .b-clear{background:var(--surface);color:var(--ink-2)}
+.dwr-btns .b-clear:hover{background:#eff1f4}
+.dwr-btns .b-done{background:var(--accent);color:#fff}
+.dwr-btns .b-done:hover{background:#0d6a62}
+.dwr-btns .b-done:disabled{background:#cfd4dc;color:#fff;cursor:not-allowed}
+
+.modechips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;padding-bottom:13px;border-bottom:1px dashed var(--line)}
+.mchip{height:30px;padding:0 12px;border-radius:6px;border:1px solid var(--line-strong);
+  background:var(--surface);font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-2)}
+.mchip:hover{border-color:var(--accent-line);color:var(--accent)}
+.mchip.on{background:var(--blue-soft);border-color:var(--blue);color:var(--blue)}
+.mchip:disabled{opacity:.4;cursor:not-allowed}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.fgrid .full{grid-column:1/-1}
+.fgrid .field{min-width:0}          /* stop intrinsic input width blowing the columns out */
+.fgrid .ctl{width:100%}
+.drawer *{max-width:100%}
+.req:after{content:" *";color:var(--red)}
+.tender{display:flex;align-items:center;gap:10px;padding:9px 11px;border:1px solid var(--line);
+  border-radius:var(--r-sm);margin-bottom:7px;background:var(--surface-2)}
+.tender .tn-i{width:26px;height:26px;border-radius:6px;display:grid;place-items:center;flex:0 0 auto;
+  background:var(--accent-soft);color:var(--accent)}
+.tender .tn-m{flex:1;min-width:0}
+.tender .tn-n{font-size:11.5px;font-weight:700}
+.tender .tn-r{font-size:10.5px;color:var(--ink-3)}
+.tender .tn-a{font-size:13.5px;font-weight:700}
+.remcard{border:1px solid var(--accent-line);background:var(--accent-soft);border-radius:var(--r-sm);
+  padding:9px 11px;display:flex;justify-content:space-between;align-items:center;margin-bottom:13px}
+.remcard .rc-k{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.04em}
+.remcard .rc-v{font-size:17px;font-weight:800;letter-spacing:-.3px}
+.remcard.ok{border-color:#b7ebc9;background:var(--green-soft)}
+.remcard.ok .rc-k{color:var(--green)}
+.remcard.over{border-color:#fdcdc7;background:var(--red-soft)}
+.remcard.over .rc-k{color:var(--red)}
+
+/* ============================================================
+   PRINT
+   ============================================================ */
+#printArea{display:none}
+@media print{
+  body{background:#fff}
+  #app,#modalRoot,#toastRoot{display:none !important}
+  #printArea{display:block !important}
+}
+.doc{width:190mm;margin:0 auto;padding:12mm 10mm;color:#000;font-size:11px}
+.doc-h{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #000;padding-bottom:9px}
+.doc-h .dh-l h1{margin:0;font-size:19px;letter-spacing:-.3px}
+.doc-h .dh-l p{margin:2px 0 0;font-size:10.5px;color:#333}
+.doc-h .dh-r{text-align:right}
+.doc-h .dh-r .t{font-size:15px;font-weight:800;letter-spacing:.04em}
+.doc-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0}
+.doc-grid .dg-t{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#444;margin-bottom:4px}
+.doc-grid .dg-r{display:flex;justify-content:space-between;padding:1.5px 0;border-bottom:1px dotted #ccc}
+table.doc-t{width:100%;border-collapse:collapse;margin-top:6px}
+table.doc-t th{background:#f0f0f0;border:1px solid #999;font-size:9px;padding:5px 6px;color:#000}
+table.doc-t td{border:1px solid #ccc;font-size:10px;padding:5px 6px}
+.doc-tot{margin-top:10px;margin-left:auto;width:62%}
+.doc-tot .dt-r{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #eee}
+.doc-tot .dt-r.b{border-top:2px solid #000;border-bottom:2px solid #000;font-weight:800;font-size:13px;padding:6px 0;margin-top:3px}
+.doc-f{margin-top:22px;display:flex;justify-content:space-between;gap:20px;font-size:9.5px;color:#333}
+.doc-sign{border-top:1px solid #000;padding-top:4px;width:44%;text-align:center}
+.doc-note{margin-top:14px;font-size:9px;color:#555;line-height:1.5;border-top:1px dashed #bbb;padding-top:7px}
+.preview-wrap{background:#eceff3;padding:16px;border-radius:var(--r-sm);max-height:56vh;overflow:auto}
+.preview-wrap .doc{background:#fff;box-shadow:var(--shadow-md);width:100%;max-width:190mm}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="modalRoot"></div>
+<div id="toastRoot"></div>
+<div id="printArea"></div>
+<script>
+"use strict";
+
+/* ================================================================
+   1. ICONS + UTILITIES
+   ================================================================ */
+const ICONS = {
+  search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  x:'<path d="M18 6L6 18M6 6l12 12"/>',
+  chevR:'<path d="M9 18l6-6-6-6"/>',
+  chevD:'<path d="M6 9l6 6 6-6"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0114 0v1"/>',
+  users:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20v-1a6 6 0 0111 -3.2"/><circle cx="17.5" cy="10" r="3"/><path d="M13 20v-.5a5 5 0 019 -2.5"/>',
+  file:'<path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5"/>',
+  print:'<path d="M7 9V3h10v6"/><rect x="4" y="9" width="16" height="7" rx="2"/><path d="M7 16h10v5H7z"/>',
+  wallet:'<rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18"/><circle cx="17" cy="14.5" r="1.3"/>',
+  card:'<rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20"/>',
+  cash:'<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/>',
+  credit:'<path d="M12 2v20"/><path d="M17 6.5A4 4 0 0013 4h-2a3.5 3.5 0 000 7h2.5a3.5 3.5 0 010 7H11a4 4 0 01-4-2.5"/>',
+  shield:'<path d="M12 3l8 3v6c0 5-3.4 8.2-8 9.5C7.4 20.2 4 17 4 12V6z"/>',
+  undo:'<path d="M3 8h11a5 5 0 010 10H9"/><path d="M7 4L3 8l4 4"/>',
+  check:'<path d="M20 6L9 17l-5-5"/>',
+  checkC:'<circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/>',
+  alert:'<path d="M12 3l9.5 17H2.5z"/><path d="M12 9v5M12 17.2v.1"/>',
+  info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.8v.1"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3.2 2"/>',
+  bed:'<path d="M3 18V7"/><path d="M3 12h11a4 4 0 014 4v2"/><path d="M21 18v-3"/><circle cx="8" cy="9.5" r="2"/>',
+  amb:'<path d="M3 16V8h11l4 4h3v4"/><circle cx="7.5" cy="18" r="2"/><circle cx="17" cy="18" r="2"/><path d="M8.5 10.5h3M10 9v3"/>',
+  steth:'<path d="M5 3v5a4 4 0 008 0V3"/><path d="M9 12v3a5 5 0 0010 0v-2"/><circle cx="19" cy="11" r="2"/>',
+  flask:'<path d="M9 3h6v5l4.5 9A2 2 0 0117.7 20H6.3a2 2 0 01-1.8-3L9 8z"/><path d="M7.5 14h9"/>',
+  scan:'<path d="M4 8V6a2 2 0 012-2h2M20 8V6a2 2 0 00-2-2h-2M4 16v2a2 2 0 002 2h2M20 16v2a2 2 0 01-2 2h-2"/><path d="M4 12h16"/>',
+  pill:'<rect x="3" y="8.5" width="18" height="7" rx="3.5" transform="rotate(-40 12 12)"/><path d="M9 9l6 6"/>',
+  cart:'<circle cx="9" cy="20" r="1.6"/><circle cx="18" cy="20" r="1.6"/><path d="M2 3h3l2.6 12h11L21 7H6"/>',
+  trash:'<path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/>',
+  refresh:'<path d="M20 11a8 8 0 10-2.6 6.3"/><path d="M20 4v7h-7"/>',
+  home:'<path d="M4 11l8-7 8 7v8a2 2 0 01-2 2H6a2 2 0 01-2-2z"/>',
+  list:'<path d="M8 6h13M8 12h13M8 18h13M3.5 6h.1M3.5 12h.1M3.5 18h.1"/>',
+  tag:'<path d="M12 2l9 9-9 9-9-9V4a2 2 0 012-2z"/><circle cx="8.5" cy="8.5" r="1.4"/>',
+  arrowR:'<path d="M4 12h15"/><path d="M13 6l6 6-6 6"/>',
+  link:'<path d="M10 13a5 5 0 007.5.5l2-2a5 5 0 00-7-7l-1 1"/><path d="M14 11a5 5 0 00-7.5-.5l-2 2a5 5 0 007 7l1-1"/>',
+  copy:'<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/>',
+  building:'<path d="M4 21V5a2 2 0 012-2h8a2 2 0 012 2v16"/><path d="M16 9h3a2 2 0 012 2v10"/><path d="M8 7h4M8 11h4M8 15h4"/>',
+  percent:'<path d="M19 5L5 19"/><circle cx="7.5" cy="7.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/>',
+  lock:'<rect x="4.5" y="10" width="15" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/>',
+};
+const ic = (n, cls) => `<svg class="ico ${cls||''}" viewBox="0 0 24 24">${ICONS[n]||''}</svg>`;
+
+const $  = s => document.querySelector(s);
+const money = n => (Math.round((n||0)*100)/100).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = p => p+'-'+Math.random().toString(36).slice(2,8).toUpperCase();
+const initials = n => n.split(' ').filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+const TODAY = new Date('2026-08-25T10:20:00');
+const dstr  = d => new Date(d).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+const dtstr = d => new Date(d).toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+const ago = d => { const h=Math.round((TODAY-new Date(d))/36e5);
+  if(h<1) return 'just now'; if(h<24) return h+'h ago';
+  const dd=Math.round(h/24); return dd<30? dd+'d ago' : Math.round(dd/30)+'mo ago'; };
+const age = dob => Math.floor((TODAY-new Date(dob))/(365.25*864e5));
+const PAL = ['#1a56db','#0f766e','#5925dc','#b54708','#b42318','#026034','#0e7490','#a21caf'];
+const tint = s => { let h=0; for(const c of s) h=(h*31+c.charCodeAt(0))>>>0; return PAL[h%PAL.length]; };
+const soft = hex => hex+'14';
+
+/* ================================================================
+   2. CONFIGURATION  (all of this is meant to be back-office driven)
+   ================================================================ */
+const HOSPITALS = [
+  {id:'ALH', name:'Al Hamra Hospital',      city:'Jeddah'},
+  {id:'OLY', name:'Olaya Medical Center',   city:'Riyadh'},
+  {id:'KHB', name:'Khobar Specialist',      city:'Al Khobar'},
+];
+
+const SEARCH_KEYS = [
+  {id:'mrn',   label:'MRN',        ph:'e.g. 10024871'},
+  {id:'nid',   label:'National ID',ph:'e.g. 1098xxxxxx'},
+  {id:'phone', label:'Mobile',     ph:'e.g. 0555 000 000'},
+  {id:'name',  label:'Name',       ph:'Patient name (EN / AR)'},
+  {id:'file',  label:'Visit / Inv',ph:'Visit no or invoice no'},
+];
+
+/* Payment modes — "configurable" list. `kind` drives behaviour:
+   settle = money in now | advance = draw from patient wallet
+   credit = creates receivable | payer = billed to insurance   */
+const PAYMENT_MODES = [
+  {id:'cash',    label:'Cash',            icon:'cash',   kind:'settle', enabled:true},
+  {id:'card',    label:'Card / POS',      icon:'card',   kind:'settle', enabled:true, ref:'Approval code'},
+  {id:'transfer',label:'Bank Transfer',   icon:'link',   kind:'settle', enabled:true, ref:'Transfer ref'},
+  {id:'advance', label:'Patient Advance', icon:'wallet', kind:'advance',enabled:true},
+  {id:'credit',  label:'Credit (A/R)',    icon:'credit', kind:'credit', enabled:true, ref:'Guarantor / PO'},
+  {id:'voucher', label:'Voucher',         icon:'tag',    kind:'settle', enabled:true, ref:'Voucher no'},
+];
+
+/* Visit types. THIS is the extension point: IPD and ER get their own
+   `tabs` / `flags` here and the shell picks them up automatically —
+   the OPD workflow, session tabs, rail, basket and payment panel are
+   all shared, so the user's muscle memory carries across. */
+const TABS_STD = ['charge','visits','invoices','advance','credit'];
+const VISIT_TYPES = {
+  OPD:      {label:'Outpatient',   short:'OPD', icon:'steth', color:'#1a56db',
+             desc:'Clinic consultation with billable services & orders.',
+             tabs:TABS_STD, needsClinic:true,
+             chargeLabel:'Consultation', chargeCodes:['CON-001','CON-002','CON-004','CON-011']},
+  FOLLOWUP: {label:'Follow-up',    short:'F/U', icon:'refresh', color:'#0e7490',
+             desc:'Revisit inside the free follow-up window.',
+             tabs:TABS_STD, needsClinic:true, freeConsult:true,
+             chargeLabel:'Follow-up consultation', chargeCodes:['CON-003','CON-001']},
+  ER:       {label:'Emergency',    short:'ER',  icon:'amb', color:'#b42318',
+             desc:'Triage-first. Bill after stabilisation, deposit optional.',
+             tabs:TABS_STD, needsClinic:false,
+             chargeLabel:'ER assessment', chargeCodes:['CON-010'],
+             stub:'ER specifics (triage level, ER package, treat-first/bill-later deferral) plug in here.'},
+  IP:       {label:'Inpatient',    short:'IP',  icon:'bed', color:'#5925dc',
+             desc:'Admission with running bill and discharge settlement.',
+             tabs:TABS_STD, needsClinic:false,
+             chargeLabel:'Admission / bed charge', chargeCodes:['ROM-601','ROM-602','ROM-603','ROM-604'],
+             stub:'IP specifics (bed/board charges, interim bills, discharge clearance) plug in here.'},
+  REFERRAL: {label:'Referral',     short:'REF', icon:'arrowR', color:'#b54708',
+             desc:'Visit created from an in/out-bound referral.',
+             tabs:TABS_STD, needsClinic:true, needsReferral:true,
+             chargeLabel:'Referral consultation', chargeCodes:['CON-004','CON-002','CON-001']},
+  WALKIN:   {label:'Walk-in',      short:'WLK', icon:'users', color:'#027a48',
+             desc:'Direct billing — no appointment, no consultation.',
+             tabs:TABS_STD, needsClinic:false,
+             chargeLabel:null, chargeCodes:null},   /* no visit charge — orders open immediately */
+};
+
+const WORK_TABS = {
+  charge:  {label:'Charge & Invoice', icon:'cart'},
+  visits:  {label:'All Visits',       icon:'building'},
+  invoices:{label:'Invoices',         icon:'file'},
+  advance: {label:'Advance',          icon:'wallet'},
+  credit:  {label:'Credit',           icon:'credit'},
+};
+
+const CLINICS = ['General Medicine','Family Medicine','Paediatrics','Obs & Gynae','Orthopaedics',
+  'ENT','Dermatology','Cardiology','Dental','Ophthalmology','Emergency'];
+const DOCTORS = ['Dr. Hala Mansour','Dr. Yusuf Al-Amin','Dr. Reem Habib','Dr. Tariq Nassar',
+  'Dr. Salma Idrissi','Dr. Omar Baz','Dr. Lina Farouk'];
+
+const REFUND_REASONS = ['Service not rendered','Duplicate invoice','Wrong price / tariff applied',
+  'Wrong payer selected','Patient cancelled after payment','Order cancelled by doctor','Goodwill / complaint'];
+
+/* Insurance status carried per service line. Only Approved / Not required
+   actually bill to the payer — anything else falls to the patient. */
+const APPROVALS = {
+  'Approved':     {cls:'b-green',  ico:'checkC', bills:true,  hint:'Payer approval on file.'},
+  'Not required': {cls:'b-teal',   ico:'check',  bills:true,  hint:'Below the pre-approval threshold.'},
+  'Pending':      {cls:'b-amber',  ico:'clock',  bills:false, hint:'Awaiting pre-approval — billing now charges the patient in full.'},
+  'Rejected':     {cls:'b-red',    ico:'alert',  bills:false, hint:'Payer declined — patient pays or the order is cancelled.'},
+  'Not covered':  {cls:'b-red',    ico:'x',      bills:false, hint:'Excluded from the policy.'},
+  'Self-pay':     {cls:'',         ico:'wallet', bills:false, hint:'No active policy on this patient.'},
+};
+const PREAPPROVAL_LIMIT = 800;   /* counter threshold above which a payer pre-approval is needed */
+const APPROVAL_THRESHOLD = 500;   /* refunds above this need a supervisor */
+const VAT_RATE = 0.15;
+
+/* ---- Service catalogue ---- */
+const CAT_GROUPS = [
+  {id:'consult', label:'Consultation', icon:'steth'},
+  {id:'lab',     label:'Laboratory',   icon:'flask'},
+  {id:'rad',     label:'Radiology',    icon:'scan'},
+  {id:'proc',    label:'Procedures',   icon:'steth'},
+  {id:'pharm',   label:'Pharmacy',     icon:'pill'},
+  {id:'pkg',     label:'Packages',     icon:'tag'},
+  {id:'room',    label:'Room & Board', icon:'bed'},
+];
+const CATALOG = [
+  {c:'consult',code:'CON-001',n:'New Consultation — Specialist',p:200},
+  {c:'consult',code:'CON-002',n:'New Consultation — Consultant',p:300},
+  {c:'consult',code:'CON-003',n:'Follow-up Consultation',p:100},
+  {c:'consult',code:'CON-004',n:'Second Opinion — Consultant',p:450},
+  {c:'consult',code:'CON-010',n:'ER Physician Assessment',p:250},
+  {c:'consult',code:'CON-011',n:'Tele-consultation',p:150},
+  {c:'lab',code:'LAB-101',n:'Complete Blood Count (CBC)',p:65},
+  {c:'lab',code:'LAB-102',n:'HbA1c',p:95},
+  {c:'lab',code:'LAB-103',n:'Lipid Profile',p:120},
+  {c:'lab',code:'LAB-104',n:'Vitamin D (25-OH)',p:180},
+  {c:'lab',code:'LAB-105',n:'TSH / Free T4',p:145},
+  {c:'lab',code:'LAB-106',n:'Urine Routine',p:45},
+  {c:'lab',code:'LAB-107',n:'CRP Quantitative',p:85},
+  {c:'lab',code:'LAB-108',n:'Culture & Sensitivity',p:160},
+  {c:'rad',code:'RAD-201',n:'X-Ray Chest PA',p:150},
+  {c:'rad',code:'RAD-202',n:'X-Ray Knee AP/Lat',p:170},
+  {c:'rad',code:'RAD-203',n:'Ultrasound Abdomen',p:320},
+  {c:'rad',code:'RAD-204',n:'CT Brain Plain',p:850},
+  {c:'rad',code:'RAD-205',n:'MRI Lumbar Spine',p:1650},
+  {c:'rad',code:'RAD-206',n:'Mammography Bilateral',p:520},
+  {c:'proc',code:'PRC-301',n:'IM Injection',p:40},
+  {c:'proc',code:'PRC-302',n:'IV Infusion (per hour)',p:120},
+  {c:'proc',code:'PRC-303',n:'Wound Dressing — Small',p:90},
+  {c:'proc',code:'PRC-304',n:'Suturing (up to 5 cm)',p:380},
+  {c:'proc',code:'PRC-305',n:'Nebulisation',p:70},
+  {c:'proc',code:'PRC-306',n:'ECG 12-Lead',p:110},
+  {c:'proc',code:'PRC-307',n:'Plaster Cast — Below Knee',p:640},
+  {c:'proc',code:'PRC-308',n:'Dental Scaling & Polish',p:350},
+  {c:'pharm',code:'MED-401',n:'Paracetamol 500 mg × 20',p:18},
+  {c:'pharm',code:'MED-402',n:'Amoxicillin 500 mg × 21',p:46},
+  {c:'pharm',code:'MED-403',n:'Ibuprofen 400 mg × 20',p:24},
+  {c:'pharm',code:'MED-404',n:'Insulin Glargine pen',p:210},
+  {c:'pharm',code:'MED-405',n:'Salbutamol inhaler',p:38},
+  {c:'pharm',code:'MED-406',n:'Cetirizine 10 mg × 10',p:15},
+  {c:'pkg',code:'PKG-501',n:'Executive Health Check — Male',p:1450},
+  {c:'pkg',code:'PKG-502',n:'Antenatal Package — Trimester 1',p:2200},
+  {c:'pkg',code:'PKG-503',n:'Diabetic Screening Bundle',p:680},
+  {c:'room',code:'ROM-601',n:'Private Room — per night',p:900},
+  {c:'room',code:'ROM-602',n:'Semi-private — per night',p:600},
+  {c:'room',code:'ROM-603',n:'ICU — per night',p:2600},
+  {c:'room',code:'ROM-604',n:'Day-case Bed — per 6 h',p:300},
+];
+const catItem = code => CATALOG.find(x=>x.code===code);
+
+/* ---- Payers / plans. coverage = patient co-insurance % per group.
+        null => excluded (patient pays 100%). ---- */
+const PAYERS = {
+  CASH: {id:'CASH', name:'Self-pay / Cash', short:'Cash', network:'—'},
+  BUPA: {id:'BUPA', name:'Bupa Arabia', short:'Bupa', network:'VIP Network',
+    coverage:{consult:0,   lab:.10, rad:.10, proc:.10, pharm:.20, pkg:null, room:.10}, visitDeductible:50},
+  TAWN: {id:'TAWN', name:'Tawuniya', short:'Tawuniya', network:'Class A',
+    coverage:{consult:.20, lab:.20, rad:.20, proc:.20, pharm:.30, pkg:null, room:.20}, visitDeductible:30},
+  MEDG: {id:'MEDG', name:'MedGulf', short:'MedGulf', network:'Class B',
+    coverage:{consult:.25, lab:.25, rad:.30, proc:.25, pharm:.35, pkg:null, room:.25}, visitDeductible:0},
+  ARAM: {id:'ARAM', name:'Aramco Corporate Account', short:'Aramco', network:'Corporate direct-bill',
+    coverage:{consult:.10, lab:.10, rad:.15, proc:.10, pharm:.20, pkg:.10, room:.10}, visitDeductible:0, corporate:true},
+};
+
+/* ================================================================
+   3. PRICING / INSURANCE SPLIT ENGINE
+   Single source of truth used by the basket, the invoice preview,
+   the printed document and the refund screen.
+   ================================================================ */
+const VAT_ON = false;   /* healthcare largely VAT-exempt in KSA — toggle to show tax lines */
+
+function payerOf(pt){ return PAYERS[pt.payerId] || PAYERS.CASH; }
+function insActive(pt){
+  const p = payerOf(pt);
+  return p.id !== 'CASH' && !!pt.plan && pt.plan.status === 'Active';
+}
+function limitLeft(pt){
+  if(!pt.plan) return 0;
+  return Math.max(0, pt.plan.annualLimit - pt.plan.consumed);
+}
+/* policy deductible is an annual pool; each visit can draw up to the payer's per-visit cap */
+function dedInfo(pt){
+  if(!pt.plan) return {total:0, used:0, left:0, perVisit:0};
+  const total = pt.plan.deductibleTotal || 0;
+  const used  = Math.min(total, pt.plan.deductibleUsed || 0);
+  return {total, used, left:Math.max(0, total-used), perVisit:(payerOf(pt).visitDeductible || 0)};
+}
+/* a line only bills to the payer when its pre-approval is in place */
+const apBills = st => !!(APPROVALS[st] && APPROVALS[st].bills);
+function approvalFor(pt, code, qty){
+  if(!insActive(pt)) return 'Self-pay';
+  const it = catItem(code); if(!it) return 'Self-pay';
+  const co = payerOf(pt).coverage[it.c];
+  if(co == null) return 'Not covered';
+  return (it.p * (qty||1)) >= PREAPPROVAL_LIMIT ? 'Pending' : 'Not required';
+}
+
+/* lines: [{code, qty, disc, price?, useIns?, name?, cat?}] */
+function compute(lines, pt, visit){
+  const payer = payerOf(pt);
+  const live  = insActive(pt);
+  let capLeft = live ? limitLeft(pt) : 0;
+  const ded   = dedInfo(pt);
+  let dedLeft = (live && ded.perVisit && !(visit && visit.deductibleApplied))
+                  ? Math.min(ded.perVisit, ded.left) : 0;
+
+  const rows = [];
+  const T = {gross:0, disc:0, net:0, company:0, patient:0, deduct:0, vat:0, due:0};
+
+  for(const L of lines){
+    const it    = catItem(L.code) || {n:L.name||L.code, c:L.cat||'proc', p:L.price||0};
+    const price = (L.price != null) ? L.price : it.p;
+    const qty   = L.qty || 1;
+    const gross = price * qty;
+    const dAmt  = gross * ((L.disc||0)/100);
+    const net   = gross - dAmt;
+
+    let company = 0, patient = net, dedAmt = 0, covered = false, note = '';
+    const ap = L.approval || approvalFor(pt, L.code, qty);
+    const useIns = L.useIns !== false && apBills(ap);
+
+    if(!live){
+      note = payer.id === 'CASH' ? 'Self-pay' : 'Policy ' + (pt.plan ? pt.plan.status.toLowerCase() : 'n/a');
+    } else if(L.useIns === false){
+      note = 'Insurance waived';
+    } else if(!apBills(ap)){
+      note = ap === 'Pending' ? 'Pre-approval pending' : ap;
+    } else {
+      const co = payer.coverage ? payer.coverage[it.c] : null;
+      if(co == null){
+        note = 'Excluded from plan';
+      } else {
+        covered = true;
+        patient = net * co;
+        company = net - patient;
+        if(dedLeft > 0 && company > 0){                 /* deductible shifts payer→patient */
+          dedAmt = Math.min(dedLeft, company);
+          company -= dedAmt; patient += dedAmt; dedLeft -= dedAmt;
+        }
+        if(company > capLeft){                          /* annual limit cap */
+          patient += company - capLeft; company = capLeft;
+          note = 'Annual limit reached';
+        }
+        capLeft -= company;
+        if(!note) note = co === 0 ? 'Fully covered' : Math.round(co*100) + '% co-pay';
+        if(dedAmt > 0) note += ' · deductible ' + money(dedAmt);
+      }
+    }
+    const vat = VAT_ON ? patient * VAT_RATE : 0;
+    rows.push({...L, qty, price, name:it.n, cat:it.c, code:L.code, gross, discAmt:dAmt,
+               net, company, patient, deduct:dedAmt, vat, covered, note, approval:ap});
+    T.gross+=gross; T.disc+=dAmt; T.net+=net; T.company+=company;
+    T.patient+=patient; T.deduct+=dedAmt; T.vat+=vat;
+  }
+  T.due = T.patient + T.vat;
+  T.limitAfter = live ? capLeft : 0;
+  return {rows, T, live, payer};
+}
+
+/* ================================================================
+   4. MOCK DATASET
+   ================================================================ */
+let SEQ = {inv:24187, rct:9042, vis:551300, ref:4120, rfd:730, cr:2210};
+const nextNo = (k, pre) => pre + (++SEQ[k]);
+const dAgo = (days, h=10, m=0) => {
+  const d = new Date(TODAY); d.setDate(d.getDate()-days); d.setHours(h,m,0,0); return d.toISOString();
+};
+
+/* pending clinical order awaiting billing.
+   `ap` = insurance status the doctor's order came back with. */
+const O = (code, qty, by, days, h, ap) =>
+  ({id:uid('ORD'), code, qty, by, at:dAgo(days,h||9), status:'Pending', approval: ap || 'Approved'});
+
+/* build an already-issued invoice (uses the same engine as the live basket) */
+function mkInvoice(pt, visitId, lines, payments, days, h, opts={}){
+  const r = compute(lines, pt, null);
+  const paid = payments.filter(p => PAYMENT_MODES.find(m=>m.id===p.mode).kind !== 'credit')
+                       .reduce((s,p)=>s+p.amount, 0);
+  const cred = payments.filter(p => PAYMENT_MODES.find(m=>m.id===p.mode).kind === 'credit')
+                       .reduce((s,p)=>s+p.amount, 0);
+  return {
+    id:uid('INV'), no:nextNo('inv','INV-'), visitId, date:dAgo(days,h||11),
+    hospital:opts.hospital||'ALH', cashier:opts.cashier||'S. Saafan',
+    lines:r.rows.map(x=>({code:x.code, name:x.name, cat:x.cat, qty:x.qty, price:x.price,
+                          disc:x.disc||0, net:x.net, company:x.company, patient:x.patient,
+                          deduct:x.deduct, note:x.note, refunded:0})),
+    T:{...r.T}, payerId:pt.payerId, payerName:payerOf(pt).name,
+    payments:payments.map(p=>({...p, at:dAgo(days,h||11)})),
+    paid, creditAmt:cred, creditSettled:0,
+    status: cred>0 ? 'Credit open' : 'Paid',
+    refunds:[]
+  };
+}
+
+function mkPatient(o){
+  const pt = {
+    advance:{balance:0, txns:[]}, invoices:[], visits:[], refunds:[],
+    alerts:[], ...o
+  };
+  return pt;
+}
+
+const PATIENTS = [];
+
+/* ---------- 1. Ahmed Al-Ghamdi — Bupa active, classic OPD ---------- */
+(() => {
+const pt = mkPatient({
+  id:'P1', mrn:'10024871', name:'Ahmed Al-Ghamdi', nameAr:'أحمد الغامدي',
+  nid:'1098443271', phone:'0555 214 880', dob:'1979-04-11', gender:'Male', nat:'Saudi',
+  hospital:'ALH', payerId:'BUPA',
+  plan:{deductibleTotal:1500, deductibleUsed:350, no:'BUP-9931-7742', status:'Active', class:'VIP Network', annualLimit:50000, consumed:6420,
+        expiry:'2026-12-31', approvalReq:['MRI Lumbar Spine','CT Brain Plain']},
+  alerts:[{t:'info', m:'Pre-approval required for MRI / CT under this plan.'}],
+});
+pt.visits = [
+  {id:'V1A', no:nextNo('vis','VIS-'), type:'OPD', date:dAgo(0,9,40), clinic:'Orthopaedics',
+   doctor:'Dr. Tariq Nassar', status:'Open', deductibleApplied:false,
+   orders:[O('RAD-202',1,'Dr. Tariq Nassar',0,9,'Approved'),
+           O('LAB-101',1,'Dr. Tariq Nassar',0,9,'Not required'),
+           O('PRC-306',1,'Dr. Tariq Nassar',0,10,'Not required'),
+           O('RAD-205',1,'Dr. Tariq Nassar',0,10,'Pending')]},
+  {id:'V1B', no:nextNo('vis','VIS-'), type:'FOLLOWUP', date:dAgo(11,11,15), clinic:'Orthopaedics',
+   doctor:'Dr. Tariq Nassar', status:'Closed', deductibleApplied:true, orders:[]},
+  {id:'V1D', no:nextNo('vis','VIS-'), type:'REFERRAL', date:dAgo(24,10,30), clinic:'Cardiology',
+   doctor:'Dr. Yusuf Al-Amin', status:'Closed', hospital:'OLY', deductibleApplied:true,
+   interBranch:{from:'OLY', to:'ALH', dir:'Outbound'},
+   referral:{no:nextNo('ref','REF-'), from:'Al Hamra Hospital', dir:'Outbound',
+             reason:'Cardiology opinion — branch has no cath lab', by:'Dr. Tariq Nassar'}, orders:[]},
+  {id:'V1C', no:nextNo('vis','VIS-'), type:'OPD', date:dAgo(38,15,0), clinic:'General Medicine',
+   doctor:'Dr. Hala Mansour', status:'Closed', deductibleApplied:true, orders:[]},
+];
+pt.invoices = [
+  mkInvoice(pt,'V1C',[{code:'CON-001',qty:1},{code:'LAB-103',qty:1},{code:'LAB-102',qty:1}],
+            [{mode:'cash',amount:0}], 38, 16),
+  mkInvoice(pt,'V1B',[{code:'CON-003',qty:1},{code:'PRC-303',qty:1}],
+            [{mode:'card',amount:0,ref:'AC-448120'}], 11, 12),
+];
+/* balance the seeded payments against what the engine actually computed */
+pt.invoices.forEach(iv => { iv.payments[0].amount = iv.T.due; iv.paid = iv.T.due; });
+pt.plan.consumed = 6420;
+PATIENTS.push(pt);
+})();
+
+/* ---------- 2. Fatima Al-Zahrani — Tawuniya, inpatient, big advance ---------- */
+(() => {
+const pt = mkPatient({
+  id:'P2', mrn:'10031204', name:'Fatima Al-Zahrani', nameAr:'فاطمة الزهراني',
+  nid:'2104558930', phone:'0561 903 447', dob:'1991-09-02', gender:'Female', nat:'Saudi',
+  hospital:'ALH', payerId:'TAWN',
+  plan:{deductibleTotal:1000, deductibleUsed:640, no:'TWN-2210-5588', status:'Active', class:'Class A', annualLimit:35000, consumed:11250,
+        expiry:'2027-03-31', approvalReq:[]},
+});
+pt.advance = {balance:3000, txns:[
+  {id:uid('ADV'), no:nextNo('rct','RCT-'), type:'Deposit', amount:5000, mode:'transfer',
+   ref:'TRF-99021', at:dAgo(4,9,30), by:'S. Saafan', note:'Admission deposit'},
+  {id:uid('ADV'), no:nextNo('rct','RCT-'), type:'Applied', amount:-2000, mode:'advance',
+   ref:'INV-24190', at:dAgo(2,14,10), by:'S. Saafan', note:'Applied to interim bill'},
+]};
+pt.visits = [
+  {id:'V2A', no:nextNo('vis','VIS-'), type:'IP', date:dAgo(4,8,20), clinic:'Obs & Gynae',
+   doctor:'Dr. Reem Habib', status:'Admitted', ward:'W-3 / Bed 12', deductibleApplied:true,
+   orders:[O('ROM-601',4,'System — bed charge',0,7,'Approved'),
+           O('LAB-101',2,'Dr. Reem Habib',1,8,'Not required'),
+           O('MED-403',1,'Dr. Reem Habib',1,20,'Not covered'),
+           O('RAD-203',1,'Dr. Reem Habib',2,11,'Approved')]},
+  {id:'V2B', no:nextNo('vis','VIS-'), type:'OPD', date:dAgo(21,10,0), clinic:'Obs & Gynae',
+   doctor:'Dr. Reem Habib', status:'Closed', deductibleApplied:true, orders:[]},
+];
+pt.invoices = [
+  mkInvoice(pt,'V2A',[{code:'ROM-601',qty:2},{code:'CON-002',qty:1},{code:'LAB-101',qty:1}],
+            [{mode:'advance',amount:0}], 2, 14),
+  mkInvoice(pt,'V2B',[{code:'CON-001',qty:1},{code:'RAD-203',qty:1}],
+            [{mode:'cash',amount:0}], 21, 11),
+];
+pt.invoices.forEach(iv => { iv.payments[0].amount = iv.T.due; iv.paid = iv.T.due; });
+PATIENTS.push(pt);
+})();
+
+/* ---------- 3. Khalid Bin Salem — self-pay ER ---------- */
+(() => {
+const pt = mkPatient({
+  id:'P3', mrn:'10047719', name:'Khalid Bin Salem', nameAr:'خالد بن سالم',
+  nid:'1077320145', phone:'0503 118 662', dob:'1966-01-27', gender:'Male', nat:'Saudi',
+  hospital:'ALH', payerId:'CASH', plan:null,
+  alerts:[{t:'red', m:'Self-pay. ER charges are billed after triage — deposit optional.'}],
+});
+pt.visits = [
+  {id:'V3A', no:nextNo('vis','VIS-'), type:'ER', date:dAgo(0,7,55), clinic:'Emergency',
+   doctor:'Dr. Omar Baz', status:'Open', triage:'Level 3 — Urgent', deductibleApplied:false,
+   orders:[O('PRC-306',1,'Dr. Omar Baz',0,8,'Self-pay'),
+           O('LAB-107',1,'Dr. Omar Baz',0,8,'Self-pay'),
+           O('RAD-201',1,'Dr. Omar Baz',0,9,'Self-pay'),
+           O('RAD-204',1,'Dr. Omar Baz',0,9,'Self-pay')]},
+];
+PATIENTS.push(pt);
+})();
+
+/* ---------- 4. Noura Al-Otaibi — expired policy ---------- */
+(() => {
+const pt = mkPatient({
+  id:'P4', mrn:'10052388', name:'Noura Al-Otaibi', nameAr:'نورة العتيبي',
+  nid:'2233908471', phone:'0598 447 201', dob:'1998-06-18', gender:'Female', nat:'Saudi',
+  hospital:'ALH', payerId:'BUPA',
+  plan:{deductibleTotal:1500, deductibleUsed:1500, no:'BUP-4410-2201', status:'Expired', class:'Standard', annualLimit:25000, consumed:24100,
+        expiry:'2026-06-30', approvalReq:[]},
+  alerts:[{t:'red', m:'Policy expired 30 Jun 2026 — charges default to self-pay until renewal is verified.'}],
+});
+pt.visits = [
+  {id:'V4A', no:nextNo('vis','VIS-'), type:'OPD', date:dAgo(0,11,5), clinic:'Dermatology',
+   doctor:'Dr. Salma Idrissi', status:'Open', deductibleApplied:false,
+   orders:[O('LAB-104',1,'Dr. Salma Idrissi',0,11,'Rejected'),
+           O('PRC-303',1,'Dr. Salma Idrissi',0,11,'Rejected')]},
+  {id:'V4B', no:nextNo('vis','VIS-'), type:'REFERRAL', date:dAgo(9,13,30), clinic:'Dermatology',
+   doctor:'Dr. Salma Idrissi', status:'Closed', deductibleApplied:true,
+   interBranch:{from:'OLY', to:'ALH', dir:'Inbound'},
+   referral:{no:nextNo('ref','REF-'), from:'Olaya Medical Center', dir:'Inbound',
+             reason:'Chronic eczema — specialist opinion', by:'Dr. Faisal Q.'}, orders:[]},
+  {id:'V4C', no:nextNo('vis','VIS-'), type:'OPD', date:dAgo(31,9,15), clinic:'Family Medicine',
+   doctor:'Dr. Hala Mansour', status:'Closed', hospital:'KHB', deductibleApplied:true, orders:[]},
+];
+PATIENTS.push(pt);
+})();
+
+/* ---------- 5. Mohammed Hassan — corporate credit, open A/R ---------- */
+(() => {
+const pt = mkPatient({
+  id:'P5', mrn:'10019055', name:'Mohammed Hassan', nameAr:'محمد حسن',
+  nid:'1044728190', phone:'0555 660 019', dob:'1984-11-30', gender:'Male', nat:'Egyptian',
+  hospital:'ALH', payerId:'ARAM',
+  plan:{deductibleTotal:0,    deductibleUsed:0, no:'ARM-EMP-77320', status:'Active', class:'Corporate direct-bill', annualLimit:120000,
+        consumed:18400, expiry:'2027-01-31', approvalReq:[], guarantor:'Aramco — Employee Benefits'},
+});
+pt.visits = [
+  {id:'V5A', no:nextNo('vis','VIS-'), type:'OPD', date:dAgo(1,9,15), clinic:'Cardiology',
+   doctor:'Dr. Yusuf Al-Amin', status:'Open', deductibleApplied:false,
+   orders:[O('PRC-306',1,'Dr. Yusuf Al-Amin',1,9,'Not required'),
+           O('LAB-103',1,'Dr. Yusuf Al-Amin',1,9,'Approved'),
+           O('RAD-204',1,'Dr. Yusuf Al-Amin',1,10,'Pending')]},
+  {id:'V5B', no:nextNo('vis','VIS-'), type:'WALKIN', date:dAgo(16,17,45), clinic:'—',
+   doctor:'—', status:'Closed', deductibleApplied:true, orders:[]},
+  {id:'V5C', no:nextNo('vis','VIS-'), type:'OPD', date:dAgo(45,14,0), clinic:'ENT',
+   doctor:'Dr. Omar Baz', status:'Closed', hospital:'KHB', deductibleApplied:true,
+   interBranch:{from:'KHB', to:'ALH', dir:'Inbound'}, orders:[]},
+];
+pt.invoices = [
+  mkInvoice(pt,'V5B',[{code:'PKG-501',qty:1}], [{mode:'credit',amount:0,ref:'PO-AR-88120'}], 16, 18),
+  mkInvoice(pt,'V5A',[{code:'CON-002',qty:1},{code:'RAD-204',qty:1}],
+            [{mode:'credit',amount:0,ref:'PO-AR-88455'}], 1, 10),
+];
+pt.invoices.forEach(iv => {
+  iv.payments[0].amount = iv.T.due; iv.creditAmt = iv.T.due; iv.paid = 0; iv.status = 'Credit open';
+});
+PATIENTS.push(pt);
+})();
+
+/* ---------- 6. Layla Kareem — approval pending ---------- */
+(() => {
+const pt = mkPatient({
+  id:'P6', mrn:'10066201', name:'Layla Kareem', nameAr:'ليلى كريم',
+  nid:'2411903388', phone:'0577 220 984', dob:'2019-02-14', gender:'Female', nat:'Jordanian',
+  hospital:'ALH', payerId:'MEDG',
+  plan:{deductibleTotal:800,  deductibleUsed:0, no:'MDG-8820-1145', status:'Approval pending', class:'Class B', annualLimit:20000,
+        consumed:2300, expiry:'2027-05-31', approvalReq:[]},
+  alerts:[{t:'amber', m:'Eligibility check pending with MedGulf. Collect self-pay or take a deposit.'}],
+});
+pt.visits = [
+  {id:'V6A', no:nextNo('vis','VIS-'), type:'OPD', date:dAgo(0,10,50), clinic:'Paediatrics',
+   doctor:'Dr. Lina Farouk', status:'Open', deductibleApplied:false,
+   orders:[O('PRC-305',1,'Dr. Lina Farouk',0,11,'Pending'),
+           O('MED-405',1,'Dr. Lina Farouk',0,11,'Pending'),
+           O('LAB-101',1,'Dr. Lina Farouk',0,11,'Pending')]},
+];
+pt.advance = {balance:400, txns:[
+  {id:uid('ADV'), no:nextNo('rct','RCT-'), type:'Deposit', amount:400, mode:'cash', ref:'',
+   at:dAgo(0,10,55), by:'S. Saafan', note:'Deposit pending eligibility'},
+]};
+PATIENTS.push(pt);
+})();
+
+/* ---------- 7. Sara Ibrahim — walk-in, small advance ---------- */
+(() => {
+const pt = mkPatient({
+  id:'P7', mrn:'10071450', name:'Sara Ibrahim', nameAr:'سارة إبراهيم',
+  nid:'2560118743', phone:'0544 771 300', dob:'1995-12-05', gender:'Female', nat:'Sudanese',
+  hospital:'OLY', payerId:'CASH', plan:null,
+});
+pt.advance = {balance:500, txns:[
+  {id:uid('ADV'), no:nextNo('rct','RCT-'), type:'Deposit', amount:500, mode:'card', ref:'AC-771204',
+   at:dAgo(6,12,0), by:'M. Farid', note:'Advance for lab package'},
+]};
+pt.visits = [
+  {id:'V7A', no:nextNo('vis','VIS-'), type:'WALKIN', date:dAgo(0,8,30), clinic:'—',
+   doctor:'—', status:'Open', deductibleApplied:false, orders:[]},
+];
+PATIENTS.push(pt);
+})();
+
+/* ---------- 8. Omar Al-Rashid — annual limit nearly gone + refundable invoice ---------- */
+(() => {
+const pt = mkPatient({
+  id:'P8', mrn:'10008932', name:'Omar Al-Rashid', nameAr:'عمر الراشد',
+  nid:'1011745502', phone:'0500 993 116', dob:'1957-03-22', gender:'Male', nat:'Saudi',
+  hospital:'ALH', payerId:'TAWN',
+  plan:{deductibleTotal:1000, deductibleUsed:970, no:'TWN-7741-0093', status:'Active', class:'Class A', annualLimit:35000, consumed:34100,
+        expiry:'2026-11-30', approvalReq:[]},
+  alerts:[{t:'amber', m:'Only SAR 900 of the annual limit remains — excess falls to the patient.'}],
+});
+pt.visits = [
+  {id:'V8A', no:nextNo('vis','VIS-'), type:'OPD', date:dAgo(0,12,10), clinic:'Ophthalmology',
+   doctor:'Dr. Salma Idrissi', status:'Open', deductibleApplied:false,
+   orders:[O('LAB-105',1,'Dr. Salma Idrissi',0,12,'Not required'),
+           O('RAD-206',1,'Dr. Salma Idrissi',0,12,'Approved'),
+           O('PRC-308',1,'Dr. Salma Idrissi',0,12,'Not covered')]},
+  {id:'V8B', no:nextNo('vis','VIS-'), type:'OPD', date:dAgo(5,9,0), clinic:'Cardiology',
+   doctor:'Dr. Yusuf Al-Amin', status:'Closed', deductibleApplied:true, orders:[]},
+];
+pt.invoices = [
+  mkInvoice(pt,'V8B',[{code:'CON-002',qty:1},{code:'PRC-306',qty:1},{code:'LAB-105',qty:1},{code:'RAD-201',qty:1}],
+            [{mode:'cash',amount:0}], 5, 10),
+];
+pt.invoices.forEach(iv => { iv.payments[0].amount = iv.T.due; iv.paid = iv.T.due; });
+PATIENTS.push(pt);
+})();
+
+/* a visit belongs to the branch it was raised at; inter-branch ones are flagged */
+const visHosp  = (pt,v) => v.hospital || pt.hospital;
+const hospName = id => (HOSPITALS.find(h=>h.id===id)||{name:id}).name;
+const visitsOf = pt => pt.visits.filter(v =>
+  S.allBranches || S.hospital==='ALL' || visHosp(pt,v)===S.hospital);
+
+const findPt   = id => PATIENTS.find(p=>p.id===id);
+const findVis  = (pt,id) => pt.visits.find(v=>v.id===id);
+const allInv   = pt => pt.invoices.slice().sort((a,b)=>new Date(b.date)-new Date(a.date));
+const openCredit = pt => pt.invoices.filter(i => i.creditAmt - i.creditSettled > 0.005);
+const creditOut  = pt => openCredit(pt).reduce((s,i)=>s + (i.creditAmt - i.creditSettled), 0);
+
+/* ================================================================
+   5. APP STATE + SESSION ENGINE
+   Every open patient/visit is an independent session with its own
+   basket, payment split and scroll position. Nothing is global.
+   ================================================================ */
+const S = {
+  hospital:'ALH',
+  user:{name:'Saadan Saafan', role:'Receptionist'},
+  searchKey:'mrn', q:'',
+  expanded:null,           /* patient id expanded in the result list */
+  allBranches:false,       /* include inter-branch / referred-in visits from other facilities */
+  land:'search',           /* search | today | invoices | credit */
+  sessions:[], active:'home',
+  modal:null,
+  toasts:[],
+};
+const MAX_SESSIONS = 8;
+
+function newSession(ptId, visitId){
+  return {id:uid('S'), ptId, visitId:visitId||null, tab:'charge',
+          vLine:null,             /* the consultation / visit-charge line */
+          extras:[],              /* services added from the catalogue */
+          ordEdit:{},             /* qty / disc overrides on doctor's orders, keyed by order id */
+          sel:{}, selInit:false,  /* which rows are ticked for this invoice */
+          catOpen:false, catGroup:'lab', catQ:'',
+          drawer:null,            /* {tab, mode, f:{}, tenders:[]} when the pay-drawer is open */
+          note:'', invScope:'all'};
+}
+function sess(){ return S.sessions.find(x=>x.id===S.active) || null; }
+function openSession(ptId, visitId, tab){
+  let s = S.sessions.find(x => x.ptId===ptId && x.visitId===visitId);
+  if(!s){
+    if(S.sessions.length >= MAX_SESSIONS){
+      return toast('Maximum '+MAX_SESSIONS+' sessions open — close one first.', true);
+    }
+    s = newSession(ptId, visitId);
+    S.sessions.push(s);
+  }
+  if(tab) s.tab = tab;
+  S.active = s.id;
+  paint();
+}
+function closeSession(id){
+  const i = S.sessions.findIndex(x=>x.id===id);
+  if(i < 0) return;
+  const dirty = S.sessions[i].extras.length > 0;
+  if(dirty && !confirm('This session has un-invoiced charges in the basket. Close anyway?')) return;
+  S.sessions.splice(i,1);
+  if(S.active === id) S.active = S.sessions.length ? S.sessions[Math.max(0,i-1)].id : 'home';
+  paint();
+}
+function toast(msg, err){
+  const t = {id:uid('T'), msg, err:!!err};
+  S.toasts.push(t);
+  paintToasts();
+  setTimeout(()=>{ S.toasts = S.toasts.filter(x=>x.id!==t.id); paintToasts(); }, 3200);
+}
+function paintToasts(){
+  $('#toastRoot').innerHTML = S.toasts.map(t =>
+    `<div class="toast ${t.err?'err':''}">${ic(t.err?'alert':'checkC')}<span>${esc(t.msg)}</span></div>`).join('');
+}
+
+/* ---- delegated events ---- */
+const ACT = {};
+function bind(){
+  document.addEventListener('click', e => {
+    const el = e.target.closest('[data-act]'); if(!el) return;
+    const f = ACT[el.dataset.act]; if(!f) return;
+    e.preventDefault(); e.stopPropagation();
+    f(el.dataset, el, e);
+  });
+  const h = e => {
+    const el = e.target.closest('[data-inp]'); if(!el) return;
+    const f = ACT[el.dataset.inp]; if(f) f(el.dataset, el, e);
+  };
+  document.addEventListener('input', h);
+  document.addEventListener('change', h);
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape' && S.modal){ S.modal = null; paint(); }
+    if(e.key === 'Enter'){
+      const el = e.target.closest('[data-enter]');
+      if(el && ACT[el.dataset.enter]){ e.preventDefault(); ACT[el.dataset.enter](el.dataset, el, e); }
+    }
+  });
+}
+
+/* ---- paint with focus preservation (single re-render pass) ---- */
+function paint(){
+  const a  = document.activeElement;
+  const fk = a && a.dataset ? a.dataset.fk : null;
+  let cs = null; try{ cs = a ? a.selectionStart : null; }catch(_){}
+  $('#app').innerHTML       = viewApp();
+  $('#modalRoot').innerHTML = viewModal();
+  if(fk){
+    const n = document.querySelector('[data-fk="'+fk+'"]');
+    if(n){ n.focus(); try{ n.setSelectionRange(cs, cs); }catch(_){} }
+  }
+}
+
+/* ================================================================
+   6. APP SHELL
+   ================================================================ */
+function viewApp(){
+  return `
+  <div class="topbar">
+    <div class="brand"><div class="brand-mark">V</div>
+      <div>VIDA Billing<small>Front-office workspace</small></div></div>
+    <div class="topbar-sep"></div>
+    <select class="ctl" style="width:196px" data-inp="hospital" title="Facility">
+      ${HOSPITALS.map(h=>`<option value="${h.id}" ${S.hospital===h.id?'selected':''}>${esc(h.name)}</option>`).join('')}
+      <option value="ALL" ${S.hospital==='ALL'?'selected':''}>All facilities</option>
+    </select>
+    <div class="spacer"></div>
+    <button class="btn btn-sm" data-act="help">${ic('info','ico-sm')} Flow guide</button>
+    <div class="topbar-sep"></div>
+    <div class="chip-user"><div class="avatar">${initials(S.user.name)}</div>
+      <div><div class="u-name">${esc(S.user.name)}</div><div class="u-role">${esc(S.user.role)}</div></div>
+      ${ic('chevD','ico-sm')}</div>
+  </div>
+  ${viewTabs()}
+  <div class="body">${S.active==='home' ? viewLanding() : viewSession()}</div>`;
+}
+
+function viewTabs(){
+  return `<div class="tabstrip">
+    <button class="stab stab-home ${S.active==='home'?'on':''}" data-act="goHome" title="Search / landing">
+      ${ic('home','ico-sm')}<span class="stab-t">Search</span></button>
+    ${S.sessions.map(s=>{
+      const pt = findPt(s.ptId);
+      const v  = s.visitId ? findVis(pt, s.visitId) : null;
+      const vt = v ? VISIT_TYPES[v.type] : null;
+      const n  = Object.values(s.sel).filter(Boolean).length;
+      return `<div class="stab ${S.active===s.id?'on':''}" data-act="goSess" data-id="${s.id}">
+        <span class="stab-s" style="color:${vt?vt.color:'#98a2b3'}">${vt?vt.short:'—'}</span>
+        <span class="stab-t">${esc(pt.name.split(' ')[0])} ${esc(pt.name.split(' ').slice(-1)[0])}</span>
+        ${n?`<span class="stab-badge" title="${n} un-invoiced line(s)"></span>`:''}
+        <button class="stab-x" data-act="closeSess" data-id="${s.id}" title="Close session">${ic('x','ico-sm')}</button>
+      </div>`;
+    }).join('')}
+    <button class="tab-add" data-act="goHome" title="Open another patient">${ic('plus','ico-sm')}</button>
+  </div>`;
+}
+
+ACT.hospital  = (d,el) => { S.hospital = el.value; paint(); };
+ACT.goHome    = () => { S.active = 'home'; paint(); };
+ACT.goSess    = d => { S.active = d.id; paint(); };
+ACT.closeSess = d => closeSession(d.id);
+ACT.help      = () => { S.modal = {type:'help'}; paint(); };
+
+/* ================================================================
+   7. LANDING — search, visits, quick actions, worklists
+   ================================================================ */
+function matchPatient(p, key, q){
+  const n = s => String(s||'').toLowerCase().replace(/\s+/g,'');
+  q = n(q);
+  if(key==='mrn')   return n(p.mrn).includes(q);
+  if(key==='nid')   return n(p.nid).includes(q);
+  if(key==='phone') return n(p.phone).includes(q);
+  if(key==='name')  return n(p.name).includes(q) || String(p.nameAr||'').includes(q);
+  if(key==='file')  return p.visits.some(v=>n(v.no).includes(q)) || p.invoices.some(i=>n(i.no).includes(q));
+  return false;
+}
+function results(){
+  const q = S.q.trim();
+  const pool = PATIENTS.filter(p => S.hospital==='ALL' || p.hospital===S.hospital);
+  if(S.land==='today'){
+    return pool.filter(p => visitsOf(p).some(v => new Date(v.date).toDateString()===TODAY.toDateString()));
+  }
+  if(S.land==='credit')   return pool.filter(p => creditOut(p) > 0.005);
+  if(S.land==='invoices') return pool.filter(p => p.invoices.length > 0);
+  if(q.length < 2) return null;
+  return pool.filter(p => matchPatient(p, S.searchKey, q));
+}
+
+function viewLanding(){
+  const key = SEARCH_KEYS.find(k=>k.id===S.searchKey);
+  const res = results();
+  const counts = {
+    today: PATIENTS.filter(p=>visitsOf(p).some(v=>new Date(v.date).toDateString()===TODAY.toDateString())).length,
+    credit: PATIENTS.filter(p=>creditOut(p)>0.005).length,
+  };
+  return `<div class="landing"><div class="landing-in">
+    <div class="hero">
+      <h1>Billing workspace</h1>
+      <p>Find the patient, pick the visit, charge and settle — all without leaving this screen.</p>
+    </div>
+
+    <div class="searchcard">
+      <div class="searchrow">
+        <div class="field f-q"><span class="label">Search patient</span>
+          <div class="keygroup">
+            <select class="ctl" data-inp="skey">
+              ${SEARCH_KEYS.map(k=>`<option value="${k.id}" ${S.searchKey===k.id?'selected':''}>${k.label}</option>`).join('')}
+            </select>
+            <div class="wrapq">
+              <input class="ctl" data-fk="q" data-inp="q" value="${esc(S.q)}" placeholder="${esc(key.ph)}" autocomplete="off">
+              <span class="mag">${ic('search')}</span>
+            </div>
+          </div></div>
+        <button class="btn" data-act="clearQ">Clear</button>
+      </div>
+      <div class="row" style="margin-top:11px;gap:9px">
+        <label class="cbl"><input type="checkbox" class="cb" ${S.allBranches?'checked':''} data-inp="allBranches">
+          ${ic('building','ico-sm')} Include visits from other branches</label>
+        <span class="hint">${S.allBranches
+          ? 'Showing inter-branch and referred-in visits from every facility.'
+          : 'Showing '+esc((HOSPITALS.find(h=>h.id===S.hospital)||{name:'all facilities'}).name)+' only.'}</span>
+      </div>
+      <div class="quickrow">
+        <button class="qbtn ${S.land==='today'?'':''}" data-act="land" data-v="today">${ic('clock','ico-sm')} Today's visits <b>${counts.today}</b></button>
+        <button class="qbtn" data-act="land" data-v="invoices">${ic('file','ico-sm')} Invoices / Refund</button>
+        <button class="qbtn" data-act="land" data-v="credit">${ic('credit','ico-sm')} Credit settlement <b>${counts.credit}</b></button>
+        <button class="qbtn" data-act="newVisitPick" data-t="WALKIN">${ic('users','ico-sm')} Walk-in visit</button>
+        <button class="qbtn" data-act="newVisitPick" data-t="OPD">${ic('plus','ico-sm')} Add visit</button>
+        <button class="qbtn" data-act="advPick">${ic('wallet','ico-sm')} Add advance</button>
+      </div>
+    </div>
+
+    ${S.land!=='search' ? `<div class="row" style="margin-top:16px;justify-content:space-between">
+      <div class="row"><b style="font-size:13px">${
+        S.land==='today'?'Today&rsquo;s visits':S.land==='credit'?'Open credit / receivables':'Recent invoices'}</b>
+        <span class="badge">${(res||[]).length} patient(s)</span></div>
+      <button class="btn btn-sm" data-act="land" data-v="search">${ic('x','ico-sm')} Back to search</button></div>`:''}
+
+    <div class="results">${
+      res === null
+        ? `<div class="empty">${ic('search')}<h4>Start typing to search</h4>
+             <p>Minimum 2 characters. Search by ${SEARCH_KEYS.map(k=>k.label).join(' · ')}.</p></div>`
+        : res.length === 0
+          ? `<div class="empty">${ic('alert')}<h4>No patients found</h4>
+               <p>Check the facility filter or try a different search key.</p></div>`
+          : res.map(p=>resultCard(p)).join('')
+    }</div>
+  </div></div>`;
+}
+
+function policyBadge(pt){
+  if(!pt.plan) return `<span class="badge">${ic('wallet','ico-sm')} Self-pay</span>`;
+  const st = pt.plan.status;
+  const cls = st==='Active' ? 'b-green' : st==='Expired' ? 'b-red' : 'b-amber';
+  return `<span class="badge ${cls}"><span class="dot"></span>${esc(payerOf(pt).short)} · ${esc(st)}</span>`;
+}
+
+function resultCard(p){
+  const open = S.expanded === p.id;
+  const co   = creditOut(p);
+  const col  = tint(p.name);
+  const todayV = visitsOf(p).filter(v=>new Date(v.date).toDateString()===TODAY.toDateString());
+  return `<div class="rescard ${open?'open':''}">
+    <button class="reshead" data-act="expand" data-id="${p.id}">
+      <div class="pav" style="background:${soft(col)};color:${col}">${initials(p.name)}</div>
+      <div class="res-main">
+        <div class="res-name">${esc(p.name)} ${policyBadge(p)}
+          ${todayV.length?`<span class="badge b-blue">${ic('clock','ico-sm')} ${todayV.length} today</span>`:''}</div>
+        <div class="res-meta">
+          <span>MRN <b>${esc(p.mrn)}</b></span><span>${esc(p.gender)} · ${age(p.dob)}y</span>
+          <span>${esc(p.nat)}</span><span>${esc(p.phone)}</span>
+          <span>${visitsOf(p).length} visit(s)</span></div>
+      </div>
+      <div class="res-right">
+        ${p.advance.balance>0?`<div class="res-kpi"><div class="k">Advance</div>
+          <div class="v" style="color:var(--green)">${money(p.advance.balance)}</div></div>`:''}
+        ${co>0?`<div class="res-kpi"><div class="k">Credit due</div>
+          <div class="v" style="color:var(--amber)">${money(co)}</div></div>`:''}
+        ${ic(open?'chevD':'chevR')}
+      </div>
+    </button>
+    ${open?`<div class="resbody">
+      ${(p.alerts||[]).map(a=>`<div class="alert a-${a.t==='red'?'red':a.t==='amber'?'amber':'blue'}">
+        ${ic(a.t==='info'?'info':'alert')}<div>${esc(a.m)}</div></div>`).join('')}
+      <div class="sec-t" style="margin-bottom:7px">Visits — pick one to start billing
+        ${p.visits.length>visitsOf(p).length?`<span class="hint" style="font-weight:600;text-transform:none;letter-spacing:0">
+          ${p.visits.length-visitsOf(p).length} more at other branches — tick the box above</span>`:''}</div>
+      ${visitsOf(p).length ? visitsOf(p).map(v=>visitRow(p,v)).join('')
+        : `<div class="hint" style="padding:6px 2px">No visits at this branch.</div>`}
+      <div class="row" style="margin-top:9px">
+        <button class="btn btn-sm btn-primary" data-act="newVisit" data-p="${p.id}">${ic('plus','ico-sm')} Add visit</button>
+        <button class="btn btn-sm" data-act="openPt" data-p="${p.id}" data-tab="invoices">${ic('file','ico-sm')} Invoices</button>
+        <button class="btn btn-sm" data-act="openPt" data-p="${p.id}" data-tab="advance">${ic('wallet','ico-sm')} Advance ${money(p.advance.balance)}</button>
+        ${co>0?`<button class="btn btn-sm" data-act="openPt" data-p="${p.id}" data-tab="credit">${ic('credit','ico-sm')} Settle credit ${money(co)}</button>`:''}
+      </div>
+    </div>`:''}
+  </div>`;
+}
+
+function visitRow(p, v){
+  const t = VISIT_TYPES[v.type];
+  const pend = (v.orders||[]).filter(o=>o.status==='Pending').length;
+  const inv  = p.invoices.filter(i=>i.visitId===v.id).length;
+  return `<button class="vrow" data-act="openVisit" data-p="${p.id}" data-v="${v.id}">
+    <span class="vtag" style="background:${soft(t.color)};color:${t.color}">${t.short}</span>
+    <div class="vrow-main">
+      <div class="vrow-t">${esc(t.label)} · ${esc(v.clinic)} ${v.doctor!=='—'?'· '+esc(v.doctor):''}</div>
+      <div class="vrow-s">${esc(v.no)} · ${dtstr(v.date)} · ${ago(v.date)}
+        ${v.ward?' · '+esc(v.ward):''}${v.triage?' · '+esc(v.triage):''}
+        ${v.referral?' · from '+esc(v.referral.from):''}</div>
+    </div>
+    ${visHosp(p,v)!==p.hospital||v.interBranch?`<span class="badge b-purple" title="${esc(
+        v.interBranch?(v.interBranch.dir+' inter-branch: '+hospName(v.interBranch.from)+' → '+hospName(v.interBranch.to))
+                     :hospName(visHosp(p,v)))}">${ic('building','ico-sm')} ${esc(hospName(visHosp(p,v)).split(' ')[0])}</span>`:''}
+    <span class="badge ${v.status==='Open'||v.status==='Admitted'?'b-green':''}">${esc(v.status)}</span>
+    ${pend?`<span class="badge b-amber">${pend} to bill</span>`:''}
+    ${inv?`<span class="badge b-blue">${inv} inv</span>`:''}
+    ${ic('chevR','ico-sm')}
+  </button>`;
+}
+
+ACT.skey      = (d,el) => { S.searchKey = el.value; paint(); };
+ACT.q         = (d,el) => { S.q = el.value; S.land='search'; paint(); };
+ACT.clearQ    = () => { S.q=''; S.expanded=null; S.land='search'; paint(); };
+ACT.land      = d => { S.land = d.v; S.expanded=null; paint(); };
+ACT.allBranches = (d,el) => { S.allBranches = el.checked; paint(); };
+ACT.expand    = d => { S.expanded = S.expanded===d.id ? null : d.id; paint(); };
+ACT.openVisit = d => openSession(d.p, d.v);
+ACT.openPt    = d => openSession(d.p, null, d.tab);
+
+/* ================================================================
+   8. SESSION VIEW — rail + work tabs
+   ================================================================ */
+function viewSession(){
+  const s  = sess(); if(!s){ S.active='home'; return viewLanding(); }
+  const pt = findPt(s.ptId);
+  const v  = s.visitId ? findVis(pt, s.visitId) : null;
+  const tabs = v ? VISIT_TYPES[v.type].tabs : ['visits','invoices','advance','credit'];
+  if(!tabs.includes(s.tab)) s.tab = tabs[0];
+
+  const pane = {
+    charge:   () => paneCharge(s, pt, v),
+    visits:   () => paneVisits(s, pt, v),
+    invoices: () => paneInvoices(s, pt, v),
+    advance:  () => paneAdvance(s, pt),
+    credit:   () => paneCredit(s, pt),
+  }[s.tab]();
+
+  return `<div class="session">
+    ${railView(s, pt, v)}
+    <div class="work">
+      <div class="worktabs">${tabs.map(t=>{
+        const cfg = WORK_TABS[t];
+        let n = 0;
+        if(t==='visits')   n = pt.visits.length;
+        if(t==='invoices') n = pt.invoices.length;
+        if(t==='credit')   n = openCredit(pt).length;
+        if(t==='charge')   n = chargeLines(s, pt, v).length;
+        return `<button class="wtab ${s.tab===t?'on':''}" data-act="wtab" data-t="${t}">
+          ${ic(cfg.icon,'ico-sm')} ${cfg.label}${n?`<span class="cnt">${n}</span>`:''}</button>`;
+      }).join('')}</div>
+      <div class="workbody">${pane}</div>
+    </div>
+    ${s.drawer ? payDrawer(s, pt, v) : ''}
+  </div>`;
+}
+ACT.wtab = d => { const s=sess(); s.tab=d.t; paint(); };
+
+function railView(s, pt, v){
+  const col = tint(pt.name);
+  const payer = payerOf(pt);
+  const live  = insActive(pt);
+  const left  = pt.plan ? limitLeft(pt) : 0;
+  const usedP = pt.plan ? Math.min(100, pt.plan.consumed/pt.plan.annualLimit*100) : 0;
+  const mCls  = usedP>92 ? 'crit' : usedP>75 ? 'warn' : '';
+  const co    = creditOut(pt);
+  const dd    = dedInfo(pt);
+  const dedUsed = v && v.deductibleApplied;
+
+  return `<div class="rail">
+    <div class="rail-head">
+      <div class="rail-pt">
+        <div class="pav" style="background:${soft(col)};color:${col}">${initials(pt.name)}</div>
+        <div style="min-width:0;flex:1">
+          <div class="rail-nm">${esc(pt.name)}</div>
+          <div class="rail-mrn">MRN ${esc(pt.mrn)} · ${esc(pt.gender)} ${age(pt.dob)}y</div>
+          <div class="rail-mrn">${esc(pt.phone)}</div>
+        </div>
+      </div>
+      <div style="margin-top:9px">${policyBadge(pt)}</div>
+      ${v?`<div class="row" style="margin-top:9px;gap:6px">
+        <span class="vtag" style="background:${soft(VISIT_TYPES[v.type].color)};color:${VISIT_TYPES[v.type].color}">${VISIT_TYPES[v.type].short}</span>
+        <div style="min-width:0"><div style="font-size:11.5px;font-weight:700">${esc(v.clinic)}</div>
+        <div class="hint">${esc(v.no)} · ${dstr(v.date)}</div></div></div>`:''}
+    </div>
+
+    ${(pt.alerts||[]).length?`<div class="rail-sec">${pt.alerts.map(a=>
+      `<div class="alert a-${a.t==='red'?'red':a.t==='amber'?'amber':'blue'}" style="margin-bottom:6px">
+        ${ic(a.t==='info'?'info':'alert','ico-sm')}<div>${esc(a.m)}</div></div>`).join('')}</div>`:''}
+
+    <div class="rail-sec">
+      <div class="sec-t">${ic('shield','ico-sm')} Coverage</div>
+      <div class="kv"><span class="k">Payer</span><span class="v">${esc(payer.short)}</span></div>
+      ${pt.plan?`
+      <div class="kv"><span class="k">Policy</span><span class="v mono" style="font-size:10.5px">${esc(pt.plan.no)}</span></div>
+      <div class="kv"><span class="k">Class</span><span class="v">${esc(pt.plan.class)}</span></div>
+      <div class="kv"><span class="k">Valid till</span><span class="v">${dstr(pt.plan.expiry)}</span></div>
+      <div style="margin-top:8px">
+        <div class="kv"><span class="k">Annual limit</span><span class="v">${money(pt.plan.annualLimit)}</span></div>
+        <div class="meter"><i class="${mCls}" style="width:${usedP}%"></i></div>
+        <div class="kv"><span class="k">Consumed ${Math.round(usedP)}%</span>
+          <span class="v" style="color:${usedP>92?'var(--red)':'inherit'}">${money(left)} left</span></div>
+      </div>
+      ${dd.total>0?`<div style="margin-top:9px">
+        <div class="kv"><span class="k">Deductible total</span><span class="v">${money(dd.total)}</span></div>
+        <div class="meter"><i class="${dd.used/dd.total>.9?'crit':dd.used/dd.total>.6?'warn':''}"
+          style="width:${Math.min(100, dd.used/dd.total*100)}%"></i></div>
+        <div class="kv"><span class="k">Used</span><span class="v">${money(dd.used)}</span></div>
+        <div class="kv"><span class="k">Remaining</span>
+          <span class="v" style="color:${dd.left<=0?'var(--green)':'inherit'}">${money(dd.left)}</span></div>
+        <div class="kv"><span class="k">Per visit cap</span>
+          <span class="v">${dd.perVisit?money(dd.perVisit):'—'}${dedUsed?' · taken':''}</span></div>
+      </div>`:`<div class="kv" style="margin-top:6px"><span class="k">Deductible</span>
+        <span class="v">None on this plan</span></div>`}
+      ${(pt.plan.approvalReq||[]).length?`<div class="hint" style="margin-top:6px;line-height:1.45">
+        ${ic('lock','ico-sm')} Pre-approval: ${pt.plan.approvalReq.map(esc).join(', ')}</div>`:''}
+      ${pt.plan.guarantor?`<div class="kv"><span class="k">Guarantor</span><span class="v">${esc(pt.plan.guarantor)}</span></div>`:''}
+      `:`<div class="hint">No policy on file — all charges are self-pay.</div>`}
+    </div>
+
+    <div class="rail-sec">
+      <div class="sec-t">${ic('wallet','ico-sm')} Balances</div>
+      <div class="moneycard"><div class="mc-k">${ic('wallet','ico-sm')} Advance available</div>
+        <div class="mc-v" style="color:${pt.advance.balance>0?'var(--green)':'var(--ink-3)'}">${money(pt.advance.balance)}</div></div>
+      <div class="moneycard"><div class="mc-k">${ic('credit','ico-sm')} Credit outstanding</div>
+        <div class="mc-v" style="color:${co>0?'var(--amber)':'var(--ink-3)'}">${money(co)}</div></div>
+      <div class="row" style="margin-top:7px;gap:6px">
+        <button class="btn btn-xs btn-block" data-act="addAdv" data-p="${pt.id}">${ic('plus','ico-sm')} Advance</button>
+        ${co>0?`<button class="btn btn-xs btn-block" data-act="wtab" data-t="credit">Settle</button>`:''}
+      </div>
+    </div>
+
+    <div class="rail-sec">
+      <div class="sec-t">Visits <button class="btn btn-xs" data-act="newVisit" data-p="${pt.id}">${ic('plus','ico-sm')} Add</button></div>
+      <div class="vpick">${visitsOf(pt).map(x=>{
+        const t = VISIT_TYPES[x.type];
+        const isOpen = S.sessions.some(z=>z.ptId===pt.id && z.visitId===x.id);
+        return `<button class="vpick-i ${v&&v.id===x.id?'on':''}" data-act="openVisit" data-p="${pt.id}" data-v="${x.id}">
+          <span class="vtag" style="background:${soft(t.color)};color:${t.color};width:36px;height:20px;font-size:9px">${t.short}</span>
+          <span class="vpick-t">${esc(x.clinic)}<br><span class="vpick-d">${dstr(x.date)}</span></span>
+          ${isOpen?`<span class="badge b-teal" style="height:16px;font-size:9px">open</span>`:''}
+        </button>`;
+      }).join('')}</div>
+    </div>
+  </div>`;
+}
+
+/* ================================================================
+   9. CHARGE & INVOICE  —  one selectable list
+   Consultation sits on top as just another line. Orders stay
+   un-tickable until the consultation has been invoiced, so the desk
+   still knows the visit itself is settled first.
+   ================================================================ */
+const visitNeedsCharge = v => !!VISIT_TYPES[v.type].chargeCodes;
+const visitInvoiceOf   = (pt,v) => pt.invoices.find(i => i.visitId===v.id && i.kind==='visit' && i.status!=='Refunded');
+const ordersUnlocked   = (pt,v) => !visitNeedsCharge(v) || !!visitInvoiceOf(pt,v);
+const stageOf          = (pt,v) => ordersUnlocked(pt,v) ? 2 : 1;
+
+function defaultVLine(v){
+  const cfg = VISIT_TYPES[v.type];
+  return {lid:uid('L'), code:cfg.chargeCodes[0], qty:1, disc: cfg.freeConsult ? 100 : 0, useIns:true};
+}
+
+/* ---- build the single list of chargeable rows ---- */
+function allRows(s, pt, v){
+  const cfg  = VISIT_TYPES[v.type];
+  const vi   = visitInvoiceOf(pt, v);
+  const open = ordersUnlocked(pt, v);
+  const rows = [];
+
+  if(visitNeedsCharge(v)){
+    if(!s.vLine) s.vLine = defaultVLine(v);
+    rows.push({key:'CONS', group:'consult', ...s.vLine,
+               approval: approvalFor(pt, s.vLine.code, s.vLine.qty),
+               invoiced: !!vi, invNo: vi ? vi.no : null,
+               selectable: !vi, editable: !vi});
+  }
+  (v.orders||[]).forEach(o=>{
+    const ed = s.ordEdit[o.id] || {};
+    rows.push({key:o.id, group:'order', orderId:o.id, code:o.code,
+               qty: ed.qty != null ? ed.qty : o.qty,
+               disc: ed.disc != null ? ed.disc : 0,
+               useIns: ed.useIns !== false,
+               approval: o.approval, raisedBy:o.by, raisedAt:o.at,
+               invoiced: o.status !== 'Pending',
+               selectable: open && o.status === 'Pending', editable: open && o.status === 'Pending'});
+  });
+  s.extras.forEach(x=>{
+    rows.push({key:x.lid, group:'extra', ...x,
+               approval: x.approval || approvalFor(pt, x.code, x.qty),
+               invoiced:false, selectable:open, editable:open, removable:true});
+  });
+  return rows;
+}
+/* only the ticked rows are being invoiced */
+function chargeLines(s, pt, v){
+  if(!v) return [];
+  return allRows(s, pt, v).filter(r => r.selectable && s.sel[r.key]);
+}
+function chargeCalc(s, pt, v){ return compute(chargeLines(s,pt,v), pt, v); }
+
+/* ---- pane ---- */
+function paneCharge(s, pt, v){
+  if(!v) return `<div class="pane">${noVisitBlock(pt)}</div>`;
+  const cfg  = VISIT_TYPES[v.type];
+  const rows = allRows(s, pt, v);
+  const vi   = visitInvoiceOf(pt, v);
+  const open = ordersUnlocked(pt, v);
+
+  /* the gate auto-ticks the consultation and nothing else */
+  if(!open && !s.selInit){ s.sel = {CONS:true}; s.selInit = true; }
+
+  const sel     = rows.filter(r=>r.selectable && s.sel[r.key]);
+  const pendAp  = sel.filter(r=>r.approval === 'Pending');
+  const groups  = [
+    {id:'consult', t: cfg.chargeLabel || 'Consultation', ico:'steth', rows:rows.filter(r=>r.group==='consult')},
+    {id:'order',   t:'Doctor\u2019s orders',              ico:'list',  rows:rows.filter(r=>r.group==='order')},
+    {id:'extra',   t:'Other services added',              ico:'cart',  rows:rows.filter(r=>r.group==='extra')},
+  ].filter(g=>g.rows.length);
+
+  return `<div class="pane-scroll">
+    <div class="pane-body">
+      ${cfg.stub?`<div class="alert a-blue">${ic('info')}<div><b>${esc(cfg.label)} flow — placeholder.</b>
+        ${esc(cfg.stub)} The charge → settle mechanics below stay identical.</div></div>`:''}
+      ${!insActive(pt) && pt.plan?`<div class="alert a-red">${ic('alert')}<div><b>Policy ${esc(pt.plan.status.toLowerCase())}.</b>
+        Every line is priced as self-pay until eligibility is verified.</div></div>`:''}
+      ${!open?`<div class="alert a-amber">${ic('lock')}<div><b>Invoice the ${esc((cfg.chargeLabel||'visit charge').toLowerCase())} first.</b>
+        The doctor's orders below stay locked until the visit itself is billed — that way the desk always knows the
+        visit is settled before any service goes out.</div></div>`:''}
+      ${cfg.freeConsult && !vi?`<div class="alert a-green">${ic('checkC')}<div><b>Free follow-up window.</b>
+        The consultation is pre-set to a 100% waiver — invoice it at zero to open the visit.</div></div>`:''}
+      ${pendAp.length?`<div class="alert a-amber">${ic('clock')}<div><b>${pendAp.length} selected line(s) awaiting pre-approval.</b>
+        Billing them now charges the patient in full. Record the approval on the line to shift it back to the payer.</div></div>`:''}
+
+      <div class="card"><div class="card-h">${ic('file')}<h3>Services on this visit</h3>
+        <span class="badge">${sel.length} of ${rows.filter(r=>r.selectable).length} selected</span>
+        <div class="spacer"></div>
+        <button class="btn btn-sm" data-act="selAll">${ic('check','ico-sm')} Select all billable</button>
+        ${sel.length?`<button class="btn btn-sm btn-ghost" data-act="selNone">Clear</button>`:''}</div>
+        <div class="card-b p0"><table class="chg-t">
+          <thead><tr><th style="width:34px"></th><th>Service</th>
+            <th class="c" style="width:70px">Qty</th><th class="r" style="width:78px">Rate</th>
+            <th class="c" style="width:80px">Disc %</th><th class="r" style="width:84px">Net</th>
+            <th style="width:186px">Insurance status</th>
+            <th class="r" style="width:92px">Payer</th><th class="r" style="width:98px">Patient</th>
+            <th style="width:40px"></th></tr></thead>
+          ${groups.map(g=>`<tbody>
+            <tr><td colspan="10" style="background:var(--surface-2);padding:6px 10px">
+              <span class="sec-t" style="margin:0">${ic(g.ico,'ico-sm')} ${esc(g.t)}</span></td></tr>
+            ${g.rows.map(r=>chargeRow(s, pt, v, r)).join('')}
+          </tbody>`).join('')}
+        </table></div>
+      </div>
+
+      ${otherServicesCard(s, pt, open)}
+    </div>
+    ${totBar(s, pt, v, open)}
+  </div>`;
+}
+
+/* what a line was actually billed at, so invoiced rows don't drift as the pools move */
+function billedLine(pt, v, code){
+  for(const iv of pt.invoices){
+    if(iv.visitId !== v.id) continue;
+    const l = iv.lines.find(x=>x.code === code);
+    if(l) return {...l, invNo:iv.no};
+  }
+  return null;
+}
+function chargeRow(s, pt, v, r){
+  const it = catItem(r.code) || {n:r.code, c:'proc', p:0};
+  /* invoiced rows show the historical split; live rows are priced on the fly */
+  const hist = r.invoiced ? billedLine(pt, v, r.code) : null;
+  const one  = hist || compute([r], pt, (r.group==='consult' ? v : {deductibleApplied:true})).rows[0];
+  if(hist && r.group==='consult' && !r.invNo) r.invNo = hist.invNo;
+  const ap  = APPROVALS[r.approval] || APPROVALS['Self-pay'];
+  const on  = r.selectable && !!s.sel[r.key];
+  const dim = r.invoiced || !r.selectable;
+  return `<tr class="hov" style="${dim?'opacity:.55':''}">
+    <td>${r.invoiced ? ic('check','ico-sm')
+        : r.selectable ? `<input type="checkbox" class="cb" ${on?'checked':''} data-inp="selRow" data-k="${r.key}">`
+        : ic('lock','ico-sm')}</td>
+    <td><div class="cell-n">${esc(it.n)}</div>
+      <div class="cell-c mono">${esc(r.code)}${r.group==='order'?' · '+esc(r.raisedBy):''}${
+        r.invoiced && r.invNo?' · '+esc(r.invNo):r.invoiced?' · billed':''}</div>
+      ${r.group==='consult' && r.editable?`<select class="ctl ctl-sm" style="margin-top:5px;max-width:236px"
+         data-inp="setVLineSel">${VISIT_TYPES[v.type].chargeCodes.map(c=>{
+           const ci=catItem(c); return `<option value="${c}" ${r.code===c?'selected':''}>${esc(ci.n)} — ${money(ci.p)}</option>`;
+         }).join('')}</select>`:''}</td>
+    <td class="c">${r.editable?`<input class="ctl ctl-sm qi" type="number" min="1" value="${r.qty}"
+         data-fk="q${r.key}" data-inp="rowQty" data-k="${r.key}">`:`<span class="num">${r.qty}</span>`}</td>
+    <td class="r num">${money(one.price)}</td>
+    <td class="c">${r.editable?`<span class="di-wrap"><input class="ctl ctl-sm di" type="number" min="0" max="100"
+         value="${r.disc||0}" data-fk="d${r.key}" data-inp="rowDisc" data-k="${r.key}"><span>%</span></span>`
+         :`<span class="num">${r.disc||0}%</span>`}</td>
+    <td class="r num t-strong">${money(one.net)}</td>
+    <td><span class="badge ${ap.cls}" title="${esc(ap.hint)}">${ic(ap.ico,'ico-sm')} ${esc(r.approval)}</span>
+      ${r.approval==='Pending' && r.selectable?`<button class="btn btn-xs" style="margin-top:4px"
+         data-act="markAppr" data-k="${r.key}">Approval received</button>`:''}
+      ${r.approval==='Rejected' && r.selectable?`<div class="hint" style="margin-top:3px">Patient pays in full</div>`:''}</td>
+    <td class="r num" style="color:var(--blue)">${money(one.company)}</td>
+    <td class="r num t-strong">${money(one.patient)}</td>
+    <td class="r">${r.removable?`<button class="btn btn-xs btn-ghost" data-act="delExtra" data-k="${r.key}"
+         title="Remove">${ic('trash','ico-sm')}</button>`:''}</td>
+  </tr>`;
+}
+
+function otherServicesCard(s, pt, open){
+  const q = s.catQ.trim().toLowerCase();
+  const items = q ? CATALOG.filter(x=>x.n.toLowerCase().includes(q)||x.code.toLowerCase().includes(q))
+                  : CATALOG.filter(x=>x.c === s.catGroup);
+  return `<div class="card"><div class="card-h">${ic('cart')}<h3>Other services</h3>
+    <div class="spacer"></div>
+    ${s.catOpen?`<input class="ctl ctl-sm" style="width:230px" placeholder="Search all services / code…"
+        data-fk="catq" data-inp="catq" value="${esc(s.catQ)}">`:''}
+    <button class="btn btn-sm ${s.catOpen?'':'btn-primary'}" data-act="toggleCat" ${open?'':'disabled title="Invoice the visit charge first"'}>
+      ${s.catOpen?ic('x','ico-sm')+' Close':ic('plus','ico-sm')+' Add service'}</button></div>
+    ${s.catOpen && open?`<div class="card-b">
+      ${q?'':`<div class="catbar">${CAT_GROUPS.map(g=>
+        `<button class="cattab ${s.catGroup===g.id?'on':''}" data-act="catg" data-g="${g.id}">${esc(g.label)}</button>`).join('')}</div>`}
+      ${items.length?`<div class="itemgrid">${items.map(x=>{
+        const ap = APPROVALS[approvalFor(pt, x.code, 1)] || APPROVALS['Self-pay'];
+        const st = approvalFor(pt, x.code, 1);
+        return `<button class="item" data-act="addItem" data-c="${x.code}">
+          <span class="i-n">${esc(x.n)}</span>
+          <span class="i-m"><span class="mono">${esc(x.code)}</span><span class="i-p">${money(x.p)}</span></span>
+          <span class="i-m"><span class="badge ${ap.cls}" style="height:17px;font-size:9.5px">${esc(st)}</span>
+            <span>${ic('plus','ico-sm')}</span></span></button>`;
+      }).join('')}</div>`:`<div class="empty">${ic('search')}<h4>No matching service</h4><p>Try another code or name.</p></div>`}
+    </div>`:''}
+  </div>`;
+}
+
+/* ---------- sticky totals bar ---------- */
+function totBar(s, pt, v, open){
+  const r = chargeCalc(s, pt, v);
+  const n = chargeLines(s, pt, v).length;
+  const label = open ? 'Invoice orders & services' : 'Invoice '+((VISIT_TYPES[v.type].chargeLabel||'visit charge').toLowerCase());
+  return `<div class="totbar">
+    <div class="tb-i"><div class="tb-k">Selected</div><div class="tb-v">${n}</div></div>
+    <div class="tb-sep"></div>
+    <div class="tb-i"><div class="tb-k">Gross</div><div class="tb-v num">${money(r.T.gross)}</div></div>
+    <div class="tb-i"><div class="tb-k">Discount</div>
+      <div class="tb-v num" style="color:${r.T.disc>0?'var(--green)':'inherit'}">${r.T.disc>0?'−':''}${money(r.T.disc)}</div></div>
+    <div class="tb-i"><div class="tb-k">Net</div><div class="tb-v num">${money(r.T.net)}</div></div>
+    <div class="tb-i"><div class="tb-k">${esc(r.payer.short)} share</div>
+      <div class="tb-v num" style="color:${r.T.company>0?'var(--blue)':'inherit'}">${money(r.T.company)}</div></div>
+    ${r.T.deduct>0?`<div class="tb-i"><div class="tb-k">Deductible</div>
+      <div class="tb-v num">${money(r.T.deduct)}</div></div>`:''}
+    <div class="spacer"></div>
+    <div class="tb-i tb-due r"><div class="tb-k">Patient share</div><div class="tb-v num">${money(r.T.due)}</div></div>
+    <button class="btn btn-lg btn-primary" data-act="openDrawer" ${n?'':'disabled'}>
+      ${ic('wallet')} ${label} ${ic('arrowR','ico-sm')}</button>
+  </div>`;
+}
+
+function noVisitBlock(pt){
+  return `<div class="card"><div class="card-h">${ic('info')}<h3>Pick a visit to start charging</h3></div>
+    <div class="card-b">
+      <p class="t-mut" style="margin:0 0 11px">Charges always attach to a visit. Choose an existing one or create a new visit — you stay on this screen either way.</p>
+      ${visitsOf(pt).map(v=>visitRow(pt,v)).join('')}
+      <button class="btn btn-primary" style="margin-top:9px" data-act="newVisit" data-p="${pt.id}">${ic('plus','ico-sm')} Add visit</button>
+    </div></div>`;
+}
+
+/* ---------- row actions ---------- */
+function rowRef(s, k){
+  if(k === 'CONS') return s.vLine;
+  const ex = s.extras.find(x=>x.lid === k);
+  if(ex) return ex;
+  s.ordEdit[k] = s.ordEdit[k] || {};
+  return s.ordEdit[k];
+}
+ACT.selRow  = (d,el) => { const s=sess(); s.sel[d.k] = el.checked; paint(); };
+ACT.selAll  = () => {
+  const s = sess(), pt = findPt(s.ptId), v = findVis(pt, s.visitId);
+  allRows(s, pt, v).filter(r=>r.selectable).forEach(r=>{ s.sel[r.key] = true; });
+  paint();
+};
+ACT.selNone = () => { const s=sess(); s.sel = {}; paint(); };
+ACT.setVLineSel = (d,el) => {
+  const s = sess(), cfg = VISIT_TYPES[findVis(findPt(s.ptId), s.visitId).type];
+  s.vLine = {lid:uid('L'), code:el.value, qty:1, disc: cfg.freeConsult?100:0, useIns:true};
+  s.sel.CONS = true; paint();
+};
+ACT.rowQty  = (d,el) => { rowRef(sess(),d.k).qty  = Math.max(1, +el.value||1); paint(); };
+ACT.rowDisc = (d,el) => { rowRef(sess(),d.k).disc = Math.min(100, Math.max(0, +el.value||0)); paint(); };
+ACT.markAppr = d => {
+  const s = sess(), pt = findPt(s.ptId), v = findVis(pt, s.visitId);
+  if(d.k === 'CONS'){ toast('Consultation needs no approval.', true); return; }
+  const o = (v.orders||[]).find(x=>x.id === d.k);
+  if(o){ o.approval = 'Approved'; toast('Pre-approval recorded — payer share restored.'); }
+  const ex = s.extras.find(x=>x.lid === d.k);
+  if(ex){ ex.approval = 'Approved'; toast('Pre-approval recorded — payer share restored.'); }
+  paint();
+};
+ACT.delExtra = d => { const s=sess(); s.extras = s.extras.filter(x=>x.lid !== d.k); delete s.sel[d.k]; paint(); };
+ACT.toggleCat = () => { const s=sess(); s.catOpen=!s.catOpen; if(!s.catOpen) s.catQ=''; paint(); };
+ACT.catg  = d => { const s=sess(); s.catGroup=d.g; paint(); };
+ACT.catq  = (d,el) => { const s=sess(); s.catQ=el.value; paint(); };
+ACT.addItem = d => {
+  const s = sess(), pt = findPt(s.ptId);
+  const ex = s.extras.find(x=>x.code === d.c);
+  if(ex){ ex.qty++; }
+  else {
+    const lid = uid('L');
+    s.extras.push({lid, code:d.c, qty:1, disc:0, useIns:true, approval:approvalFor(pt, d.c, 1)});
+    s.sel[lid] = true;
+  }
+  paint();
+};
+
+/* ================================================================
+   9b. PAYMENT SLIDE-OVER DRAWER
+   ================================================================ */
+const BANKS = ['Al Rajhi Bank','Saudi National Bank','Riyad Bank','Bank Albilad','Alinma Bank','SABB','Bank Aljazira'];
+const MODE_FIELDS = {
+  cash:     [],
+  card:     [{k:'auth', l:'Approval code', req:true, ph:'e.g. 448120'},
+             {k:'last4',l:'Card last 4',  req:false, ph:'1234'}],
+  transfer: [{k:'chq',  l:'Cheque / transfer no', req:true, ph:'Enter number'},
+             {k:'date', l:'Date', req:true, type:'date'},
+             {k:'bank', l:'Bank', req:true, type:'select', opts:BANKS},
+             {k:'hijri',l:'Hijri date', req:false, ph:'1448-02-11'}],
+  voucher:  [{k:'vno',  l:'Voucher no', req:true, ph:'Enter voucher number'}],
+  advance:  [],
+  credit:   [{k:'po',   l:'Guarantor / PO no', req:true, ph:'e.g. PO-AR-88455'},
+             {k:'due',  l:'Due date', req:false, type:'date'}],
+};
+const DWR_TABS = [
+  {id:'payment', label:'Payment', modes:['cash','card','transfer','voucher']},
+  {id:'advance', label:'Advance', modes:['advance']},
+  {id:'credit',  label:'Credit',  modes:['credit']},
+];
+const tenderTotal = s => (s.drawer.tenders||[]).reduce((a,t)=>a+t.amount, 0);
+const tenderOf    = (s,kind) => s.drawer.tenders.filter(t=>kindOf(t.mode)===kind).reduce((a,t)=>a+t.amount,0);
+const refString   = t => {
+  const f = t.f||{};
+  return [f.auth&&('auth '+f.auth), f.last4&&('••'+f.last4), f.chq, f.bank, f.vno, f.po,
+          f.date, f.due&&('due '+f.due)].filter(Boolean).join(' · ');
+};
+
+ACT.openDrawer = () => {
+  const s = sess(), pt = findPt(s.ptId), v = findVis(pt, s.visitId);
+  const due = chargeCalc(s, pt, v).T.due;
+  s.drawer = {tab:'payment', mode:'cash', f:{amount:due>0?String(Math.round(due*100)/100):''}, tenders:[]};
+  paint();
+};
+ACT.closeDrawer = () => { const s=sess(); s.drawer=null; paint(); };
+ACT.dwrTab = d => {
+  const s = sess(), t = DWR_TABS.find(x=>x.id===d.t);
+  s.drawer.tab = d.t; s.drawer.mode = t.modes[0];
+  s.drawer.f = {amount:s.drawer.f.amount};
+  paint();
+};
+ACT.dwrMode = d => { const s=sess(); s.drawer.mode=d.m; s.drawer.f={amount:s.drawer.f.amount}; paint(); };
+ACT.dwrField = (d,el) => { const s=sess(); s.drawer.f[d.k]=el.value; if(d.repaint) paint(); };
+ACT.dwrClear = () => { const s=sess(); s.drawer.tenders=[]; paint(); };
+ACT.delTender = d => { const s=sess(); s.drawer.tenders.splice(+d.i,1); paint(); };
+ACT.addTender = () => {
+  const s = sess(), pt = findPt(s.ptId), v = findVis(pt, s.visitId);
+  const D = s.drawer, m = PAYMENT_MODES.find(x=>x.id===D.mode);
+  const due = chargeCalc(s, pt, v).T.due;
+  let amt = Math.round((+D.f.amount||0)*100)/100;
+  if(amt <= 0) return toast('Enter an amount.', true);
+  const missing = (MODE_FIELDS[D.mode]||[]).filter(f=>f.req && !String(D.f[f.k]||'').trim());
+  if(missing.length) return toast(missing[0].l+' is required for '+m.label+'.', true);
+  const rem = Math.round((due - tenderTotal(s))*100)/100;
+  if(amt > rem + 0.005) return toast('That exceeds the '+money(rem)+' still outstanding.', true);
+  if(m.kind === 'advance'){
+    const cap = Math.round((pt.advance.balance - tenderOf(s,'advance'))*100)/100;
+    if(amt > cap + 0.005) return toast('Only '+money(cap)+' advance available.', true);
+  }
+  D.tenders.push({id:uid('T'), mode:D.mode, amount:amt, f:{...D.f}});
+  const left = Math.round((due - tenderTotal(s))*100)/100;
+  D.f = {amount: left > 0 ? String(left) : ''};
+  paint();
+};
+
+function payDrawer(s, pt, v){
+  const D    = s.drawer;
+  const r    = chargeCalc(s, pt, v);
+  const due  = r.T.due;
+  const got  = Math.round(tenderTotal(s)*100)/100;
+  const rem  = Math.round((due - got)*100)/100;
+  const done = Math.abs(rem) < 0.005;
+  const stage = stageOf(pt, v);
+  const tab  = DWR_TABS.find(x=>x.id===D.tab);
+  const m    = PAYMENT_MODES.find(x=>x.id===D.mode);
+  const advLeft = Math.round((pt.advance.balance - tenderOf(s,'advance'))*100)/100;
+
+  return `<div class="dwr-scrim" data-act="closeDrawer"></div>
+  <div class="drawer">
+    <div class="dwr-h">
+      <div style="flex:1">
+        <div class="dh-k">${stage===1 ? 'Visit charge — invoice total' : 'Orders &amp; services — invoice total'}</div>
+        <div class="dh-v">SAR ${money(due)}</div>
+        <div class="dh-s">${esc(pt.name)} · MRN ${esc(pt.mrn)} · ${esc(VISIT_TYPES[v.type].label)} ${esc(v.no)}</div>
+      </div>
+      <button class="x-btn" data-act="closeDrawer">${ic('x')}</button>
+    </div>
+
+    <div class="dwr-tabs">${DWR_TABS.map(t=>{
+      const dis = t.id==='advance' && pt.advance.balance <= 0;
+      return `<button class="dwr-tab ${D.tab===t.id?'on':''}" data-act="dwrTab" data-t="${t.id}" ${dis?'disabled title="No advance balance"':''}>
+        ${esc(t.label)}${t.id==='advance'?` <span class="hint">${money(pt.advance.balance)}</span>`:''}</button>`;
+    }).join('')}</div>
+
+    <div class="dwr-b">
+      <div class="remcard ${done?'ok':(rem<0?'over':'')}">
+        <div><div class="rc-k">${done?'Fully tendered':(rem>0?'Still to collect':'Over-tendered')}</div>
+          <div class="rc-v">SAR ${money(Math.abs(rem))}</div></div>
+        <div style="text-align:right"><div class="rc-k">Insurance covers</div>
+          <div class="rc-v" style="font-size:14px;color:var(--blue)">${money(r.T.company)}</div></div>
+      </div>
+
+      ${due === 0 ? `<div class="alert a-green">${ic('checkC')}<div><b>Nothing payable by the patient.</b>
+        ${r.T.company>0?`The payer covers all ${money(r.T.net)}.`:'This charge is fully waived.'}
+        Press <b>Complete</b> to issue a zero-value invoice.</div></div>` : `
+
+      ${tab.modes.length>1?`<div class="modechips">${tab.modes.map(id=>{
+        const mm = PAYMENT_MODES.find(x=>x.id===id);
+        return `<button class="mchip ${D.mode===id?'on':''}" data-act="dwrMode" data-m="${id}">${esc(mm.label)}</button>`;
+      }).join('')}</div>`:''}
+
+      ${D.tab==='advance'?`<div class="alert a-blue">${ic('wallet')}<div>Wallet balance
+        <b>${money(pt.advance.balance)}</b> — ${money(advLeft)} still usable on this invoice.</div></div>`:''}
+      ${D.tab==='credit'?`<div class="alert a-amber">${ic('credit')}<div>Credit creates a receivable against
+        <b>${esc(pt.plan&&pt.plan.guarantor?pt.plan.guarantor:pt.name)}</b>, settled later from the Credit tab.</div></div>`:''}
+
+      <div class="fgrid">
+        ${(MODE_FIELDS[D.mode]||[]).map(f=>`
+          <div class="field ${f.type==='select'||(MODE_FIELDS[D.mode].length%2&&f===MODE_FIELDS[D.mode][MODE_FIELDS[D.mode].length-1])?'':''}">
+            <span class="label ${f.req?'req':''}">${esc(f.l)}</span>
+            ${f.type==='select'
+              ? `<select class="ctl" data-inp="dwrField" data-k="${f.k}">
+                   <option value="">Select a bank</option>
+                   ${f.opts.map(o=>`<option ${D.f[f.k]===o?'selected':''}>${esc(o)}</option>`).join('')}</select>`
+              : `<input class="ctl" type="${f.type||'text'}" placeholder="${esc(f.ph||'')}"
+                   data-fk="df${f.k}" data-inp="dwrField" data-k="${f.k}" value="${esc(D.f[f.k]||'')}">`}
+          </div>`).join('')}
+        <div class="field ${(MODE_FIELDS[D.mode]||[]).length%2===0?'':''}">
+          <span class="label req">Amount</span>
+          <input class="ctl" type="number" min="0" step="0.01" placeholder="0.00"
+            data-fk="dfamount" data-inp="dwrField" data-k="amount" value="${esc(D.f.amount||'')}"></div>
+        <div class="full row" style="justify-content:space-between">
+          <div class="row" style="gap:5px">
+            <button class="btn btn-xs" data-act="dwrFill" data-v="rem">Outstanding</button>
+            ${D.tab==='payment'?[50,100,500].map(x=>
+              `<button class="btn btn-xs" data-act="dwrFill" data-v="${x}">${x}</button>`).join(''):''}
+            ${D.tab==='advance'?`<button class="btn btn-xs" data-act="dwrFill" data-v="adv">Max advance</button>`:''}
+          </div>
+          <button class="btn btn-primary" data-act="addTender">Add ${ic('plus','ico-sm')}</button>
+        </div>
+      </div>`}
+
+      ${D.tenders.length?`<div style="margin-top:16px">
+        <div class="sec-t">Tendered
+          <button class="btn btn-xs btn-ghost" data-act="dwrClear">Clear</button></div>
+        ${D.tenders.map((t,i)=>{
+          const mm = PAYMENT_MODES.find(x=>x.id===t.mode);
+          const rs = refString(t);
+          return `<div class="tender"><div class="tn-i">${ic(mm.icon,'ico-sm')}</div>
+            <div class="tn-m"><div class="tn-n">${esc(mm.label)}</div>
+              ${rs?`<div class="tn-r">${esc(rs)}</div>`:''}</div>
+            <div class="tn-a num">${money(t.amount)}</div>
+            <button class="btn btn-xs btn-ghost" data-act="delTender" data-i="${i}">${ic('x','ico-sm')}</button></div>`;
+        }).join('')}</div>`:''}
+    </div>
+
+    <div class="dwr-f">
+      <div class="dwr-tot"><span class="dt-k">Total Amount</span>
+        <span class="dt-v num">SAR ${money(got)}</span></div>
+      <div class="dwr-btns">
+        <button class="b-clear" data-act="dwrClear">Clear</button>
+        <button class="b-done" data-act="doInvoice" ${done?'':'disabled'}>
+          ${done?ic('checkC'):''} Complete</button>
+      </div>
+    </div>
+  </div>`;
+}
+ACT.dwrFill = d => {
+  const s = sess(), pt = findPt(s.ptId), v = findVis(pt, s.visitId);
+  const due = chargeCalc(s, pt, v).T.due;
+  const rem = Math.round((due - tenderTotal(s))*100)/100;
+  if(d.v === 'rem')      s.drawer.f.amount = String(Math.max(0, rem));
+  else if(d.v === 'adv') s.drawer.f.amount = String(Math.max(0,
+      Math.min(rem, Math.round((pt.advance.balance - tenderOf(s,'advance'))*100)/100)));
+  else s.drawer.f.amount = String((+s.drawer.f.amount||0) + (+d.v));
+  paint();
+};
+
+/* ================================================================
+   10b. ALL VISITS PANE — every visit across every branch
+   ================================================================ */
+function paneVisits(s, pt, cur){
+  const list = pt.visits.slice().sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const here  = list.filter(v=>visHosp(pt,v)===pt.hospital).length;
+  const other = list.length - here;
+  const inter = list.filter(v=>v.interBranch).length;
+  return `<div class="pane">
+    <div class="grid4" style="margin-bottom:13px">
+      <div class="stat"><div class="s-k">Total visits</div><div class="s-v">${list.length}</div>
+        <div class="s-x">lifetime, all branches</div></div>
+      <div class="stat"><div class="s-k">This branch</div><div class="s-v">${here}</div>
+        <div class="s-x">${esc(hospName(pt.hospital))}</div></div>
+      <div class="stat"><div class="s-k">Other branches</div>
+        <div class="s-v" style="color:${other?'var(--purple)':'inherit'}">${other}</div>
+        <div class="s-x">registered elsewhere</div></div>
+      <div class="stat"><div class="s-k">Inter-branch / referral</div>
+        <div class="s-v" style="color:${inter?'var(--amber)':'inherit'}">${inter}</div>
+        <div class="s-x">in or out-bound</div></div>
+    </div>
+    ${other?`<div class="alert a-blue">${ic('building')}<div>${other} visit(s) belong to another facility.
+      They are billable from here only if the patient was referred in — inter-branch visits are tagged below.</div></div>`:''}
+    <div class="card"><div class="card-h">${ic('building')}<h3>All visits</h3>
+      <span class="badge">${list.length}</span><div class="spacer"></div>
+      <button class="btn btn-sm btn-primary" data-act="newVisit" data-p="${pt.id}">${ic('plus','ico-sm')} Add visit</button></div>
+      <div class="card-b p0"><table>
+        <thead><tr><th>Visit</th><th>Type</th><th>Branch</th><th>Clinic / Doctor</th><th>Date</th>
+          <th>Referral</th><th class="c">Orders</th><th class="c">Invoices</th><th class="r">Billed</th>
+          <th>Status</th><th class="r"></th></tr></thead>
+        <tbody>${list.map(v=>{
+          const t = VISIT_TYPES[v.type];
+          const h = visHosp(pt, v);
+          const invs = pt.invoices.filter(i=>i.visitId===v.id);
+          const billed = invs.reduce((a,i)=>a+i.T.due, 0);
+          const pend = (v.orders||[]).filter(o=>o.status==='Pending').length;
+          const isCur = cur && cur.id === v.id;
+          const openTab = S.sessions.some(z=>z.ptId===pt.id && z.visitId===v.id);
+          return `<tr class="hov" style="${isCur?'background:var(--accent-soft)':''}">
+            <td class="mono t-strong t-xs">${esc(v.no)}</td>
+            <td><span class="vtag" style="background:${soft(t.color)};color:${t.color}">${t.short}</span></td>
+            <td class="t-xs">${h===pt.hospital?esc(hospName(h))
+              :`<span class="badge b-purple">${ic('building','ico-sm')} ${esc(hospName(h))}</span>`}</td>
+            <td class="t-xs">${esc(v.clinic)}<div class="hint">${esc(v.doctor)}</div></td>
+            <td class="t-xs">${dstr(v.date)}<div class="hint">${ago(v.date)}</div></td>
+            <td class="t-xs">${v.interBranch
+              ? `<span class="badge b-amber">${esc(v.interBranch.dir)}</span>
+                 <div class="hint">${esc(hospName(v.interBranch.from))} → ${esc(hospName(v.interBranch.to))}</div>`
+              : v.referral ? `<span class="badge">${esc(v.referral.dir)}</span>
+                 <div class="hint">${esc(v.referral.from)}</div>` : '—'}</td>
+            <td class="c">${(v.orders||[]).length
+              ? `${(v.orders||[]).length}${pend?` <span class="badge b-amber">${pend} to bill</span>`:''}` : '—'}</td>
+            <td class="c">${invs.length||'—'}</td>
+            <td class="r num t-strong">${billed?money(billed):'—'}</td>
+            <td><span class="badge ${v.status==='Open'||v.status==='Admitted'?'b-green':''}">${esc(v.status)}</span>
+              ${visitNeedsCharge(v)?(visitInvoiceOf(pt,v)
+                ?`<div style="margin-top:3px"><span class="badge b-green">visit billed</span></div>`
+                :`<div style="margin-top:3px"><span class="badge b-amber">visit unbilled</span></div>`):''}</td>
+            <td class="r">${isCur?`<span class="badge b-teal">current</span>`
+              :`<button class="btn btn-xs ${openTab?'':'btn-primary'}" data-act="openVisit" data-p="${pt.id}" data-v="${v.id}">
+                 ${openTab?'Go to':'Open'} ${ic('chevR','ico-sm')}</button>`}</td>
+          </tr>`;
+        }).join('')}</tbody></table></div></div>
+  </div>`;
+}
+
+/* ================================================================
+   11. INVOICES PANE
+   ================================================================ */
+function invStatusBadge(iv){
+  const openCr = iv.creditAmt - iv.creditSettled;
+  if(iv.refunds.length && iv.refunds.some(r=>r.status==='Pending approval')) return `<span class="badge b-amber">Refund pending</span>`;
+  if(iv.status==='Refunded')      return `<span class="badge b-red">Refunded</span>`;
+  if(iv.status==='Part refunded') return `<span class="badge b-purple">Part refunded</span>`;
+  if(openCr > 0.005)              return `<span class="badge b-amber">Credit ${money(openCr)}</span>`;
+  return `<span class="badge b-green">${ic('check','ico-sm')} Paid</span>`;
+}
+
+function paneInvoices(s, pt, v){
+  const list = allInv(pt);
+  const scoped = s.invScope==='visit' && v ? list.filter(i=>i.visitId===v.id) : list;
+  const tot = scoped.reduce((a,i)=>a+i.T.due,0);
+  const rfd = scoped.reduce((a,i)=>a+i.refunds.filter(r=>r.status!=='Rejected').reduce((x,r)=>x+r.amount,0),0);
+  return `<div class="pane">
+    <div class="grid4" style="margin-bottom:13px">
+      <div class="stat"><div class="s-k">Invoices</div><div class="s-v">${scoped.length}</div>
+        <div class="s-x">${s.invScope==='visit'?'this visit':'lifetime'}</div></div>
+      <div class="stat"><div class="s-k">Patient billed</div><div class="s-v">${money(tot)}</div><div class="s-x">SAR</div></div>
+      <div class="stat"><div class="s-k">Credit open</div><div class="s-v" style="color:${creditOut(pt)>0?'var(--amber)':'inherit'}">${money(creditOut(pt))}</div><div class="s-x">receivable</div></div>
+      <div class="stat"><div class="s-k">Refunded</div><div class="s-v" style="color:${rfd>0?'var(--red)':'inherit'}">${money(rfd)}</div><div class="s-x">lifetime</div></div>
+    </div>
+    <div class="card"><div class="card-h">${ic('file')}<h3>Invoices</h3><div class="spacer"></div>
+      ${v?`<div class="seg">
+        <button class="${s.invScope==='visit'?'on':''}" data-act="invScope" data-v="visit">This visit</button>
+        <button class="${s.invScope!=='visit'?'on':''}" data-act="invScope" data-v="all">All visits</button></div>`:''}
+    </div>
+    <div class="card-b p0">${scoped.length?`<table>
+      <thead><tr><th>Invoice</th><th>For</th><th>Visit</th><th>Date</th><th>Payer</th><th class="r">Net</th>
+        <th class="r">Payer share</th><th class="r">Patient</th><th>Settled via</th><th>Status</th><th class="r">Actions</th></tr></thead>
+      <tbody>${scoped.map(iv=>{
+        const vv = pt.visits.find(x=>x.id===iv.visitId);
+        const t  = vv ? VISIT_TYPES[vv.type] : null;
+        return `<tr class="hov">
+          <td class="mono t-strong t-xs">${esc(iv.no)}</td>
+          <td><span class="badge ${iv.kind==='visit'?'b-purple':'b-teal'}">${esc(iv.kindLabel||(iv.kind==='visit'?'Visit charge':'Orders'))}</span></td>
+          <td>${t?`<span class="vtag" style="background:${soft(t.color)};color:${t.color};width:36px;height:19px;font-size:9px">${t.short}</span>`:'—'}
+              <div class="hint">${vv?esc(vv.clinic):''}</div></td>
+          <td class="t-xs">${dstr(iv.date)}<div class="hint">${ago(iv.date)}</div></td>
+          <td class="t-xs">${esc(PAYERS[iv.payerId].short)}</td>
+          <td class="r num">${money(iv.T.net)}</td>
+          <td class="r num" style="color:var(--blue)">${money(iv.T.company)}</td>
+          <td class="r num t-strong">${money(iv.T.due)}</td>
+          <td class="t-xs">${iv.payments.map(p=>{
+              const m = PAYMENT_MODES.find(x=>x.id===p.mode);
+              return `<div>${esc(m.label)} ${money(p.amount)}</div>`;}).join('')}</td>
+          <td>${invStatusBadge(iv)}</td>
+          <td class="r"><div class="row" style="justify-content:flex-end;gap:5px">
+            <button class="btn btn-xs" data-act="viewInv" data-i="${iv.id}">${ic('file','ico-sm')} View</button>
+            <button class="btn btn-xs" data-act="printInv" data-i="${iv.id}">${ic('print','ico-sm')}</button>
+            <button class="btn btn-xs" data-act="refundInv" data-i="${iv.id}" title="Refund">${ic('undo','ico-sm')}</button>
+          </div></td></tr>`;
+      }).join('')}</tbody></table>`
+      :`<div class="empty">${ic('file')}<h4>No invoices yet</h4><p>Charge the visit to create the first invoice.</p></div>`}
+    </div></div>
+    ${pt.refunds && pt.refunds.length?`<div class="card"><div class="card-h">${ic('undo')}<h3>Refund history</h3>
+      <span class="badge">${pt.refunds.length}</span></div>
+      <div class="card-b p0"><table><thead><tr><th>Credit note</th><th>Against</th><th>Date</th>
+        <th>Reason</th><th>Mode</th><th class="r">Amount</th><th>Status</th><th class="r"></th></tr></thead>
+      <tbody>${pt.refunds.slice().reverse().map(r=>`<tr class="hov">
+        <td class="mono t-strong t-xs">${esc(r.no)}</td><td class="mono t-xs">${esc(r.invNo)}</td>
+        <td class="t-xs">${dstr(r.at)}</td><td class="t-xs">${esc(r.reason)}</td>
+        <td class="t-xs">${esc(PAYMENT_MODES.find(m=>m.id===r.mode).label)}</td>
+        <td class="r num t-strong">${money(r.amount)}</td>
+        <td><span class="badge ${r.status==='Approved'?'b-green':r.status==='Rejected'?'b-red':'b-amber'}">${esc(r.status)}</span></td>
+        <td class="r">${r.status==='Pending approval'
+          ? `<button class="btn btn-xs btn-primary" data-act="approveRfd" data-r="${r.id}">Approve</button>`
+          : `<button class="btn btn-xs" data-act="printRfd" data-r="${r.id}">${ic('print','ico-sm')}</button>`}</td>
+      </tr>`).join('')}</tbody></table></div></div>`:''}
+  </div>`;
+}
+ACT.invScope = d => { const s=sess(); s.invScope=d.v; paint(); };
+
+/* ================================================================
+   12. ADVANCE PANE
+   ================================================================ */
+function paneAdvance(s, pt){
+  const dep = pt.advance.txns.filter(t=>t.amount>0).reduce((a,t)=>a+t.amount,0);
+  const use = pt.advance.txns.filter(t=>t.amount<0).reduce((a,t)=>a-t.amount,0);
+  return `<div class="pane">
+    <div class="grid3" style="margin-bottom:13px">
+      <div class="stat"><div class="s-k">Available balance</div>
+        <div class="s-v" style="color:${pt.advance.balance>0?'var(--green)':'inherit'}">${money(pt.advance.balance)}</div>
+        <div class="s-x">usable as a payment mode</div></div>
+      <div class="stat"><div class="s-k">Total deposited</div><div class="s-v">${money(dep)}</div><div class="s-x">lifetime</div></div>
+      <div class="stat"><div class="s-k">Applied to invoices</div><div class="s-v">${money(use)}</div><div class="s-x">lifetime</div></div>
+    </div>
+    <div class="alert a-blue">${ic('info')}<div>Advance sits in the patient's wallet. On any invoice, pick
+      <b>Patient Advance</b> as a payment mode and it draws down automatically — capped at the balance above.</div></div>
+    <div class="card"><div class="card-h">${ic('wallet')}<h3>Advance ledger</h3><div class="spacer"></div>
+      <button class="btn btn-sm btn-primary" data-act="addAdv" data-p="${pt.id}">${ic('plus','ico-sm')} Add advance</button>
+      ${pt.advance.balance>0?`<button class="btn btn-sm" data-act="refundAdv" data-p="${pt.id}">${ic('undo','ico-sm')} Refund balance</button>`:''}
+    </div>
+    <div class="card-b p0">${pt.advance.txns.length?`<table>
+      <thead><tr><th>Receipt</th><th>Type</th><th>Date</th><th>Mode / Ref</th><th>Note</th><th>By</th><th class="r">Amount</th><th class="r"></th></tr></thead>
+      <tbody>${pt.advance.txns.slice().reverse().map(t=>`<tr class="hov">
+        <td class="mono t-strong t-xs">${esc(t.no)}</td>
+        <td><span class="badge ${t.amount>0?'b-green':t.type==='Refunded'?'b-red':'b-blue'}">${esc(t.type)}</span></td>
+        <td class="t-xs">${dtstr(t.at)}</td>
+        <td class="t-xs">${esc(PAYMENT_MODES.find(m=>m.id===t.mode)?PAYMENT_MODES.find(m=>m.id===t.mode).label:t.mode)}
+          ${t.ref?`<div class="hint mono">${esc(t.ref)}</div>`:''}</td>
+        <td class="t-xs t-mut">${esc(t.note||'')}</td><td class="t-xs t-mut">${esc(t.by)}</td>
+        <td class="r num t-strong" style="color:${t.amount>0?'var(--green)':'var(--ink)'}">${t.amount>0?'+':''}${money(t.amount)}</td>
+        <td class="r"><button class="btn btn-xs" data-act="printAdv" data-p="${pt.id}" data-t="${t.id}">${ic('print','ico-sm')}</button></td>
+      </tr>`).join('')}</tbody></table>`
+      :`<div class="empty">${ic('wallet')}<h4>No advance on file</h4><p>Take a deposit to pre-fund this patient's bills.</p></div>`}
+    </div></div>
+  </div>`;
+}
+
+/* ================================================================
+   13. CREDIT PANE
+   ================================================================ */
+function paneCredit(s, pt){
+  const open = openCredit(pt);
+  const tot  = creditOut(pt);
+  const settled = pt.invoices.reduce((a,i)=>a+i.creditSettled,0);
+  return `<div class="pane">
+    <div class="grid3" style="margin-bottom:13px">
+      <div class="stat"><div class="s-k">Outstanding credit</div>
+        <div class="s-v" style="color:${tot>0?'var(--amber)':'inherit'}">${money(tot)}</div>
+        <div class="s-x">${open.length} invoice(s)</div></div>
+      <div class="stat"><div class="s-k">Settled to date</div><div class="s-v">${money(settled)}</div><div class="s-x">lifetime</div></div>
+      <div class="stat"><div class="s-k">Guarantor</div>
+        <div class="s-v" style="font-size:13px;line-height:1.4;margin-top:5px">${esc(pt.plan&&pt.plan.guarantor?pt.plan.guarantor:'Patient (self)')}</div></div>
+    </div>
+    ${tot>0?`<div class="alert a-amber">${ic('alert')}<div><b>${money(tot)} billed on credit.</b>
+      Settle in full or part below; each settlement produces its own receipt and reduces the receivable.</div></div>`:''}
+    <div class="card"><div class="card-h">${ic('credit')}<h3>Open credit invoices</h3><div class="spacer"></div>
+      ${open.length>1?`<button class="btn btn-sm btn-primary" data-act="settleAll" data-p="${pt.id}">${ic('wallet','ico-sm')} Settle all ${money(tot)}</button>`:''}</div>
+      <div class="card-b p0">${open.length?`<table>
+        <thead><tr><th>Invoice</th><th>Date</th><th>Age</th><th>Guarantor / PO</th>
+          <th class="r">Credit</th><th class="r">Settled</th><th class="r">Balance</th><th class="r">Action</th></tr></thead>
+        <tbody>${open.map(iv=>{
+          const bal = iv.creditAmt - iv.creditSettled;
+          const days = Math.round((TODAY - new Date(iv.date))/864e5);
+          const ref = (iv.payments.find(p=>p.mode==='credit')||{}).ref || '—';
+          return `<tr class="hov">
+            <td class="mono t-strong t-xs">${esc(iv.no)}</td>
+            <td class="t-xs">${dstr(iv.date)}</td>
+            <td><span class="badge ${days>30?'b-red':days>14?'b-amber':''}">${days}d</span></td>
+            <td class="t-xs mono">${esc(ref)}</td>
+            <td class="r num">${money(iv.creditAmt)}</td>
+            <td class="r num">${money(iv.creditSettled)}</td>
+            <td class="r num t-strong" style="color:var(--amber)">${money(bal)}</td>
+            <td class="r"><div class="row" style="justify-content:flex-end;gap:5px">
+              <button class="btn btn-xs btn-primary" data-act="settleOne" data-i="${iv.id}">Settle</button>
+              <button class="btn btn-xs" data-act="viewInv" data-i="${iv.id}">${ic('file','ico-sm')}</button></div></td></tr>`;
+        }).join('')}</tbody></table>`
+        :`<div class="empty">${ic('checkC')}<h4>No open credit</h4><p>Everything billed to credit has been settled.</p></div>`}
+      </div></div>
+    ${pt.invoices.some(i=>i.creditLog&&i.creditLog.length)?`<div class="card">
+      <div class="card-h">${ic('list')}<h3>Settlement history</h3></div>
+      <div class="card-b p0"><table><thead><tr><th>Receipt</th><th>Invoice</th><th>Date</th><th>Mode</th><th>By</th><th class="r">Amount</th><th class="r"></th></tr></thead>
+      <tbody>${pt.invoices.flatMap(iv=>(iv.creditLog||[]).map(l=>({...l, invNo:iv.no})))
+        .sort((a,b)=>new Date(b.at)-new Date(a.at)).map(l=>`<tr class="hov">
+        <td class="mono t-strong t-xs">${esc(l.no)}</td><td class="mono t-xs">${esc(l.invNo)}</td>
+        <td class="t-xs">${dtstr(l.at)}</td>
+        <td class="t-xs">${esc(PAYMENT_MODES.find(m=>m.id===l.mode).label)}${l.ref?` <span class="hint mono">${esc(l.ref)}</span>`:''}</td>
+        <td class="t-xs t-mut">${esc(l.by)}</td><td class="r num t-strong">${money(l.amount)}</td>
+        <td class="r"><button class="btn btn-xs" data-act="printCr" data-l="${l.id}">${ic('print','ico-sm')}</button></td>
+      </tr>`).join('')}</tbody></table></div></div>`:''}
+  </div>`;
+}
+
+/* ================================================================
+   14. TRANSACTIONS
+   ================================================================ */
+const NOW = () => { const d = new Date(TODAY); return d.toISOString(); };
+const kindOf = id => (PAYMENT_MODES.find(m=>m.id===id)||{}).kind;
+
+ACT.doInvoice = () => {
+  const s = sess(), pt = findPt(s.ptId), v = findVis(pt, s.visitId);
+  const stage = stageOf(pt, v);
+  const lines = chargeLines(s, pt, v);
+  const r = chargeCalc(s, pt, v);
+  if(!lines.length) return toast('Nothing to invoice.', true);
+
+  const payments = (s.drawer ? s.drawer.tenders : []).map(t => ({
+    mode:t.mode, amount:t.amount, ref:refString(t), f:t.f, at:NOW()
+  })).filter(p=>p.amount > 0);
+
+  const cred   = payments.filter(p=>kindOf(p.mode)==='credit').reduce((a,p)=>a+p.amount,0);
+  const advUse = payments.filter(p=>kindOf(p.mode)==='advance').reduce((a,p)=>a+p.amount,0);
+  const paid   = payments.filter(p=>kindOf(p.mode)==='settle').reduce((a,p)=>a+p.amount,0) + advUse;
+
+  const tendered = Math.round((paid + cred)*100)/100;
+  if(Math.abs(tendered - r.T.due) > 0.005)
+    return toast('Payment '+money(tendered)+' does not match the '+money(r.T.due)+' payable.', true);
+  if(advUse > pt.advance.balance + 0.005)
+    return toast('Advance drawdown exceeds the wallet balance.', true);
+
+  const iv = {
+    id:uid('INV'), no:nextNo('inv','INV-'), visitId:v.id, date:NOW(),
+    kind: stage===1 ? 'visit' : 'orders',
+    kindLabel: stage===1 ? (VISIT_TYPES[v.type].chargeLabel || 'Visit charge') : 'Orders & services',
+    hospital:pt.hospital, cashier:S.user.name,
+    lines:r.rows.map(x=>({code:x.code, name:x.name, cat:x.cat, qty:x.qty, price:x.price, disc:x.disc||0,
+                          net:x.net, company:x.company, patient:x.patient, deduct:x.deduct,
+                          note:x.note, refunded:0})),
+    T:{...r.T}, payerId:pt.payerId, payerName:payerOf(pt).name,
+    payments, paid, creditAmt:cred, creditSettled:0, creditLog:[],
+    status: cred>0 ? 'Credit open' : 'Paid', refunds:[], note:s.note
+  };
+  pt.invoices.push(iv);
+
+  if(advUse > 0){
+    pt.advance.balance = Math.round((pt.advance.balance - advUse)*100)/100;
+    pt.advance.txns.push({id:uid('ADV'), no:nextNo('rct','RCT-'), type:'Applied', amount:-advUse,
+      mode:'advance', ref:iv.no, at:NOW(), by:S.user.name, note:'Applied to '+iv.no});
+  }
+  if(r.T.company > 0 && pt.plan) pt.plan.consumed = Math.round((pt.plan.consumed + r.T.company)*100)/100;
+  if(r.T.deduct > 0){
+    v.deductibleApplied = true;
+    if(pt.plan) pt.plan.deductibleUsed = Math.round(((pt.plan.deductibleUsed||0) + r.T.deduct)*100)/100;
+  }
+  lines.forEach(b=>{ if(b.orderId){ const o=(v.orders||[]).find(x=>x.id===b.orderId); if(o) o.status='Billed'; } });
+
+  /* clear only what was just billed */
+  const billed = {}; lines.forEach(l=>{ billed[l.key] = true; });
+  s.extras = s.extras.filter(x=>!billed[x.lid]);
+  if(billed.CONS) s.vLine = null;
+  s.sel = {}; s.selInit = false;
+  s.drawer = null; s.catOpen = false; s.catQ = ''; s.note = '';
+  S.modal = {type:'invoice', ptId:pt.id, invId:iv.id, fresh:true, unlocked:stage===1};
+  toast('Invoice '+iv.no+' created'+(iv.T.due>0?' · '+money(iv.T.due)+' collected':' · no patient charge'));
+  paint();
+};
+
+/* ================================================================
+   15. MODAL ROUTER
+   ================================================================ */
+function viewModal(){
+  const m = S.modal; if(!m) return '';
+  const inner = ({
+    help:      mHelp,
+    newVisit:  mNewVisit,
+    advAdd:    mAdvAdd,
+    advRefund: mAdvRefund,
+    invoice:   mInvoice,
+    refund:    mRefund,
+    settle:    mSettle,
+    doc:       mDoc,
+  }[m.type] || (()=>''))(m);
+  return `<div class="scrim" data-act="scrim">${inner}</div>`;
+}
+ACT.scrim = (d,el,e) => { if(e.target.classList.contains('scrim')){ S.modal=null; paint(); } };
+ACT.mClose = () => { S.modal=null; paint(); };
+ACT.mField = (d,el) => {
+  S.modal[d.k] = (el.type==='checkbox') ? el.checked : el.value;
+  if(d.repaint) paint();
+};
+
+/* ---------- patient picker (shared by modals) ---------- */
+function pickerBlock(m){
+  if(m.ptId){
+    const pt = findPt(m.ptId);
+    return `<div class="row" style="border:1px solid var(--line);border-radius:var(--r-sm);padding:9px 10px;margin-bottom:14px">
+      <div class="pav" style="background:${soft(tint(pt.name))};color:${tint(pt.name)}">${initials(pt.name)}</div>
+      <div style="flex:1"><div class="t-strong">${esc(pt.name)}</div>
+        <div class="hint">MRN ${esc(pt.mrn)} · ${esc(pt.gender)} ${age(pt.dob)}y · ${policyBadge(pt)}</div></div>
+      ${m.lockPt?'':`<button class="btn btn-xs" data-act="clearPt">Change</button>`}
+    </div>`;
+  }
+  const q = (m.q||'').trim().toLowerCase();
+  const hits = q.length>=2 ? PATIENTS.filter(p=>
+      p.name.toLowerCase().includes(q) || p.mrn.includes(q) || p.phone.replace(/\s/g,'').includes(q.replace(/\s/g,''))
+    ).slice(0,6) : [];
+  return `<div class="field" style="margin-bottom:14px"><span class="label">Patient</span>
+    <input class="ctl" placeholder="Search by name, MRN or mobile…" data-fk="mq" data-inp="mField" data-k="q" data-repaint="1" value="${esc(m.q||'')}">
+    ${hits.length?`<div style="border:1px solid var(--line);border-radius:var(--r-sm);overflow:hidden;margin-top:4px">
+      ${hits.map(p=>`<button class="vrow" style="margin:0;border:none;border-bottom:1px solid var(--line);border-radius:0"
+        data-act="pickPt" data-p="${p.id}">
+        <div class="pav" style="width:28px;height:28px;font-size:11px;background:${soft(tint(p.name))};color:${tint(p.name)}">${initials(p.name)}</div>
+        <div class="vrow-main"><div class="vrow-t">${esc(p.name)}</div>
+          <div class="vrow-s">MRN ${esc(p.mrn)} · ${esc(p.phone)} · ${esc(payerOf(p).short)}</div></div>
+        ${ic('chevR','ico-sm')}</button>`).join('')}</div>`
+      : (q.length>=2?`<div class="hint">No match.</div>`:`<div class="hint">Type at least 2 characters.</div>`)}
+  </div>`;
+}
+ACT.pickPt = d => { S.modal.ptId = d.p; S.modal.q=''; paint(); };
+
+/* ---------- flow guide ---------- */
+function mHelp(){
+  const steps = [
+    ['Search & open','Find the patient by MRN / ID / mobile / name, expand the row and click a visit. It opens as a session tab — up to '+MAX_SESSIONS+' patients and visits stay open at once, each with its own basket.'],
+    ['Add a visit anywhere','“Add visit” on the landing page, inside a result row, or from the rail. OPD, Follow-up, ER, Inpatient, Referral and Walk-in all use the same form and the same downstream flow.'],
+    ['Step 1 — invoice the visit','Charge & Invoice opens on the visit charge itself: consultation, follow-up, ER assessment or admission bed. Nothing else can be billed until this is invoiced, so the desk always knows the visit is settled.'],
+    ['Step 2 — orders & services','Once step 1 is invoiced, step 2 unlocks on the same tab: the doctor’s pending orders appear ready to tick, plus a catalogue for anything extra. The insurance split, deductible and annual-limit cap recalculate on every keystroke.'],
+    ['Settle','The totals bar at the bottom opens a payment panel that slides in from the right. Add as many tenders as you like — Cash, Card, Transfer, Voucher, Advance, Credit — each with its own reference fields. Complete stays disabled until the tendered total matches the payable.'],
+    ['Advance','Take a deposit any time; it becomes a payment mode on every future invoice for that patient.'],
+    ['Credit settlement','The Credit tab lists every open receivable with ageing. Settle one or all, part or full — each settlement issues its own receipt.'],
+    ['Refund','Open an invoice, pick the lines to reverse, choose a reason. Above SAR '+APPROVAL_THRESHOLD+' it waits for supervisor approval; the payer share is reversed too.'],
+    ['Print','Every invoice, deposit, settlement and credit note prints as an A4 document.'],
+  ];
+  return `<div class="modal w-lg"><div class="m-h">${ic('info')}<h2>How this workspace flows</h2>
+    <span class="m-s">prototype</span><button class="x-btn" data-act="mClose">${ic('x')}</button></div>
+    <div class="m-b">
+      <div class="alert a-blue">${ic('info')}<div>One screen, no navigation. Everything below happens in this
+        workspace — modals only appear for things that genuinely need a decision.</div></div>
+      ${steps.map((s,i)=>`<div class="row" style="align-items:flex-start;gap:11px;margin-bottom:11px">
+        <div class="pav" style="width:26px;height:26px;font-size:11px;background:var(--accent-soft);color:var(--accent)">${i+1}</div>
+        <div style="flex:1"><div class="t-strong">${esc(s[0])}</div>
+          <div class="t-mut t-xs" style="line-height:1.5">${esc(s[1])}</div></div></div>`).join('')}
+      <div class="alert a-amber" style="margin-top:4px">${ic('alert')}<div><b>ER and Inpatient are placeholders.</b>
+        They already share the session shell, rail, basket, split engine and payment panel — their type-specific
+        steps (triage, deposit deferral, bed charges, interim bills, discharge clearance) hook into
+        <span class="mono">VISIT_TYPES</span> without changing the OPD workflow.</div></div>
+    </div>
+    <div class="m-f"><button class="btn btn-primary" data-act="mClose">Got it</button></div></div>`;
+}
+
+/* ---------- add visit ---------- */
+ACT.newVisit     = d => { S.modal={type:'newVisit', ptId:d.p, lockPt:true, vtype:d.t||'OPD',
+                            clinic:'General Medicine', doctor:DOCTORS[0], refFrom:'', refReason:''}; paint(); };
+ACT.newVisitPick = d => { S.modal={type:'newVisit', ptId:null, vtype:d.t||'OPD',
+                            clinic:'General Medicine', doctor:DOCTORS[0], refFrom:'', refReason:''}; paint(); };
+
+function mNewVisit(m){
+  const t = VISIT_TYPES[m.vtype];
+  return `<div class="modal w-lg"><div class="m-h">${ic('plus')}<h2>Add visit</h2>
+    <span class="m-s">${dtstr(NOW())}</span><button class="x-btn" data-act="mClose">${ic('x')}</button></div>
+    <div class="m-b">
+      ${pickerBlock(m)}
+      <div class="field" style="margin-bottom:13px"><span class="label">Visit type</span>
+        <div class="tpick">${Object.keys(VISIT_TYPES).map(k=>{
+          const x = VISIT_TYPES[k];
+          return `<button class="tp ${m.vtype===k?'on':''}" data-act="setVtype" data-t="${k}">
+            <div class="tp-n"><span style="color:${x.color}">${ic(x.icon,'ico-sm')}</span> ${esc(x.label)}</div>
+            <div class="tp-d">${esc(x.desc)}</div></button>`;
+        }).join('')}</div></div>
+      <div class="grid2">
+        <div class="field"><span class="label">Clinic / Department</span>
+          <select class="ctl" data-inp="mField" data-k="clinic" ${t.needsClinic?'':'disabled'}>
+            ${CLINICS.map(c=>`<option ${m.clinic===c?'selected':''}>${esc(c)}</option>`).join('')}</select>
+          ${t.needsClinic?'':`<span class="hint">Not required for ${esc(t.label)}.</span>`}</div>
+        <div class="field"><span class="label">Attending doctor</span>
+          <select class="ctl" data-inp="mField" data-k="doctor" ${t.needsClinic?'':'disabled'}>
+            ${DOCTORS.map(c=>`<option ${m.doctor===c?'selected':''}>${esc(c)}</option>`).join('')}</select></div>
+      </div>
+      ${t.needsReferral?`<div class="grid2" style="margin-top:11px">
+        <div class="field"><span class="label">Referred from</span>
+          <input class="ctl" placeholder="Facility / doctor" data-fk="rf" data-inp="mField" data-k="refFrom" value="${esc(m.refFrom||'')}"></div>
+        <div class="field"><span class="label">Referral reason</span>
+          <input class="ctl" placeholder="Reason" data-fk="rr" data-inp="mField" data-k="refReason" value="${esc(m.refReason||'')}"></div>
+      </div>`:''}
+      ${m.vtype==='IP'?`<div class="field" style="margin-top:11px"><span class="label">Ward / Bed</span>
+        <input class="ctl" placeholder="e.g. W-3 / Bed 12" data-fk="wb" data-inp="mField" data-k="ward" value="${esc(m.ward||'')}"></div>`:''}
+      ${m.vtype==='ER'?`<div class="field" style="margin-top:11px"><span class="label">Triage level</span>
+        <select class="ctl" data-inp="mField" data-k="triage">
+          ${['Level 1 — Resuscitation','Level 2 — Emergent','Level 3 — Urgent','Level 4 — Less urgent','Level 5 — Non-urgent']
+            .map(x=>`<option ${m.triage===x?'selected':''}>${esc(x)}</option>`).join('')}</select></div>`:''}
+      ${t.stub?`<div class="alert a-blue" style="margin-top:13px">${ic('info')}<div>${esc(t.stub)}</div></div>`:''}
+      ${t.freeConsult?`<div class="alert a-green" style="margin-top:13px">${ic('checkC')}<div>Consultation will be
+        auto-waived on this visit; only new services and orders get billed.</div></div>`:''}
+      ${m.ptId&&!insActive(findPt(m.ptId))?`<div class="alert a-amber" style="margin-top:13px">${ic('alert')}<div>
+        This patient has no live coverage — the visit will price as self-pay.</div></div>`:''}
+    </div>
+    <div class="m-f"><span class="hint" style="flex:1">The visit opens as a new session tab.</span>
+      <button class="btn" data-act="mClose">Cancel</button>
+      <button class="btn btn-primary" data-act="createVisit" ${m.ptId?'':'disabled'}>${ic('plus','ico-sm')} Create & open</button></div></div>`;
+}
+ACT.setVtype = d => {
+  S.modal.vtype = d.t;
+  if(d.t==='ER'){ S.modal.clinic='Emergency'; S.modal.triage = S.modal.triage||'Level 3 — Urgent'; }
+  if(d.t==='FOLLOWUP' || d.t==='OPD' || d.t==='REFERRAL'){ if(S.modal.clinic==='Emergency') S.modal.clinic='General Medicine'; }
+  paint();
+};
+ACT.createVisit = () => {
+  const m = S.modal, pt = findPt(m.ptId), t = VISIT_TYPES[m.vtype];
+  const v = {
+    id:uid('V'), no:nextNo('vis','VIS-'), type:m.vtype, date:NOW(),
+    clinic: t.needsClinic ? m.clinic : (m.vtype==='ER' ? 'Emergency' : '—'),
+    doctor: t.needsClinic ? m.doctor : (m.vtype==='ER' ? 'Dr. Omar Baz' : '—'),
+    status: m.vtype==='IP' ? 'Admitted' : 'Open', deductibleApplied:false, orders:[]
+  };
+  if(m.vtype==='IP') v.ward = m.ward || 'W-1 / Bed 01';
+  if(m.vtype==='ER') v.triage = m.triage || 'Level 3 — Urgent';
+  if(t.needsReferral) v.referral = {no:nextNo('ref','REF-'), from:m.refFrom||'External referral',
+                                    dir:'Inbound', reason:m.refReason||'—', by:'—'};
+  pt.visits.unshift(v);
+  S.modal = null;
+  toast('Visit '+v.no+' created.');
+  openSession(pt.id, v.id, 'charge');
+};
+
+/* ---------- advance ---------- */
+ACT.addAdv  = d => { S.modal={type:'advAdd', ptId:d.p||null, lockPt:!!d.p, amount:'', mode:'cash', ref:'', note:''}; paint(); };
+ACT.advPick = () => { S.modal={type:'advAdd', ptId:null, amount:'', mode:'cash', ref:'', note:''}; paint(); };
+
+function mAdvAdd(m){
+  const pt = m.ptId ? findPt(m.ptId) : null;
+  const amt = +m.amount || 0;
+  const modes = PAYMENT_MODES.filter(x=>x.kind==='settle');
+  return `<div class="modal"><div class="m-h">${ic('wallet')}<h2>Add patient advance</h2>
+    <button class="x-btn" data-act="mClose">${ic('x')}</button></div>
+    <div class="m-b">
+      ${pickerBlock(m)}
+      ${pt?`<div class="stat" style="margin-bottom:13px"><div class="s-k">Current balance</div>
+        <div class="s-v">${money(pt.advance.balance)}</div>
+        <div class="s-x">after this deposit: <b>${money(pt.advance.balance + amt)}</b></div></div>`:''}
+      <div class="grid2">
+        <div class="field"><span class="label">Amount (SAR)</span>
+          <input class="ctl" type="number" min="0" step="0.01" placeholder="0.00"
+            data-fk="aa" data-inp="mField" data-k="amount" data-repaint="1" value="${esc(m.amount)}"></div>
+        <div class="field"><span class="label">Received via</span>
+          <select class="ctl" data-inp="mField" data-k="mode" data-repaint="1">
+            ${modes.map(x=>`<option value="${x.id}" ${m.mode===x.id?'selected':''}>${esc(x.label)}</option>`).join('')}</select></div>
+      </div>
+      <div class="row wrap" style="margin-top:9px">${[100,200,500,1000,2000,5000].map(x=>
+        `<button class="btn btn-xs" data-act="advQuick" data-v="${x}">${money(x)}</button>`).join('')}</div>
+      ${(PAYMENT_MODES.find(x=>x.id===m.mode)||{}).ref?`<div class="field" style="margin-top:11px">
+        <span class="label">${esc(PAYMENT_MODES.find(x=>x.id===m.mode).ref)}</span>
+        <input class="ctl" data-fk="ar" data-inp="mField" data-k="ref" value="${esc(m.ref)}"></div>`:''}
+      <div class="field" style="margin-top:11px"><span class="label">Note (optional)</span>
+        <input class="ctl" placeholder="e.g. admission deposit, package prepayment"
+          data-fk="an" data-inp="mField" data-k="note" value="${esc(m.note)}"></div>
+      <div class="alert a-blue" style="margin-top:13px">${ic('info')}<div>A deposit receipt is generated and the
+        balance becomes selectable as <b>Patient Advance</b> on any future invoice.</div></div>
+    </div>
+    <div class="m-f"><button class="btn" data-act="mClose">Cancel</button>
+      <button class="btn btn-primary" data-act="saveAdv" ${(pt&&amt>0)?'':'disabled'}>
+        ${ic('checkC','ico-sm')} Receive ${money(amt)}</button></div></div>`;
+}
+ACT.advQuick = d => { S.modal.amount = String((+S.modal.amount||0) + (+d.v)); paint(); };
+ACT.saveAdv = () => {
+  const m = S.modal, pt = findPt(m.ptId), amt = Math.round((+m.amount||0)*100)/100;
+  const tx = {id:uid('ADV'), no:nextNo('rct','RCT-'), type:'Deposit', amount:amt, mode:m.mode,
+              ref:m.ref||'', at:NOW(), by:S.user.name, note:m.note||''};
+  pt.advance.txns.push(tx);
+  pt.advance.balance = Math.round((pt.advance.balance + amt)*100)/100;
+  S.modal = {type:'doc', title:'Advance deposit receipt', html:docReceipt(pt, {
+    no:tx.no, kind:'ADVANCE DEPOSIT', date:tx.at,
+    rows:[['Deposit amount', amt]], total:amt, mode:m.mode, ref:m.ref,
+    foot:'Advance balance after this receipt: SAR '+money(pt.advance.balance)})};
+  toast('Advance '+money(amt)+' received · '+tx.no);
+  paint();
+};
+
+ACT.refundAdv = d => { S.modal={type:'advRefund', ptId:d.p, amount:String(findPt(d.p).advance.balance),
+                          mode:'cash', ref:'', reason:'Patient requested refund of unused advance'}; paint(); };
+function mAdvRefund(m){
+  const pt = findPt(m.ptId), amt = +m.amount||0;
+  const over = amt > pt.advance.balance;
+  return `<div class="modal w-sm"><div class="m-h">${ic('undo')}<h2>Refund advance balance</h2>
+    <button class="x-btn" data-act="mClose">${ic('x')}</button></div>
+    <div class="m-b">
+      <div class="stat" style="margin-bottom:13px"><div class="s-k">Available to refund</div>
+        <div class="s-v">${money(pt.advance.balance)}</div><div class="s-x">${esc(pt.name)} · MRN ${esc(pt.mrn)}</div></div>
+      <div class="field"><span class="label">Refund amount</span>
+        <input class="ctl" type="number" min="0" step="0.01" data-fk="ra" data-inp="mField" data-k="amount" data-repaint="1" value="${esc(m.amount)}">
+        ${over?`<span class="hint" style="color:var(--red)">Exceeds the available balance.</span>`:''}</div>
+      <div class="field" style="margin-top:11px"><span class="label">Refund via</span>
+        <select class="ctl" data-inp="mField" data-k="mode">
+          ${PAYMENT_MODES.filter(x=>x.kind==='settle').map(x=>
+            `<option value="${x.id}" ${m.mode===x.id?'selected':''}>${esc(x.label)}</option>`).join('')}</select></div>
+      <div class="field" style="margin-top:11px"><span class="label">Reason</span>
+        <textarea class="ctl" data-fk="rr2" data-inp="mField" data-k="reason">${esc(m.reason)}</textarea></div>
+    </div>
+    <div class="m-f"><button class="btn" data-act="mClose">Cancel</button>
+      <button class="btn btn-danger" data-act="saveAdvRefund" ${(amt>0&&!over)?'':'disabled'}>Refund ${money(amt)}</button></div></div>`;
+}
+ACT.saveAdvRefund = () => {
+  const m = S.modal, pt = findPt(m.ptId), amt = Math.round((+m.amount||0)*100)/100;
+  const tx = {id:uid('ADV'), no:nextNo('rct','RCT-'), type:'Refunded', amount:-amt, mode:m.mode,
+              ref:m.ref||'', at:NOW(), by:S.user.name, note:m.reason};
+  pt.advance.txns.push(tx);
+  pt.advance.balance = Math.round((pt.advance.balance - amt)*100)/100;
+  S.modal = {type:'doc', title:'Advance refund voucher', html:docReceipt(pt, {
+    no:tx.no, kind:'ADVANCE REFUND', date:tx.at, rows:[['Refund of unused advance', amt]],
+    total:amt, mode:m.mode, ref:m.ref, foot:'Remaining advance balance: SAR '+money(pt.advance.balance)})};
+  toast('Advance refunded · '+tx.no);
+  paint();
+};
+ACT.clearPt = () => { S.modal.ptId = null; S.modal.q = ''; paint(); };
+
+/* ================================================================
+   16. INVOICE VIEW / PRINT
+   ================================================================ */
+function locateInv(id){
+  for(const p of PATIENTS){ const iv = p.invoices.find(x=>x.id===id); if(iv) return {pt:p, iv}; }
+  return null;
+}
+ACT.viewInv  = d => { S.modal={type:'invoice', invId:d.i}; paint(); };
+ACT.printInv = d => { const {pt,iv} = locateInv(d.i); printDoc(docInvoice(pt, iv)); };
+
+function mInvoice(m){
+  const {pt, iv} = locateInv(m.invId);
+  const html = docInvoice(pt, iv);
+  const openCr = iv.creditAmt - iv.creditSettled;
+  const refunded = iv.refunds.filter(r=>r.status==='Approved').reduce((a,r)=>a+r.amount,0);
+  return `<div class="modal w-lg"><div class="m-h">${ic(m.fresh?'checkC':'file')}
+    <h2>${m.fresh?'Invoice created':'Invoice'} ${esc(iv.no)}</h2>
+    <span class="m-s">${dtstr(iv.date)}</span>
+    <button class="x-btn" data-act="mClose">${ic('x')}</button></div>
+    <div class="m-b">
+      ${m.fresh && m.unlocked?`<div class="alert a-green">${ic('checkC')}<div><b>Visit is now invoiced — step 2 is unlocked.</b>
+        Close this and the doctor's orders become billable on the same screen.</div></div>`
+      :m.fresh?`<div class="alert a-green">${ic('checkC')}<div><b>Done — you never left the workspace.</b>
+        The charge list is cleared and the session stays open on this visit.</div></div>`:''}
+      ${openCr>0.005?`<div class="alert a-amber">${ic('alert')}<div><b>${money(openCr)} on credit.</b>
+        Settle it from the Credit tab whenever the guarantor pays.</div></div>`:''}
+      ${refunded>0?`<div class="alert a-red">${ic('undo')}<div><b>${money(refunded)} refunded</b> against this invoice.</div></div>`:''}
+      <div class="preview-wrap">${html}</div>
+    </div>
+    <div class="m-f">
+      <button class="btn btn-ghost" data-act="refundInv" data-i="${iv.id}">${ic('undo','ico-sm')} Refund</button>
+      <div class="spacer"></div>
+      <button class="btn" data-act="mClose">Close</button>
+      <button class="btn btn-blue" data-act="printInv" data-i="${iv.id}">${ic('print','ico-sm')} Print</button></div></div>`;
+}
+
+function mDoc(m){
+  return `<div class="modal w-lg"><div class="m-h">${ic('file')}<h2>${esc(m.title)}</h2>
+    <button class="x-btn" data-act="mClose">${ic('x')}</button></div>
+    <div class="m-b"><div class="preview-wrap">${m.html}</div></div>
+    <div class="m-f"><button class="btn" data-act="mClose">Close</button>
+      <button class="btn btn-blue" data-act="printThis">${ic('print','ico-sm')} Print</button></div></div>`;
+}
+ACT.printThis = () => printDoc(S.modal.html);
+function printDoc(html){ $('#printArea').innerHTML = html; window.print(); }
+
+/* ================================================================
+   17. REFUND FLOW
+   ================================================================ */
+ACT.refundInv = d => {
+  const {iv} = locateInv(d.i);
+  const sel = {};
+  iv.lines.forEach((l,i)=>{ sel[i] = false; });
+  S.modal = {type:'refund', invId:iv.id, sel, reason:REFUND_REASONS[0], note:'', mode:'cash', ref:''};
+  paint();
+};
+ACT.rfLine  = (d,el) => { S.modal.sel[d.i] = el.checked; paint(); };
+ACT.rfAll   = () => {
+  const {iv} = locateInv(S.modal.invId);
+  const all = iv.lines.every((l,i)=>S.modal.sel[i] || (l.patient - l.refunded) <= 0.005);
+  iv.lines.forEach((l,i)=>{ S.modal.sel[i] = all ? false : (l.patient - l.refunded) > 0.005; });
+  paint();
+};
+
+function refundCalc(iv, sel){
+  let patient = 0, company = 0;
+  const lines = [];
+  iv.lines.forEach((l,i)=>{
+    if(!sel[i]) return;
+    const avail = Math.round((l.patient - l.refunded)*100)/100;
+    if(avail <= 0.005) return;
+    patient += avail; company += l.company;
+    lines.push({idx:i, code:l.code, name:l.name, qty:l.qty, patient:avail, company:l.company});
+  });
+  return {lines, patient:Math.round(patient*100)/100, company:Math.round(company*100)/100};
+}
+
+function mRefund(m){
+  const {pt, iv} = locateInv(m.invId);
+  const r = refundCalc(iv, m.sel);
+  const needsApproval = r.patient > APPROVAL_THRESHOLD;
+  const paidModes = iv.payments.filter(p=>kindOf(p.mode)==='settle' || kindOf(p.mode)==='advance');
+  return `<div class="modal w-xl"><div class="m-h">${ic('undo')}<h2>Refund invoice ${esc(iv.no)}</h2>
+    <span class="m-s">${esc(pt.name)} · ${dstr(iv.date)}</span>
+    <button class="x-btn" data-act="mClose">${ic('x')}</button></div>
+    <div class="m-b">
+      <div class="alert a-amber">${ic('alert')}<div>Pick only the lines being reversed. The payer share is
+        credited back to <b>${esc(iv.payerName)}</b> and the annual limit is restored automatically.</div></div>
+      <div class="card"><div class="card-h">${ic('list')}<h3>Invoice lines</h3><div class="spacer"></div>
+        <button class="btn btn-xs" data-act="rfAll">Toggle all refundable</button></div>
+      <div class="card-b p0"><table>
+        <thead><tr><th style="width:34px"></th><th>Service</th><th class="c">Qty</th><th class="r">Net</th>
+          <th class="r">Payer</th><th class="r">Patient</th><th class="r">Already refunded</th><th class="r">Refundable</th></tr></thead>
+        <tbody>${iv.lines.map((l,i)=>{
+          const avail = Math.round((l.patient - l.refunded)*100)/100;
+          return `<tr class="hov" style="${avail<=0.005?'opacity:.5':''}">
+            <td><input type="checkbox" class="cb" ${m.sel[i]?'checked':''} ${avail<=0.005?'disabled':''}
+                  data-inp="rfLine" data-i="${i}"></td>
+            <td><div class="t-strong">${esc(l.name)}</div><div class="hint mono">${esc(l.code)}</div></td>
+            <td class="c num">${l.qty}</td><td class="r num">${money(l.net)}</td>
+            <td class="r num" style="color:var(--blue)">${money(l.company)}</td>
+            <td class="r num">${money(l.patient)}</td>
+            <td class="r num t-mut">${l.refunded?money(l.refunded):'—'}</td>
+            <td class="r num t-strong">${money(avail)}</td></tr>`;
+        }).join('')}</tbody></table></div></div>
+
+      <div class="grid2">
+        <div>
+          <div class="field" style="margin-bottom:11px"><span class="label">Reason</span>
+            <select class="ctl" data-inp="mField" data-k="reason">
+              ${REFUND_REASONS.map(x=>`<option ${m.reason===x?'selected':''}>${esc(x)}</option>`).join('')}</select></div>
+          <div class="field" style="margin-bottom:11px"><span class="label">Refund via</span>
+            <select class="ctl" data-inp="mField" data-k="mode" data-repaint="1">
+              ${PAYMENT_MODES.filter(x=>x.kind==='settle'||x.kind==='advance').map(x=>
+                `<option value="${x.id}" ${m.mode===x.id?'selected':''}>${esc(x.label)}${x.kind==='advance'?' (back to wallet)':''}</option>`).join('')}</select>
+            <span class="hint">Originally settled by: ${paidModes.map(p=>esc(PAYMENT_MODES.find(x=>x.id===p.mode).label)).join(', ')||'credit'}</span></div>
+          <div class="field"><span class="label">Note</span>
+            <textarea class="ctl" placeholder="Free text for the credit note"
+              data-fk="rn" data-inp="mField" data-k="note">${esc(m.note)}</textarea></div>
+        </div>
+        <div>
+          <div class="card" style="margin:0"><div class="card-h">${ic('undo')}<h3>Refund summary</h3></div>
+            <div class="card-b">
+              <div class="sumline"><span class="sk">Lines selected</span><span class="sv">${r.lines.length} of ${iv.lines.length}</span></div>
+              <div class="sumline"><span class="sk">Payer share reversed</span><span class="sv" style="color:var(--blue)">${money(r.company)}</span></div>
+              <div class="sumline big"><span class="sk">Refund to patient</span><span class="sv">${money(r.patient)}</span></div>
+              ${needsApproval?`<div class="alert a-amber" style="margin:11px 0 0">${ic('lock')}<div>
+                Above the SAR ${APPROVAL_THRESHOLD} counter limit — this will be raised as
+                <b>pending approval</b> and shows up in the invoice's refund history for a supervisor.</div></div>`
+               :r.patient>0?`<div class="alert a-green" style="margin:11px 0 0">${ic('checkC')}<div>
+                Within the counter limit — refunds immediately and prints a credit note.</div></div>`:''}
+            </div></div>
+        </div>
+      </div>
+    </div>
+    <div class="m-f"><button class="btn" data-act="mClose">Cancel</button>
+      <button class="btn btn-danger" data-act="saveRefund" ${r.patient>0.005?'':'disabled'}>
+        ${ic('undo','ico-sm')} ${needsApproval?'Raise refund':'Refund'} ${money(r.patient)}</button></div></div>`;
+}
+
+ACT.saveRefund = () => {
+  const m = S.modal, {pt, iv} = locateInv(m.invId);
+  const r = refundCalc(iv, m.sel);
+  const needsApproval = r.patient > APPROVAL_THRESHOLD;
+  const rf = {
+    id:uid('RFD'), no:nextNo('rfd','CRN-'), invId:iv.id, invNo:iv.no, at:NOW(), by:S.user.name,
+    reason:m.reason, note:m.note, mode:m.mode, ref:m.ref, amount:r.patient, company:r.company,
+    lines:r.lines, status: needsApproval ? 'Pending approval' : 'Approved'
+  };
+  iv.refunds.push(rf); pt.refunds.push(rf);
+  if(!needsApproval) applyRefund(pt, iv, rf);
+  S.modal = needsApproval
+    ? {type:'doc', title:'Refund request raised', html:docRefund(pt, iv, rf)}
+    : {type:'doc', title:'Credit note', html:docRefund(pt, iv, rf)};
+  toast(needsApproval ? 'Refund '+rf.no+' awaiting approval.' : 'Refunded '+money(rf.amount)+' · '+rf.no);
+  paint();
+};
+
+function applyRefund(pt, iv, rf){
+  rf.lines.forEach(l=>{ iv.lines[l.idx].refunded = Math.round((iv.lines[l.idx].refunded + l.patient)*100)/100; });
+  if(rf.company > 0 && pt.plan) pt.plan.consumed = Math.max(0, Math.round((pt.plan.consumed - rf.company)*100)/100);
+  if(kindOf(rf.mode) === 'advance'){
+    pt.advance.balance = Math.round((pt.advance.balance + rf.amount)*100)/100;
+    pt.advance.txns.push({id:uid('ADV'), no:nextNo('rct','RCT-'), type:'Deposit', amount:rf.amount,
+      mode:'advance', ref:rf.no, at:NOW(), by:S.user.name, note:'Refund of '+iv.no+' credited to wallet'});
+  }
+  const fully = iv.lines.every(l => (l.patient - l.refunded) <= 0.005);
+  iv.status = fully ? 'Refunded' : 'Part refunded';
+}
+ACT.approveRfd = d => {
+  for(const pt of PATIENTS){
+    const rf = pt.refunds.find(x=>x.id===d.r);
+    if(!rf) continue;
+    const {iv} = locateInv(rf.invId);
+    rf.status = 'Approved'; rf.approvedBy = 'Supervisor · F. Qassim'; rf.approvedAt = NOW();
+    applyRefund(pt, iv, rf);
+    S.modal = {type:'doc', title:'Credit note', html:docRefund(pt, iv, rf)};
+    toast('Refund '+rf.no+' approved · '+money(rf.amount));
+    paint(); return;
+  }
+};
+ACT.printRfd = d => {
+  for(const pt of PATIENTS){
+    const rf = pt.refunds.find(x=>x.id===d.r);
+    if(rf){ const {iv}=locateInv(rf.invId); printDoc(docRefund(pt, iv, rf)); return; }
+  }
+};
+
+/* ================================================================
+   18. CREDIT SETTLEMENT
+   ================================================================ */
+ACT.settleOne = d => {
+  const found = locateInv(d.i); if(!found) return toast('Invoice not found.', true);
+  const iv = found.iv;
+  const bal = Math.round((iv.creditAmt - iv.creditSettled)*100)/100;
+  if(bal <= 0.005) return toast('Nothing outstanding on '+iv.no+'.', true);
+  S.modal = {type:'settle', invIds:[iv.id], amount:String(bal), mode:'cash', ref:''};
+  paint();
+};
+ACT.settleAll = d => {
+  const pt = findPt(d.p), open = openCredit(pt);
+  if(!open.length) return toast('No open credit for this patient.', true);
+  S.modal = {type:'settle', invIds:open.map(i=>i.id), amount:String(creditOut(pt)), mode:'cash', ref:''};
+  paint();
+};
+
+function mSettle(m){
+  const ids = (m.invIds||[]).filter(id=>locateInv(id));
+  if(!ids.length) return `<div class="modal w-sm"><div class="m-h">${ic('info')}<h2>Nothing to settle</h2>
+    <button class="x-btn" data-act="mClose">${ic('x')}</button></div>
+    <div class="m-b"><div class="empty">${ic('checkC')}<h4>No open credit</h4>
+      <p>Every credit invoice for this patient has been settled.</p></div></div>
+    <div class="m-f"><button class="btn btn-primary" data-act="mClose">Close</button></div></div>`;
+  m.invIds = ids;
+  const pt = locateInv(ids[0]).pt;
+  const invs = m.invIds.map(id=>locateInv(id).iv);
+  const outstanding = Math.round(invs.reduce((a,i)=>a+(i.creditAmt-i.creditSettled),0)*100)/100;
+  const amt = Math.round((+m.amount||0)*100)/100;
+  const over = amt > outstanding + 0.005;
+  const advCap = pt.advance.balance;
+  const modes = PAYMENT_MODES.filter(x=>x.kind==='settle' || x.kind==='advance');
+  return `<div class="modal w-lg"><div class="m-h">${ic('credit')}<h2>Settle credit</h2>
+    <span class="m-s">${esc(pt.name)} · MRN ${esc(pt.mrn)}</span>
+    <button class="x-btn" data-act="mClose">${ic('x')}</button></div>
+    <div class="m-b">
+      <div class="card"><div class="card-h">${ic('list')}<h3>Invoices being settled</h3>
+        <span class="badge">${invs.length}</span></div>
+        <div class="card-b p0"><table><thead><tr><th>Invoice</th><th>Date</th><th>Guarantor / PO</th>
+          <th class="r">Credit</th><th class="r">Already settled</th><th class="r">Balance</th></tr></thead>
+        <tbody>${invs.map(iv=>{
+          const ref = (iv.payments.find(p=>p.mode==='credit')||{}).ref || '—';
+          return `<tr><td class="mono t-strong t-xs">${esc(iv.no)}</td><td class="t-xs">${dstr(iv.date)}</td>
+            <td class="t-xs mono">${esc(ref)}</td><td class="r num">${money(iv.creditAmt)}</td>
+            <td class="r num">${money(iv.creditSettled)}</td>
+            <td class="r num t-strong">${money(iv.creditAmt-iv.creditSettled)}</td></tr>`;
+        }).join('')}</tbody>
+        <tfoot><tr><th colspan="5" class="r">Total outstanding</th><th class="r num">${money(outstanding)}</th></tr></tfoot>
+        </table></div></div>
+      <div class="grid2">
+        <div class="field"><span class="label">Amount received</span>
+          <input class="ctl" type="number" min="0" step="0.01" data-fk="sa" data-inp="mField" data-k="amount" data-repaint="1" value="${esc(m.amount)}">
+          ${over?`<span class="hint" style="color:var(--red)">More than the outstanding balance.</span>`
+                :`<span class="hint">Part payments are allowed — the rest stays open.</span>`}</div>
+        <div class="field"><span class="label">Received via</span>
+          <select class="ctl" data-inp="mField" data-k="mode" data-repaint="1">
+            ${modes.map(x=>`<option value="${x.id}" ${m.mode===x.id?'selected':''}
+              ${x.kind==='advance'&&advCap<=0?'disabled':''}>${esc(x.label)}${x.kind==='advance'?' ('+money(advCap)+' available)':''}</option>`).join('')}</select></div>
+      </div>
+      ${(PAYMENT_MODES.find(x=>x.id===m.mode)||{}).ref?`<div class="field" style="margin-top:11px">
+        <span class="label">${esc(PAYMENT_MODES.find(x=>x.id===m.mode).ref)}</span>
+        <input class="ctl" data-fk="sr" data-inp="mField" data-k="ref" value="${esc(m.ref)}"></div>`:''}
+      <div class="alert a-blue" style="margin-top:13px">${ic('info')}<div>Settlement is applied oldest invoice
+        first. Each invoice that reaches zero flips to <b>Paid</b>; anything left stays on the credit worklist.</div></div>
+    </div>
+    <div class="m-f"><button class="btn" data-act="mClose">Cancel</button>
+      <button class="btn btn-primary" data-act="saveSettle" ${(amt>0&&!over)?'':'disabled'}>
+        ${ic('checkC','ico-sm')} Settle ${money(amt)}</button></div></div>`;
+}
+
+ACT.saveSettle = () => {
+  const m = S.modal, first = locateInv(m.invIds[0]), pt = first.pt;
+  let left = Math.round((+m.amount||0)*100)/100;
+  const total = left;
+  const invs = m.invIds.map(id=>locateInv(id).iv).sort((a,b)=>new Date(a.date)-new Date(b.date));
+  const touched = [];
+  for(const iv of invs){
+    if(left <= 0.005) break;
+    const bal = Math.round((iv.creditAmt - iv.creditSettled)*100)/100;
+    const take = Math.min(bal, left);
+    iv.creditSettled = Math.round((iv.creditSettled + take)*100)/100;
+    iv.paid = Math.round((iv.paid + take)*100)/100;
+    iv.creditLog = iv.creditLog || [];
+    const log = {id:uid('CRS'), no:nextNo('cr','SET-'), amount:take, mode:m.mode, ref:m.ref||'',
+                 at:NOW(), by:S.user.name};
+    iv.creditLog.push(log);
+    if(iv.creditAmt - iv.creditSettled <= 0.005 && iv.status==='Credit open') iv.status = 'Paid';
+    touched.push([iv.no, take]);
+    left = Math.round((left - take)*100)/100;
+  }
+  if(kindOf(m.mode) === 'advance'){
+    pt.advance.balance = Math.round((pt.advance.balance - total)*100)/100;
+    pt.advance.txns.push({id:uid('ADV'), no:nextNo('rct','RCT-'), type:'Applied', amount:-total,
+      mode:'advance', ref:touched.map(t=>t[0]).join(', '), at:NOW(), by:S.user.name, note:'Credit settlement'});
+  }
+  S.modal = {type:'doc', title:'Credit settlement receipt', html:docReceipt(pt, {
+    no:nextNo('cr','SET-'), kind:'CREDIT SETTLEMENT', date:NOW(),
+    rows:touched.map(t=>['Invoice '+t[0], t[1]]), total, mode:m.mode, ref:m.ref,
+    foot:'Remaining credit outstanding: SAR '+money(creditOut(pt))})};
+  toast('Settled '+money(total)+' across '+touched.length+' invoice(s).');
+  paint();
+};
+
+/* ================================================================
+   19. PRINTABLE DOCUMENTS
+   ================================================================ */
+function docHead(pt, title, no, date){
+  const h = HOSPITALS.find(x=>x.id===(pt.hospital||'ALH')) || HOSPITALS[0];
+  return `<div class="doc-h">
+    <div class="dh-l"><h1>VÍDA · ${esc(h.name)}</h1>
+      <p>${esc(h.city)}, Kingdom of Saudi Arabia · VAT 3001234567800003 · +966 12 000 0000</p></div>
+    <div class="dh-r"><div class="t">${esc(title)}</div>
+      <div style="margin-top:3px">No. <b>${esc(no)}</b></div>
+      <div>${dtstr(date)}</div></div></div>`;
+}
+function docParty(pt, extra){
+  return `<div class="doc-grid">
+    <div><div class="dg-t">Patient</div>
+      <div class="dg-r"><span>Name</span><b>${esc(pt.name)}</b></div>
+      <div class="dg-r"><span>MRN</span><b>${esc(pt.mrn)}</b></div>
+      <div class="dg-r"><span>National ID</span><span>${esc(pt.nid)}</span></div>
+      <div class="dg-r"><span>Age / Sex</span><span>${age(pt.dob)}y · ${esc(pt.gender)}</span></div>
+      <div class="dg-r"><span>Mobile</span><span>${esc(pt.phone)}</span></div></div>
+    <div><div class="dg-t">Payer</div>
+      <div class="dg-r"><span>Payer</span><b>${esc(payerOf(pt).name)}</b></div>
+      ${pt.plan?`<div class="dg-r"><span>Policy</span><span>${esc(pt.plan.no)}</span></div>
+      <div class="dg-r"><span>Class</span><span>${esc(pt.plan.class)}</span></div>
+      <div class="dg-r"><span>Status</span><b>${esc(pt.plan.status)}</b></div>
+      <div class="dg-r"><span>Limit remaining</span><span>SAR ${money(limitLeft(pt))}</span></div>`
+      :`<div class="dg-r"><span>Coverage</span><span>Self-pay</span></div>`}
+      ${(extra||[]).map(r=>`<div class="dg-r"><span>${esc(r[0])}</span><b>${esc(r[1])}</b></div>`).join('')}
+    </div></div>`;
+}
+function docSign(a, b){
+  return `<div class="doc-f"><div class="doc-sign">${esc(a)}</div><div class="doc-sign">${esc(b)}</div></div>`;
+}
+
+function docInvoice(pt, iv){
+  const v = pt.visits.find(x=>x.id===iv.visitId);
+  const t = v ? VISIT_TYPES[v.type] : null;
+  const refunded = iv.refunds.filter(r=>r.status==='Approved').reduce((a,r)=>a+r.amount,0);
+  const openCr = iv.creditAmt - iv.creditSettled;
+  return `<div class="doc">
+    ${docHead(pt, 'TAX INVOICE', iv.no, iv.date)}
+    ${docParty(pt, [['Invoice for', iv.kindLabel || (iv.kind==='visit' ? 'Visit charge' : 'Orders & services')],
+                    ['Visit', v ? v.no+' · '+t.label : '—'], ['Clinic', v?v.clinic:'—'], ['Doctor', v?v.doctor:'—']])}
+    <table class="doc-t"><thead><tr><th style="width:26px">#</th><th>Code</th><th>Description</th>
+      <th style="width:34px">Qty</th><th style="width:60px">Rate</th><th style="width:44px">Disc</th>
+      <th style="width:64px">Net</th><th style="width:70px">Payer</th><th style="width:70px">Patient</th></tr></thead>
+      <tbody>${iv.lines.map((l,i)=>`<tr>
+        <td>${i+1}</td><td>${esc(l.code)}</td>
+        <td>${esc(l.name)}<div style="font-size:8.5px;color:#666">${esc(l.note)}${l.refunded?' · refunded '+money(l.refunded):''}</div></td>
+        <td style="text-align:center">${l.qty}</td>
+        <td style="text-align:right">${money(l.price)}</td>
+        <td style="text-align:right">${l.disc?l.disc+'%':'—'}</td>
+        <td style="text-align:right">${money(l.net)}</td>
+        <td style="text-align:right">${money(l.company)}</td>
+        <td style="text-align:right"><b>${money(l.patient)}</b></td></tr>`).join('')}</tbody></table>
+    <div class="doc-tot">
+      <div class="dt-r"><span>Gross charges</span><span>${money(iv.T.gross)}</span></div>
+      ${iv.T.disc>0?`<div class="dt-r"><span>Discount</span><span>−${money(iv.T.disc)}</span></div>`:''}
+      <div class="dt-r"><span>Net charges</span><span>${money(iv.T.net)}</span></div>
+      <div class="dt-r"><span>${esc(PAYERS[iv.payerId].short)} share</span><span>−${money(iv.T.company)}</span></div>
+      ${iv.T.deduct>0?`<div class="dt-r"><span>Deductible charged to patient</span><span>${money(iv.T.deduct)}</span></div>`:''}
+      ${VAT_ON&&iv.T.vat>0?`<div class="dt-r"><span>VAT ${Math.round(VAT_RATE*100)}%</span><span>${money(iv.T.vat)}</span></div>`
+        :`<div class="dt-r"><span>VAT</span><span>Exempt — medical services</span></div>`}
+      <div class="dt-r b"><span>PATIENT PAYABLE (SAR)</span><span>${money(iv.T.due)}</span></div>
+      ${iv.payments.map(p=>`<div class="dt-r"><span>${esc(PAYMENT_MODES.find(m=>m.id===p.mode).label)}${p.ref?' · '+esc(p.ref):''}</span>
+        <span>${money(p.amount)}</span></div>`).join('')}
+      ${openCr>0.005?`<div class="dt-r"><span><b>Balance on credit</b></span><span><b>${money(openCr)}</b></span></div>`:''}
+      ${refunded>0?`<div class="dt-r"><span>Refunded to date</span><span>−${money(refunded)}</span></div>`:''}
+    </div>
+    ${docSign('Cashier — '+iv.cashier, 'Patient / Guarantor signature')}
+    <div class="doc-note">Insurance shares are provisional and subject to payer adjudication. Deductibles and
+      co-insurance follow the policy in force on the date of service. Keep this invoice for any reimbursement claim.
+      Refunds are subject to hospital policy and require this original document.</div>
+  </div>`;
+}
+
+function docReceipt(pt, o){
+  return `<div class="doc">
+    ${docHead(pt, o.kind, o.no, o.date)}
+    ${docParty(pt, [])}
+    <table class="doc-t"><thead><tr><th>Description</th><th style="width:110px">Amount (SAR)</th></tr></thead>
+      <tbody>${o.rows.map(r=>`<tr><td>${esc(r[0])}</td>
+        <td style="text-align:right">${money(r[1])}</td></tr>`).join('')}</tbody></table>
+    <div class="doc-tot">
+      <div class="dt-r"><span>Mode</span><span>${esc(PAYMENT_MODES.find(m=>m.id===o.mode).label)}${o.ref?' · '+esc(o.ref):''}</span></div>
+      <div class="dt-r b"><span>TOTAL (SAR)</span><span>${money(o.total)}</span></div>
+    </div>
+    ${o.foot?`<div class="doc-note" style="border:none;margin-top:9px"><b>${esc(o.foot)}</b></div>`:''}
+    ${docSign('Cashier — '+S.user.name, 'Received by')}
+    <div class="doc-note">This receipt is valid only with the hospital stamp. Advance balances are refundable
+      against this receipt subject to hospital policy.</div>
+  </div>`;
+}
+
+function docRefund(pt, iv, rf){
+  return `<div class="doc">
+    ${docHead(pt, rf.status==='Approved' ? 'CREDIT NOTE' : 'REFUND REQUEST', rf.no, rf.at)}
+    ${docParty(pt, [['Against invoice', iv.no], ['Invoice date', dstr(iv.date)], ['Status', rf.status]])}
+    <table class="doc-t"><thead><tr><th style="width:26px">#</th><th>Code</th><th>Description</th>
+      <th style="width:34px">Qty</th><th style="width:78px">Payer reversed</th><th style="width:82px">Patient refund</th></tr></thead>
+      <tbody>${rf.lines.map((l,i)=>`<tr><td>${i+1}</td><td>${esc(l.code)}</td><td>${esc(l.name)}</td>
+        <td style="text-align:center">${l.qty}</td>
+        <td style="text-align:right">${money(l.company)}</td>
+        <td style="text-align:right"><b>${money(l.patient)}</b></td></tr>`).join('')}</tbody></table>
+    <div class="doc-tot">
+      <div class="dt-r"><span>Reason</span><span>${esc(rf.reason)}</span></div>
+      ${rf.note?`<div class="dt-r"><span>Note</span><span>${esc(rf.note)}</span></div>`:''}
+      <div class="dt-r"><span>Refund mode</span><span>${esc(PAYMENT_MODES.find(m=>m.id===rf.mode).label)}</span></div>
+      <div class="dt-r"><span>Payer share reversed</span><span>${money(rf.company)}</span></div>
+      <div class="dt-r b"><span>REFUND TO PATIENT (SAR)</span><span>${money(rf.amount)}</span></div>
+    </div>
+    ${rf.status!=='Approved'?`<div class="doc-note" style="border:none"><b>Pending supervisor approval —
+      amount exceeds the SAR ${APPROVAL_THRESHOLD} counter limit. No money has moved yet.</b></div>`:''}
+    ${docSign(rf.status==='Approved' ? ('Approved — '+(rf.approvedBy||rf.by)) : ('Raised by — '+rf.by),
+              'Patient signature')}
+    <div class="doc-note">A credit note reverses the selected lines only. The payer share is credited back to the
+      insurer and the patient's annual limit is restored.</div>
+  </div>`;
+}
+
+ACT.printAdv = d => {
+  const pt = findPt(d.p), t = pt.advance.txns.find(x=>x.id===d.t);
+  printDoc(docReceipt(pt, {no:t.no, kind:t.amount>0?'ADVANCE DEPOSIT':'ADVANCE APPLIED', date:t.at,
+    rows:[[t.note||t.type, Math.abs(t.amount)]], total:Math.abs(t.amount), mode:t.mode, ref:t.ref,
+    foot:'Advance balance: SAR '+money(pt.advance.balance)}));
+};
+ACT.printCr = d => {
+  for(const pt of PATIENTS) for(const iv of pt.invoices){
+    const l = (iv.creditLog||[]).find(x=>x.id===d.l);
+    if(l){ printDoc(docReceipt(pt, {no:l.no, kind:'CREDIT SETTLEMENT', date:l.at,
+      rows:[['Invoice '+iv.no, l.amount]], total:l.amount, mode:l.mode, ref:l.ref,
+      foot:'Remaining credit outstanding: SAR '+money(creditOut(pt))})); return; }
+  }
+};
+
+/* ================================================================
+   20. BOOT
+   ================================================================ */
+bind();
+S.land = 'today';       /* open on the day's worklist rather than an empty search box */
+S.expanded = 'P1';
+paint();
+
+</script>
+</body>
+</html>

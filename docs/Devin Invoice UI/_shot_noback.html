@@ -1,0 +1,20 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>html,body{margin:0}iframe{width:100vw;height:100vh;border:0;display:block}</style></head><body>
+<script>
+const f=document.createElement('iframe');
+f.onload=()=>{const w=f.contentWindow;
+  const q=s=>w.document.querySelector(s),qa=s=>[...w.document.querySelectorAll(s)];
+  const seen=[];
+  // walk a visit through its steps and note whether any Back link ever appears
+  w.eval('openVisit')(1);
+  for(let i=0;i<10;i++){
+    const k=w.eval('nextStep')(w.eval('cases').find(x=>x.id===1)).key;
+    seen.push(k+(q('.step .stepback')?' [BACK]':''));
+    const btn=qa('.step .acts .btn')[0]; if(!btn) break;
+    btn.click();
+    const desk=qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent));
+    if(desk && w.eval('nextStep')(w.eval('cases').find(x=>x.id===1)).key==='COLLECT'){ seen.push('COLLECT'+(q('.step .stepback')?' [BACK]':'')); desk.click(); q('#dGo').click(); }
+  }
+  document.body.insertAdjacentHTML('beforeend','<pre id="out">'+seen.join('\n')+'</pre>');
+  document.title='D';};
+f.src='journey-opd-v2.html';document.body.appendChild(f);
+</script></body></html>

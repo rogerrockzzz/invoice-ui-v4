@@ -1,0 +1,397 @@
+<!DOCTYPE html><html><body>
+<pre id="out">running…</pre>
+<script>
+const log = [];
+const f = document.createElement('iframe');
+f.style.cssText = 'width:1500px;height:950px;border:0';
+f.onload = () => {
+  const w = f.contentWindow;
+  w.print = () => log.push('    (print suppressed)');
+  w.confirm = () => true;
+  w.onerror = (m,s,l) => { log.push('RUNTIME-ERR @line '+l+': '+m); return true; };
+
+  // top-level `const` bindings are script-scoped, not window props — reach them via global eval
+  ['S','ACT','PATIENTS','VISIT_TYPES','CAT_GROUPS','CATALOG','PAYMENT_MODES','PAYERS',
+   'findPt','findVis','creditOut','openCredit','allInv','limitLeft','insActive','kindOf',
+   'locateInv','NOW','money','stageOf','ordersUnlocked','visitNeedsCharge','visitInvoiceOf',
+   'chargeLines','chargeCalc','tenderTotal','tenderOf','refString','defaultVLine',
+   'MODE_FIELDS','DWR_TABS','TABS_STD','allRows','approvalFor','dedInfo','apBills',
+   'APPROVALS','visitsOf','visHosp','hospName','PREAPPROVAL_LIMIT'].forEach(n => {
+    try { w[n] = w.eval(n); } catch(e) { log.push('MISSING BINDING: '+n); }
+  });
+
+  const S = w.S, ACT = w.ACT;
+  const finish = () => {
+    const fails = log.filter(l => l.startsWith('FAIL') || l.startsWith('RUNTIME') || l.startsWith('MISSING'));
+    document.getElementById('out').textContent =
+      '### RESULT: '+(fails.length ? fails.length+' PROBLEM(S)' : 'ALL '+log.length+' STEPS PASSED')+' ###\n\n'
+      + log.join('\n');
+    document.title = 'SMOKE-DONE';
+  };
+  try {
+  const step = (name, fn) => {
+    try { const r = fn(); log.push('OK   '+name+(r!==undefined?' -> '+r:'')); }
+    catch(e){ log.push('FAIL '+name+': '+e.message+' | '+(e.stack||'').split('\n')[1]); }
+  };
+  const appLen = () => w.document.getElementById('app').innerHTML.length;
+  const modal  = () => S.modal ? S.modal.type : 'none';
+
+  // ---- landing states ----
+  ['search','today','invoices','credit'].forEach(v =>
+    step('landing:'+v, () => { ACT.land({v:v}); return appLen()+'b'; }));
+  step('search by name', () => { ACT.land({v:'search'}); S.q='ahmed'; w.paint(); return appLen()+'b'; });
+  step('expand patient', () => { ACT.expand({id:'P1'}); return appLen()+'b'; });
+
+  // ---- open sessions (multi-tab) ----
+  step('open P1/V1A (OPD)', () => { w.openSession('P1','V1A'); return 'tabs='+S.sessions.length; });
+  step('open P2/V2A (IP)',  () => { w.openSession('P2','V2A'); return 'tabs='+S.sessions.length; });
+  step('open P3/V3A (ER)',  () => { w.openSession('P3','V3A'); return 'tabs='+S.sessions.length; });
+  step('open P4/V4B (REF)', () => { w.openSession('P4','V4B'); return 'tabs='+S.sessions.length; });
+  step('open P6/V6A (pend approval)', () => { w.openSession('P6','V6A'); return 'ok'; });
+  step('open P8/V8A (limit nearly gone)', () => { w.openSession('P8','V8A'); return 'ok'; });
+  step('open P5 patient-only (no visit)', () => { w.openSession('P5',null,'invoices'); return 'ok'; });
+
+  // ---- every work tab on every session ----
+  S.sessions.forEach(s => {
+    const pt = w.findPt(s.ptId);
+    const v  = s.visitId ? w.findVis(pt, s.visitId) : null;
+    const tabs = v ? w.VISIT_TYPES[v.type].tabs : ['invoices','advance','credit'];
+    tabs.forEach(t => step('pane '+(v?v.type:'no-visit')+'/'+t+' ('+pt.name.split(' ')[0]+')',
+      () => { S.active=s.id; s.tab=t; w.paint(); return appLen()+'b'; }));
+  });
+
+  // ---- GATE: orders locked until the consultation is invoiced ----
+  step('focus OPD session', () => { S.active = S.sessions[0].id; S.sessions[0].tab='charge'; w.paint(); return 'ok'; });
+  const R = () => { const s=w.sess(), pt=w.findPt(s.ptId); return w.allRows(s, pt, w.findVis(pt,s.visitId)); };
+  step('one unified list (no steps)', () => {
+        const r=R(); return r.length+' rows: '+['consult','order','extra']
+          .map(g=>g+'='+r.filter(x=>x.group===g).length).join(' '); });
+  step('consultation is row 1', () => { const r=R()[0];
+        return 'group='+r.group+' code='+r.code+' selectable='+r.selectable; });
+  step('GATE: orders not selectable yet', () => {
+        const o=R().filter(x=>x.group==='order');
+        return o.every(x=>!x.selectable) ? 'correct: all '+o.length+' orders locked'
+                                         : 'BUG: an order is selectable before the consultation'; });
+  step('consultation auto-ticked', () => 'sel='+JSON.stringify(w.sess().sel));
+  step('selAll cannot unlock orders', () => { ACT.selAll();
+        const s=w.sess(), pt=w.findPt(s.ptId), v=w.findVis(pt,s.visitId);
+        const lines=w.chargeLines(s,pt,v);
+        return lines.length===1 && lines[0].group==='consult'
+          ? 'correct: only the consultation is chargeable' : 'BUG: '+lines.length+' lines got through'; });
+  step('catalogue disabled while locked', () => {
+        const btn=[...w.document.querySelectorAll('[data-act="toggleCat"]')][0];
+        return btn && btn.disabled ? 'correctly disabled' : 'BUG: add-service open while locked'; });
+
+  // ---- insurance status per line (from the doctor's order) ----
+  step('approval statuses present', () => {
+        const r=R(); return r.map(x=>x.group[0]+':'+x.approval).join(' | '); });
+  step('Pending line does NOT bill to payer', () => {
+        const s=w.sess(), pt=w.findPt(s.ptId), v=w.findVis(pt,s.visitId);
+        const pend=R().find(x=>x.approval==='Pending');
+        if(!pend) return 'no pending line in fixture';
+        const one=w.compute([pend], pt, {deductibleApplied:true}).rows[0];
+        return one.company===0 && one.patient===one.net
+          ? 'correct: patient pays all '+one.patient.toFixed(2)+' ("'+one.note+'")'
+          : 'BUG: payer charged '+one.company+' on a pending line'; });
+  step('deductible pool reported', () => { const dd=w.dedInfo(w.findPt('P1'));
+        return 'total='+dd.total+' used='+dd.used+' left='+dd.left+' perVisit='+dd.perVisit; });
+
+  // ---- invoice the consultation ----
+  step('change consultation type', () => { ACT.setVLineSel({}, {value:'CON-002'});
+        return 'code='+w.sess().vLine.code; });
+  step('waive insurance for a real patient share', () => {
+        const s=w.sess(); s.vLine.useIns=false; w.paint();
+        const pt=w.findPt(s.ptId), v=w.findVis(pt,s.visitId);
+        return 'due='+w.chargeCalc(s,pt,v).T.due.toFixed(2); });
+  step('open drawer', () => { ACT.openDrawer(); const D=w.sess().drawer;
+        return 'tab='+D.tab+' mode='+D.mode+' prefill='+D.f.amount; });
+  const nT = () => w.sess().drawer.tenders.length;
+  step('card needs approval code', () => { const s=w.sess(), b=nT();
+        ACT.dwrMode({m:'card'}); s.drawer.f.amount='100'; ACT.addTender();
+        return nT()===b ? 'correctly refused' : 'BUG: accepted'; });
+  step('card accepted with code', () => { const s=w.sess(), b=nT();
+        s.drawer.f.auth='448120'; s.drawer.f.amount='100'; ACT.addTender();
+        return nT()===b+1 ? 'total='+w.tenderTotal(s).toFixed(2) : 'BUG'; });
+  step('transfer needs cheque/date/bank', () => { const s=w.sess(), b=nT();
+        ACT.dwrMode({m:'transfer'}); s.drawer.f.amount='50'; ACT.addTender();
+        return nT()===b ? 'correctly refused' : 'BUG: accepted'; });
+  step('transfer accepted', () => { const s=w.sess(), b=nT();
+        s.drawer.f.chq='CHQ-9001'; s.drawer.f.date='2026-08-31'; s.drawer.f.bank='Riyad Bank';
+        s.drawer.f.amount='50'; ACT.addTender();
+        return nT()===b+1 ? 'ref="'+w.refString(s.drawer.tenders[nT()-1])+'"' : 'BUG'; });
+  step('overpay refused', () => { const s=w.sess(), b=nT();
+        ACT.dwrMode({m:'cash'}); s.drawer.f.amount='99999'; ACT.addTender();
+        return nT()===b ? 'correctly refused' : 'BUG: accepted'; });
+  step('fill + add remainder', () => { ACT.dwrFill({v:'rem'}); ACT.addTender();
+        return 'tenders='+nT()+' total='+w.tenderTotal(w.sess()).toFixed(2); });
+  let visitInvNo;
+  step('COMPLETE consultation invoice', () => { ACT.doInvoice();
+        const pt=w.findPt('P1'); const iv=pt.invoices[pt.invoices.length-1]; visitInvNo=iv.no;
+        return iv.no+' kind='+iv.kind+' due='+iv.T.due.toFixed(2)+' tenders='+iv.payments.length; });
+  step('close modal', () => { ACT.mClose(); return modal(); });
+
+  // ---- orders now unlocked in the SAME list ----
+  step('orders now selectable', () => {
+        const o=R().filter(x=>x.group==='order');
+        return o.every(x=>x.selectable) ? 'correct: all '+o.length+' unlocked' : 'BUG: still locked'; });
+  step('consultation now shows as invoiced', () => { const c=R()[0];
+        return 'invoiced='+c.invoiced+' invNo='+c.invNo+' selectable='+c.selectable; });
+  step('selection drives the totals', () => {
+        const s=w.sess(), pt=w.findPt(s.ptId), v=w.findVis(pt,s.visitId);
+        const before=w.chargeCalc(s,pt,v).T.net;
+        const o=R().find(x=>x.group==='order');
+        ACT.selRow({k:o.key},{checked:true});
+        const after=w.chargeCalc(s,pt,v).T.net;
+        return 'net '+before.toFixed(2)+' -> '+after.toFixed(2); });
+  step('select all billable', () => { ACT.selAll();
+        const s=w.sess(), pt=w.findPt(s.ptId), v=w.findVis(pt,s.visitId);
+        const r=w.chargeCalc(s,pt,v);
+        return 'lines='+w.chargeLines(s,pt,v).length+' net='+r.T.net.toFixed(2)+
+               ' payer='+r.T.company.toFixed(2)+' due='+r.T.due.toFixed(2); });
+  step('record a pre-approval', () => {
+        const s=w.sess(), pt=w.findPt(s.ptId), v=w.findVis(pt,s.visitId);
+        const pend=R().find(x=>x.approval==='Pending' && x.group==='order');
+        if(!pend) return 'none pending';
+        const before=w.chargeCalc(s,pt,v).T.company;
+        ACT.markAppr({k:pend.key});
+        const after=w.chargeCalc(s,pt,v).T.company;
+        return 'payer share '+before.toFixed(2)+' -> '+after.toFixed(2)+
+               (after>before?' (correctly restored)':' BUG: no change'); });
+  step('qty / disc edit on an order row', () => {
+        const o=R().find(x=>x.group==='order');
+        ACT.rowQty({k:o.key},{value:'2'}); ACT.rowDisc({k:o.key},{value:'10'});
+        const r2=R().find(x=>x.key===o.key); return 'qty='+r2.qty+' disc='+r2.disc; });
+  step('add other service', () => { ACT.toggleCat(); ACT.addItem({c:'RAD-205'});
+        const e=R().filter(x=>x.group==='extra');
+        return e.length+' extra, approval='+e[0].approval+' autoSelected='+!!w.sess().sel[e[0].key]; });
+  step('remove other service', () => { const e=R().find(x=>x.group==='extra');
+        ACT.delExtra({k:e.key}); return R().filter(x=>x.group==='extra').length+' extra'; });
+  step('deductible taken once', () => {
+        const s=w.sess(), pt=w.findPt(s.ptId), v=w.findVis(pt,s.visitId);
+        return 'deduct='+w.chargeCalc(s,pt,v).T.deduct.toFixed(2)+' visitFlag='+!!v.deductibleApplied; });
+  step('COMPLETE orders invoice', () => { ACT.openDrawer(); ACT.dwrFill({v:'rem'});
+        ACT.dwrMode({m:'cash'}); ACT.addTender(); ACT.doInvoice();
+        const pt=w.findPt('P1'); const iv=pt.invoices[pt.invoices.length-1];
+        return iv.no+' kind='+iv.kind+' lines='+iv.lines.length+' due='+iv.T.due.toFixed(2); });
+  step('orders marked billed', () => { const v=w.findVis(w.findPt('P1'),'V1A');
+        return v.orders.filter(o=>o.status==='Billed').length+' of '+v.orders.length; });
+  step('selection cleared', () => 'sel='+JSON.stringify(w.sess().sel)+' extras='+w.sess().extras.length);
+  step('close modal', () => { ACT.mClose(); return modal(); });
+  step('deductible pool after billing', () => { const dd=w.dedInfo(w.findPt('P1'));
+        return 'total='+dd.total+' used='+dd.used+' left='+dd.left; });
+
+  // ---- ALL VISITS tab + branch filter ----
+  step('close all sessions', () => { while(S.sessions.length) w.closeSession(S.sessions[0].id); return 'tabs=0'; });
+  step('visits tab in standard tabs', () => 'tabs='+w.TABS_STD.join(','));
+  step('All Visits pane renders', () => { w.openSession('P4','V4A'); w.sess().tab='visits'; w.paint();
+        return appLen()+'b'; });
+  step('branch filter OFF hides other branches', () => { S.allBranches=false; S.hospital='ALH'; w.paint();
+        const pt=w.findPt('P4');
+        return 'visible='+w.visitsOf(pt).length+' of '+pt.visits.length; });
+  step('branch filter ON reveals them', () => { S.allBranches=true; w.paint();
+        const pt=w.findPt('P4');
+        return 'visible='+w.visitsOf(pt).length+' of '+pt.visits.length; });
+  step('inter-branch visit tagged', () => { const pt=w.findPt('P4');
+        const ib=pt.visits.filter(v=>v.interBranch);
+        return ib.length+' inter-branch: '+ib.map(v=>v.interBranch.dir+' '+
+               w.hospName(v.interBranch.from)+'->'+w.hospName(v.interBranch.to)).join(', '); });
+  step('other-branch visit has own hospital', () => { const pt=w.findPt('P4');
+        const o=pt.visits.find(v=>w.visHosp(pt,v)!==pt.hospital);
+        return o ? o.no+' at '+w.hospName(w.visHosp(pt,o)) : 'none'; });
+  step('P5 inter-branch inbound', () => { const pt=w.findPt('P5');
+        return pt.visits.filter(v=>v.interBranch).map(v=>v.no+' '+v.interBranch.dir).join(', ')||'none'; });
+  step('All Visits for P1', () => { w.openSession('P1','V1A'); w.sess().tab='visits'; w.paint();
+        return appLen()+'b'; });
+  step('search card has no hospital select', () => { ACT.goHome(); w.paint();
+        const sels=[...w.document.querySelectorAll('.searchcard select')].map(x=>x.dataset.inp);
+        return sels.includes('hospital') ? 'BUG: hospital select still in search' : 'correct: only '+sels.join(','); });
+  step('topbar keeps the hospital select', () => {
+        const t=w.document.querySelector('.topbar select[data-inp="hospital"]');
+        return t ? 'present' : 'BUG: missing from topbar'; });
+  step('branch toggle present in search', () => {
+        return w.document.querySelector('[data-inp="allBranches"]') ? 'present' : 'BUG: missing'; });
+
+  // ---- SELF-PAY visit (all orders Self-pay) ----
+  step('close all sessions', () => { while(S.sessions.length) w.closeSession(S.sessions[0].id); return 'tabs=0'; });
+  step('ER self-pay statuses', () => { S.allBranches=true; w.openSession('P3','V3A'); w.sess().tab='charge'; w.paint();
+        return R().filter(x=>x.group==='order').map(x=>x.approval).join(','); });
+  step('ER: invoice visit charge then orders', () => {
+        ACT.openDrawer(); ACT.dwrFill({v:'rem'}); ACT.addTender(); ACT.doInvoice(); ACT.mClose();
+        ACT.selAll();
+        const s=w.sess(), pt=w.findPt('P3'), v=w.findVis(pt,'V3A');
+        const r=w.chargeCalc(s,pt,v);
+        return 'lines='+w.chargeLines(s,pt,v).length+' payer='+r.T.company.toFixed(2)+' due='+r.T.due.toFixed(2); });
+  step('ER complete', () => { ACT.openDrawer(); ACT.dwrFill({v:'rem'}); ACT.addTender(); ACT.doInvoice();
+        const pt=w.findPt('P3'); return pt.invoices[pt.invoices.length-1].no; });
+  step('close modal', () => { ACT.mClose(); return modal(); });
+
+  // ---- REJECTED approval falls to patient ----
+  step('close all sessions', () => { while(S.sessions.length) w.closeSession(S.sessions[0].id); return 'tabs=0'; });
+  step('P4 rejected orders', () => { w.openSession('P4','V4A'); w.sess().tab='charge'; w.paint();
+        return R().filter(x=>x.group==='order').map(x=>x.approval).join(','); });
+
+  // ---- WALKIN skips the gate ----
+  step('close all sessions', () => { while(S.sessions.length) w.closeSession(S.sessions[0].id); return 'tabs=0'; });
+  step('walk-in has no consultation row', () => { w.openSession('P7','V7A'); w.sess().tab='charge'; w.paint();
+        const r=R(); return 'rows='+r.length+' consult='+r.filter(x=>x.group==='consult').length+
+               ' unlocked='+w.ordersUnlocked(w.findPt('P7'), w.findVis(w.findPt('P7'),'V7A')); });
+  step('walk-in add + invoice', () => { ACT.toggleCat(); ACT.addItem({c:'MED-401'});
+        ACT.openDrawer(); ACT.dwrFill({v:'rem'}); ACT.addTender(); ACT.doInvoice();
+        const pt=w.findPt('P7'); return pt.invoices[pt.invoices.length-1].no; });
+  step('close modal', () => { ACT.mClose(); return modal(); });
+
+  // ---- FOLLOWUP zero-value ----
+  step('close all sessions', () => { while(S.sessions.length) w.closeSession(S.sessions[0].id); return 'tabs=0'; });
+  step('follow-up waiver', () => { w.openSession('P1','V1B'); w.sess().tab='charge'; w.paint();
+        return 'code='+w.sess().vLine.code+' disc='+w.sess().vLine.disc; });
+  step('zero-value complete', () => { const s=w.sess(), pt=w.findPt('P1'), v=w.findVis(pt,'V1B');
+        const due=w.chargeCalc(s,pt,v).T.due; ACT.openDrawer(); ACT.doInvoice();
+        const iv=pt.invoices[pt.invoices.length-1];
+        return 'due='+due.toFixed(2)+' -> '+iv.no+' tenders='+iv.payments.length; });
+  step('close modal', () => { ACT.mClose(); return modal(); });
+
+  // ---- ADVANCE tender ----
+  step('close all sessions', () => { while(S.sessions.length) w.closeSession(S.sessions[0].id); return 'tabs=0'; });
+  step('IP bed charge is the visit charge', () => { w.openSession('P2','V2A'); w.sess().tab='charge'; w.paint();
+        return 'code='+w.sess().vLine.code+' rows='+R().length; });
+  step('3 nights', () => { ACT.rowQty({k:'CONS'},{value:'3'}); return 'qty='+w.sess().vLine.qty; });
+  step('pay from wallet', () => { ACT.openDrawer(); ACT.dwrTab({t:'advance'}); ACT.dwrFill({v:'adv'});
+        ACT.addTender(); return 'tender='+w.tenderTotal(w.sess()).toFixed(2); });
+  step('wallet cap enforced', () => { const s=w.sess(), b=nT(); s.drawer.f.amount='99999'; ACT.addTender();
+        return nT()===b ? 'correctly capped' : 'BUG: over-drew'; });
+  step('COMPLETE from wallet', () => { ACT.doInvoice();
+        const pt=w.findPt('P2'); return pt.invoices[pt.invoices.length-1].no+' wallet='+pt.advance.balance; });
+  step('close modal', () => { ACT.mClose(); return modal(); });
+
+  // ---- CREDIT + settlement ----
+  step('close all sessions', () => { while(S.sessions.length) w.closeSession(S.sessions[0].id); return 'tabs=0'; });
+  step('open P5', () => { w.openSession('P5','V5A'); w.sess().tab='charge'; w.paint(); return 'ok'; });
+  step('credit needs PO', () => { ACT.openDrawer(); ACT.dwrTab({t:'credit'}); ACT.dwrFill({v:'rem'}); ACT.addTender();
+        return nT()===0 ? 'correctly refused' : 'BUG: accepted'; });
+  step('credit with PO', () => { const s=w.sess(); s.drawer.f.po='PO-AR-99001';
+        ACT.dwrFill({v:'rem'}); ACT.addTender(); return 'tenders='+nT(); });
+  step('COMPLETE on credit', () => { ACT.doInvoice();
+        return 'creditOut='+w.creditOut(w.findPt('P5')).toFixed(2); });
+  step('close modal', () => { ACT.mClose(); return modal(); });
+  step('settle ALL', () => { w.sess().tab='credit'; w.paint(); ACT.settleAll({p:'P5'});
+        return 'modal='+modal()+' amt='+S.modal.amount; });
+  step('part settle 100', () => { S.modal.amount='100'; w.paint(); ACT.saveSettle();
+        return 'creditOut='+w.creditOut(w.findPt('P5')).toFixed(2); });
+  step('close modal', () => { ACT.mClose(); return modal(); });
+  step('settle rest', () => { while(w.openCredit(w.findPt('P5')).length){
+          const iv=w.openCredit(w.findPt('P5'))[0]; ACT.settleOne({i:iv.id}); ACT.saveSettle(); ACT.mClose(); }
+        return 'creditOut='+w.creditOut(w.findPt('P5')).toFixed(2); });
+  step('settle-all guard when clear', () => { ACT.settleAll({p:'P5'}); return 'modal='+modal(); });
+  step('close modal', () => { ACT.mClose(); return modal(); });
+
+  // ---- SPLIT TENDER ----
+  step('close all sessions', () => { while(S.sessions.length) w.closeSession(S.sessions[0].id); return 'tabs=0'; });
+  step('open P8 + invoice visit', () => { w.openSession('P8','V8A'); w.sess().tab='charge'; w.paint();
+        const s=w.sess(), pt=w.findPt('P8'), v=w.findVis(pt,'V8A');
+        const d1=w.chargeCalc(s,pt,v);
+        ACT.openDrawer(); ACT.dwrFill({v:'rem'}); ACT.addTender(); ACT.doInvoice(); ACT.mClose();
+        return 'visit deduct='+d1.T.deduct.toFixed(2)+' -> stage='+w.stageOf(pt,v); });
+  step('DEDUCTIBLE ONCE on orders invoice', () => { ACT.selAll();
+        const s=w.sess(), pt=w.findPt('P8'), v=w.findVis(pt,'V8A');
+        const r=w.chargeCalc(s,pt,v);
+        return r.T.deduct===0 ? 'correct: deduct=0' : 'BUG: charged again ('+r.T.deduct+')'; });
+  step('3-way split', () => { const s=w.sess(), pt=w.findPt('P8'), v=w.findVis(pt,'V8A');
+        const due=w.chargeCalc(s,pt,v).T.due;
+        ACT.openDrawer();
+        ACT.dwrMode({m:'cash'}); s.drawer.f.amount='20'; ACT.addTender();
+        ACT.dwrMode({m:'card'}); s.drawer.f.auth='C-77'; s.drawer.f.amount='30'; ACT.addTender();
+        ACT.dwrTab({t:'credit'}); s.drawer.f.po='PO-SPLIT-1'; ACT.dwrFill({v:'rem'}); ACT.addTender();
+        return 'due='+due.toFixed(2)+' tendered='+w.tenderTotal(s).toFixed(2)+' tenders='+nT(); });
+  step('remove a tender -> unbalanced', () => { ACT.delTender({i:0}); return 'total='+w.tenderTotal(w.sess()).toFixed(2); });
+  step('complete blocked when unbalanced', () => { const b=w.findPt('P8').invoices.length; ACT.doInvoice();
+        return w.findPt('P8').invoices.length===b ? 'correctly refused' : 'BUG: created'; });
+  step('rebalance + complete', () => { ACT.dwrTab({t:'payment'}); ACT.dwrMode({m:'cash'});
+        ACT.dwrFill({v:'rem'}); ACT.addTender(); ACT.doInvoice();
+        const pt=w.findPt('P8'); const iv=pt.invoices[pt.invoices.length-1];
+        return iv.no+' tenders='+iv.payments.length; });
+  step('close modal', () => { ACT.mClose(); return modal(); });
+
+  // ---- ADVANCE deposit / refund ----
+  step('addAdv', () => { ACT.addAdv({p:'P7'}); ACT.advQuick({v:'500'}); ACT.saveAdv();
+        return 'wallet='+w.findPt('P7').advance.balance; });
+  step('print receipt', () => { ACT.printThis(); return 'ok'; });
+  step('close modal', () => { ACT.mClose(); return modal(); });
+  step('refund advance', () => { ACT.refundAdv({p:'P7'}); S.modal.amount='200'; ACT.saveAdvRefund();
+        return 'wallet='+w.findPt('P7').advance.balance; });
+  step('close modal', () => { ACT.mClose(); return modal(); });
+
+  // ---- REFUND ----
+  step('close all sessions', () => { while(S.sessions.length) w.closeSession(S.sessions[0].id); return 'tabs=0'; });
+  step('open P8 invoices', () => { w.openSession('P8','V8B'); w.sess().tab='invoices'; w.paint(); return appLen()+'b'; });
+  let smallInv;
+  step('refund modal', () => { smallInv=w.findPt('P8').invoices[0];
+        ACT.refundInv({i:smallInv.id}); return 'lines='+smallInv.lines.length; });
+  step('toggle all refundable', () => { ACT.rfAll(); return 'sel='+JSON.stringify(S.modal.sel); });
+  step('one line', () => { S.modal.sel={}; S.modal.sel[1]=true; w.paint();
+        return 'refund='+w.refundCalc(smallInv,S.modal.sel).patient.toFixed(2); });
+  step('SAVE small refund', () => { ACT.saveRefund();
+        const rf=w.findPt('P8').refunds.slice(-1)[0];
+        return rf.no+' '+rf.status+' invStatus='+smallInv.status; });
+  step('close modal', () => { ACT.mClose(); return modal(); });
+  step('big refund to wallet', () => { const pt=w.findPt('P1');
+        const iv=pt.invoices.filter(x=>x.kind==='orders').slice(-1)[0];
+        if(!iv) return 'no orders invoice';
+        w.openSession('P1','V1A'); w.sess().tab='invoices'; w.paint();
+        ACT.refundInv({i:iv.id}); ACT.rfAll(); S.modal.mode='advance'; ACT.saveRefund();
+        const rf=pt.refunds.slice(-1)[0]; return rf.no+' '+rf.status+' amt='+rf.amount.toFixed(2); });
+  step('close modal', () => { ACT.mClose(); return modal(); });
+  step('approve if pending', () => { const pt=w.findPt('P1'); const rf=pt.refunds.slice(-1)[0];
+        if(rf.status==='Pending approval') ACT.approveRfd({r:rf.id});
+        return rf.status+' wallet='+pt.advance.balance+' consumed='+pt.plan.consumed.toFixed(2); });
+  step('close modal', () => { ACT.mClose(); return modal(); });
+  step('GATE: refunding the consultation invoice re-locks orders', () => {
+        const pt=w.findPt('P1'), v=w.findVis(pt,'V1A');
+        const vi=pt.invoices.find(x=>x.no===visitInvNo);
+        const before=w.stageOf(pt,v);
+        ACT.refundInv({i:vi.id}); ACT.rfAll(); ACT.saveRefund();
+        const rf=pt.refunds.slice(-1)[0];
+        if(rf.status!=='Approved') ACT.approveRfd({r:rf.id});
+        ACT.mClose();
+        return 'stage '+before+' -> '+w.stageOf(pt,v)+' (invoice '+vi.status+')'; });
+  step('print refund note', () => { const rf=w.findPt('P1').refunds.slice(-1)[0];
+        ACT.printRfd({r:rf.id}); return 'ok'; });
+
+  // ---- documents ----
+  step('doc: invoice', () => { const pt=w.findPt('P1');
+        return 'len='+w.docInvoice(pt, pt.invoices[0]).length; });
+  step('doc: invoice (cash pt)', () => { const pt=w.findPt('P2');
+        return 'len='+w.docInvoice(pt, pt.invoices[0]).length; });
+  step('view invoice modal', () => { const pt=w.findPt('P1');
+        ACT.viewInv({i:pt.invoices[0].id}); return 'modal='+modal(); });
+  step('print invoice', () => { const pt=w.findPt('P1'); ACT.printInv({i:pt.invoices[0].id}); return 'ok'; });
+  step('close modal', () => { ACT.mClose(); return modal(); });
+
+  // ---- add visit: every type ----
+  Object.keys(w.VISIT_TYPES).forEach(t => {
+    step('newVisit modal '+t, () => { ACT.newVisit({p:'P7'}); ACT.setVtype({t:t}); return 'modal='+modal(); });
+    step('  create '+t, () => { ACT.createVisit();
+          const v=w.findPt('P7').visits[0]; return v.no+' '+v.type+' '+v.status+' tabs='+S.sessions.length; });
+  });
+  step('walk-in via picker', () => { ACT.newVisitPick({t:'WALKIN'});
+        ACT.pickPt({p:'P3'}); ACT.createVisit(); return w.findPt('P3').visits[0].no; });
+
+  // ---- misc ----
+  step('help modal',  () => { ACT.help(); return 'modal='+modal(); });
+  step('close help',  () => { ACT.mClose(); return modal(); });
+  step('hospital filter OLY', () => { ACT.hospital({}, {value:'OLY'}); return appLen()+'b'; });
+  step('hospital filter ALL', () => { ACT.hospital({}, {value:'ALL'}); return appLen()+'b'; });
+  step('goHome',      () => { ACT.goHome(); return appLen()+'b'; });
+  step('close a session', () => { w.closeSession(S.sessions[0].id); return 'tabs='+S.sessions.length; });
+  step('close all sessions', () => { while(S.sessions.length) w.closeSession(S.sessions[0].id);
+        return 'tabs='+S.sessions.length+' active='+S.active; });
+  step('max sessions guard', () => { for(let i=0;i<12;i++) w.openSession('P1', i%2?'V1A':'V1B');
+        return 'tabs='+S.sessions.length; });
+
+  } catch(e) {
+    log.push('HARNESS-ABORT: '+e.message+' | '+(e.stack||'').split('\n')[1]);
+  }
+  finish();
+};
+f.src = 'invoice-prototype.html';
+document.body.appendChild(f);
+</script></body></html>

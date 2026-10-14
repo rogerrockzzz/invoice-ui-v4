@@ -1,0 +1,20 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>html,body{margin:0}iframe{width:100vw;height:100vh;border:0;display:block}</style></head><body>
+<script>
+const f=document.createElement('iframe');
+f.onload=()=>{const w=f.contentWindow; const q=s=>w.document.querySelector(s),qa=s=>[...w.document.querySelectorAll(s)];
+  const c=w.eval('cases').find(x=>x.id===1);
+  w.eval('openVisit')(1); w.eval('state').walletOpen=false;
+  c.clinical={at:'10:00'};
+  c.orders=[{ code:'LAB-022', name:'Urea & Electrolytes', price:140, priceIns:140, priceCash:120, ins:'approved', ordered:'10:05', paid:false },
+            { code:'RAD-018', name:'Abdominal Ultrasound', price:420, priceIns:420, priceCash:370, ins:'approved', ordered:'10:05', paid:false }];
+  w.eval('render')();
+  const pay=()=>{ qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click(); q('#dGo').click(); };
+  const st=(id)=>qa('.stories [data-story]').find(b=>b.dataset.story===id).click();
+  st('visit'); qa('.step .acts .btn')[0].click(); pay();
+  st('orders'); qa('.step .acts .btn')[0].click(); pay();
+  w.document.getElementById('toasts').innerHTML='';
+  st('refund'); q('[data-refund="'+c.invoices.find(i=>i.scope==='orders').id+'"]').click();
+  w.scrollTo(0,170);
+  document.title='SHOT-READY';};
+f.src='journey-opd-v3.html';document.body.appendChild(f);
+</script></body></html>

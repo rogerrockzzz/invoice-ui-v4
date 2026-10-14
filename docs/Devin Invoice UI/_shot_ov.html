@@ -1,0 +1,18 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>html,body{margin:0}iframe{width:100vw;height:100vh;border:0;display:block}</style></head><body>
+<script>
+const f=document.createElement('iframe');
+f.onload=()=>{const w=f.contentWindow;
+  const q=s=>w.document.querySelector(s),qa=s=>[...w.document.querySelectorAll(s)];
+  w.eval('openVisit')(1);
+  // consultation
+  qa('.step .acts .btn')[0].click(); qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click(); q('#dGo').click();
+  // doctor orders arrive (two goes)
+  qa('.step .acts .btn')[0].click(); qa('.step .acts .btn')[0].click();
+  // hold for all, then bill the pending one as cash
+  const hold=qa('.step .acts .btn').find(b=>/Wait for all/.test(b.textContent)); if(hold) hold.click();
+  const cash=qa('.step .acts .btn').find(b=>/as cash now/.test(b.textContent)); if(cash){ cash.click();
+    qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click(); q('#dGo').click(); }
+  const back=q('.step .stepback'); if(back) back.click();
+  document.title='SHOT-READY';};
+f.src='journey-opd-v2.html';document.body.appendChild(f);
+</script></body></html>

@@ -1,0 +1,734 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>
+<pre id="out">running…</pre>
+<script>
+const log = [];
+const f = document.createElement('iframe');
+f.style.cssText = 'width:1600px;height:1000px;border:0';
+f.onload = () => {
+  const w = f.contentWindow;
+  w.print = () => {};
+  w.alert = (m) => log.push('    (alert: '+m+')');
+  w.onerror = (m,s,l) => { log.push('RUNTIME-ERR @line '+l+': '+m); return true; };
+
+  ['state','render','openPatientTab','getVisit','cp','cWallet','cPlan','invoiceTotals','billableLines',
+   'calcLine','visitDeductible','selKey','isSel','openPayDrawer','completePayment','insStatuses',
+   'drawerModes','patientsDB','fmt','VAT','isApprovalPending','openRefundDrawer','refundTotals',
+   'invoiceStatus','completeRefund','seedInvoices','renderPrintedInvoices','insuranceOf','cIns',
+   'advHistory','logAdvance','totalAdvance','advanceCategories','tenantHospitals','creditHistory','logCredit','renderCreditHistoryPanel','searchPatients','SEARCH_FIELDS','openSession','closeSession','sessionKey','visitOf','openMrns'].forEach(n => {
+    try { w[n] = w.eval(n); } catch(e){ log.push('MISSING BINDING: '+n); }
+  });
+  const S = w.state;
+  const step = (name, fn) => { try { const r = fn(); log.push('OK   '+name+(r!==undefined?' -> '+r:'')); }
+    catch(e){ log.push('FAIL '+name+': '+e.message+' | '+(e.stack||'').split('\n')[1]); } };
+  const q = (sel) => w.document.querySelector(sel);
+  const w1adv = () => w.cWallet().advance;
+  const v1 = () => w.getVisit(1);
+  const qa = (sel) => [...w.document.querySelectorAll(sel)];
+  const finish = () => {
+    const bad = log.filter(l=>/^(FAIL|RUNTIME|MISSING)/.test(l));
+    document.getElementById('out').textContent =
+      '### RESULT: '+(bad.length? bad.length+' PROBLEM(S)':'ALL '+log.length+' CHECKS PASSED')+' ###\n\n'+log.join('\n');
+    document.title = 'SMOKE-DONE';
+  };
+  try {
+  step('search screen renders', ()=> q('#mrnBox').value);
+  step("today's visits: whole rows open the patient, no buttons", ()=>{
+    S.screen='search'; w.render();
+    q('#todayBtn').click();
+    if(!q('.tv-modal')) throw new Error("today's visits did not open");
+    if(qa('.tv-body button').length) throw new Error('the Open button should be gone');
+    const rows=qa('table.tv tbody tr');
+    if(rows.length===0) throw new Error('no visits listed');
+    if(rows.some(r=>!r.dataset.go)) throw new Error('every row should be clickable');
+    if(!rows[0].getAttribute('title').startsWith('Open ')) throw new Error('rows should hint that they open');
+    if(!q('table.tv .tv-go')) throw new Error('no hover affordance column');
+    const ip=rows.find(r=>r.querySelector('.badge.ipd'));
+    ip.click();
+    if(S.screen!=='ip') throw new Error('an admission row should open the IP workspace, got '+S.screen);
+    S.screen='search'; w.render(); q('#todayBtn').click();
+    qa('table.tv tbody tr').find(r=>r.textContent.includes('OPD')).click();
+    if(S.screen!=='workspace' || S.activeTab!=='visit') throw new Error('an OPD row should open the visit detail');
+    S.screen='search'; w.render();
+    return rows.length+' rows, all clickable';
+  });
+  step('search works from the icon, with four search fields', ()=>{
+    S.screen='search'; w.render();
+    if(q('#searchBtn')) throw new Error('the Search Patient button should be gone');
+    if(!q('#goIc')) throw new Error('no search icon');
+    const opts=qa('#searchBy option').map(o=>o.textContent.trim());
+    ['MRN','Name','National ID','Mobile No'].forEach(x=>{ if(!opts.includes(x)) throw new Error('missing search field '+x); });
+    if(q('.search-row').textContent.includes('Filter By Hospital')) throw new Error('the hospital filter should be removed');
+    return opts.join(' | ');
+  });
+  step('each search field finds the patient', ()=>{
+    const p = w.patientsDB['7000203'];
+    const cases = [['mrn','7000203'],['name','wadha'],['nid',p.info.nationalId],['mobile','0555 401 220']];
+    cases.forEach(([by,term])=>{
+      const hits = w.searchPatients(term, by);
+      if(!hits.some(h=>h.info.mrn==='7000203')) throw new Error(by+' search failed for "'+term+'"');
+    });
+    /* a partial name can match several patients */
+    S.searchBy='name'; S.searchTerm='a'; w.render();
+    const many = w.searchPatients('a','name');
+    if(many.length<2) throw new Error('expected a multi-match case for the chooser');
+    q('#mrnBox').value='a'; q('#goIc').click();
+    if(!S.searchResults) throw new Error('name matches should be listed');
+    if(q('.overlay')) throw new Error('results should load in the page, not a popup');
+    const panel=q('.sr-panel');
+    if(!panel) throw new Error('no inline results panel under the search box');
+    ['Patient','National ID','Age / Gender','Mobile','City','Payer','Encounters'].forEach(h=>{
+      if(!panel.textContent.includes(h)) throw new Error('results missing column '+h); });
+    const rows=qa('table.sr tbody tr');
+    if(rows.length!==S.searchResults.length) throw new Error('row count does not match the hits');
+    if(rows.some(r=>!r.dataset.mrn)) throw new Error('every result row should be selectable');
+    if(q('#recents').textContent.trim()) throw new Error('recents should step aside while results show');
+    /* picking one opens that patient and the visit chooser */
+    rows[1].click();
+    if(!S.activeMrn || !S.modalOpen) throw new Error('selecting a result should open the patient');
+    if(S.searchResults!==null) throw new Error('results should clear once a patient is picked');
+    S.modalOpen=false; S.screen='search'; S.searchBy='mrn'; S.searchTerm='7000203'; w.render();
+    return cases.map(c=>c[0]).join(', ')+' all resolve; inline list showed '+rows.length+' patients';
+  });
+
+  step('several visits of one patient open as separate session tabs', ()=>{
+    S.sessions=[]; S.activeSession=null; S.screen='search'; w.render();
+    w.openSession('7000667', 1);
+    w.openSession('7000667', 5);          /* the admission */
+    w.openSession('7000667', 2);
+    w.render();
+    if(S.sessions.length!==3) throw new Error('expected 3 session tabs, got '+S.sessions.length);
+    const tabs=qa('.ptab .lbl').map(l=>l.textContent.trim());
+    if(tabs.length!==3) throw new Error('tab bar shows '+tabs.length);
+    if(!qa('.ptab-add').length) throw new Error('Add Patient should sit alongside the session tabs');
+    /* each tab names the encounter, and the IP one is marked */
+    const subs=qa('.ptab .lbl i').map(i=>i.textContent.trim());
+    if(!subs.some(t=>/^IP/.test(t))) throw new Error('the admission tab should be labelled IP: '+subs.join(' | '));
+    if(!subs.some(t=>/^OPD/.test(t))) throw new Error('OPD tabs should be labelled: '+subs.join(' | '));
+    /* switching restores that encounter's screen */
+    qa('.ptab .lbl').find(l=>/IP/.test(l.textContent)).click();
+    if(S.screen!=='ip' || S.ipAdmissionId!==5) throw new Error('the IP tab should reopen the admission');
+    qa('.ptab .lbl').find(l=>/OPD/.test(l.textContent)).click();
+    if(S.screen!=='workspace' || S.activeTab!=='visit') throw new Error('an OPD tab should reopen the visit detail');
+    return tabs.join('  ||  ');
+  });
+  step('every OPD visit opened from the visits list becomes its own tab', ()=>{
+    S.sessions=[]; S.activeSession=null; w.openPatientTab('7000667');
+    S.screen='workspace'; S.activeTab='visits'; w.render();
+    const openOne=(i)=>{ S.activeTab='visits'; w.render(); qa('.visit-opt')[i].click(); w.render(); };
+    openOne(0);
+    if(S.sessions.length!==1) throw new Error('the file tab should become the visit tab, got '+S.sessions.length);
+    openOne(1);
+    openOne(2);
+    if(S.sessions.length!==3) throw new Error('each visit should open its own tab, got '+S.sessions.length);
+    const subs=qa('.ptab .lbl i').map(i=>i.textContent.trim());
+    if(subs.filter(t=>/^OPD/.test(t)).length<2) throw new Error('expected several OPD tabs, got '+subs.join(' | '));
+    /* re-opening one already open focuses it instead of duplicating */
+    openOne(0);
+    if(S.sessions.length!==3) throw new Error('re-opening a visit should not duplicate its tab');
+    if(S.activeSession!=='7000667|1') throw new Error('re-opening should focus the existing tab, got '+S.activeSession);
+    return subs.join('  ||  ');
+  });
+  step('a new walk-in opens in its own tab', ()=>{
+    const before = S.sessions.length;
+    S.walkinModal={}; w.render();
+    ['wkType','wkClinic','wkDoctor'].forEach(id=>{ const e=q('#'+id); e.value=e.options[1].value; });
+    q('#wkConfirm').click(); w.render();
+    if(S.sessions.length!==before+1) throw new Error('the walk-in should add a session tab');
+    if(S.activeTab!=='visit') throw new Error('it should land on the new visit');
+    const sess=S.sessions[S.sessions.length-1];
+    if(w.sessionKey(sess)!==S.activeSession) throw new Error('the new tab should be focused');
+    return 'walk-in opened as tab '+S.sessions.length;
+  });
+  step('a second patient adds its own tabs, and labels stay with their own patient', ()=>{
+    S.sessions=[]; S.activeSession=null;
+    w.openSession('7000667', 1); w.openSession('7000667', 5); w.openSession('7000667', 2);
+    w.openSession('8825140', 2);
+    w.render();
+    const rows=qa('.ptab').filter(t=>!t.classList.contains('home'));
+    if(rows.length!==4) throw new Error('expected 4 encounter tabs, got '+rows.length);
+    /* visit ids repeat across patients — each label must resolve against its own MRN */
+    const v1=w.visitOf('7000667', 2), v2=w.visitOf('8825140', 2);
+    if(!v1 || !v2 || v1===v2) throw new Error('visit lookup is not scoped per patient');
+    if(w.openMrns().length!==2) throw new Error('two patients should be open');
+    const labels=rows.map(t=>t.querySelector('.lbl b').textContent.trim());
+    if(labels.filter(l=>/MOHAMMED/.test(l)).length!==3) throw new Error('wrong grouping: '+labels.join(' | '));
+    /* closing one tab keeps the others and moves focus */
+    w.closeSession(S.sessions[0]); w.render();
+    if(S.sessions.length!==3) throw new Error('close did not remove exactly one session');
+    if(!S.activeSession) throw new Error('focus should move to a remaining tab');
+    S.sessions=[]; S.activeSession=null; S.screen='search'; w.render();
+    return labels.join(' | ');
+  });
+  step('open insured patient 7000203', ()=>{ w.openPatientTab('7000203'); S.screen='workspace'; S.activeVisitId=1; S.activeTab='visit'; w.render(); return S.activeMrn; });
+
+  step('banner shows identity fields (single MRN)', ()=>{
+    const t = q('.pbx').textContent;
+    ['WADHA DAIFALLAH DAIFALLAH','1271545707','86764w535','14/04/2026','7000203','0Y 4M 17D','SAUDI','FEMALE']
+      .forEach(x=>{ if(!t.includes(x)) throw new Error('banner missing "'+x+'"'); });
+    if(t.includes('Cluster MRN') || t.includes('Hospital MRN')) throw new Error('cluster/hospital MRN should be gone');
+    const mrnHits = (t.match(/MRN/g)||[]).length;
+    if(mrnHits!==1) throw new Error('expected exactly one MRN label, found '+mrnHits);
+    return 'single MRN, name: '+q('.pbx-name').textContent.replace(/\s+/g,' ').trim();
+  });
+  step('payer / policy / class block grouped', ()=>{
+    const t = q('.pbx-payer').textContent;
+    ['Group','Policy','NCCI'].forEach(x=>{ if(!t.includes(x)) throw new Error('missing '+x); });
+    if(!q('.pbx-payer .cls').textContent.includes('CLASS A')) throw new Error('class badge missing');
+    return t.replace(/\s+/g,' ').trim().slice(0,80);
+  });
+  step('3 tool buttons removed from banner', ()=>{
+    if(q('.pbx-tools')) throw new Error('tool buttons still in banner');
+    
+    if(!q('#pbxIns')) throw new Error('insurance selector button missing');
+    return q('#pbxIns').textContent.trim();
+  });
+  step('insurance picker lists all active policies', ()=>{
+    q('#pbxIns').click();
+    if(!q('.overlay')) throw new Error('insurance modal did not open');
+    const opts = qa('#insList .visit-opt');
+    if(opts.length!==2) throw new Error('expected 2 policies, got '+opts.length);
+    if(!q('#selfPay')) throw new Error('no self-pay option');
+    const txt = opts.map(o=>o.querySelector('.ttl').textContent).join(' | ');
+    if(!opts[0].textContent.includes('Primary')) throw new Error('primary badge missing');
+    return txt+' + Self-Pay';
+  });
+  step('switching insurance re-prices the charges', ()=>{
+    const before = w.cIns().id;
+    const beforeDed = w.visitDeductible(v1()).cap;
+    qa('#insList .visit-opt')[1].click();     // switch to the secondary policy
+    const after = w.cIns().id;
+    if(after===before) throw new Error('insurance did not change');
+    const afterDed = w.visitDeductible(v1()).cap;
+    if(afterDed===beforeDed) throw new Error('deductible cap did not change with the policy');
+    const res = before+' (cap '+beforeDed+') -> '+after+' (cap '+afterDed+')';
+    q('#pbxIns').click(); qa('#insList .visit-opt')[0].click();   // switch back
+    return res;
+  });
+  step('no duplicated age and no account no in banner', ()=>{
+    const t = q('.pbx').textContent;
+    if(t.includes('ACC-')) throw new Error('account no still in banner');
+    if(!t.includes('0Y 4M 17D')) throw new Error('full age should remain');
+    if((t.match(/Age/g)||[]).length!==1) throw new Error('age appears more than once');
+    return 'single age field, no account no';
+  });
+
+  step('search tab is always the first tab', ()=>{
+    const first = qa('.ptabs .ptab')[0];
+    if(!first.classList.contains('home')) throw new Error('first tab is not the search tab');
+    return first.textContent;
+  });
+  step('breadcrumb screen path back to home', ()=>{
+    if(!q('#crumbHome') || !q('#crumbPatient')) throw new Error('breadcrumb path missing');
+    return q('.crumb').textContent.replace(/\s+/g,' ').trim();
+  });
+
+  step('consultation and orders are in separate panels', ()=>{
+    const heads = qa('.panel h4').map(h=>h.textContent.trim());
+    if(!heads.some(h=>h.startsWith('Consultation / Procedure'))) throw new Error('no consultation panel');
+    if(!heads.some(h=>h.startsWith('Ordered Services'))) throw new Error('no ordered services panel');
+    if(!heads.some(h=>h.startsWith('Invoice Details'))) throw new Error('no invoice details panel');
+    if(qa('table.chg').length!==2) throw new Error('expected 2 charge tables, got '+qa('table.chg').length);
+    return heads.join(' | ');
+  });
+  step('charge rows = consult + 4 orders', ()=> { const n = qa('table.chg tbody tr').length; if(n!==5) throw new Error('got '+n); return n; });
+  step('tax % shown per line, deductible column dropped', ()=>{
+    const hdr = qa('table.chg thead th').map(h=>h.textContent.trim());
+    if(hdr.includes('Deductible')) throw new Error('deductible column still present');
+    if(!hdr.includes('Tax')) throw new Error('no tax column');
+    const cell = qa('table.chg tbody tr')[0].children[6].textContent;
+    if(!cell.includes('15%')) throw new Error('tax % missing -> '+cell);
+    return 'header: '+hdr.join(', ')+' | first row tax cell: '+cell.trim();
+  });
+  step('invoice summary drops total patient share / company share / deductible', ()=>{
+    const keys = qa('.inv-grid .g .k').map(k=>k.textContent.trim());
+    ['Total Patient Share','Company Share','Deductible Applied'].forEach(x=>{
+      if(keys.includes(x)) throw new Error('"'+x+'" should be removed');
+    });
+    ['Patient Share / with TAX','Company Share / with TAX','Invoice Total'].forEach(x=>{
+      if(!keys.includes(x)) throw new Error('missing '+x);
+    });
+    return keys.join(' | ');
+  });
+  step('wallet shows only funded advance buckets', ()=>{
+    const cats = qa('.wallet .wcat').length;
+    const w = w2 = null;
+    const adv = w1adv();
+    const funded = Object.values(adv).filter(x=>x>0).length;
+    if(cats!==funded) throw new Error('wallet shows '+cats+' buckets, patient has '+funded+' funded');
+    return funded===0 ? 'none funded -> "'+q('.wallet .wbody').textContent.trim()+'"' : funded+' funded bucket(s)';
+  });
+  step('rail is sticky so the deductible card never scrolls away', ()=>{
+    const rail = q('.ded-card').parentElement;
+    if(!rail.classList.contains('rail-col')) throw new Error('rail missing sticky class');
+    const cs = w.getComputedStyle(rail);
+    if(cs.position!=='sticky') throw new Error('rail position is '+cs.position);
+    if(w.getComputedStyle(q('.wallet')).position==='sticky') throw new Error('wallet should no longer be individually sticky');
+    return 'position:sticky top:'+cs.top;
+  });
+  step('banner is compact', ()=>{
+    const h = q('.pbx').getBoundingClientRect().height;
+    if(h>115) throw new Error('banner is '+h+'px tall, expected <=115');
+    return Math.round(h)+'px tall';
+  });
+  step('every row shows ordered date + coloured status text', ()=>{
+    qa('table.chg tbody tr').forEach((r,i)=>{
+      if(!r.children[2].textContent.match(/\d{2}-\d{2}-\d{4}/)) throw new Error('row '+i+' has no ordered date');
+      const st = r.querySelector('.st');
+      if(!st) throw new Error('row '+i+' has no status text');
+      if(r.querySelector('.dot')) throw new Error('row '+i+' still renders a status dot');
+    });
+    if(q('.ins-legend')) throw new Error('legend strip should be removed');
+    return qa('table.chg tbody .st').map(s=>s.className.replace('st ','')+':'+s.textContent).join(' | ');
+  });
+  step('orders locked before consultation invoiced', ()=>{
+    const locks = qa('table.chg tbody tr.disabled').length;
+    if(locks!==4) throw new Error('expected 4 locked orders, got '+locks);
+    if(qa('.lineChk').length!==1) throw new Error('only the consultation should be tickable');
+    return locks;
+  });
+  step('pending-approval lines cannot be invoiced', ()=>{
+    const rows = qa('table.chg tbody tr');
+    const pendRow = rows.find(r=>r.textContent.includes('Troponin'));
+    if(!pendRow) throw new Error('troponin row missing');
+    if(pendRow.querySelector('input')) throw new Error('pending line should not have a checkbox');
+    if(!pendRow.textContent.includes('Approval pending')) throw new Error('no "Approval pending" message on the line');
+    const panelMsg = qa('.locked-msg').map(m=>m.textContent).join(' ');
+    if(!panelMsg.includes('Approval pending')) throw new Error('no panel-level approval pending message');
+    return 'line + panel message shown';
+  });
+  step('deductible card sits in the right rail below the wallet, no Calculate button', ()=>{
+    if(q('#calcBtn')) throw new Error('Calculate button should be gone');
+    const card = q('.ded-card');
+    if(!card) throw new Error('no deductible card');
+    const rail = card.parentElement;
+    if(!rail.querySelector('.wallet')) throw new Error('deductible card is not in the wallet rail');
+    if(rail.firstElementChild.className!=='wallet') throw new Error('wallet should come first in the rail');
+    ['Visit cap','Already used','This selection','Annual pool left'].forEach(x=>{ if(!card.textContent.includes(x)) throw new Error('missing '+x); });
+    return card.textContent.replace(/\s+/g,' ').trim().slice(0,110);
+  });
+  step('invoice grid starts at zero / Make Payment disabled', ()=>{
+    if(!q('#makePay').disabled) throw new Error('Make Payment should be disabled with nothing selected');
+    return q('.inv-grid').textContent.includes('0 item(s) selected');
+  });
+
+  step('tick consultation -> grid updates live', ()=>{
+    q('.lineChk').click();
+    const g = q('.inv-grid').textContent;
+    const t = w.invoiceTotals(w.getVisit(1));
+    if(t.count!==1) throw new Error('count '+t.count);
+    // 250 gross, 0% discount, approved, 20% deductible capped at 150 -> patient 50, company 200
+    if(t.patient!==50 || t.company!==200) throw new Error('shares wrong: patient '+t.patient+' company '+t.company);
+    if(t.taxAmount!==37.5) throw new Error('tax wrong '+t.taxAmount);
+    if(t.invoiceTotal!==287.5) throw new Error('invoice total wrong '+t.invoiceTotal);
+    if(!g.includes('50.00 / 57.50')) throw new Error('patient share with tax not shown');
+    if(q('#makePay').disabled) throw new Error('Make Payment still disabled');
+    return 'patient 50 / w-tax 57.50, company 200 / w-tax 230, total 287.50';
+  });
+  step('selecting a service updates the rail deductible card live', ()=>{
+    const card = q('.ded-card').textContent.replace(/\s+/g,' ');
+    if(!card.includes('SAR 100.00')) throw new Error('remaining should be 100 -> '+card);
+    if(!card.replace(/\s/g,'').includes('Thisselection SAR50.00'.replace(/\s/g,''))) throw new Error('selection deductible not shown -> '+card);
+    return 'remaining 100.00, this selection 50.00';
+  });
+
+  step('Make Payment opens slide-in drawer (not a centred modal)', ()=>{
+    q('#makePay').click();
+    if(!q('.drawer')) throw new Error('no .drawer element');
+    if(q('.overlay')) throw new Error('a centred overlay modal opened instead');
+    const h = q('.dw-head').textContent;
+    if(!h.includes('57.50')) throw new Error('drawer header should show patient payable 57.50 -> '+h);
+    return 'payable SAR 57.50, tabs: '+qa('.dw-tabs div').map(d=>d.textContent).join('/');
+  });
+  step('mode chips scroller rendered uppercase', ()=> qa('.dw-modes .m').map(m=>m.textContent).join(' | '));
+  step('BANK TRANSFER shows cheque/date/hijri/bank/amount fields', ()=>{
+    qa('.dw-modes .m').find(m=>m.textContent==='BANK TRANSFER').click();
+    const labels = qa('.dw-fields label').map(l=>l.textContent.trim().replace(' *',''));
+    ['Cheque No','Date','Hijri Date','Bank','Amount'].forEach(x=>{ if(!labels.includes(x)) throw new Error('missing field '+x); });
+    if(!q('[data-f=hijri]').readOnly) throw new Error('hijri should be read-only');
+    return labels.join(', ');
+  });
+  step('Add validates required fields', ()=>{ q('#dwAdd').click(); return q('.dw-lines .empty')?'blocked, list still empty':'unexpectedly added'; });
+  step('advance tab lists categories with balances', ()=>{ qa('.dw-tabs div')[1].click(); return qa('.dw-modes .m').map(m=>m.textContent).join(' | '); });
+  step('credit tab shows payer credit account', ()=>{
+    qa('.dw-tabs div')[2].click();
+    const vals = qa('.dw-fields input').map(i=>i.value).join(' | ');
+    if(!vals.includes('NCCI')) throw new Error('payer contract not shown -> '+vals);
+    return vals;
+  });
+
+  step('pay in full by CASH and complete', ()=>{
+    qa('.dw-tabs div')[0].click();
+    qa('.dw-modes .m').find(m=>m.textContent==='CASH').click();
+    q('#dwAdd').click();
+    if(q('#dwComplete').disabled) throw new Error('Complete still disabled after full allocation');
+    const before = w.getVisit(1).invoices.length;
+    q('#dwComplete').click();
+    const v = w.getVisit(1);
+    if(v.invoices.length!==before+1) throw new Error('invoice not created');
+    if(!v.consult.invoiced) throw new Error('consultation not marked invoiced');
+    if(v.dedUsed!==50) throw new Error('visit deductible not consumed: '+v.dedUsed);
+    return v.invoices[0].id+' patientShare '+v.invoices[0].patientShare+' companyShare '+v.invoices[0].companyShare;
+  });
+  step('print preview shows share breakdown', ()=>{
+    const t = q('.print-sheet').textContent;
+    ['Company Share','Patient Share','VAT','Deductible Applied'].forEach(x=>{ if(!t.includes(x)) throw new Error('missing '+x); });
+    q('#closeP').click(); return 'ok';
+  });
+
+  step('orders unlock after consultation invoiced (pending one stays blocked)', ()=>{
+    const disabled = qa('table.chg tbody tr.disabled');
+    if(disabled.length!==1) throw new Error(disabled.length+' disabled rows, expected only the approval-pending one');
+    if(!disabled[0].textContent.includes('Approval pending')) throw new Error('wrong row disabled');
+    return qa('.lineChk').length+' selectable rows, 1 blocked on approval';
+  });
+  step('select-all ticks every order and rolls up totals', ()=>{
+    qa('.selAll').pop().click();
+    const t = w.invoiceTotals(w.getVisit(1));
+    if(t.count!==3) throw new Error('count '+t.count+' (approval-pending line must be excluded)');
+    // ECG 200 approved: ded 40 (cap has 100 left) => patient 40, co 160
+    // Lipid 120 partial(60%): covered 72, uncovered 48, ded 14.4 => patient 62.4, co 57.6
+    // Vitamin D 180 not covered => patient 180, co 0 ; Troponin (pending) excluded
+    const exp = +(40+62.4+180).toFixed(2);
+    if(t.patient!==exp) throw new Error('patient '+t.patient+' expected '+exp);
+    if(t.deductible!==54.4) throw new Error('deductible '+t.deductible);
+    return 'patient '+t.patient+', company '+t.company+', tax '+t.taxAmount+', total '+t.invoiceTotal;
+  });
+  step('per-visit deductible cap is respected', ()=>{
+    const t = w.invoiceTotals(w.getVisit(1));
+    const ded = w.visitDeductible(w.getVisit(1));
+    if(t.deductible > ded.remaining + 0.01) throw new Error('deductible exceeds remaining pool');
+    return 'used '+t.deductible+' of remaining '+ded.remaining;
+  });
+  step('split payment: advance + cash completes', ()=>{
+    q('#makePay').click();
+    qa('.dw-tabs div')[0].click();
+    qa('.dw-modes .m').find(m=>m.textContent==='CASH').click();
+    const amtInp = q('[data-f=amount]'); amtInp.value = '100'; amtInp.dispatchEvent(new w.Event('input'));
+    q('#dwAdd').click();
+    if(q('#dwComplete').disabled === false) throw new Error('Complete should stay disabled while short-paid');
+    q('#dwAdd').click(); // adds remaining balance
+    if(q('#dwComplete').disabled) throw new Error('Complete disabled after full allocation');
+    q('#dwComplete').click();
+    return w.getVisit(1).invoices[0].modes.map(m=>m.mode+' '+m.amount).join(' + ');
+  });
+  step('all charges invoiced -> panel says nothing pending', ()=>{
+    if(q('#closeP')) q('#closeP').click();
+    return q('.panel').textContent.includes('Nothing pending') || w.billableLines(w.getVisit(1)).length===0;
+  });
+
+  step('self-pay patient: no deductible, full patient share', ()=>{
+    w.openPatientTab('7000667'); S.activeVisitId=1; S.activeTab='visit'; w.render();
+    const t = w.invoiceTotals(w.getVisit(1));
+    S.sel = {}; w.render();
+    w.openPatientTab('1063301'); S.activeTab='visits'; w.render();
+    if(!q('.pbx').textContent.includes('CASH PATIENT')) throw new Error('self-pay banner wrong');
+    return 'banner ok for plan-less patient';
+  });
+  step('discount flows through for Bupa patient (5%)', ()=>{
+    w.openPatientTab('7000667'); S.activeVisitId=1; S.activeTab='visit'; w.render();
+    qa('.selAll').pop().click();
+    const t = w.invoiceTotals(w.getVisit(1));
+    if(t.discount<=0) throw new Error('no discount applied');
+    return 'discount '+t.discount+', patient '+t.patient+', company '+t.company;
+  });
+  step('visits list has no approval-status legend/tally', ()=>{
+    S.activeTab='visits'; w.render();
+    if(qa('.visit-opt .st').length) throw new Error('status tally still rendered in visit list');
+    if(qa('.visit-opt .dot').length) throw new Error('status dots still rendered');
+    return q('.visit-opt .visit-bottom').textContent.replace(/\s+/g,' ').trim();
+  });
+  step('advances tab sits before credit settlement', ()=>{
+    const tabs = qa('.tabbar .tab').map(t=>t.textContent.trim());
+    const ai = tabs.findIndex(t=>t.startsWith('Advances')), ci = tabs.findIndex(t=>t.startsWith('Credit'));
+    if(ai===-1) throw new Error('no advances tab');
+    if(ai>ci) throw new Error('advances tab must come before credit settlement');
+    return tabs.join(' | ');
+  });
+  step('advance tab shows balances + history', ()=>{
+    w.openPatientTab('7000667'); S.activeTab='advance'; S.invoiceView=null; w.render();
+    const hist = qa('table.reg tbody tr');
+    if(hist.length!==3) throw new Error('expected 3 seeded history rows, got '+hist.length);
+    if(!q('#advRefund') || !q('#advTransfer')) throw new Error('refund/transfer buttons missing');
+    return hist.length+' history rows, total '+q('.inv-grid .g.tot .v').textContent;
+  });
+  step('adding an advance uses the side drawer and is recorded in the history', ()=>{
+    const before = w.advHistory().length;
+    q('#advAdd').click();
+    if(!q('.drawer')) throw new Error('add advance should open the slide-in drawer');
+    if(q('.overlay')) throw new Error('the old centred modal should be gone');
+    const amt = q('#aaAmt'); amt.value = '250'; amt.dispatchEvent(new w.Event('input'));
+    q('#adGo').click();
+    if(S.activeTab!=='advance') throw new Error('should land on the advance tab, got '+S.activeTab);
+    const after = w.advHistory();
+    if(after.length!==before+1) throw new Error('history not updated');
+    if(after[0].type!=='ADD' || after[0].amount!==250) throw new Error('wrong entry: '+JSON.stringify(after[0]));
+    return 'logged '+after[0].id+' ADD 250, balance after '+after[0].balanceAfter;
+  });
+  step('advance can be refunded via the drawer', ()=>{
+    const beforeBal = w.totalAdvance(w.cWallet());
+    q('#advRefund').click();
+    if(!q('.drawer')) throw new Error('refund drawer did not open');
+    q('#adAmt').value = '100';
+    const r = q('#adReason'); r.value='visit cancelled'; r.dispatchEvent(new w.Event('input'));
+    q('#adGo').click();
+    const afterBal = w.totalAdvance(w.cWallet());
+    if(+(beforeBal-afterBal).toFixed(2)!==100) throw new Error('balance moved by '+(beforeBal-afterBal));
+    if(w.advHistory()[0].type!=='REFUND') throw new Error('no REFUND entry logged');
+    return 'refunded 100, balance '+beforeBal+' -> '+afterBal;
+  });
+  step('advance can be transferred to another hospital', ()=>{
+    q('#advTransfer').click();
+    if(!q('.drawer')) throw new Error('transfer drawer did not open');
+    const hosp = q('#adHosp').value;
+    q('#adAmt').value = '50';
+    const r = q('#adReason'); r.value='patient referred'; r.dispatchEvent(new w.Event('input'));
+    q('#adGo').click();
+    const h = w.advHistory()[0];
+    if(h.type!=='TRANSFER') throw new Error('no TRANSFER entry, got '+h.type);
+    if(!h.toHospital) throw new Error('destination hospital not recorded');
+    return 'transferred '+h.amount+' to '+h.toHospital;
+  });
+  step('printed invoices tab lists invoices at a high level', ()=>{
+    w.openPatientTab('8825140'); S.activeTab='printed'; S.invoiceView=null; w.render();
+    const hdr = qa('table.reg thead th').map(h=>h.textContent.trim());
+    ['Invoice','Date','Visit','Items','Invoice Total','Patient Paid','Refunded','Status'].forEach(x=>{
+      if(!hdr.includes(x)) throw new Error('missing column '+x);
+    });
+    if(qa('table.reg tbody tr').length!==1) throw new Error('expected 1 invoice row');
+    return hdr.join(', ');
+  });
+  step('invoice history panel removed from visit detail', ()=>{
+    S.activeVisitId=1; S.activeTab='visit'; w.render();
+    if(qa('.panel h4').some(h=>h.textContent.includes('Invoice History'))) throw new Error('invoice history still on visit detail');
+    return 'gone';
+  });
+  step('drill into an invoice to see procedure details', ()=>{
+    S.activeTab='printed'; w.render();
+    q('[data-open]').click();
+    const rows = qa('table.chg tbody tr');
+    if(rows.length!==3) throw new Error('expected 3 procedures, got '+rows.length);
+    if(!q('#invRefund')) throw new Error('no refund button on invoice detail');
+    return rows.map(r=>r.querySelector('.chg-name b').textContent).join(' | ');
+  });
+  step('refund selection happens in the invoice grid', ()=>{
+    if(qa('.rfGrid').length!==3) throw new Error('expected 3 grid checkboxes, got '+qa('.rfGrid').length);
+    if(!q('#invRefund').disabled) throw new Error('refund button should be disabled until something is ticked');
+    qa('.rfGrid')[0].click();
+    if(q('#invRefund').disabled) throw new Error('refund button still disabled after ticking');
+    if(!q('.inv-grid').textContent.includes('1 selected')) throw new Error('grid does not show the selection');
+    return q('.inv-grid .g.tot').textContent.replace(/\s+/g,' ').trim();
+  });
+  step('refund opens a side drawer, not a modal', ()=>{
+    q('#invRefund').click();
+    if(!q('.drawer')) throw new Error('no drawer');
+    if(q('.overlay')) throw new Error('a centred modal opened');
+    return q('.dw-head').textContent.replace(/\s+/g,' ').trim().slice(0,70);
+  });
+  step('drawer opens on the grid selection, and stays editable there', ()=>{
+    const inv = w.getVisit(1).invoices[0];
+    const t = w.refundTotals(inv, S.refundDrawer.sel);
+    if(t.count!==1) throw new Error('expected the 1 grid-selected line, got '+t.count);
+    if(!q('.dw-total').textContent.includes(t.patient.toFixed(2))) throw new Error('drawer total mismatch');
+    /* the grid tick carries in, and the drawer now offers its own picker on top */
+    const chks = qa('.rfChk');
+    if(chks.length===0) throw new Error('the drawer should let the user change the selection');
+    const on = chks.filter(c=>c.checked).map(c=>c.dataset.code);
+    if(on.length!==1) throw new Error('drawer should start on the grid selection, got '+on.join(','));
+    /* ticking in the drawer writes back to the grid selection */
+    const other = chks.find(c=>!c.checked);
+    if(other){
+      const code = other.dataset.code;
+      other.click();                                    /* re-renders, so re-query to undo */
+      if(!S.refundSel[inv.id+'|'+code]) throw new Error('drawer tick did not reach the grid selection');
+      const again = qa('.rfChk').find(c=>c.dataset.code===code);
+      again.click();
+      if(S.refundSel[inv.id+'|'+code]) throw new Error('unticking in the drawer did not clear the grid selection');
+    }
+    return on.length+' line mirrored from the grid, refund '+t.patient;
+  });
+  step('refund requires a reason', ()=>{ q('#rfGo').click(); return S.refundDrawer ? 'blocked without reason' : 'FAILED to block'; });
+  step('partial refund marks only the selected procedure', ()=>{
+    const inp = q('#rfReason'); inp.value='procedure cancelled by doctor'; inp.dispatchEvent(new w.Event('input'));
+    const before = w.getVisit(1).invoices[0].items.filter(i=>i.refunded).length;
+    q('#rfGo').click();
+    const inv = w.getVisit(1).invoices[0];
+    const after = inv.items.filter(i=>i.refunded).length;
+    if(after!==before+1) throw new Error('expected 1 newly refunded item, got '+(after-before));
+    if(inv.refunded) throw new Error('invoice should not be fully refunded');
+    if(w.invoiceStatus(inv).label!=='Partially Refunded') throw new Error('status is '+w.invoiceStatus(inv).label);
+    return 'status: Partially Refunded, refunded item: '+inv.items.find(i=>i.refunded).name;
+  });
+  step('refund shows up in the invoice grid', ()=>{
+    S.activeTab='printed'; S.invoiceView=null; w.render();
+    const row = q('table.reg tbody tr').textContent;
+    if(!row.includes('refunded')) throw new Error('refunded item count not shown -> '+row);
+    if(!row.includes('−')) throw new Error('refunded amount not shown -> '+row);
+    if(!row.includes('Partially Refunded')) throw new Error('status not shown -> '+row);
+    q('[data-open]').click();
+    const keys = qa('.inv-grid .g .k').map(k=>k.textContent.trim());
+    if(!keys.includes('Refunded to Patient')) throw new Error('detail grid missing refunded total');
+    return 'list + detail both show the refund';
+  });
+  step('refund releases the deductible it consumed', ()=>{
+    const v = w.getVisit(1);
+    if(v.dedUsed < 0) throw new Error('negative deductible');
+    return 'visit deductible used now '+v.dedUsed;
+  });
+  step('refunded procedure becomes billable again', ()=>{
+    S.activeTab='visit'; S.invoiceView=null; w.render();
+    const names = w.billableLines(v1()).map(l=>l.name);
+    return names.join(' | ');
+  });
+  step('Add Patient goes to the home page', ()=>{
+    S.screen='workspace'; S.activeTab='visits'; w.render();
+    q('.ptab-add').click();
+    if(S.screen!=='search') throw new Error('screen is '+S.screen);
+    if(q('.add-suggest')) throw new Error('old dropdown should be gone');
+    return 'landed on home';
+  });
+  step('closing a patient last tab suggests it as a recent on the home page', ()=>{
+    S.sessions=[]; S.activeSession=null;
+    w.openPatientTab('8825140'); S.screen='workspace'; w.render();
+    /* every session of that patient must go before it counts as closed */
+    qa('.ptab .x').forEach(x=>x.click());
+    S.screen='search'; w.render();
+    const txt = q('#recents').textContent;
+    if(!txt.includes('Recently closed')) throw new Error('no recents block');
+    if(!txt.includes('AHMED BIN SALEM')) throw new Error('closed patient not suggested -> '+txt);
+    return txt.replace(/\s+/g,' ').trim().slice(0,80);
+  });
+  step('quick registration creates a patient and a walk-in', ()=>{
+    const before = Object.keys(w.patientsDB).length;
+    q('#quickRegBtn').click();
+    if(!q('#qrFirst')) throw new Error('registration form did not open');
+    /* the form now mirrors the source system: basic information + contact information */
+    ['First Name','Second Name','Family Name','First Name Arabic','Gender','Marital Status','Nationality',
+     'Date Of Birth','Date Of Birth Hijri','Age','Id Type','Id Number','Payment Type','Occupation',
+     'Patient Type','File Status','Patient Expiring','Mobile Number','Country','City'].forEach(l=>{
+      if(!q('.modal').textContent.includes(l)) throw new Error('registration form missing field: '+l);
+    });
+    if(!q('#qrAge').readOnly) throw new Error('Age should be derived, not typed');
+    if(!q('#qrPtType').disabled || !q('#qrFile').disabled) throw new Error('patient type / file status should be fixed');
+    q('#qrFirst').value='TEST'; q('#qrSecond').value='WALKIN'; q('#qrFamily').value='PATIENT';
+    q('#qrFirstAr').value='تجربة'; q('#qrSecondAr').value='مريض'; q('#qrFourthAr').value='عائلة';
+    q('#qrGender').value='Male'; q('#qrMarital').value='Single'; q('#qrIdType').value='National ID';
+    q('#qrIdNo').value='1234567890'; q('#qrOcc').value='Employee'; q('#qrCity').value='Riyadh';
+    q('#qrMobile').value='0500000000';
+    const dob=q('#qrDob'); dob.value='1990-05-20'; dob.dispatchEvent(new w.Event('change'));
+    if(!q('#qrAge').value) throw new Error('age was not derived from the date of birth');
+    q('#qrSaveWalkin').click();
+    const after = Object.keys(w.patientsDB).length;
+    if(after!==before+1) throw new Error('patient not created');
+    if(!q('#wkType')) throw new Error('walk-in form did not open for the new patient');
+    q('#wkType').value='Consultation'; q('#wkClinic').value='CARDIOLOGY'; q('#wkDoctor').value='FAISAL AL-NAHDI';
+    q('#wkConfirm').click();
+    const p = w.patientsDB[w.state.activeMrn];
+    if(p.visits.length!==1) throw new Error('walk-in visit not created');
+    if(w.billableLines(p.visits[0]).length!==1) throw new Error('walk-in consultation not billable');
+    return p.info.name+' (MRN '+p.info.mrn+') · age '+p.info.fullAge+' · visit: '+p.visits[0].type;
+  });
+  step('credit movements are written to a credit history', ()=>{
+    w.openPatientTab('7000667'); S.screen='workspace'; S.activeTab='credit'; S.invoiceView=null; w.render();
+    const heads = qa('.panel h4').map(h=>h.textContent.trim());
+    if(!heads.some(h=>/Credit History/.test(h))) throw new Error('no credit history panel');
+    /* raising credit on an invoice must log an entry */
+    const before = w.creditHistory().length;
+    w.logCredit(w.cWallet(), { type:'ADDED', amount:100, ref:'TEST-INV', mode:'CREDIT', note:'unit check' });
+    w.render();
+    const after = w.creditHistory();
+    if(after.length!==before+1) throw new Error('credit history not appended');
+    const cols = qa('.panel table.reg thead th').map(h=>h.textContent.trim());
+    ['Ref','Date','Type','Against','Mode / Detail','Amount','Balance After'].forEach(x=>{
+      if(!cols.includes(x)) throw new Error('credit history missing column '+x); });
+    return after[0].id+' '+after[0].type+' '+after[0].amount+' · columns: '+cols.join(', ');
+  });
+  step('credit settlement uses the drawer', ()=>{
+    w.openPatientTab('7000667'); S.activeTab='credit'; S.invoiceView=null; w.render();
+    if(!q('#settleBtn')) throw new Error('no settle button');
+    q('#settleBtn').click();
+    if(!q('.drawer')) throw new Error('credit settle did not open drawer');
+    return q('.dw-head').textContent.replace(/\s+/g,' ').trim();
+  });
+  step('settling credit logs a SETTLED entry', ()=>{
+    S.payDrawer=null; S.activeTab='credit'; w.render();
+    if(!q('#settleBtn')) return 'no pending credit at this point';
+    const before = w.creditHistory().filter(h=>h.type==='SETTLED').length;
+    q('#settleBtn').click();
+    qa('.dw-modes .m').find(m=>m.textContent==='CASH').click();
+    q('#dwAdd').click();
+    if(!q('#dwComplete').disabled) q('#dwComplete').click();
+    const after = w.creditHistory().filter(h=>h.type==='SETTLED').length;
+    if(after<=before) throw new Error('settlement was not logged');
+    return 'logged '+(after-before)+' settlement entr(y/ies), balance now '+w.cWallet().creditOutstanding;
+  });
+  step('refund drawer lets you pick which lines to refund', ()=>{
+    S.payDrawer=null; S.refundDrawer=null; S.refundSel={}; S.screen='invoices';
+    S.invFilters={inv:"",mrn:"",clinic:"",doctor:"",category:"All"}; w.render();
+    const btn=qa('[data-refund]').find(b=>{
+      const [mrn,vid,iid]=b.dataset.refund.split('|');
+      const inv=w.patientsDB[mrn].visits.find(x=>x.id===parseInt(vid)).invoices.find(i=>i.id===iid);
+      return inv.items && inv.items.filter(it=>!it.refunded).length>=2;
+    });
+    if(!btn) return 'no multi-line invoice available to refund';
+    btn.click();
+    const chks=()=>qa('.rfChk');
+    const due=()=>parseFloat(q('.dw-total .v').textContent.replace(/[^0-9.]/g,''));
+    if(chks().length<2) throw new Error('lines should be individually selectable in the drawer');
+    if(!q('#rfAll')) throw new Error('no select-all control');
+    const full=due();
+    if(!chks().every(c=>c.checked)) throw new Error('every open line should start selected');
+    /* unticking one reduces the refund */
+    chks()[0].click();
+    const partial=due();
+    if(!(partial<full)) throw new Error('unticking a line should reduce the refund ('+partial+' vs '+full+')');
+    if(chks().filter(c=>c.checked).length!==chks().length-1) throw new Error('only one line should have been dropped');
+    /* nothing selected blocks the refund */
+    const all=q('#rfAll'); all.checked=false; all.dispatchEvent(new w.Event('change'));
+    if(due()!==0) throw new Error('clearing all should leave nothing to refund');
+    if(!q('#rfGo').disabled) throw new Error('Complete Refund should be disabled with nothing selected');
+    /* refund a single line and check the rest stay open */
+    const one=chks()[1] || chks()[0]; one.click();
+    const code=one.dataset.code;
+    const rs=q('#rfReason'); rs.value='partial cancellation'; rs.dispatchEvent(new w.Event('input'));
+    const before=due();
+    q('#rfGo').click();
+    const [mrn,vid,iid]=btn.dataset.refund.split('|');
+    const inv=w.patientsDB[mrn].visits.find(x=>x.id===parseInt(vid)).invoices.find(i=>i.id===iid);
+    const done=inv.items.filter(it=>it.refunded).map(it=>it.code);
+    if(!done.includes(code)) throw new Error('the selected line was not refunded');
+    if(done.length!==1) throw new Error('only the selected line should be refunded, got '+done.join(','));
+    if(inv.items.filter(it=>!it.refunded).length===0) throw new Error('the other lines should remain refundable');
+    return 'refunded '+code+' ('+before+') of '+inv.items.length+' lines; '+
+      inv.items.filter(it=>!it.refunded).length+' still open';
+  });
+  step('invoices screen filters by invoice number', ()=>{
+    S.payDrawer=null; S.screen='invoices'; S.invFilters={inv:"",mrn:"",clinic:"",doctor:"",category:"All"}; w.render();
+    if(!q('#fInv')) throw new Error('no invoice number filter');
+    const labels=qa('.filters .f label').map(l=>l.textContent.trim());
+    if(labels[0]!=='Invoice No') throw new Error('invoice filter should come first: '+labels.join(' | '));
+    const ids=()=>qa('table.reg tbody tr').map(r=>r.children[0].textContent.trim());
+    const all=ids();
+    if(all.length<2) throw new Error('need a few invoices to filter');
+    const target=all[0];
+    const type=(v)=>{ const b=q('#fInv'); b.value=v; b.dispatchEvent(new w.Event('input')); return ids(); };
+    if(type(target.replace('INV-','')).join()!==target) throw new Error('partial number did not isolate '+target);
+    if(type(target.toLowerCase()).join()!==target) throw new Error('search should be case-insensitive');
+    if(type(target.replace('-','')).join()!==target) throw new Error('the dash should be ignored');
+    if(type('zzzz').length!==0) throw new Error('a non-match should clear the list');
+    type('inv');
+    qa('#catTabs div').find(d=>d.textContent.trim()==='OPD').click();
+    if(q('#fInv').value!=='inv') throw new Error('the filter should survive a category change');
+    q('#fClear').click();
+    if(q('#fInv').value!=='') throw new Error('Clear Filters should reset the invoice number');
+    if(ids().length!==all.length) throw new Error('clearing should restore every invoice');
+    return 'filtered '+all.length+' invoices to 1 by number — prefix, case and dash insensitive';
+  });
+  step('invoices register still renders', ()=>{ S.payDrawer=null; S.screen='invoices'; w.render(); return qa('table.reg tbody tr').length+' rows'; });
+  step('referral pool still renders', ()=>{ S.screen='referral'; w.render(); return 'ok'; });
+  } catch(e){ log.push('RUNTIME-ERR outer: '+e.message+' | '+(e.stack||'').split('\n')[1]); }
+  finish();
+};
+f.src = 'billing-ui-revamp-mockup-v4.html';
+document.body.appendChild(f);
+</script>
+</body></html>

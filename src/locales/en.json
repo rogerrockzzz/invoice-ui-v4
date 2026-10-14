@@ -1,0 +1,327 @@
+{
+  "app": {
+    "group": "DR SULAIMAN AL HABIB",
+    "groupSub": "Medical Group",
+    "vida": "VIDA",
+    "hospital": "Hospital",
+    "user": "SAADAN SAAFAN",
+    "role": "Reception · OPD",
+    "theme": "Theme",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "language": "Language",
+    "settings": "Branch settings",
+    "comingSoon": "Coming in {{when}}",
+    "hospitalChanged": "Hospital changed",
+    "nowWorkingAt": "Now working at {{branch}}."
+  },
+  "tabs": {
+    "home": "Home",
+    "invoices": "Invoices",
+    "close": "Close {{name}}",
+    "openPatients": "Open patients"
+  },
+  "home": {
+    "find": "Find a patient",
+    "placeholder": "Name, MRN, mobile or doctor",
+    "storyMap": "Story map",
+    "blankTitle": "Search for a patient to begin",
+    "blankSub": "Nothing is loaded until you search — type a name, MRN, mobile number or doctor above.",
+    "openTabs": "You have <b>{{count}}</b> patient(s) open in the tabs above.",
+    "patients": "Patients",
+    "byDoctor": "{{count}} · {{doctors}} by doctor",
+    "noMatch": "No patient matches “{{q}}”.",
+    "profile": "Profile",
+    "drs": "Dr {{names}}",
+    "todaysPending": "Today's pending actions",
+    "nothingToday": "Nothing pending today",
+    "toDo": "{{count}} to do",
+    "ongoing": "{{count}} ongoing",
+    "waiting": "{{count}} waiting",
+    "walkinTitle": "Walk-in visit",
+    "walkinSub": "Book a new visit",
+    "noneToday": "Nothing to do or wait for today.",
+    "upcomingOnProfile": "{{count}} upcoming visit(s) are on the profile."
+  },
+  "tile": {
+    "open": "Open",
+    "ongoing": "Ongoing · ",
+    "waiting": "Waiting · ",
+    "next": "Next: <b>{{stage}}</b>",
+    "today": "Today",
+    "status": { "upcoming": "Upcoming", "act": "To do", "ongoing": "Ongoing", "wait": "Waiting" },
+    "from": "From {{branch}}",
+    "doctorPayer": "Dr {{doctor}} · {{payer}}"
+  },
+  "patient": {
+    "home": "Home",
+    "idLine": "MRN {{mrn}} · {{age}}/{{gender}} · {{mobile}}",
+    "visitsOnFile": "Visits on file",
+    "activePayer": "Active payer",
+    "fromProfile": "set on the profile",
+    "fromOpen": "from the open visit {{date}} {{at}}",
+    "fromLast": "from the last visit {{date}} {{at}}",
+    "payersOnFile": "{{count}} payers on file",
+    "planLine": "deductible {{ded}}% · cap {{cap}}",
+    "planDiscount": " · {{pct}}% discount",
+    "noPolicy": "no policy on file",
+    "change": "Change",
+    "changeTitle": "Change the patient's payer",
+    "pending": "Pending actions",
+    "pendingCount": "{{count}} visit(s)",
+    "pendingCountShut": "{{count}} visit(s) · {{today}} today · {{upcoming}} upcoming",
+    "nothingPending": "nothing pending",
+    "today": "Today",
+    "upcoming": "Upcoming",
+    "past": "Past",
+    "noneToday": "Nothing to do or wait for today.",
+    "noneUpcoming": "No upcoming visit has anything pending.",
+    "nonePast": "No earlier visit is still waiting on anything.",
+    "visits": "Visits",
+    "visitsCount": "{{count}} on file · newest first",
+    "visitsFiltered": "{{shown}} of {{count}} · newest first",
+    "visitNo": "Visit no.",
+    "visitNoPlaceholder": "Visit no. e.g. V100001",
+    "from": "From",
+    "to": "To",
+    "clear": "Clear",
+    "pair": "Pair related visits",
+    "pairTitle": "Group each consultation with its follow-ups and package procedures",
+    "related": "{{count}} related",
+    "rel": { "package": "Package procedure from", "followup": "Follow-up of", "linked": "Linked to" },
+    "visitMeta": "{{date}} {{at}} · Dr {{doctor}} · {{payer}} · {{count}} invoice(s)",
+    "noVisits": "No visits on file yet.",
+    "noVisitMatch": "No visit matches the filter.",
+    "collected": "Collected {{amount}}",
+    "badge": { "closed": "Closed", "lwbs": "LWBS", "upcoming": "Upcoming", "act": "Action needed", "ongoing": "Ongoing", "wait": "Waiting", "done": "Settled" },
+    "invoices": "Invoices",
+    "invoicesHead": "{{count}} on file{{docs}} · {{paid}} collected{{credit}}",
+    "invoicesDocs": " incl. {{count}} advance / credit",
+    "invoicesCredit": " · {{amount}} on credit",
+    "invoicesTable": "The invoice table arrives in checkpoint 1c.",
+    "packageProcedures": "Package procedures",
+    "packageCount": "{{left}} of {{count}} still to be booked",
+    "pkgCols": { "procedure": "Procedure", "package": "Package", "billedOn": "Billed on", "visit": "Visit" },
+    "notBooked": "Not booked"
+  },
+  "wallet": {
+    "open": "Open the wallet",
+    "advance": "Advance",
+    "credit": "Credit",
+    "placeholder": "The wallet section arrives in checkpoint 1c."
+  },
+  "visit": {
+    "placeholderTitle": "Visit screen",
+    "placeholderSub": "{{visit}} · {{type}} · {{clinic}} — the visit screen arrives in checkpoint 1b."
+  },
+  "invoicesScreen": {
+    "placeholder": "The Invoices screen arrives in checkpoint 1c."
+  },
+  "ins": {
+    "approved": "Approved",
+    "partial": "Partially approved",
+    "pending": "Awaiting approval",
+    "rejected": "Rejected",
+    "notcovered": "Not covered",
+    "notinsured": "Self-pay"
+  },
+  "story": {
+    "visit": { "title": "Visit invoicing", "stages": ["Consultation approval", "Bill consultation", "Collect consultation", "See the doctor", "With the doctor"] },
+    "orders": { "title": "Orders invoicing", "stages": ["Doctor's orders", "Orders approval", "Bill orders", "Collect orders", "Orders complete"] },
+    "pkgvisit": { "title": "Package procedure", "stages": ["Print invoice", "Recorded"] },
+    "refund": { "title": "Invoices / Refund", "stages": ["Invoices", "Lines & reason", "Refund mode", "Refunded"] },
+    "replace": { "title": "Replace", "stages": ["Choose invoice", "Insurer & approvals", "Settle difference", "Replaced"] },
+    "package": { "title": "Package booking", "stages": ["Choose procedures", "Clinic & doctor", "Visit booked"] },
+    "credit": { "title": "Credit settlement", "stages": ["Choose invoices", "Payment", "Settled"] },
+    "payer": { "title": "Payer", "stages": ["Eligibility check", "Choose payer", "Policy details", "Payer set"] },
+    "addorders": { "title": "Add orders", "stages": ["Choose orders", "Review", "Added"] },
+    "advadd": { "title": "Add advance", "stages": ["Pot & amount", "Payment", "Added"] },
+    "advrefund": { "title": "Refund advance", "stages": ["Pot & amount", "Reason", "Refund mode", "Refunded"] },
+    "walkin": { "title": "Walk-in visit", "stages": ["Patient", "Visit details", "Orders (optional)", "Payer", "Review", "Visit created"] }
+  },
+  "badge": {
+    "plain": "{{text}}",
+    "invoices": "{{count}} invoice(s)",
+    "invoicesRefundable": "{{count}} invoice(s) · {{r}} refundable",
+    "ready": "{{count}} ready",
+    "waiting": "{{count}} waiting",
+    "toBook": "{{count}} to book",
+    "added": "{{count}} added",
+    "packagesTests": "Packages & tests",
+    "lwbs": "Left without being seen",
+    "invoicedWithDoctor": "Invoiced · with the doctor",
+    "ordersLocked": "Opens when the doctor sees the patient"
+  },
+  "lock": {
+    "finishReplacement": "Finish or cancel the replacement first",
+    "finishPayment": "Finish the payment in hand first",
+    "lwbs": "The patient left without being seen",
+    "ordersLocked": "Locked until the visit is invoiced and the doctor sees the patient"
+  },
+  "step": {
+    "selfPay": "self-pay",
+    "tag": {
+      "consultation": "Consultation",
+      "nothingToCollect": "Nothing to collect",
+      "replacement": "Replacement",
+      "payment": "Payment",
+      "packageProcedure": "Package procedure",
+      "interbranch": "Interbranch orders",
+      "doctorsOrders": "Doctor's orders",
+      "remainingOrders": "Remaining orders",
+      "lwbs": "Left without being seen",
+      "seeDoctor": "See the doctor",
+      "orders": "Orders",
+      "withDoctor": "With the doctor",
+      "ordersComplete": "Orders complete",
+      "closed": "Closed"
+    },
+    "consultWait": {
+      "q": "Approval not received for the consultation — please wait.",
+      "sub": "The request is with {{payer}}."
+    },
+    "consultBill": {
+      "qInsured": "Approval received. Do you wish to bill the consultation?",
+      "q": "Do you wish to bill the consultation?",
+      "subZero": "{{name}} · <b>no charge</b> for this visit type.",
+      "sub": "{{name}} · <b>{{status}}</b> · orders stay locked until this is settled."
+    },
+    "collectZero": {
+      "qConsult": "{{name}} carries no charge. Record it and send {{first}} in?",
+      "qOrders": "These orders carry no charge. Record it and send {{first}} in?",
+      "sub": "An invoice is still raised, at <b>SAR 0.00</b>."
+    },
+    "replace": {
+      "q": "Collect {{amount}} to finish the replacement?",
+      "partialCash": "Orders now at <b>cash prices</b> · the patient stays on {{payer}}",
+      "partialIns": "Order moved onto the policy",
+      "wholeCash": "Now billed as <b>a cash patient</b>",
+      "wholeIns": "Now billed as <b>an insurance patient</b>",
+      "sub": "{{main}} · new total {{total}}.",
+      "subCarried": "{{main}} · new total {{total}} · <b>{{credited}}</b> already paid carried over."
+    },
+    "collectWait": {
+      "q": "Waiting for {{first}} to pay {{amount}}.",
+      "sub": "Link sent at {{at}} to <b>{{mobile}}</b>.",
+      "subStale": "Link sent at {{at}} to <b>{{mobile}}</b> — <b>no payment after {{min}} minutes</b>."
+    },
+    "collect": {
+      "q": "How is {{first}} paying for the {{scope}} — {{amount}}?",
+      "sub": "The invoice is created when the payment goes through."
+    },
+    "scope": { "consultation": "consultation", "orders": "orders" },
+    "pkgPrint": {
+      "q": "Print the invoice for {{count}} package procedure(s)?",
+      "sub": "{{names}} · already paid inside <b>{{parent}}</b> on <inv>{{invoice}}</inv> · <b>no charge</b>.",
+      "thePackage": "the package"
+    },
+    "pkgDone": {
+      "q": "This package procedure has been recorded.",
+      "sub": "<inv>{{inv}}</inv> printed at <b>no charge</b> · package paid on <inv>{{src}}</inv>."
+    },
+    "orders": {
+      "at": " at {{branch}}",
+      "behalf": " Collected here on behalf of {{branch}}.",
+      "behalfAlone": "Collected here on behalf of {{branch}}."
+    },
+    "word": { "has": "has", "have": "have", "does": "does", "do": "do" },
+    "mixed": {
+      "q": "{{unpaid}} procedures were ordered{{at}}. {{appr}} {{has}} approval, {{pend}} {{does}} not.",
+      "sub": "Bill the approved ones now, or wait and bill them together."
+    },
+    "bill": {
+      "q": "{{count}} procedure(s) were ordered{{at}}{{approved}}. Bill {{what}}?",
+      "areApproved": " and are approved",
+      "theTicked": "the {{count}} ticked",
+      "them": "them",
+      "sub": "{{main}}{{behalf}}",
+      "nothingWaiting": "Nothing else is waiting on approval.",
+      "selfPay": "Self-pay — the patient carries the whole charge."
+    },
+    "wait": {
+      "q": "Waiting for approval on {{count}} order(s).",
+      "sub": "{{checked}}{{held}}",
+      "checked": "⚠ <b>Checked at {{at}} — no answer yet.</b> ",
+      "held": "<b>{{count}} approved order(s)</b> are being held with them."
+    },
+    "lwbs": {
+      "q": "{{first}} left without being seen.",
+      "sub": "Marked at {{at}} by {{by}}{{reason}}. {{refund}}",
+      "stillPaid": "The consultation is still paid — refund it from the Refund story if needed."
+    },
+    "seeDoctor": {
+      "q": "{{first}} can now see the doctor.",
+      "sub": "{{checked}}The visit moves on once the doctor starts the consultation.",
+      "checked": "⚠ <b>Checked at {{at}} — the doctor has not started yet.</b> "
+    },
+    "noOrders": {
+      "q": "No orders on this visit yet.",
+      "sub": "Add the procedures or packages {{first}} has come for."
+    },
+    "waitDoctor": {
+      "q": "{{first}} is with the doctor.",
+      "sub": "{{checked}}Anything the doctor orders will appear here to be billed.",
+      "checked": "⚠ <b>Checked at {{at}} — nothing ordered yet.</b> "
+    },
+    "close": {
+      "q": "Everything ordered so far has been billed and paid.",
+      "qCredit": "Everything ordered so far has been billed.",
+      "sub": "Collected <b>{{collected}}</b> across {{count}} invoice(s).{{credit}}{{checked}}",
+      "credit": " <b>{{amount}}</b> on {{count}} invoice(s) sits on credit.",
+      "checked": " ⚠ <b>Checked at {{at}} — nothing new from the doctor.</b>"
+    },
+    "closed": {
+      "q": "This visit is closed.",
+      "sub": "Collected <b>{{collected}}</b>."
+    },
+    "amt": {
+      "patientShare": "patient share",
+      "difference": "difference to collect",
+      "awaiting": "awaiting payment",
+      "toCollect": "to collect",
+      "someOfApproved": "{{chosen}} of {{appr}} approved · patient share",
+      "approvedShare": "{{appr}} approved · patient share",
+      "someOfTicked": "{{chosen}} of {{appr}} ticked · patient share",
+      "readyToBill": "ready to bill · {{count}} approved",
+      "upToMore": "up to this much more, if approved in full"
+    },
+    "ext": {
+      "charged": "What is being charged",
+      "recorded": "What is being recorded",
+      "newInvoiceLines": "{{count}} line(s) on the new invoice",
+      "fromPackage": "{{count}} procedure(s) from the package",
+      "stillToBill": "{{count}} order(s) still to bill",
+      "earlierBilled": "{{count}} earlier order(s) on this visit have already been billed — see the history below.",
+      "orders": "{{count}} order(s)",
+      "awaitingApproval": "{{count}} order(s) awaiting approval"
+    },
+    "act": {
+      "checkForApproval": "Check for approval",
+      "yesBillIt": "Yes, bill it",
+      "yesRecordIt": "Yes, record it",
+      "takeAtDesk": "Take it at the desk",
+      "sendAPaymentLink": "Send a payment link",
+      "cancelReplacement": "Cancel the replacement",
+      "takePaymentAtDesk": "Take payment at the desk",
+      "resendLink": "Resend link",
+      "markLinkPaid": "Mark as paid (link confirmed)",
+      "sendPaymentLink": "Send payment link",
+      "yesPrintIt": "Yes, print it",
+      "undoPrint": "Undo the print · {{inv}}",
+      "billApprovedNow": "Bill the {{count}} approved now",
+      "billNow": "Bill the {{count}} now",
+      "waitAll": "Wait for all approvals",
+      "yesBillTicked": "Yes, bill the {{count}} ticked",
+      "yesBillThem": "Yes, bill them",
+      "checkApproval": "Check approval",
+      "releaseHeld": "Bill the {{count}} approved order(s) now",
+      "billCashUrgent": "Bill the {{count}} pending order(s) as cash now",
+      "undoLwbs": "The patient came back — undo",
+      "checkDoctor": "Check if the doctor has started",
+      "lwbs": "Left without being seen",
+      "addOrders": "Add orders",
+      "checkOrders": "Check for new orders",
+      "reopen": "Reopen"
+    }
+  }
+}

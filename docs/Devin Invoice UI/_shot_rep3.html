@@ -1,0 +1,35 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>html,body{margin:0}iframe{width:100vw;height:100vh;border:0;display:block}</style></head><body>
+<script>
+const n=new URLSearchParams(location.search).get('s')||'1';
+const f=document.createElement('iframe');
+f.onload=()=>{const w=f.contentWindow;
+  const q=s=>w.document.querySelector(s),qa=s=>[...w.document.querySelectorAll(s)],R=()=>w.eval('render')();
+  const c=w.eval('cases').find(x=>x.id===1);
+  w.eval('openVisit')(1);
+  const pay=()=>{ qa('.step .acts .btn').find(b=>/desk/i.test(b.textContent)).click(); q('#dGo').click(); };
+  if(n==='1'){ // cash patient (was NCCI): consultation + an order on cash
+    w.eval('setPayer')(c,'CASH'); R();
+    qa('.step .acts .btn')[0].click(); pay();
+    c.orders=[{ code:'LAB-022', name:'Urea & Electrolytes', price:150, priceIns:180, priceCash:150, ins:'notinsured', ordered:'15:20', paid:false }]; R();
+    qa('.step .acts .btn')[0].click(); pay();
+    qa('.step .acts .btn').find(b=>/Invoices & Refund/.test(b.textContent)).click();
+  }
+  if(n==='2'){ w.eval('setPayer')(c,'CASH'); R();
+    qa('.step .acts .btn')[0].click(); pay();
+    c.orders=[{ code:'LAB-022', name:'Urea & Electrolytes', price:150, priceIns:180, priceCash:150, ins:'notinsured', ordered:'15:20', paid:false }]; R();
+    qa('.step .acts .btn')[0].click(); pay();
+    qa('.step .acts .btn').find(b=>/Invoices & Refund/.test(b.textContent)).click();
+    q('.step [data-replace]').click();
+  }
+  if(n==='3'){ // insurance patient: cash-billed order, approval received
+    c.prefs={waitAll:true};
+    qa('.step .acts .btn')[0].click(); pay();
+    c.orders=[{ code:'LAB-440', name:'Thyroid Panel', price:260, priceIns:260, priceCash:220, ins:'pending', ordered:'15:20', paid:false }]; R();
+    qa('.step .acts .btn').find(b=>/as cash now/.test(b.textContent)).click(); pay();
+    qa('.step .acts .btn').find(b=>/Check approval/.test(b.textContent)).click();
+    qa('.step .acts .btn').find(b=>/Check approval/.test(b.textContent)).click();
+    qa('.step .acts .btn').find(b=>/Invoices & Refund/.test(b.textContent)).click();
+  }
+  document.title='SHOT-READY';};
+f.src='journey-opd-v2.html';document.body.appendChild(f);
+</script></body></html>

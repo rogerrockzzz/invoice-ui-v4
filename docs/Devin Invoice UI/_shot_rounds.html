@@ -1,0 +1,22 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>html,body{margin:0}iframe{width:100vw;height:100vh;border:0;display:block}</style></head><body>
+<script>
+const f=document.createElement('iframe');
+f.onload=()=>{const w=f.contentWindow;
+  const q=s=>w.document.querySelector(s),qa=s=>[...w.document.querySelectorAll(s)],R=()=>w.eval('render')();
+  const c=w.eval('cases').find(x=>x.id===2);
+  w.eval('openVisit')(2);
+  const pay=()=>{ const b=qa('.step .acts .btn').find(x=>/desk/i.test(x.textContent)); if(b){ b.click(); q('#dGo').click(); } };
+  for(let i=0;i<14;i++){
+    const k=w.eval('nextStep')(c).key;
+    if(k==='ORDERS_MIXED'&&c.orders.some(o=>o.invoiceId)) break;           // second round reached
+    if(k==='ORDERS_MIXED'||k==='ORDERS_BILL'){ qa('.step .acts .btn')[0].click(); continue; }
+    if(k==='COLLECT'){ pay(); continue; }
+    if(k==='ORDERS_WAIT'){ qa('.step .acts .btn')[0].click(); continue; }
+    if(k==='CLOSE'||k==='WAIT_DOCTOR'){ qa('.step .acts .btn')[0].click(); continue; }
+    if(k==='CASH_WAIT'||k==='CASH_TO_INS'){ qa('.step .acts .btn')[0].click(); continue; }
+    break;
+  }
+  const d=q('details.ext'); if(d){ d.open=true; R(); const d2=q('details.ext'); if(d2){ d2.open=true; } }
+  document.title='SHOT-READY';};
+f.src='journey-opd-v2.html';document.body.appendChild(f);
+</script></body></html>
