@@ -13,6 +13,7 @@ import { payAll } from "../../store/actions";
 import { useW } from "../../store/hooks";
 import { useUi, walletDo } from "../../store/ui";
 import { completeRefund } from "../../store/refund";
+import { completeReplaceRefund, undoReplace } from "../../store/replace";
 import { refundAdvance, settleCredit } from "../../store/wallet";
 import { useWorld } from "../../store/world";
 
@@ -37,7 +38,11 @@ export function PaymentDrawer() {
   const c = D.drawerVisit(w, d);
   const v = D.drawerView(w, c, d);
   const wal = walletOf(w, c);
-  const close = () => set({ drawer: null });
+  /* walking away from the refund of a replacement abandons the replacement too */
+  const close = () => {
+    set({ drawer: null });
+    if (d.refundDiff && d.caseId != null) act(d.caseId, undoReplace);
+  };
   const confirm = () => {
     if (!v.canConfirm) return;
     const { mode, detail, parts } = D.drawerConfirm(d);
@@ -46,6 +51,9 @@ export function PaymentDrawer() {
       const { cat, reason } = d.advRefund;
       const done = actW((dw, fx) => refundAdvance(dw, d.mrn, d.caseId, cat, d.amount, mode, reason, detail, fx));
       if (ui.wallet) walletDo(d.mrn, (x) => { x.flow = null; x.done = done; });
+    } else if (d.refundDiff) {
+      const r = d.refundDiff;
+      act(d.caseId!, (dw, dc, fx) => completeReplaceRefund(dw, dc, d.amount, mode, r.reason, detail, fx));
     } else if (d.refund) {
       const r = d.refund;
       set({ refund: null }); /* the refund is done — the card moves on */
@@ -153,6 +161,20 @@ export function PaymentDrawer() {
                   <Alert.Description>
                     <Row k={t("drawer.from")} v={t("drawer.potAdvanceName", { pot: d.advRefund.cat })} />
                     <Row k={t("drawer.reason")} v={d.advRefund.reason} />
+                  </Alert.Description>
+                </Alert.Content>
+              </Alert>
+            )}
+
+            {d.refundDiff && (
+              <Alert status="danger" data-testid="refund-box">
+                <Alert.Indicator />
+                <Alert.Content>
+                  <Alert.Title>{t("drawer.goesBack", { amount: fmt(d.amount) })}</Alert.Title>
+                  <Alert.Description>
+                    <Row k={t("drawer.why")} v={d.refundDiff.reason} />
+                    <Row k={t("drawer.newInvoice")} v={t("drawer.raisedOnConfirm")} />
+                    {d.mode === "Advance wallet" && <Row k={t("drawer.toWallet")} v={fmt(d.amount)} strong />}
                   </Alert.Description>
                 </Alert.Content>
               </Alert>

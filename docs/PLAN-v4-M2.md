@@ -32,19 +32,19 @@ read it first. Commits are `M2<x>: <summary>`; WIP branches `m2<x>-wip`; handoff
   difference (refundDiff); a replacement abandoned (`undoReplace`).
 
 ## Acceptance
-- [ ] 2a: Add orders story — picker (trending, search, doctor-only locked), review with total, "Add N order(s)" adds
+- [x] 2a: Add orders story — picker (trending, search, doctor-only locked), review with total, "Add N order(s)" adds
   lines (`byReception`, cash price), done card "Add more orders"; NO_ORDERS "Add orders" opens it; golden + e2e.
-- [ ] 2b: Refund story lists the visit's invoices, refund invoices and wallet docs; Refund buttons exactly on
+- [x] 2b: Refund story lists the visit's invoices, refund invoices and wallet docs; Refund buttons exactly on
   `refundable` invoices; lines & reason in the card (all refundable lines ticked, reason ≥ 3 chars), refund mode in
   the slide-in (Cash / card modes / Advance wallet; no Credit); refund invoice RFD-… with its own pop-up; invoice
   shows "Refunds against this invoice"; Refund entry points in invoice table / invoice pop-up / event pop-up work;
   stages Invoices → Lines & reason → Refund mode → Done; golden + e2e.
-- [ ] 2c: Replace story — insured: cash-billed orders, "Check approval", Replace once approved; cash patient: one
+- [x] 2c: Replace story — insured: cash-billed orders, "Check approval", Replace once approved; cash patient: one
   invoice at a time onto the best insurer, insurer Select with "n of m approved", `checkInsurerApproval` on the second
   check; work card with table, summary and "Replace · collect / refund / nothing to settle"; REPLACE_COLLECT step
   collects the difference; refund-difference drawer; cancel / walk-away → `undoReplace`; "Bill the N pending order(s)
   as cash now" enabled; golden + e2e.
-- [ ] `npm run verify` green; PARITY.md updated (no `deferred-M2` left); AGENTS.md "Learned in M2".
+- [x] `npm run verify` green; PARITY.md updated (no `deferred-M2` left); AGENTS.md "Learned in M2".
 
 ---
 

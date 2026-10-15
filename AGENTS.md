@@ -2,6 +2,7 @@
 
 ## Start here
 - Plan for Milestone 1 (checkpoints 1a / 1b / 1c): `docs/PLAN-v4-M1.md` — read §0–§6, then your checkpoint.
+- Milestone 2 (2a Add orders / 2b Refund / 2c Replace): `docs/PLAN-v4-M2.md` (done). M3/M4 still to be planned.
 - Progress and v3 drift: `docs/PARITY.md` (every v3 declaration → v4 module, checkpoint, status).
 - UI library skill: `.devin/skills/heroui-react/` (HeroUI **v3** only). Fetch component docs before use:
   `node .devin/skills/heroui-react/scripts/get_component_docs.mjs <Component>`.
@@ -64,3 +65,19 @@
 - HeroUI `Select` trigger's accessible name is "<value> <label>" — e2e opens it with `getByRole("button", { name: / Clinic$/ })`.
   `Switch` inputs are visually hidden: click the label text. A `Disclosure`'s content stays mounted when collapsed —
   render heavy content only when expanded.
+
+## Learned in M2
+- Commits: git has no identity configured — pass `GIT_AUTHOR_NAME/EMAIL` and `GIT_COMMITTER_NAME/EMAIL` (Roger /
+  roger@test.com, as earlier commits) as env vars; never change git config.
+- Work-in-progress UI state of a story lives in the UI store (`ui.refund`, `ui.replace`) and goes into `StoryUiCtx`
+  (`refundInvoiceId`, `replaceCaseId`) built in `VisitScreen`; the visit's own story state (`c.addStory`) lives on the visit.
+- Actions: `store/refund.ts` (openRefundOn, completeRefund, raiseRefundInvoice), `store/replace.ts` (doReplace,
+  undoReplace, completeReplaceRefund, checkInsurerApproval), Add orders in `store/payer.ts` (addOrdersStory). Pure parts:
+  `domain/refund.ts` (refundStart, refundCalc), `domain/replace.ts` (billedLines, replacePreview …).
+- Drawer money-back branches: `advRefund`, `refund`, `refundDiff` (`isMoneyBack`); closing a `refundDiff` drawer undoes the
+  replacement. Refund ids use the same seeded random as invoice ids (`newRefundId`), so golden flows stay deterministic.
+- Golden extractor ops for M2 drive v3's own cards: `renderAddOrdersStory` (#aoGo), `openRefund` + `renderRefundWork`
+  (#rfGo) + drawer #dGo, `invoiceReplace(c,inv).open()` + `renderReplaceWork` (#rpGo / #rpCheck). Reset `S.replace` after
+  each op so v3's storyStage does not read leftover UI state. The flow snapshot now also carries refunds / replaced /
+  refund invoices — keep `snap` identical in `extract.html` and `flows.test.ts`.
+- `useWorld.getState().actW` is how a UI action gets a result back from a visit action (e.g. `doReplace` → refundDiff).

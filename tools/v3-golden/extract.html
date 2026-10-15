@@ -160,6 +160,20 @@ f.onload = () => {
         ["refund", 4, "first", null, "Advance wallet", "", "patient changed their mind"],
         ["refund", 1, "first", null, "Span", "4417", "left before being seen"],
       ] },
+      /* 2c: replace — worked in the Replace story card; a difference owed back is refunded in the slide-in */
+      { name: "2c: insured — the cash-billed order moves onto the policy, the overpayment goes back", ops: [
+        ["pay", 2, "Cash", "", [["Cash", "rest"]]],
+        ["replace", 2, "cashOnly", null, "Advance wallet"],
+      ] },
+      { name: "2c: cash visit — the insurer is asked twice, then the visit moves onto it", ops: [
+        ["billConsult", 103], ["pay", 103, "Cash", "", [["Cash", "rest"]]],
+        ["refund", 103, "first", null, "Cash", "", "paid twice by mistake"],
+        ["replace", 103, "first", "TAW-SILVER", null],
+        ["insCheck", 103, "first", "TAW-SILVER", null], ["insCheck", 103, "first", "TAW-SILVER", null],
+        ["replace", 103, "first", "TAW-SILVER", null], ["cancelBill", 103],
+        ["replace", 103, "first", "TAW-SILVER", null], ["sendLink", 103],
+        ["pay", 103, "Span", "", [["Span", "rest"]]],
+      ] },
     ];
     const caseOf = (id) => cases.find((x) => x.id === id);
     const S = E("state"), doc = w.document, R = (c) => E("renderPayerStory")(c), click = (root, sel) => root.querySelector(sel).click();
@@ -202,6 +216,19 @@ f.onload = () => {
         S.refund.reason = reason;
         click(E("renderRefundWork")(c), "#rfGo");
         S.drawer.mode = mode; S.drawer.ref = ref; E("render")(); doc.getElementById("dGo").click();
+      }
+      else if (op === "replace" || op === "insCheck") {
+        const [which, payerId, mode] = a;
+        const live = E("liveInvoices")(c).filter((i) => E("invoiceReplace")(c, i));
+        const inv = which === "cashOnly" ? live.find((i) => i.cashOnly) : which === "first" ? live[0] : c.invoices.find((i) => i.id === which);
+        E("invoiceReplace")(c, inv).open();
+        if (payerId) S.replace.payerId = payerId;
+        click(E("renderReplaceWork")(c), op === "insCheck" ? "#rpCheck" : "#rpGo");
+        S.replace = null;
+        if (S.drawer && S.drawer.refundDiff && mode) {
+          if (mode === "cancel") { E("render")(); doc.getElementById("dCancel").click(); }
+          else { S.drawer.mode = mode; E("render")(); doc.getElementById("dGo").click(); }
+        }
       }
       else if (op === "addOrdersStory") {
         c.addStory = { stage: 2, sel: Object.fromEntries(a[0].map((k) => [k, true])), q: "" };

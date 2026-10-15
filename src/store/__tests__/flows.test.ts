@@ -6,7 +6,7 @@ import { resolveMsg } from "../../i18n/msg";
 import { setClock } from "../../domain/clock";
 import { setRandom } from "../../domain/ids";
 import { CONSULT_FEES, ORDER_CATALOG } from "../../domain/constants";
-import { approvedOrders, creditInvoices, creditOf, creditTotal, due, pendingOrders, refundable, selectedLines } from "../../domain/lines";
+import { approvedOrders, creditInvoices, creditOf, creditTotal, due, liveInvoices, pendingOrders, refundable, selectedLines } from "../../domain/lines";
 import { visitsOf } from "../../domain/lookup";
 import { round2 } from "../../domain/money";
 import * as P from "../../domain/payers";
@@ -17,6 +17,8 @@ import * as A from "../actions";
 import * as PA from "../payer";
 import * as W from "../wallet";
 import * as RF from "../refund";
+import * as RP from "../replace";
+import { invoiceReplace, replacePreview } from "../../domain/replace";
 import { refundCalc, refundStart } from "../../domain/refund";
 
 /* Replays the scripted flows of tools/v3-golden/extract.html with v4's actions and compares the visit
@@ -67,6 +69,21 @@ function runOp(w: World, [op, id, ...a]: Op) {
       d.reason = reason;
       const r = refundCalc(w, d)!;
       return RF.completeRefund(w, c, inv.id, r.chosen.map((x) => x.code), r.amt, r.dedBack, mode, d.reason.trim(), ref, fx);
+    }
+    case "replace": case "insCheck": {
+      const [which, payerId, mode] = a as [string, string | null, string | null];
+      const live = liveInvoices(c).filter((i) => invoiceReplace(w, c, i));
+      const inv = which === "cashOnly" ? live.find((i) => i.cashOnly)! : which === "first" ? live[0]! : c.invoices.find((i) => i.id === which)!;
+      const pid = payerId || invoiceReplace(w, c, inv)!.payerId;
+      const lines = [c.consult, ...c.orders].filter((l) => l.invoiceId === inv.id);
+      RP.openReplaceOn(c);
+      const pv = replacePreview(w, c, "insurance", pid, lines);
+      if (op === "insCheck") return RP.checkInsurerApproval(w, c, pid, pv.rows.map((r) => r.line), fx);
+      if (pv.missing.length) return null; /* the button waits for the approvals */
+      const out = RP.doReplace(w, c, "insurance", pid, lines, fx);
+      if (out && mode === "cancel") return RP.undoReplace(w, c, fx);
+      if (out && mode) return RP.completeReplaceRefund(w, c, out.refundDiff, mode, t("replace.diffReason", { to: "insurance" }), "", fx);
+      return out;
     }
     case "addOrdersStory":
       PA.addStoryDo(c, (s) => { s.stage = 2; s.sel = Object.fromEntries((a[0] as string[]).map((k) => [k, true])); });

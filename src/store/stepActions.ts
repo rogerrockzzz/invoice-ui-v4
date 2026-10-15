@@ -1,8 +1,9 @@
-import { approvedOrders, selectedLines } from "../domain/lines";
+import { approvedOrders, pendingOrders, selectedLines } from "../domain/lines";
 import type { ActionId } from "../domain/steps";
 import { activeStory } from "../domain/stories";
 import type { Visit, World } from "../domain/types";
 import * as A from "./actions";
+import * as RP from "./replace";
 
 /* what each nextStep() action id does — the closures v3 builds inside nextStep (lines 3025–3229).
    `openDrawer` opens the payment pop-up (UI state) and is handled by the step card. */
@@ -22,9 +23,11 @@ export const STEP_RUN: Partial<Record<ActionId, (w: World, c: Visit, fx: A.Fx) =
   checkOrders: A.checkOrders,
   reopen: (_w, c) => { c.closed = false; },
   addOrders: (w, c, fx) => A.switchStory(w, c, "addorders", activeStory(w, c), fx),
+  undoReplace: RP.undoReplace,
+  billCashUrgent: (w, c) => { A.startCashBill(w, c, pendingOrders(c).filter((o) => !o.paid && !o.invoiceId)); },
 };
 
 /* entry points that belong to later work: shown where v3 has them, disabled */
 export const STEP_LATER: Partial<Record<ActionId, string>> = {
-  billCashUrgent: "M2", undoReplace: "M2", lwbs: "M3", undoLwbs: "M3", printPackage: "M3", voidPrint: "M3",
+  lwbs: "M3", undoLwbs: "M3", printPackage: "M3", voidPrint: "M3",
 };

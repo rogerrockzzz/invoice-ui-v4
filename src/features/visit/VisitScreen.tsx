@@ -20,7 +20,7 @@ import { VisitTimeline } from "./VisitTimeline";
 export function VisitScreen() {
   const { t } = useTranslation();
   const w = useW();
-  const { caseId, goHome, openPatient, walletOpen, drawer, refund } = useUi();
+  const { caseId, goHome, openPatient, walletOpen, drawer, refund, replace } = useUi();
   const c = w.cases.find((x) => x.id === caseId);
   if (!c) return null;
   const p = w.patients[c.mrn]!;
@@ -31,6 +31,7 @@ export function VisitScreen() {
   const ui: StoryUiCtx = {
     drawer: drawer ? { caseId: drawer.caseId, credit: !!drawer.credit, refund: !!drawer.refund, refundDiff: !!drawer.refundDiff } : null,
     refundInvoiceId: refund ? refund.id : null,
+    replaceCaseId: replace ? replace.caseId : null,
   };
   const payerInner = (
     <>

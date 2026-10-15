@@ -11,6 +11,8 @@ import { openedVisit } from "./actions";
 import { findInvoice } from "../domain/lookup";
 import { refundStart, type RefundUi } from "../domain/refund";
 import { openRefundOn } from "./refund";
+import { openReplaceOn } from "./replace";
+import { invoiceReplace, type ReplaceTo } from "../domain/replace";
 import { notify } from "./toasts";
 import { useWorld } from "./world";
 
@@ -53,6 +55,8 @@ export interface UiState {
   simOpen: boolean;
   /* the refund being worked in its visit's Refund story (v3 state.refund) */
   refund: RefundUi | null;
+  /* the replacement being worked in its visit's Replace story (v3 state.replace) */
+  replace: ReplaceUi | null;
   /* the wallet section and its stories (v3 state.wallet / state.adv) */
   wallet: WalletUi | null;
   adv: AdvUi | null;
@@ -98,7 +102,7 @@ const initial = () => ({
   screen: "home" as Screen, tabs: [] as string[], activeMrn: null, caseId: null, q: "", homeSel: null, homePanel: null,
   walletOpen: false, profPendOpen: true, pendView: "today" as PendView, profVisitsOpen: true, vf: { no: "", from: "", to: "" },
   visGroup: false, pinvOpen: false, pkgOpen: false,
-  drawer: null, eventPop: null, invPop: null, histOpen: true, comment: null, simOpen: false, refund: null as RefundUi | null,
+  drawer: null, eventPop: null, invPop: null, histOpen: true, comment: null, simOpen: false, refund: null as RefundUi | null, replace: null as ReplaceUi | null,
   wallet: null, adv: null, profPayer: null, walkin: null,
   invF: defaultInvFilters(), invQ: "", invLoaded: null, invEdit: false, invGroup: false,
 });
@@ -158,7 +162,18 @@ export const useUi = create<UiState>()(
 
 /* v3 dropInlineRefund() (line 3417): work started inside a visit's story does not follow you out of the visit */
 function dropInline(s: UiState) {
-  if (s.screen === "visit") s.refund = null;
+  if (s.screen === "visit") { s.refund = null; s.replace = null; }
+}
+
+/* v3 invoiceReplace().open (lines 1507, 1516): replace this invoice only, onto the payer chosen for it */
+export interface ReplaceUi { caseId: number; to: ReplaceTo; payerId: string; codes: string[]; partial: boolean }
+export function openReplace(c: Visit, invId: string) {
+  const w = useWorld.getState();
+  const inv = c.invoices.find((i) => i.id === invId);
+  const r = inv && invoiceReplace(w, c, inv);
+  if (!r) return;
+  useWorld.getState().act(c.id, (_w, dc) => openReplaceOn(dc));
+  useUi.getState().set({ replace: { caseId: c.id, to: "insurance", payerId: r.payerId, codes: [c.consult, ...c.orders].filter((l) => l.invoiceId === invId).map((l) => l.code), partial: true } });
 }
 
 /* v3 openRefund() (line 5192): a refund always happens in its visit's Refund story — wherever it was started from,

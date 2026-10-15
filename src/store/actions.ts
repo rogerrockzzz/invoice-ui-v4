@@ -13,6 +13,7 @@ import type { Bill, Invoice, Line, Visit, World } from "../domain/types";
 import type { PayPart } from "../domain/drawer";
 import type { ToastKind } from "./toasts";
 import { logLedgerOn, recordOn } from "./world";
+import { undoReplace } from "./replace";
 
 /* v3's actions (journey-opd-v3.html lines 1617–1901, 2043–2054, 3314–3387), on a plain World so they can
    run inside an immer draft or in a test. Texts are i18n keys holding v3's exact English; history keeps
@@ -70,10 +71,10 @@ export function startCashBill(w: World, c: Visit, lines: Line[]) {
   return c.bill;
 }
 
-export function cancelBill(_w: World, c: Visit, fx: Fx) {
+export function cancelBill(w: World, c: Visit, fx: Fx) {
   const b = c.bill;
   if (!b) return;
-  /* a replacement in hand is undone by the Replace story (M2) */
+  if (b.replacing) return undoReplace(w, c, fx);
   const lines = [c.consult, ...c.orders].filter((l) => b.codes.includes(l.code));
   if (b.cashOnly) lines.forEach((l) => { /* the urgent cash conversion is undone too */
     l.ins = l.insWas || l.ins;
@@ -103,8 +104,7 @@ export function resendLink(w: World, c: Visit, fx: Fx) {
   fx.toast("", t("toast.linkResent"), name(w, c));
 }
 
-/* The payment is what creates the invoice — one event, one history line (v3 payAll, line 1686).
-   The replacement branch belongs to the Replace story (M2). */
+/* The payment is what creates the invoice — one event, one history line (v3 payAll, line 1686). */
 export function payAll(w: World, c: Visit, via: string, fx: Fx, detail?: string, parts?: PayPart[]) {
   const b = c.bill;
   if (!b) return null;
@@ -119,11 +119,16 @@ export function payAll(w: World, c: Visit, via: string, fx: Fx, detail?: string,
     payments: parts ? parts.map((p) => ({ mode: p.mode, amount: p.amount, ref: [p.ref2, p.ref].filter(Boolean).join(" · ") })) : null,
     payer: b.payerLabel || payerOf(w, c).label, rows: b.rows,
     branch: c.interbranch ? c.fromBranch : null,
-    replaces: null, credited: 0,
+    replaces: b.replacing ? b.replacing.ids.slice() : null,
+    credited: b.replacing ? b.replacing.credited : 0,
     cashOnly: !!b.cashOnly,
     billType: b.cashOnly ? "cash" : b.billType || billingType(w, c),
   };
   c.invoices.unshift(inv);
+  if (b.replacing) b.replacing.ids.forEach((id) => {
+    const old = c.invoices.find((i) => i.id === id);
+    if (old) old.replaced = { at: now(), by: USER, newId: inv.id, to: billingType(w, c) };
+  });
   lines.forEach((l) => { l.paid = paid; l.via = via; l.invoiceId = inv.id; });
   c.dedUsed = round2((c.dedUsed || 0) + b.deductible); /* the pool is consumed on payment */
   const wal = walletOf(w, c);
@@ -156,6 +161,24 @@ export function payAll(w: World, c: Visit, via: string, fx: Fx, detail?: string,
     note: t("ledger.unsettled", { scope: t(b.scope === "consult" ? "hist.label.consult" : "hist.label.orders"),
       paid: paidPart > 0.004 ? t("ledger.paidAtDesk", { amount: fmt(paidPart) }) : "" }) });
   const label = billLabel(c);
+  if (b.replacing) {
+    const rp = b.replacing, to = rp.to, dif = b.due || 0, ids = rp.ids.join(", ");
+    recordOn(c, "", t("hist.replaced", { ids, inv: inv.id }),
+      t("hist.replacedSub", {
+        main: rp.partial ? (to === "cash" ? t("hist.replacedPartCash", { payer: payerOf(w, c).label }) : t("hist.replacedPartIns", { payer: payerOf(w, c).label }))
+          : t(to === "cash" ? "hist.replacedWholeCash" : "hist.replacedWholeIns", { to }),
+        credited: fmt(rp.credited),
+        settle: dif > 0.004 ? t("hist.replacedCollected", { amount: fmt(dif), via }) : dif < -0.004 ? t("hist.replacedRefunded", { amount: fmt(-dif) }) : t("hist.replaceSettled"),
+      }),
+      { type: "REPLACE", invoiceId: inv.id, amount: b.patient, replaced: rp.ids, credited: rp.credited, diff: b.due, mode: via, scope: b.scope,
+        lines: b.rows.map((r) => ({ name: r.name, code: r.code, ins: "notcovered", price: r.calc.gross })) });
+    if (dif >= -0.004) markDone(c, "replace", t("replace.done", { ids, inv: inv.id }),
+      dif > 0.004 ? t("hist.replacedCollected", { amount: fmt(dif), via }) : t("replace.noMoney"));
+    fx.toast("ok", t("toast.replaced", { inv: inv.id }), t("toast.replacedSub", { name: name(w, c), to,
+      settle: dif > 0.004 ? t("toast.replacedCollected", { amount: fmt(dif) }) : dif < -0.004 ? t("toast.replacedToRefund", { amount: fmt(-dif) }) : t("toast.replacedNoMoney") }));
+    c.bill = null; c.link = null;
+    return inv;
+  }
   const onCredit = creditRaised > 0.004;
   recordOn(c, onCredit ? "w" : "",
     onCredit && paidPart > 0.004 ? t("hist.partPaid", { label, paid: fmt(paidPart), credit: fmt(creditRaised) })

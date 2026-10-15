@@ -1,8 +1,53 @@
+import { liveInvoices, refundedOf } from "./lines";
 import { planOf, pt } from "./lookup";
-import type { Invoice, InsStatus, Line, Visit, World } from "./types";
+import { round2 } from "./money";
+import { calcLine, cashPriceOf, insPriceOf } from "./pricing";
+import type { Calc, Invoice, InsStatus, Line, Plan, Visit, World } from "./types";
 
-/* Predicates only — the Replace story itself is M2. v3 lines 1349, 1464–1473, 1499–1536. */
+/* Replacing billing (v3 lines 1339–1383, 1461–1536). The patient type is decided when the visit starts. An
+   insurance patient stays an insurance patient: replacing to cash re-prices only the invoiced orders at cash,
+   and the consultation stays on the policy. A cash patient can be moved onto a policy, and then the whole
+   visit moves so invoicing carries on with approvals. */
+export function billedLines(c: Visit) {
+  const ids = liveInvoices(c).map((i) => i.id);
+  return [c.consult, ...c.orders].filter((l) => l.invoiceId && ids.includes(l.invoiceId));
+}
 export const billingType = (w: World, c: Visit) => (planOf(w, c) ? "insurance" : "cash");
+export type ReplaceTo = "cash" | "insurance";
+export function replaceLinesFor(c: Visit, to: ReplaceTo) {
+  /* insurance → cash: the invoiced orders still on the policy, never the consultation */
+  if (to === "cash") return billedLines(c).filter((l) => l !== c.consult && !l.urgentCash);
+  /* cash → insurance: everything invoiced on the visit */
+  return billedLines(c);
+}
+export interface ReplaceRow { line: Line; price: number; ins: InsStatus; calc: Calc; was: number; approval: InsStatus | null }
+export function replacePreview(w: World, c: Visit, to: ReplaceTo, payerId: string, only?: Line[] | null) {
+  const lines = only || replaceLinesFor(c, to);
+  /* only the invoices these lines sit on are touched, and whole invoices at a time */
+  const touched = liveInvoices(c).filter((i) => lines.some((l) => l.invoiceId === i.id));
+  const all = [c.consult, ...c.orders];
+  const set = [...lines];
+  touched.forEach((i) => (i.rows || []).forEach((r) => {
+    const l = all.find((x) => x.code === r.code);
+    if (l && !set.includes(l)) set.push(l);
+  }));
+  const plan: Plan | null = to === "insurance" ? (pt(w, c).payers.find((p) => p.id === payerId) || { plan: null }).plan : null;
+  /* the pool already given to the invoices that are staying put */
+  const keptDed = round2(liveInvoices(c).filter((i) => !touched.includes(i)).reduce((a, i) => a + (i.deductible || 0), 0));
+  let left = plan ? Math.max(0, Math.min(plan.visitCap, plan.annualLeft) - keptDed) : 0;
+  const rows: ReplaceRow[] = set.map((l) => {
+    const price = to === "cash" ? cashPriceOf(l) : insPriceOf(l);
+    const st = to === "cash" ? null : approvalOf(c, l, payerId);
+    const ins: InsStatus = to === "cash" ? "notinsured" : isApproved(st) ? st! : "pending";
+    const calc = calcLine({ ...l, price, ins }, Math.max(0, left), plan);
+    left = round2(left - calc.deductible);
+    return { line: l, price, ins, calc, was: round2(l.price), approval: st };
+  });
+  const newTotal = round2(rows.reduce((a, r) => a + r.calc.patientWithTax, 0));
+  const oldPaid = round2(touched.reduce((a, i) => a + i.patient - refundedOf(i), 0));
+  const missing = to === "insurance" ? rows.filter((r) => !isApproved(r.approval)) : [];
+  return { rows, plan, newTotal, oldPaid, keptDed, partial: !!only, missing, diff: round2(newTotal - oldPaid), ids: touched.map((i) => i.id) };
+}
 
 /* what a given insurer has said about a line */
 export function approvalOf(c: Visit, l: Line, payerId: string): InsStatus | null {

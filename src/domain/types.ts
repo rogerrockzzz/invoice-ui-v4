@@ -263,6 +263,7 @@ export interface Visit {
   pkgStory?: { stage: number } | null;
   addStory?: AddStory | null;
   checks?: number;
+  insChecks?: Record<string, number>;
   lastCheck?: string | null;
   docChecks?: number;
   lastDocCheck?: string | null;

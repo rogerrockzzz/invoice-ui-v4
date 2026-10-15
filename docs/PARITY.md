@@ -10,7 +10,7 @@ checkpoint and whenever `npm run drift` reports a change (docs/PLAN-v4-M1.md §6
 - Goldens: `src/domain/__golden__/v3.json` — regenerate with `npm run golden`
 
 ## Status summary
-deferred-M2: 24, deferred-M3: 10, deferred-M4: 29, done: 239 (of 302 declarations) — Milestone 1 complete
+deferred-M3: 10, deferred-M4: 29, done: 263 (of 302 declarations) — Milestone 2 complete
 
 ## Screens and stories
 | v3 screen / story | Checkpoint | Status | Notes |
@@ -19,9 +19,9 @@ deferred-M2: 24, deferred-M3: 10, deferred-M4: 29, done: 239 (of 302 declaration
 | Patient tabs | 1a | done | |
 | Home search + patient cards | 1a | done | walk-in card opens the walk-in (1c) |
 | Patient profile: header, payer row, pending actions, visits, package items, invoices | 1a, 1c | done | wallet section, profile payer and invoices table added in 1c |
-| Visit screen, story strip, stepper, step card, order table | 1b | done | payer chip opens the Payer story (1c); M2/M3 stories shown with a "Coming in …" card |
+| Visit screen, story strip, stepper, step card, order table | 1b | done | payer chip opens the Payer story (1c); M3 stories shown with a "Coming in …" card |
 | Visit invoicing / Orders invoicing | 1b | done | scripted flows golden-tested step by step against v3 |
-| Payment drawer | 1b, 1c, 2b | done | payment, credit-settlement, advance-refund and refund branches; replacement refund 2c |
+| Payment drawer | 1b, 1c, 2b, 2c | done | payment, credit-settlement, advance-refund, refund and replacement-refund branches |
 | Visit timeline + event pop-up | 1b | done | "Go to invoices" works from 1c |
 | Simulate panel | 1b | done | |
 | Wallet section + Add advance / Refund advance / Credit settlement | 1c | done | golden flows + e2e |
@@ -30,7 +30,7 @@ deferred-M2: 24, deferred-M3: 10, deferred-M4: 29, done: 239 (of 302 declaration
 | Invoices screen + invoice pop-up | 1c | done | wallet document pop-up, reprint + print stylesheet |
 | Add orders | 2a | done | golden flow + e2e; NO_ORDERS "Add orders" opens it |
 | Refund | 2b | done | lands on the visit's Refund story from the invoice table / invoice pop-up / event pop-up; refund invoice pop-up |
-| Replace | M2 | deferred-M2 | |
+| Replace | 2c | done | insured (cash-billed order → policy) and cash-patient (one invoice at a time) flows; refund of the difference; walk-away undoes it |
 | Package booking, Package procedure, LWBS | M3 | deferred-M3 | |
 | Ask VIDA, Story map, Settings, Arabic/RTL | M4 | deferred-M4 | i18n keys and RTL-safe CSS from 1a |
 
@@ -60,6 +60,15 @@ deferred-M2: 24, deferred-M3: 10, deferred-M4: 29, done: 239 (of 302 declaration
   same membership, statuses stay current). Wallet documents are not on it, exactly as v3's `allInvoices` (the plan's
   "incl. wallet docs" refers to the profile's invoice table, which lists them).
 - 1c: v3 settles credit by an advance pot without drawing the pot (only the old `"Advance"` mode draws) — ported as is.
+- M2: v3's `state.refund` / `state.replace` are `ui.refund` / `ui.replace`; they feed `StoryUiCtx` and are dropped when
+  the visit is left (`dropInline`, v3 `dropInlineRefund`). Refunds always land on the visit first (`openRefund`); Replace is
+  only opened from its story, so v3's Replace pop-up variant is rendered as the story card only.
+- M2: `doReplace` returns `{ refundDiff }` and the UI opens the refund slide-in (v3 sets `state.drawer` inside the action).
+- M2: refund invoices (`RFD-`) carry `paid: false` (unset in v3) so they never count as money collected.
+- M2: v3 quirks ported as they are (golden-tested): `undoReplace` of an insured visit's partial replacement puts the visit on
+  `CASH` (it assumes the move was cash → insurance); the history of a cash visit's consultation replacement reads
+  "moving 1 order(s)"; the overpayment refund after a replacement is listed under `refunds` but does not raise
+  `refundedTotal`.
 - 1c: a settled credit invoice's pop-up says "Settled — mode" (v3 shows "Paid in full — Credit").
 - 1c: Reprint also calls `window.print()` with a print stylesheet that prints only the open document (plan §9.10).
 - 1c: amounts are typed in HeroUI `NumberField`s; v3's Refund advance pot picker greys out empty pots (disabled toggles).
@@ -140,18 +149,18 @@ deferred-M2: 24, deferred-M3: 10, deferred-M4: 29, done: 239 (of 302 declaration
 | `creditInvoices` | 1330 | domain/lines.ts | 1a | done |  |
 | `creditTotal` | 1337 | domain/lines.ts | 1a | done |  |
 | `liveInvoices` | 1344 | domain/lines.ts | 1a | done |  |
-| `billedLines` | 1345 | domain/replace.ts | M2 | deferred-M2 |  |
-| `billingType` | 1349 | domain/replace.ts | 1a | done | predicates only; Replace/Package stories are M2/M3 |
-| `replaceLinesFor` | 1350 | domain/replace.ts | M2 | deferred-M2 |  |
-| `replacePreview` | 1356 | domain/replace.ts | M2 | deferred-M2 |  |
-| `undoReplace` | 1385 | domain/replace.ts | M2 | deferred-M2 |  |
-| `doReplace` | 1410 | domain/replace.ts | M2 | deferred-M2 |  |
-| `approvalOf` | 1464 | domain/replace.ts | 1a | done | predicates only; Replace/Package stories are M2/M3 |
-| `isApproved` | 1473 | domain/replace.ts | 1a | done | predicates only; Replace/Package stories are M2/M3 |
-| `checkInsurerApproval` | 1475 | domain/replace.ts | M2 | deferred-M2 |  |
-| `invoiceReplace` | 1499 | domain/replace.ts | 1a | done | predicates only; Replace/Package stories are M2/M3 |
-| `packageItems` | 1524 | domain/replace.ts | 1a | done | predicates only; Replace/Package stories are M2/M3 |
-| `packageItemsLeft` | 1536 | domain/replace.ts | 1a | done | predicates only; Replace/Package stories are M2/M3 |
+| `billedLines` | 1345 | domain/replace.ts | 2c | done | golden flows + e2e |
+| `billingType` | 1349 | domain/replace.ts | 1a | done |  |
+| `replaceLinesFor` | 1350 | domain/replace.ts | 2c | done | golden flows + e2e |
+| `replacePreview` | 1356 | domain/replace.ts | 2c | done | golden flows + e2e |
+| `undoReplace` | 1385 | store/replace.ts | 2c | done | golden flows + e2e |
+| `doReplace` | 1410 | store/replace.ts | 2c | done | golden flows + e2e |
+| `approvalOf` | 1464 | domain/replace.ts | 1a | done | predicates; the Replace story uses them from 2c |
+| `isApproved` | 1473 | domain/replace.ts | 1a | done | predicates; the Replace story uses them from 2c |
+| `checkInsurerApproval` | 1475 | store/replace.ts | 2c | done | golden flows + e2e |
+| `invoiceReplace` | 1499 | domain/replace.ts | 1a | done | predicates; the Replace story uses them from 2c |
+| `packageItems` | 1524 | domain/replace.ts | 1a | done | predicates; the Replace story uses them from 2c |
+| `packageItemsLeft` | 1536 | domain/replace.ts | 1a | done | predicates; the Replace story uses them from 2c |
 | `LEDGER_LABEL` | 1541 | domain/constants.ts | 1a | done |  |
 | `ledSeq` | 1545 | domain/ids.ts | 1a | done |  |
 | `logLedger` | 1546 | store/world.ts | 1a | done | logLedgerOn / recordOn |
@@ -168,12 +177,12 @@ deferred-M2: 24, deferred-M3: 10, deferred-M4: 29, done: 239 (of 302 declaration
 | `toast` | 1602 | store/toasts.ts | 1a | done | HeroUI Toast; max 3, 4.2 s |
 | `startBill` | 1617 | store/actions.ts | 1b | done | golden flows (src/store/__tests__/flows.test.ts) |
 | `cashHeld` | 1629 | domain/lines.ts | 1a | done |  |
-| `startCashBill` | 1630 | store/actions.ts | 1b | done | ported (M2 Replace depends on it); its UI entry point is disabled until M2 |
-| `cancelBill` | 1653 | store/actions.ts | 1b | done | the replacement branch (undoReplace) is M2 |
+| `startCashBill` | 1630 | store/actions.ts | 1b | done | "Bill the N pending order(s) as cash now" enabled in 2c |
+| `cancelBill` | 1653 | store/actions.ts | 1b, 2c | done | a replacement in hand is undone (undoReplace) |
 | `billLabel` | 1669 | store/actions.ts | 1b | done | golden flows (src/store/__tests__/flows.test.ts) |
 | `sendLink` | 1671 | store/actions.ts | 1b | done | always user-triggered; settings.autoSend has no caller (M4) |
 | `resendLink` | 1678 | store/actions.ts | 1b | done | golden flows (src/store/__tests__/flows.test.ts) |
-| `payAll` | 1686 | store/actions.ts | 1b | done | golden flows; the replacement branch is M2 |
+| `payAll` | 1686 | store/actions.ts | 1b, 2c | done | golden flows, including the replacement branch |
 | `setPayer` | 1781 | store/payer.ts | 1c | done | golden flows (payer story on the walk-in visits) |
 | `openCreditPicker` | 1801 | store/wallet.ts | 1c | done | golden flows |
 | `checkDoctor` | 1810 | store/actions.ts | 1b | done | golden flows (src/store/__tests__/flows.test.ts) |
@@ -250,7 +259,7 @@ deferred-M2: 24, deferred-M3: 10, deferred-M4: 29, done: 239 (of 302 declaration
 | `renderStoryMap` | 2771 | features/storymap | M4 | deferred-M4 | entry point shown disabled |
 | `renderDoneCard` | 2796 | features/visit/StoryCard.tsx | 1b | done |  |
 | `renderRefundStory` | 2825 | features/stories/RefundStory.tsx | 2b | done | golden flow + e2e |
-| `renderReplaceStory` | 2871 | features/stories/replace | M2 | deferred-M2 |  |
+| `renderReplaceStory` | 2871 | features/stories/ReplaceStory.tsx | 2c | done | golden flows + e2e |
 | `renderPackageStory` | 2907 | features/stories/package | M3 | deferred-M3 |  |
 | `renderCreditStory` | 2970 | features/stories/CreditStory.tsx | 1c | done | link + desk; golden flows |
 | `nextStep` | 3025 | domain/steps.ts | 1a | done | returns data + i18n keys; texts golden-tested word for word |
@@ -339,9 +348,9 @@ deferred-M2: 24, deferred-M3: 10, deferred-M4: 29, done: 239 (of 302 declaration
 | `printPackageOrders` | 4932 | features/stories/package | M3 | deferred-M3 |  |
 | `renderVoidPop` | 4953 | features/stories/package | M3 | deferred-M3 |  |
 | `voidPrint` | 4989 | features/stories/package | M3 | deferred-M3 |  |
-| `replaceInline` | 5005 | features/stories/replace | M2 | deferred-M2 |  |
-| `renderReplaceWork` | 5006 | features/stories/replace | M2 | deferred-M2 |  |
-| `renderReplacePop` | 5018 | features/stories/replace | M2 | deferred-M2 |  |
+| `replaceInline` | 5005 | features/visit/StoryCard.tsx | 2c | done | golden flows + e2e |
+| `renderReplaceWork` | 5006 | features/stories/ReplaceStory.tsx (ReplaceWork) | 2c | done | golden flows + e2e |
+| `renderReplacePop` | 5018 | features/stories/ReplaceStory.tsx (ReplaceWork) | 2c | done | worked in the story card only — every entry point is inside the visit, so v3's pop-up variant is not needed |
 | `openPkgBook` | 5099 | features/stories/package | M3 | deferred-M3 |  |
 | `renderPkgBookPop` | 5108 | features/stories/package | M3 | deferred-M3 |  |
 | `createPkgVisit` | 5163 | features/stories/package | M3 | deferred-M3 |  |
@@ -366,6 +375,6 @@ deferred-M2: 24, deferred-M3: 10, deferred-M4: 29, done: 239 (of 302 declaration
 | `payParts` | 5511 | domain/drawer.ts | 1b | done | unit-tested (drawer.test.ts) |
 | `partsLabel` | 5515 | domain/drawer.ts | 1b | done | unit-tested (drawer.test.ts) |
 | `advShortfall` | 5517 | domain/drawer.ts | 1b | done | unit-tested (drawer.test.ts) |
-| `renderDrawer` | 5525 | features/drawer/PaymentDrawer.tsx, domain/drawer.ts | 1c | done | payment, credit and advance-refund branches; refund/refundDiff are M2 |
+| `renderDrawer` | 5525 | features/drawer/PaymentDrawer.tsx, domain/drawer.ts | 1c, 2b, 2c | done | payment, credit, advance-refund, refund and refundDiff branches |
 | `renderSettings` | 5873 | features/settings | M4 | deferred-M4 |  |
 | `renderSim` | 5893 | features/sim/SimulatePanel.tsx | 1b | done | fixed Card, not a Popover, so the page stays usable; Reset resets both stores |
