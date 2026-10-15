@@ -12,6 +12,7 @@ import { resolveMsg } from "../../i18n/msg";
 import { payAll } from "../../store/actions";
 import { useW } from "../../store/hooks";
 import { useUi, walletDo } from "../../store/ui";
+import { completeRefund } from "../../store/refund";
 import { refundAdvance, settleCredit } from "../../store/wallet";
 import { useWorld } from "../../store/world";
 
@@ -45,6 +46,10 @@ export function PaymentDrawer() {
       const { cat, reason } = d.advRefund;
       const done = actW((dw, fx) => refundAdvance(dw, d.mrn, d.caseId, cat, d.amount, mode, reason, detail, fx));
       if (ui.wallet) walletDo(d.mrn, (x) => { x.flow = null; x.done = done; });
+    } else if (d.refund) {
+      const r = d.refund;
+      set({ refund: null }); /* the refund is done — the card moves on */
+      act(d.caseId!, (dw, dc, fx) => { completeRefund(dw, dc, r.id, r.codes, d.amount, r.dedBack, mode, r.reason, detail, fx); });
     } else if (d.credit) {
       const { ids, fromWallet } = d.credit;
       const done = actW((dw, fx) => settleCredit(dw, d.mrn, ui.caseId, mode, d.amount, ids, detail, fx));
@@ -101,7 +106,7 @@ export function PaymentDrawer() {
                   className="flex flex-wrap justify-start gap-2">
                   {v.refundModes.map((m) => (
                     <ToggleButton key={m} id={m} data-mode={m} className="min-h-11 rounded-xl px-3">
-                      {m === "Cash" ? <Banknote className="size-4" /> : <CreditCard className="size-4" />}{m}
+                      {m === "Cash" ? <Banknote className="size-4" /> : m === "Advance wallet" ? <Wallet className="size-4" /> : <CreditCard className="size-4" />}{m}
                     </ToggleButton>
                   ))}
                 </ToggleButtonGroup>
@@ -148,6 +153,20 @@ export function PaymentDrawer() {
                   <Alert.Description>
                     <Row k={t("drawer.from")} v={t("drawer.potAdvanceName", { pot: d.advRefund.cat })} />
                     <Row k={t("drawer.reason")} v={d.advRefund.reason} />
+                  </Alert.Description>
+                </Alert.Content>
+              </Alert>
+            )}
+
+            {d.refund && (
+              <Alert status="danger" data-testid="refund-box">
+                <Alert.Indicator />
+                <Alert.Content>
+                  <Alert.Title>{t("drawer.goesBack", { amount: fmt(d.amount) })}</Alert.Title>
+                  <Alert.Description>
+                    <Row k={t("drawer.reason")} v={d.refund.reason} />
+                    <Row k={t("drawer.against")} v={d.refund.id} />
+                    {d.mode === "Advance wallet" && <Row k={t("drawer.toWallet")} v={fmt(d.amount)} strong />}
                   </Alert.Description>
                 </Alert.Content>
               </Alert>

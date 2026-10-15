@@ -1,6 +1,6 @@
 {
  "build": "no-invoice-until-payment",
- "generatedAt": "2026-10-15T11:38:02.214Z",
+ "generatedAt": "2026-10-15T11:48:13.563Z",
  "calc": [
   {
    "plan": "none",
@@ -8317,10 +8317,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -8409,10 +8411,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -8511,10 +8515,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -8609,7 +8615,8 @@
        "via": "Cash",
        "invoiceId": "INV-100295",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -8635,9 +8642,15 @@
        "billType": "insurance",
        "rows": [
         "CON-101"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "",
@@ -8870,10 +8883,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -8987,10 +9002,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -9114,10 +9131,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -9242,10 +9261,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -9380,10 +9401,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -9518,10 +9541,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -9656,7 +9681,8 @@
        "via": "Payment link",
        "invoiceId": "INV-572127",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -9676,9 +9702,15 @@
        "billType": "insurance",
        "rows": [
         "CON-402"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "",
@@ -9823,7 +9855,8 @@
        "via": "Payment link",
        "invoiceId": "INV-572127",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -9843,9 +9876,15 @@
        "billType": "insurance",
        "rows": [
         "CON-402"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "w",
@@ -9999,7 +10038,8 @@
        "via": "Payment link",
        "invoiceId": "INV-572127",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -10019,9 +10059,15 @@
        "billType": "insurance",
        "rows": [
         "CON-402"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -10185,7 +10231,8 @@
        "via": "Payment link",
        "invoiceId": "INV-572127",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -10205,9 +10252,15 @@
        "billType": "insurance",
        "rows": [
         "CON-402"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -10372,7 +10425,8 @@
        "via": "Payment link",
        "invoiceId": "INV-572127",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-022",
@@ -10382,7 +10436,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-018",
@@ -10392,7 +10447,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-440",
@@ -10402,7 +10458,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -10422,9 +10479,15 @@
        "billType": "insurance",
        "rows": [
         "CON-402"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -10603,7 +10666,8 @@
        "via": "Payment link",
        "invoiceId": "INV-572127",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-022",
@@ -10613,7 +10677,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-018",
@@ -10623,7 +10688,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-440",
@@ -10633,7 +10699,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -10653,9 +10720,15 @@
        "billType": "insurance",
        "rows": [
         "CON-402"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -10844,7 +10917,8 @@
        "via": "Payment link",
        "invoiceId": "INV-572127",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-022",
@@ -10854,7 +10928,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-018",
@@ -10864,7 +10939,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-440",
@@ -10874,7 +10950,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -10894,9 +10971,15 @@
        "billType": "insurance",
        "rows": [
         "CON-402"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "w",
@@ -11094,7 +11177,8 @@
        "via": "Payment link",
        "invoiceId": "INV-572127",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-022",
@@ -11104,7 +11188,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-018",
@@ -11114,7 +11199,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-440",
@@ -11124,7 +11210,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -11144,9 +11231,15 @@
        "billType": "insurance",
        "rows": [
         "CON-402"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -11364,7 +11457,8 @@
        "via": "Payment link",
        "invoiceId": "INV-572127",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-022",
@@ -11374,7 +11468,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-018",
@@ -11384,7 +11479,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-440",
@@ -11394,7 +11490,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -11414,9 +11511,15 @@
        "billType": "insurance",
        "rows": [
         "CON-402"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -11635,7 +11738,8 @@
        "via": "Payment link",
        "invoiceId": "INV-572127",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-022",
@@ -11645,7 +11749,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-018",
@@ -11655,7 +11760,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-440",
@@ -11665,7 +11771,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -11685,9 +11792,15 @@
        "billType": "insurance",
        "rows": [
         "CON-402"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -11905,7 +12018,8 @@
        "via": "Payment link",
        "invoiceId": "INV-572127",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-022",
@@ -11915,7 +12029,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-018",
@@ -11925,7 +12040,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-440",
@@ -11935,7 +12051,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -11955,9 +12072,15 @@
        "billType": "insurance",
        "rows": [
         "CON-402"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -12195,7 +12318,8 @@
        "via": "Payment link",
        "invoiceId": "INV-572127",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-022",
@@ -12205,7 +12329,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-018",
@@ -12215,7 +12340,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-440",
@@ -12225,7 +12351,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -12245,9 +12372,15 @@
        "billType": "insurance",
        "rows": [
         "CON-402"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -12475,7 +12608,8 @@
        "via": "Payment link",
        "invoiceId": "INV-572127",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-022",
@@ -12485,7 +12619,8 @@
        "via": "Span",
        "invoiceId": "INV-761880",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-018",
@@ -12495,7 +12630,8 @@
        "via": "Span",
        "invoiceId": "INV-761880",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-440",
@@ -12505,7 +12641,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -12532,7 +12669,12 @@
        "rows": [
         "LAB-022",
         "RAD-018"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       },
       {
        "id": "INV-572127",
@@ -12550,9 +12692,15 @@
        "billType": "insurance",
        "rows": [
         "CON-402"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "",
@@ -12789,7 +12937,8 @@
        "via": "Payment link",
        "invoiceId": "INV-572127",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-022",
@@ -12799,7 +12948,8 @@
        "via": "Span",
        "invoiceId": "INV-761880",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-018",
@@ -12809,7 +12959,8 @@
        "via": "Span",
        "invoiceId": "INV-761880",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-440",
@@ -12819,7 +12970,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -12846,331 +12998,12 @@
        "rows": [
         "LAB-022",
         "RAD-018"
-       ]
-      },
-      {
-       "id": "INV-572127",
-       "scope": "consult",
-       "patient": 71.88,
-       "company": 215.62,
-       "deductible": 62.5,
-       "paid": true,
-       "via": "Payment link",
-       "viaDetail": "",
-       "payments": null,
-       "payer": "TAWUNIYA · SILVER",
-       "branch": null,
-       "cashOnly": false,
-       "billType": "insurance",
-       "rows": [
-        "CON-402"
-       ]
-      }
-     ],
-     "history": [
-      {
-       "ic": "i",
-       "tx": "<b>Approval received</b> for 1 order(s)",
-       "sub": "Thyroid Panel",
-       "type": "APPROVAL",
-       "by": "TAWUNIYA",
-       "invoiceId": null,
-       "amount": null,
-       "mode": null
-      },
-      {
-       "ic": "",
-       "tx": "<b>Orders paid</b> — SAR 305.90",
-       "sub": "Span · 4417 · 884120 · invoice INV-761880 created · SAR 338.10 to TAWUNIYA",
-       "type": "PAYMENT",
-       "by": "SAADAN SAAFAN",
-       "invoiceId": "INV-761880",
-       "amount": 305.9,
-       "mode": "Span"
-      },
-      {
-       "ic": "i",
-       "tx": "<b>Payment link cancelled</b>",
-       "sub": "Nothing was charged",
-       "type": "LINKCANCEL",
-       "by": "SAADAN SAAFAN",
-       "invoiceId": null,
-       "amount": null,
-       "mode": null
-      },
-      {
-       "ic": "i",
-       "tx": "<b>Payment link sent</b> — SAR 305.90",
-       "sub": "To 0553 220 118",
-       "type": "LINK",
-       "by": "SAADAN SAAFAN",
-       "invoiceId": null,
-       "amount": 305.9,
-       "mode": "Payment link"
-      },
-      {
-       "ic": "i",
-       "tx": "<b>Held orders released for billing</b>",
-       "sub": "2 approved order(s) will be billed now; 1 still awaiting approval",
-       "type": "HOLD",
-       "by": "SAADAN SAAFAN",
-       "invoiceId": null,
-       "amount": null,
-       "mode": null
-      },
-      {
-       "ic": "w",
-       "tx": "<b>Approval checked</b> — no answer yet",
-       "sub": "TAWUNIYA · 1 order(s) still pending",
-       "type": "CHECK",
-       "by": "SAADAN SAAFAN",
-       "invoiceId": null,
-       "amount": null,
-       "mode": null
-      },
-      {
-       "ic": "i",
-       "tx": "<b>Holding for the remaining approvals</b>",
-       "sub": "2 approved order(s) held back so everything is billed together",
-       "type": "HOLD",
-       "by": "SAADAN SAAFAN",
-       "invoiceId": null,
-       "amount": null,
-       "mode": null
-      },
-      {
-       "ic": "i",
-       "tx": "<b>Dr HUDA placed 3 orders</b>",
-       "sub": "2 approved · 1 awaiting approval",
-       "type": "ORDERS",
-       "by": "Dr HUDA AL MUTAIRI",
-       "invoiceId": null,
-       "amount": null,
-       "mode": null
-      },
-      {
-       "ic": "i",
-       "tx": "<b>Dr Huda started the consultation</b>",
-       "sub": "NOURA AL HARBI is with the doctor",
-       "type": "CLINICAL",
-       "by": "Dr HUDA AL MUTAIRI",
-       "invoiceId": null,
-       "amount": null,
-       "mode": null
-      },
-      {
-       "ic": "w",
-       "tx": "<b>Checked</b> — the doctor has not started yet",
-       "sub": "NOURA AL HARBI is waiting to be seen",
-       "type": "CHECK",
-       "by": "SAADAN SAAFAN",
-       "invoiceId": null,
-       "amount": null,
-       "mode": null
-      },
-      {
-       "ic": "",
-       "tx": "<b>Consultation paid</b> — SAR 71.88",
-       "sub": "Payment link · invoice INV-572127 created · SAR 215.62 to TAWUNIYA",
-       "type": "PAYMENT",
-       "by": "SAADAN SAAFAN",
-       "invoiceId": "INV-572127",
-       "amount": 71.88,
-       "mode": "Payment link"
-      },
-      {
-       "ic": "i",
-       "tx": "<b>Payment link resent</b> — SAR 71.88",
-       "sub": "To 0553 220 118",
-       "type": "LINK",
-       "by": "SAADAN SAAFAN",
-       "invoiceId": null,
-       "amount": 71.88,
-       "mode": "Payment link"
-      },
-      {
-       "ic": "i",
-       "tx": "<b>Payment link sent</b> — SAR 71.88",
-       "sub": "To 0553 220 118",
-       "type": "LINK",
-       "by": "SAADAN SAAFAN",
-       "invoiceId": null,
-       "amount": 71.88,
-       "mode": "Payment link"
-      },
-      {
-       "ic": "i",
-       "tx": "<b>Approval received</b> for the consultation",
-       "sub": "TAWUNIYA · approved in full",
-       "type": "APPROVAL",
-       "by": "TAWUNIYA",
-       "invoiceId": null,
-       "amount": null,
-       "mode": null
-      },
-      {
-       "ic": "i",
-       "tx": "<b>Visit created</b> at reception",
-       "sub": "Approval requested from Tawuniya",
-       "type": "VISIT",
-       "by": "SAADAN SAAFAN",
-       "invoiceId": null,
-       "amount": null,
-       "mode": null
-      }
-     ],
-     "wallet": {
-      "Open": 200,
-      "Doctor": 0,
-      "Clinic": 0
-     },
-     "credit": 0,
-     "ledger": [
-      {
-       "type": "ADV_IN",
-       "amount": 200,
-       "note": "Open advance received at registration",
-       "invoiceId": null,
-       "visitId": 3,
-       "docId": "ADV-400104"
-      }
-     ],
-     "visit": {
-      "type": "Consultation",
-      "clinic": "DERMATOLOGY",
-      "doctor": "HUDA AL MUTAIRI",
-      "slot": null,
-      "consult": {
-       "name": "Dermatology Consultation",
-       "code": "CON-402",
-       "price": 250
-      }
-     },
-     "payerId": "TAW-SILVER",
-     "policy": null,
-     "payers": [
-      "TAW-SILVER",
-      "CASH"
-     ],
-     "payerStory": null,
-     "done": {},
-     "settled": [],
-     "appr": [
-      null,
-      null,
-      null,
-      null
-     ],
-     "docs": [
-      "ADV-400104:ADV_IN:200:3::Open advance received at registration"
-     ]
-    },
-    {
-     "step": "ORDERS_BILL",
-     "q": "1 procedure(s) were ordered and are approved. Bill them?",
-     "sub": "Nothing else is waiting on approval.",
-     "amt": 74.75,
-     "buttons": [
-      "Yes, bill them"
-     ],
-     "stories": [
-      "visit",
-      "orders",
-      "refund",
-      "addorders"
-     ],
-     "active": "orders",
-     "stages": {
-      "visit": {
-       "index": 4,
-       "skipped": [],
-       "complete": true
-      },
-      "orders": {
-       "index": 2,
-       "skipped": []
-      },
-      "refund": {
-       "index": 0,
-       "skipped": []
-      },
-      "addorders": {
-       "index": 0,
-       "skipped": []
-      }
-     },
-     "due": 0,
-     "dedUsed": 160.5,
-     "link": null,
-     "waitAll": false,
-     "bill": null,
-     "lines": [
-      {
-       "code": "CON-402",
-       "ins": "approved",
-       "price": 250,
-       "paid": true,
-       "via": "Payment link",
-       "invoiceId": "INV-572127",
-       "urgentCash": false,
-       "approvalPending": false
-      },
-      {
-       "code": "LAB-022",
-       "ins": "approved",
-       "price": 140,
-       "paid": true,
-       "via": "Span",
-       "invoiceId": "INV-761880",
-       "urgentCash": false,
-       "approvalPending": false
-      },
-      {
-       "code": "RAD-018",
-       "ins": "partial",
-       "price": 420,
-       "paid": true,
-       "via": "Span",
-       "invoiceId": "INV-761880",
-       "urgentCash": false,
-       "approvalPending": false
-      },
-      {
-       "code": "LAB-440",
-       "ins": "approved",
-       "price": 260,
-       "paid": false,
-       "via": null,
-       "invoiceId": null,
-       "urgentCash": false,
-       "approvalPending": false
-      }
-     ],
-     "invoices": [
-      {
-       "id": "INV-761880",
-       "scope": "orders",
-       "patient": 305.9,
-       "company": 338.1,
-       "deductible": 98,
-       "paid": true,
-       "via": "Span",
-       "viaDetail": "4417 · 884120",
-       "payments": [
-        {
-         "mode": "Span",
-         "amount": 305.9,
-         "ref": "4417 · 884120"
-        }
        ],
-       "payer": "TAWUNIYA · SILVER",
-       "branch": null,
-       "cashOnly": false,
-       "billType": "insurance",
-       "rows": [
-        "LAB-022",
-        "RAD-018"
-       ]
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       },
       {
        "id": "INV-572127",
@@ -13188,9 +13021,15 @@
        "billType": "insurance",
        "rows": [
         "CON-402"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -13437,7 +13276,8 @@
        "via": "Payment link",
        "invoiceId": "INV-572127",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-022",
@@ -13447,7 +13287,8 @@
        "via": "Span",
        "invoiceId": "INV-761880",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-018",
@@ -13457,7 +13298,8 @@
        "via": "Span",
        "invoiceId": "INV-761880",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-440",
@@ -13467,7 +13309,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -13494,7 +13337,12 @@
        "rows": [
         "LAB-022",
         "RAD-018"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       },
       {
        "id": "INV-572127",
@@ -13512,9 +13360,354 @@
        "billType": "insurance",
        "rows": [
         "CON-402"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
+     "history": [
+      {
+       "ic": "i",
+       "tx": "<b>Approval received</b> for 1 order(s)",
+       "sub": "Thyroid Panel",
+       "type": "APPROVAL",
+       "by": "TAWUNIYA",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "",
+       "tx": "<b>Orders paid</b> — SAR 305.90",
+       "sub": "Span · 4417 · 884120 · invoice INV-761880 created · SAR 338.10 to TAWUNIYA",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-761880",
+       "amount": 305.9,
+       "mode": "Span"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Payment link cancelled</b>",
+       "sub": "Nothing was charged",
+       "type": "LINKCANCEL",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Payment link sent</b> — SAR 305.90",
+       "sub": "To 0553 220 118",
+       "type": "LINK",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": 305.9,
+       "mode": "Payment link"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Held orders released for billing</b>",
+       "sub": "2 approved order(s) will be billed now; 1 still awaiting approval",
+       "type": "HOLD",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "w",
+       "tx": "<b>Approval checked</b> — no answer yet",
+       "sub": "TAWUNIYA · 1 order(s) still pending",
+       "type": "CHECK",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Holding for the remaining approvals</b>",
+       "sub": "2 approved order(s) held back so everything is billed together",
+       "type": "HOLD",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Dr HUDA placed 3 orders</b>",
+       "sub": "2 approved · 1 awaiting approval",
+       "type": "ORDERS",
+       "by": "Dr HUDA AL MUTAIRI",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Dr Huda started the consultation</b>",
+       "sub": "NOURA AL HARBI is with the doctor",
+       "type": "CLINICAL",
+       "by": "Dr HUDA AL MUTAIRI",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "w",
+       "tx": "<b>Checked</b> — the doctor has not started yet",
+       "sub": "NOURA AL HARBI is waiting to be seen",
+       "type": "CHECK",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "",
+       "tx": "<b>Consultation paid</b> — SAR 71.88",
+       "sub": "Payment link · invoice INV-572127 created · SAR 215.62 to TAWUNIYA",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-572127",
+       "amount": 71.88,
+       "mode": "Payment link"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Payment link resent</b> — SAR 71.88",
+       "sub": "To 0553 220 118",
+       "type": "LINK",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": 71.88,
+       "mode": "Payment link"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Payment link sent</b> — SAR 71.88",
+       "sub": "To 0553 220 118",
+       "type": "LINK",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": 71.88,
+       "mode": "Payment link"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Approval received</b> for the consultation",
+       "sub": "TAWUNIYA · approved in full",
+       "type": "APPROVAL",
+       "by": "TAWUNIYA",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Visit created</b> at reception",
+       "sub": "Approval requested from Tawuniya",
+       "type": "VISIT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      }
+     ],
+     "wallet": {
+      "Open": 200,
+      "Doctor": 0,
+      "Clinic": 0
+     },
+     "credit": 0,
+     "ledger": [
+      {
+       "type": "ADV_IN",
+       "amount": 200,
+       "note": "Open advance received at registration",
+       "invoiceId": null,
+       "visitId": 3,
+       "docId": "ADV-400104"
+      }
+     ],
+     "visit": {
+      "type": "Consultation",
+      "clinic": "DERMATOLOGY",
+      "doctor": "HUDA AL MUTAIRI",
+      "slot": null,
+      "consult": {
+       "name": "Dermatology Consultation",
+       "code": "CON-402",
+       "price": 250
+      }
+     },
+     "payerId": "TAW-SILVER",
+     "policy": null,
+     "payers": [
+      "TAW-SILVER",
+      "CASH"
+     ],
+     "payerStory": null,
+     "done": {},
+     "settled": [],
+     "appr": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "docs": [
+      "ADV-400104:ADV_IN:200:3::Open advance received at registration"
+     ]
+    },
+    {
+     "step": "ORDERS_BILL",
+     "q": "1 procedure(s) were ordered and are approved. Bill them?",
+     "sub": "Nothing else is waiting on approval.",
+     "amt": 74.75,
+     "buttons": [
+      "Yes, bill them"
+     ],
+     "stories": [
+      "visit",
+      "orders",
+      "refund",
+      "addorders"
+     ],
+     "active": "orders",
+     "stages": {
+      "visit": {
+       "index": 4,
+       "skipped": [],
+       "complete": true
+      },
+      "orders": {
+       "index": 2,
+       "skipped": []
+      },
+      "refund": {
+       "index": 0,
+       "skipped": []
+      },
+      "addorders": {
+       "index": 0,
+       "skipped": []
+      }
+     },
+     "due": 0,
+     "dedUsed": 160.5,
+     "link": null,
+     "waitAll": false,
+     "bill": null,
+     "lines": [
+      {
+       "code": "CON-402",
+       "ins": "approved",
+       "price": 250,
+       "paid": true,
+       "via": "Payment link",
+       "invoiceId": "INV-572127",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      },
+      {
+       "code": "LAB-022",
+       "ins": "approved",
+       "price": 140,
+       "paid": true,
+       "via": "Span",
+       "invoiceId": "INV-761880",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      },
+      {
+       "code": "RAD-018",
+       "ins": "partial",
+       "price": 420,
+       "paid": true,
+       "via": "Span",
+       "invoiceId": "INV-761880",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      },
+      {
+       "code": "LAB-440",
+       "ins": "approved",
+       "price": 260,
+       "paid": false,
+       "via": null,
+       "invoiceId": null,
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      }
+     ],
+     "invoices": [
+      {
+       "id": "INV-761880",
+       "scope": "orders",
+       "patient": 305.9,
+       "company": 338.1,
+       "deductible": 98,
+       "paid": true,
+       "via": "Span",
+       "viaDetail": "4417 · 884120",
+       "payments": [
+        {
+         "mode": "Span",
+         "amount": 305.9,
+         "ref": "4417 · 884120"
+        }
+       ],
+       "payer": "TAWUNIYA · SILVER",
+       "branch": null,
+       "cashOnly": false,
+       "billType": "insurance",
+       "rows": [
+        "LAB-022",
+        "RAD-018"
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
+      },
+      {
+       "id": "INV-572127",
+       "scope": "consult",
+       "patient": 71.88,
+       "company": 215.62,
+       "deductible": 62.5,
+       "paid": true,
+       "via": "Payment link",
+       "viaDetail": "",
+       "payments": null,
+       "payer": "TAWUNIYA · SILVER",
+       "branch": null,
+       "cashOnly": false,
+       "billType": "insurance",
+       "rows": [
+        "CON-402"
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
+      }
+     ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -13771,7 +13964,8 @@
        "via": "Payment link",
        "invoiceId": "INV-572127",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-022",
@@ -13781,7 +13975,8 @@
        "via": "Span",
        "invoiceId": "INV-761880",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-018",
@@ -13791,7 +13986,8 @@
        "via": "Span",
        "invoiceId": "INV-761880",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-440",
@@ -13801,7 +13997,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -13828,7 +14025,12 @@
        "rows": [
         "LAB-022",
         "RAD-018"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       },
       {
        "id": "INV-572127",
@@ -13846,9 +14048,15 @@
        "billType": "insurance",
        "rows": [
         "CON-402"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -14100,7 +14308,8 @@
        "via": "Payment link",
        "invoiceId": "INV-572127",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-022",
@@ -14110,7 +14319,8 @@
        "via": "Span",
        "invoiceId": "INV-761880",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-018",
@@ -14120,7 +14330,8 @@
        "via": "Span",
        "invoiceId": "INV-761880",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-440",
@@ -14130,7 +14341,8 @@
        "via": "Credit",
        "invoiceId": "INV-336974",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -14156,7 +14368,12 @@
        "billType": "insurance",
        "rows": [
         "LAB-440"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       },
       {
        "id": "INV-761880",
@@ -14181,7 +14398,12 @@
        "rows": [
         "LAB-022",
         "RAD-018"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       },
       {
        "id": "INV-572127",
@@ -14199,9 +14421,15 @@
        "billType": "insurance",
        "rows": [
         "CON-402"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "w",
@@ -14472,7 +14700,8 @@
        "via": "Payment link",
        "invoiceId": "INV-572127",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-022",
@@ -14482,7 +14711,8 @@
        "via": "Span",
        "invoiceId": "INV-761880",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-018",
@@ -14492,7 +14722,8 @@
        "via": "Span",
        "invoiceId": "INV-761880",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-440",
@@ -14502,7 +14733,8 @@
        "via": "Credit",
        "invoiceId": "INV-336974",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -14528,7 +14760,12 @@
        "billType": "insurance",
        "rows": [
         "LAB-440"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       },
       {
        "id": "INV-761880",
@@ -14553,7 +14790,12 @@
        "rows": [
         "LAB-022",
         "RAD-018"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       },
       {
        "id": "INV-572127",
@@ -14571,9 +14813,15 @@
        "billType": "insurance",
        "rows": [
         "CON-402"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "w",
@@ -14845,7 +15093,8 @@
        "via": "Payment link",
        "invoiceId": "INV-572127",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-022",
@@ -14855,7 +15104,8 @@
        "via": "Span",
        "invoiceId": "INV-761880",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-018",
@@ -14865,7 +15115,8 @@
        "via": "Span",
        "invoiceId": "INV-761880",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-440",
@@ -14875,7 +15126,8 @@
        "via": "Credit",
        "invoiceId": "INV-336974",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-208",
@@ -14885,7 +15137,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-311",
@@ -14895,7 +15148,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -14921,7 +15175,12 @@
        "billType": "insurance",
        "rows": [
         "LAB-440"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       },
       {
        "id": "INV-761880",
@@ -14946,7 +15205,12 @@
        "rows": [
         "LAB-022",
         "RAD-018"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       },
       {
        "id": "INV-572127",
@@ -14964,9 +15228,15 @@
        "billType": "insurance",
        "rows": [
         "CON-402"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -15323,7 +15593,8 @@
        "via": "Payment link",
        "invoiceId": "INV-771204",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-010",
@@ -15333,7 +15604,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-050",
@@ -15343,7 +15615,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "CAR-330",
@@ -15353,7 +15626,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "PKG-100",
@@ -15363,7 +15637,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -15383,9 +15658,15 @@
        "billType": null,
        "rows": [
         "CON-204"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -15558,7 +15839,8 @@
        "via": "Payment link",
        "invoiceId": "INV-771204",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-010",
@@ -15568,7 +15850,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-050",
@@ -15578,7 +15861,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "CAR-330",
@@ -15588,7 +15872,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "PKG-100",
@@ -15598,7 +15883,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -15618,9 +15904,15 @@
        "billType": null,
        "rows": [
         "CON-204"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -15793,7 +16085,8 @@
        "via": "Payment link",
        "invoiceId": "INV-771204",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-010",
@@ -15803,7 +16096,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-050",
@@ -15813,7 +16107,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "CAR-330",
@@ -15823,7 +16118,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "PKG-100",
@@ -15833,7 +16129,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -15853,9 +16150,15 @@
        "billType": null,
        "rows": [
         "CON-204"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -16028,7 +16331,8 @@
        "via": "Payment link",
        "invoiceId": "INV-771204",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-010",
@@ -16038,7 +16342,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-050",
@@ -16048,7 +16353,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "CAR-330",
@@ -16058,7 +16364,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "PKG-100",
@@ -16068,7 +16375,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -16088,9 +16396,15 @@
        "billType": null,
        "rows": [
         "CON-204"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -16272,7 +16586,8 @@
        "via": "Payment link",
        "invoiceId": "INV-771204",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-010",
@@ -16282,7 +16597,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-050",
@@ -16292,7 +16608,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "CAR-330",
@@ -16302,7 +16619,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "PKG-100",
@@ -16312,7 +16630,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -16332,9 +16651,15 @@
        "billType": null,
        "rows": [
         "CON-204"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -16517,7 +16842,8 @@
        "via": "Payment link",
        "invoiceId": "INV-771204",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-010",
@@ -16527,7 +16853,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-050",
@@ -16537,7 +16864,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "CAR-330",
@@ -16547,7 +16875,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "PKG-100",
@@ -16557,7 +16886,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -16577,9 +16907,15 @@
        "billType": null,
        "rows": [
         "CON-204"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -16763,7 +17099,8 @@
        "via": "Payment link",
        "invoiceId": "INV-771204",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-010",
@@ -16773,7 +17110,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-050",
@@ -16783,7 +17121,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "CAR-330",
@@ -16793,7 +17132,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "PKG-100",
@@ -16803,7 +17143,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -16823,9 +17164,15 @@
        "billType": null,
        "rows": [
         "CON-204"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -17003,7 +17350,8 @@
        "via": "Payment link",
        "invoiceId": "INV-771204",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-010",
@@ -17013,7 +17361,8 @@
        "via": "Span + OPEN",
        "invoiceId": "INV-438601",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-050",
@@ -17023,7 +17372,8 @@
        "via": "Span + OPEN",
        "invoiceId": "INV-438601",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "CAR-330",
@@ -17033,7 +17383,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "PKG-100",
@@ -17043,7 +17394,8 @@
        "via": "Span + OPEN",
        "invoiceId": "INV-438601",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -17076,7 +17428,12 @@
         "LAB-010",
         "RAD-050",
         "PKG-100"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       },
       {
        "id": "INV-771204",
@@ -17094,9 +17451,15 @@
        "billType": null,
        "rows": [
         "CON-204"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -17312,7 +17675,8 @@
        "via": "Payment link",
        "invoiceId": "INV-771204",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-010",
@@ -17322,7 +17686,8 @@
        "via": "Span + OPEN",
        "invoiceId": "INV-438601",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-050",
@@ -17332,7 +17697,8 @@
        "via": "Span + OPEN",
        "invoiceId": "INV-438601",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "CAR-330",
@@ -17342,7 +17708,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": true,
-       "approvalPending": true
+       "approvalPending": true,
+       "refunded": false
       },
       {
        "code": "PKG-100",
@@ -17352,7 +17719,8 @@
        "via": "Span + OPEN",
        "invoiceId": "INV-438601",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -17385,7 +17753,12 @@
         "LAB-010",
         "RAD-050",
         "PKG-100"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       },
       {
        "id": "INV-771204",
@@ -17403,9 +17776,15 @@
        "billType": null,
        "rows": [
         "CON-204"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "w",
@@ -17622,7 +18001,8 @@
        "via": "Payment link",
        "invoiceId": "INV-771204",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-010",
@@ -17632,7 +18012,8 @@
        "via": "Span + OPEN",
        "invoiceId": "INV-438601",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-050",
@@ -17642,7 +18023,8 @@
        "via": "Span + OPEN",
        "invoiceId": "INV-438601",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "CAR-330",
@@ -17652,7 +18034,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "PKG-100",
@@ -17662,7 +18045,8 @@
        "via": "Span + OPEN",
        "invoiceId": "INV-438601",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -17695,7 +18079,12 @@
         "LAB-010",
         "RAD-050",
         "PKG-100"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       },
       {
        "id": "INV-771204",
@@ -17713,9 +18102,15 @@
        "billType": null,
        "rows": [
         "CON-204"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "w",
@@ -17941,7 +18336,8 @@
        "via": "Payment link",
        "invoiceId": "INV-771204",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-010",
@@ -17951,7 +18347,8 @@
        "via": "Span + OPEN",
        "invoiceId": "INV-438601",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-050",
@@ -17961,7 +18358,8 @@
        "via": "Span + OPEN",
        "invoiceId": "INV-438601",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "CAR-330",
@@ -17971,7 +18369,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": true,
-       "approvalPending": true
+       "approvalPending": true,
+       "refunded": false
       },
       {
        "code": "PKG-100",
@@ -17981,7 +18380,8 @@
        "via": "Span + OPEN",
        "invoiceId": "INV-438601",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -18014,7 +18414,12 @@
         "LAB-010",
         "RAD-050",
         "PKG-100"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       },
       {
        "id": "INV-771204",
@@ -18032,9 +18437,15 @@
        "billType": null,
        "rows": [
         "CON-204"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "w",
@@ -18270,7 +18681,8 @@
        "via": "Payment link",
        "invoiceId": "INV-771204",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-010",
@@ -18280,7 +18692,8 @@
        "via": "Span + OPEN",
        "invoiceId": "INV-438601",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-050",
@@ -18290,7 +18703,8 @@
        "via": "Span + OPEN",
        "invoiceId": "INV-438601",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "CAR-330",
@@ -18300,7 +18714,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": true,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "PKG-100",
@@ -18310,7 +18725,8 @@
        "via": "Span + OPEN",
        "invoiceId": "INV-438601",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -18343,7 +18759,12 @@
         "LAB-010",
         "RAD-050",
         "PKG-100"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       },
       {
        "id": "INV-771204",
@@ -18361,9 +18782,15 @@
        "billType": null,
        "rows": [
         "CON-204"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -18628,7 +19055,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-220",
@@ -18638,7 +19066,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-118",
@@ -18648,10 +19077,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -18785,7 +19216,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-220",
@@ -18795,7 +19227,8 @@
        "via": "Cash",
        "invoiceId": "INV-276657",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-118",
@@ -18805,7 +19238,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -18831,9 +19265,15 @@
        "billType": "insurance",
        "rows": [
         "RAD-220"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "",
@@ -18976,7 +19416,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-220",
@@ -18986,7 +19427,8 @@
        "via": "Cash",
        "invoiceId": "INV-276657",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-118",
@@ -18996,7 +19438,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -19022,9 +19465,15 @@
        "billType": "insurance",
        "rows": [
         "RAD-220"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -19186,7 +19635,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-220",
@@ -19196,7 +19646,8 @@
        "via": "Cash",
        "invoiceId": "INV-276657",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-118",
@@ -19206,7 +19657,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -19232,9 +19684,15 @@
        "billType": "insurance",
        "rows": [
         "RAD-220"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -19387,7 +19845,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-220",
@@ -19397,7 +19856,8 @@
        "via": "Cash",
        "invoiceId": "INV-276657",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-118",
@@ -19407,7 +19867,8 @@
        "via": "Payment link",
        "invoiceId": "INV-978285",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -19427,7 +19888,12 @@
        "billType": "insurance",
        "rows": [
         "LAB-118"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       },
       {
        "id": "INV-276657",
@@ -19451,9 +19917,15 @@
        "billType": "insurance",
        "rows": [
         "RAD-220"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "",
@@ -19639,10 +20111,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -19739,7 +20213,8 @@
        "via": "No charge",
        "invoiceId": "INV-561085",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -19759,9 +20234,15 @@
        "billType": "insurance",
        "rows": [
         "CON-110"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "",
@@ -19897,10 +20378,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -20000,7 +20483,8 @@
        "via": "Span + Credit",
        "invoiceId": "INV-577403",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -20031,9 +20515,15 @@
        "billType": "insurance",
        "rows": [
         "CON-101"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "w",
@@ -20180,10 +20670,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -20340,10 +20832,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -20496,7 +20990,8 @@
        "via": "Credit",
        "invoiceId": "INV-331391",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -20522,9 +21017,15 @@
        "billType": "insurance",
        "rows": [
         "CON-205"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "w",
@@ -20749,7 +21250,8 @@
        "via": "Payment link",
        "invoiceId": "INV-771204",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-010",
@@ -20759,7 +21261,8 @@
        "via": "Span + OPEN",
        "invoiceId": "INV-438601",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-050",
@@ -20769,7 +21272,8 @@
        "via": "Span + OPEN",
        "invoiceId": "INV-438601",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "CAR-330",
@@ -20779,7 +21283,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": true,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "PKG-100",
@@ -20789,7 +21294,8 @@
        "via": "Span + OPEN",
        "invoiceId": "INV-438601",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -20822,7 +21328,12 @@
         "LAB-010",
         "RAD-050",
         "PKG-100"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       },
       {
        "id": "INV-771204",
@@ -20840,9 +21351,15 @@
        "billType": null,
        "rows": [
         "CON-204"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -21107,7 +21624,8 @@
        "via": "Credit",
        "invoiceId": "INV-331391",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -21133,9 +21651,15 @@
        "billType": "insurance",
        "rows": [
         "CON-205"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -21344,7 +21868,8 @@
        "via": "Payment link",
        "invoiceId": "INV-771204",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-010",
@@ -21354,7 +21879,8 @@
        "via": "Span + OPEN",
        "invoiceId": "INV-438601",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-050",
@@ -21364,7 +21890,8 @@
        "via": "Span + OPEN",
        "invoiceId": "INV-438601",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "CAR-330",
@@ -21374,7 +21901,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": true,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "PKG-100",
@@ -21384,7 +21912,8 @@
        "via": "Span + OPEN",
        "invoiceId": "INV-438601",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -21417,7 +21946,12 @@
         "LAB-010",
         "RAD-050",
         "PKG-100"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       },
       {
        "id": "INV-771204",
@@ -21435,9 +21969,15 @@
        "billType": null,
        "rows": [
         "CON-204"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "w",
@@ -21739,7 +22279,8 @@
        "via": "Payment link",
        "invoiceId": "INV-771204",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-010",
@@ -21749,7 +22290,8 @@
        "via": "Span + OPEN",
        "invoiceId": "INV-438601",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-050",
@@ -21759,7 +22301,8 @@
        "via": "Span + OPEN",
        "invoiceId": "INV-438601",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "CAR-330",
@@ -21769,7 +22312,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": true,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "PKG-100",
@@ -21779,7 +22323,8 @@
        "via": "Span + OPEN",
        "invoiceId": "INV-438601",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -21812,7 +22357,12 @@
         "LAB-010",
         "RAD-050",
         "PKG-100"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       },
       {
        "id": "INV-771204",
@@ -21830,9 +22380,15 @@
        "billType": null,
        "rows": [
         "CON-204"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "w",
@@ -22153,7 +22709,8 @@
        "via": "Payment link",
        "invoiceId": "INV-771204",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-010",
@@ -22163,7 +22720,8 @@
        "via": "Span + OPEN",
        "invoiceId": "INV-438601",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-050",
@@ -22173,7 +22731,8 @@
        "via": "Span + OPEN",
        "invoiceId": "INV-438601",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "CAR-330",
@@ -22183,7 +22742,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": true,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "PKG-100",
@@ -22193,7 +22753,8 @@
        "via": "Span + OPEN",
        "invoiceId": "INV-438601",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -22226,7 +22787,12 @@
         "LAB-010",
         "RAD-050",
         "PKG-100"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       },
       {
        "id": "INV-771204",
@@ -22244,9 +22810,15 @@
        "billType": null,
        "rows": [
         "CON-204"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "",
@@ -22618,7 +23190,8 @@
        "via": "Span + Credit",
        "invoiceId": "INV-577403",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -22649,9 +23222,15 @@
        "billType": "insurance",
        "rows": [
         "CON-101"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "w",
@@ -22772,7 +23351,8 @@
        "via": "Span + Credit",
        "invoiceId": "INV-577403",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -22803,9 +23383,15 @@
        "billType": "insurance",
        "rows": [
         "CON-101"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -22933,7 +23519,8 @@
        "via": "Cash",
        "invoiceId": "INV-100295",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -22959,9 +23546,15 @@
        "billType": "insurance",
        "rows": [
         "CON-101"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "",
@@ -23146,10 +23739,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -23272,7 +23867,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "PKG-EXEC",
@@ -23282,7 +23878,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-CBC",
@@ -23292,10 +23889,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -23536,7 +24135,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-LIPID",
@@ -23546,10 +24146,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -23672,10 +24274,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -23894,10 +24498,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -24034,10 +24640,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -24196,10 +24804,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -24366,10 +24976,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -24534,10 +25146,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -24724,10 +25338,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -24922,10 +25538,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -25143,10 +25761,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -25372,10 +25992,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -25601,10 +26223,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -25858,10 +26482,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -26010,10 +26636,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -26162,10 +26790,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -26340,10 +26970,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "w",
@@ -26518,7 +27150,8 @@
        "via": "Cash",
        "invoiceId": "INV-702255",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -26538,9 +27171,15 @@
        "billType": null,
        "rows": [
         "CON-101"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -26676,7 +27315,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-VITD",
@@ -26686,7 +27326,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "PKG-DIAB",
@@ -26696,7 +27337,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-VITD-2",
@@ -26706,10 +27348,12 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -27013,7 +27657,8 @@
        "via": "Cash",
        "invoiceId": "INV-660310",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-120",
@@ -27023,7 +27668,8 @@
        "via": "Payment link",
        "invoiceId": "INV-660477",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "PKG-EXEC",
@@ -27033,7 +27679,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-CBC",
@@ -27043,7 +27690,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -27063,7 +27711,12 @@
        "billType": null,
        "rows": [
         "CON-310"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       },
       {
        "id": "INV-660477",
@@ -27081,9 +27734,15 @@
        "billType": null,
        "rows": [
         "RAD-120"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -27225,7 +27884,8 @@
        "via": "Cash",
        "invoiceId": "INV-660310",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-120",
@@ -27235,7 +27895,8 @@
        "via": "Payment link",
        "invoiceId": "INV-660477",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "PKG-EXEC",
@@ -27245,7 +27906,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-CBC",
@@ -27255,7 +27917,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -27275,7 +27938,12 @@
        "billType": null,
        "rows": [
         "CON-310"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       },
       {
        "id": "INV-660477",
@@ -27293,9 +27961,15 @@
        "billType": null,
        "rows": [
         "RAD-120"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -27431,7 +28105,8 @@
        "via": "Cash",
        "invoiceId": "INV-660310",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-120",
@@ -27441,7 +28116,8 @@
        "via": "Payment link",
        "invoiceId": "INV-660477",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "PKG-EXEC",
@@ -27451,7 +28127,8 @@
        "via": "Cash",
        "invoiceId": "INV-320849",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-CBC",
@@ -27461,7 +28138,8 @@
        "via": "Cash",
        "invoiceId": "INV-320849",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -27488,7 +28166,12 @@
        "rows": [
         "PKG-EXEC",
         "LAB-CBC"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       },
       {
        "id": "INV-660310",
@@ -27506,7 +28189,12 @@
        "billType": null,
        "rows": [
         "CON-310"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       },
       {
        "id": "INV-660477",
@@ -27524,9 +28212,15 @@
        "billType": null,
        "rows": [
         "RAD-120"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -27682,7 +28376,8 @@
        "via": "Cash",
        "invoiceId": "INV-660310",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "RAD-120",
@@ -27692,7 +28387,8 @@
        "via": "Payment link",
        "invoiceId": "INV-660477",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "PKG-EXEC",
@@ -27702,7 +28398,8 @@
        "via": "Cash",
        "invoiceId": "INV-320849",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-CBC",
@@ -27712,7 +28409,8 @@
        "via": "Cash",
        "invoiceId": "INV-320849",
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       },
       {
        "code": "LAB-CBC-2",
@@ -27722,7 +28420,8 @@
        "via": null,
        "invoiceId": null,
        "urgentCash": false,
-       "approvalPending": false
+       "approvalPending": false,
+       "refunded": false
       }
      ],
      "invoices": [
@@ -27749,7 +28448,12 @@
        "rows": [
         "PKG-EXEC",
         "LAB-CBC"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       },
       {
        "id": "INV-660310",
@@ -27767,7 +28471,12 @@
        "billType": null,
        "rows": [
         "CON-310"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       },
       {
        "id": "INV-660477",
@@ -27785,9 +28494,15 @@
        "billType": null,
        "rows": [
         "RAD-120"
-       ]
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
       }
      ],
+     "refundInvoices": [],
      "history": [
       {
        "ic": "i",
@@ -27896,6 +28611,857 @@
       null
      ],
      "docs": []
+    }
+   ]
+  },
+  {
+   "name": "2b: refund one line by cash, the rest to the wallet; a consultation with a payer share",
+   "ops": [
+    [
+     "refund",
+     4,
+     "first",
+     [
+      "LAB-CBC"
+     ],
+     "Cash",
+     "",
+     "ordered twice"
+    ],
+    [
+     "refund",
+     4,
+     "first",
+     null,
+     "Advance wallet",
+     "",
+     "patient changed their mind"
+    ],
+    [
+     "refund",
+     1,
+     "first",
+     null,
+     "Span",
+     "4417",
+     "left before being seen"
+    ]
+   ],
+   "snaps": [
+    {
+     "step": "ORDERS_BILL",
+     "q": "1 procedure(s) were ordered. Bill them?",
+     "sub": "Self-pay — the patient carries the whole charge.",
+     "amt": 103.5,
+     "buttons": [
+      "Yes, bill them"
+     ],
+     "stories": [
+      "visit",
+      "orders",
+      "refund",
+      "package",
+      "addorders"
+     ],
+     "active": "refund",
+     "stages": {
+      "visit": {
+       "index": 4,
+       "skipped": [
+        0
+       ],
+       "complete": true
+      },
+      "orders": {
+       "index": 2,
+       "skipped": [
+        1
+       ]
+      },
+      "refund": {
+       "index": 3,
+       "skipped": []
+      },
+      "package": {
+       "index": 0,
+       "skipped": []
+      },
+      "addorders": {
+       "index": 0,
+       "skipped": []
+      }
+     },
+     "due": 0,
+     "dedUsed": 0,
+     "link": null,
+     "waitAll": false,
+     "bill": null,
+     "lines": [
+      {
+       "code": "CON-310",
+       "ins": "notinsured",
+       "price": 250,
+       "paid": true,
+       "via": "Cash",
+       "invoiceId": "INV-660310",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      },
+      {
+       "code": "RAD-120",
+       "ins": "notinsured",
+       "price": 180,
+       "paid": true,
+       "via": "Payment link",
+       "invoiceId": "INV-660477",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      },
+      {
+       "code": "PKG-EXEC",
+       "ins": "notinsured",
+       "price": 1200,
+       "paid": true,
+       "via": "Cash",
+       "invoiceId": "INV-320849",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      },
+      {
+       "code": "LAB-CBC",
+       "ins": "notinsured",
+       "price": 90,
+       "paid": true,
+       "via": "Cash",
+       "invoiceId": "INV-320849",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": true
+      },
+      {
+       "code": "LAB-CBC-2",
+       "ins": "notinsured",
+       "price": 90,
+       "paid": false,
+       "via": null,
+       "invoiceId": null,
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      }
+     ],
+     "invoices": [
+      {
+       "id": "INV-320849",
+       "scope": "orders",
+       "patient": 1483.5,
+       "company": 0,
+       "deductible": 0,
+       "paid": true,
+       "via": "Cash",
+       "viaDetail": "",
+       "payments": [
+        {
+         "mode": "Cash",
+         "amount": 1483.5,
+         "ref": ""
+        }
+       ],
+       "payer": "Cash / Self-pay",
+       "branch": null,
+       "cashOnly": false,
+       "billType": "cash",
+       "rows": [
+        "PKG-EXEC",
+        "LAB-CBC:refunded"
+       ],
+       "refunded": 103.5,
+       "refunds": [
+        "103.5:Cash:ordered twice::LAB-CBC:RFD-322667"
+       ],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
+      },
+      {
+       "id": "INV-660310",
+       "scope": "consult",
+       "patient": 287.5,
+       "company": 0,
+       "deductible": 0,
+       "paid": true,
+       "via": "Cash",
+       "viaDetail": "",
+       "payments": null,
+       "payer": "Cash / Self-pay",
+       "branch": null,
+       "cashOnly": false,
+       "billType": null,
+       "rows": [
+        "CON-310"
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
+      },
+      {
+       "id": "INV-660477",
+       "scope": "orders",
+       "patient": 207,
+       "company": 0,
+       "deductible": 0,
+       "paid": true,
+       "via": "Payment link",
+       "viaDetail": "",
+       "payments": null,
+       "payer": "Cash / Self-pay",
+       "branch": null,
+       "cashOnly": false,
+       "billType": null,
+       "rows": [
+        "RAD-120"
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
+      }
+     ],
+     "refundInvoices": [
+      "RFD-322667:INV-320849:103.5:0:0:Cash::ordered twice:Cash / Self-pay:LAB-CBC"
+     ],
+     "history": [
+      {
+       "ic": "w",
+       "tx": "<b>Refunded SAR 103.50</b> — INV-320849",
+       "sub": "Refund invoice RFD-322667 · Complete Blood Count · Cash · ordered twice",
+       "type": "REFUND",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-320849",
+       "amount": 103.5,
+       "mode": "Cash"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>1 order(s) added at reception</b>",
+       "sub": "Complete Blood Count · no doctor needed · billed at the cash price",
+       "type": "ADDORDER",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "i",
+       "tx": "<b>6 package procedure(s) can now be booked</b>",
+       "sub": "Executive Health Check · paid on INV-320849 · book a visit for each whenever the patient can attend",
+       "type": "PKGREADY",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-320849",
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "",
+       "tx": "<b>Orders paid</b> — SAR 1,483.50",
+       "sub": "Cash · invoice INV-320849 created",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-320849",
+       "amount": 1483.5,
+       "mode": "Cash"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>2 order(s) added at reception</b>",
+       "sub": "Executive Health Check, Complete Blood Count · no doctor needed · billed at the cash price",
+       "type": "ADDORDER",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "",
+       "tx": "<b>Orders paid</b> — SAR 207.00",
+       "sub": "Payment link · invoice INV-660477 created · Knee X-Ray",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-660477",
+       "amount": 207,
+       "mode": "Payment link"
+      },
+      {
+       "ic": "",
+       "tx": "<b>Consultation paid</b> — SAR 287.50",
+       "sub": "Cash at desk · invoice INV-660310 created",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-660310",
+       "amount": 287.5,
+       "mode": "Cash"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Visit created</b> at reception",
+       "sub": "Orthopaedics · Dr Omar Hassan",
+       "type": "VISIT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      }
+     ],
+     "wallet": {
+      "Open": 0,
+      "Doctor": 0,
+      "Clinic": 0
+     },
+     "credit": 0,
+     "ledger": [],
+     "visit": {
+      "type": "Consultation",
+      "clinic": "ORTHOPAEDICS",
+      "doctor": "OMAR HASSAN",
+      "slot": null,
+      "consult": {
+       "name": "Orthopaedic Consultation",
+       "code": "CON-310",
+       "price": 250
+      }
+     },
+     "payerId": "CASH",
+     "policy": null,
+     "payers": [
+      "CASH"
+     ],
+     "payerStory": null,
+     "done": {
+      "refund": "Refunded SAR 103.50 on INV-320849 | Refund invoice RFD-322667 · Complete Blood Count · Cash · ordered twice"
+     },
+     "settled": [],
+     "appr": [
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     "docs": []
+    },
+    {
+     "step": "ORDERS_BILL",
+     "q": "1 procedure(s) were ordered. Bill them?",
+     "sub": "Self-pay — the patient carries the whole charge.",
+     "amt": 103.5,
+     "buttons": [
+      "Yes, bill them"
+     ],
+     "stories": [
+      "visit",
+      "orders",
+      "refund",
+      "package",
+      "addorders"
+     ],
+     "active": "refund",
+     "stages": {
+      "visit": {
+       "index": 4,
+       "skipped": [
+        0
+       ],
+       "complete": true
+      },
+      "orders": {
+       "index": 2,
+       "skipped": [
+        1
+       ]
+      },
+      "refund": {
+       "index": 3,
+       "skipped": []
+      },
+      "package": {
+       "index": 0,
+       "skipped": []
+      },
+      "addorders": {
+       "index": 0,
+       "skipped": []
+      }
+     },
+     "due": 0,
+     "dedUsed": 0,
+     "link": null,
+     "waitAll": false,
+     "bill": null,
+     "lines": [
+      {
+       "code": "CON-310",
+       "ins": "notinsured",
+       "price": 250,
+       "paid": true,
+       "via": "Cash",
+       "invoiceId": "INV-660310",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      },
+      {
+       "code": "RAD-120",
+       "ins": "notinsured",
+       "price": 180,
+       "paid": true,
+       "via": "Payment link",
+       "invoiceId": "INV-660477",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      },
+      {
+       "code": "PKG-EXEC",
+       "ins": "notinsured",
+       "price": 1200,
+       "paid": true,
+       "via": "Cash",
+       "invoiceId": "INV-320849",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": true
+      },
+      {
+       "code": "LAB-CBC",
+       "ins": "notinsured",
+       "price": 90,
+       "paid": true,
+       "via": "Cash",
+       "invoiceId": "INV-320849",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": true
+      },
+      {
+       "code": "LAB-CBC-2",
+       "ins": "notinsured",
+       "price": 90,
+       "paid": false,
+       "via": null,
+       "invoiceId": null,
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      }
+     ],
+     "invoices": [
+      {
+       "id": "INV-320849",
+       "scope": "orders",
+       "patient": 1483.5,
+       "company": 0,
+       "deductible": 0,
+       "paid": true,
+       "via": "Cash",
+       "viaDetail": "",
+       "payments": [
+        {
+         "mode": "Cash",
+         "amount": 1483.5,
+         "ref": ""
+        }
+       ],
+       "payer": "Cash / Self-pay",
+       "branch": null,
+       "cashOnly": false,
+       "billType": "cash",
+       "rows": [
+        "PKG-EXEC:refunded",
+        "LAB-CBC:refunded"
+       ],
+       "refunded": 1483.5,
+       "refunds": [
+        "103.5:Cash:ordered twice::LAB-CBC:RFD-322667",
+        "1380:Advance wallet:patient changed their mind::PKG-EXEC:RFD-269446"
+       ],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
+      },
+      {
+       "id": "INV-660310",
+       "scope": "consult",
+       "patient": 287.5,
+       "company": 0,
+       "deductible": 0,
+       "paid": true,
+       "via": "Cash",
+       "viaDetail": "",
+       "payments": null,
+       "payer": "Cash / Self-pay",
+       "branch": null,
+       "cashOnly": false,
+       "billType": null,
+       "rows": [
+        "CON-310"
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
+      },
+      {
+       "id": "INV-660477",
+       "scope": "orders",
+       "patient": 207,
+       "company": 0,
+       "deductible": 0,
+       "paid": true,
+       "via": "Payment link",
+       "viaDetail": "",
+       "payments": null,
+       "payer": "Cash / Self-pay",
+       "branch": null,
+       "cashOnly": false,
+       "billType": null,
+       "rows": [
+        "RAD-120"
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
+      }
+     ],
+     "refundInvoices": [
+      "RFD-322667:INV-320849:103.5:0:0:Cash::ordered twice:Cash / Self-pay:LAB-CBC",
+      "RFD-269446:INV-320849:1380:0:0:Advance wallet::patient changed their mind:Cash / Self-pay:PKG-EXEC"
+     ],
+     "history": [
+      {
+       "ic": "w",
+       "tx": "<b>Refunded SAR 1,380.00</b> — INV-320849",
+       "sub": "Refund invoice RFD-269446 · Executive Health Check · Advance wallet · patient changed their mind",
+       "type": "REFUND",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-320849",
+       "amount": 1380,
+       "mode": "Advance wallet"
+      },
+      {
+       "ic": "w",
+       "tx": "<b>Refunded SAR 103.50</b> — INV-320849",
+       "sub": "Refund invoice RFD-322667 · Complete Blood Count · Cash · ordered twice",
+       "type": "REFUND",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-320849",
+       "amount": 103.5,
+       "mode": "Cash"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>1 order(s) added at reception</b>",
+       "sub": "Complete Blood Count · no doctor needed · billed at the cash price",
+       "type": "ADDORDER",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "i",
+       "tx": "<b>6 package procedure(s) can now be booked</b>",
+       "sub": "Executive Health Check · paid on INV-320849 · book a visit for each whenever the patient can attend",
+       "type": "PKGREADY",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-320849",
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "",
+       "tx": "<b>Orders paid</b> — SAR 1,483.50",
+       "sub": "Cash · invoice INV-320849 created",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-320849",
+       "amount": 1483.5,
+       "mode": "Cash"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>2 order(s) added at reception</b>",
+       "sub": "Executive Health Check, Complete Blood Count · no doctor needed · billed at the cash price",
+       "type": "ADDORDER",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "",
+       "tx": "<b>Orders paid</b> — SAR 207.00",
+       "sub": "Payment link · invoice INV-660477 created · Knee X-Ray",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-660477",
+       "amount": 207,
+       "mode": "Payment link"
+      },
+      {
+       "ic": "",
+       "tx": "<b>Consultation paid</b> — SAR 287.50",
+       "sub": "Cash at desk · invoice INV-660310 created",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-660310",
+       "amount": 287.5,
+       "mode": "Cash"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Visit created</b> at reception",
+       "sub": "Orthopaedics · Dr Omar Hassan",
+       "type": "VISIT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      }
+     ],
+     "wallet": {
+      "Open": 1380,
+      "Doctor": 0,
+      "Clinic": 0
+     },
+     "credit": 0,
+     "ledger": [
+      {
+       "type": "REFUND_IN",
+       "amount": 1380,
+       "note": "Refund credited to the wallet · patient changed their mind",
+       "invoiceId": "INV-320849",
+       "visitId": 4,
+       "docId": "ADV-400117"
+      }
+     ],
+     "visit": {
+      "type": "Consultation",
+      "clinic": "ORTHOPAEDICS",
+      "doctor": "OMAR HASSAN",
+      "slot": null,
+      "consult": {
+       "name": "Orthopaedic Consultation",
+       "code": "CON-310",
+       "price": 250
+      }
+     },
+     "payerId": "CASH",
+     "policy": null,
+     "payers": [
+      "CASH"
+     ],
+     "payerStory": null,
+     "done": {
+      "refund": "Refunded SAR 1,380.00 on INV-320849 | Refund invoice RFD-269446 · Executive Health Check · Advance wallet · patient changed their mind"
+     },
+     "settled": [],
+     "appr": [
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     "docs": [
+      "ADV-400117:REFUND_IN:1380:4:INV-320849:Refund credited to the wallet · patient changed their mind"
+     ]
+    },
+    {
+     "step": "SEE_DOCTOR",
+     "q": "WADHA can now see the doctor.",
+     "sub": "The visit moves on once the doctor starts the consultation.",
+     "amt": null,
+     "buttons": [
+      "Check if the doctor has started",
+      "Left without being seen"
+     ],
+     "stories": [
+      "visit",
+      "orders",
+      "refund",
+      "addorders"
+     ],
+     "active": "refund",
+     "stages": {
+      "visit": {
+       "index": 3,
+       "skipped": []
+      },
+      "orders": {
+       "index": 0,
+       "skipped": [],
+       "locked": true
+      },
+      "refund": {
+       "index": 3,
+       "skipped": []
+      },
+      "addorders": {
+       "index": 0,
+       "skipped": []
+      }
+     },
+     "due": 0,
+     "dedUsed": 0,
+     "link": null,
+     "waitAll": false,
+     "bill": null,
+     "lines": [
+      {
+       "code": "CON-101",
+       "ins": "approved",
+       "price": 200,
+       "paid": true,
+       "via": "Cash",
+       "invoiceId": "INV-100295",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": true
+      }
+     ],
+     "invoices": [
+      {
+       "id": "INV-100295",
+       "scope": "consult",
+       "patient": 46,
+       "company": 184,
+       "deductible": 40,
+       "paid": true,
+       "via": "Cash",
+       "viaDetail": "tendered SAR 100.00 (1×SAR 100) · change SAR 54.00",
+       "payments": [
+        {
+         "mode": "Cash",
+         "amount": 46,
+         "ref": ""
+        }
+       ],
+       "payer": "NCCI · CLASS A",
+       "branch": null,
+       "cashOnly": false,
+       "billType": "insurance",
+       "rows": [
+        "CON-101:refunded"
+       ],
+       "refunded": 46,
+       "refunds": [
+        "46:Span:left before being seen:4417:CON-101:RFD-390991"
+       ],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
+      }
+     ],
+     "refundInvoices": [
+      "RFD-390991:INV-100295:46:184:40:Span:4417:left before being seen:NCCI · CLASS A:CON-101"
+     ],
+     "history": [
+      {
+       "ic": "w",
+       "tx": "<b>Refunded SAR 46.00</b> — INV-100295",
+       "sub": "Refund invoice RFD-390991 · Paediatric Consultation · Span · 4417 · left before being seen",
+       "type": "REFUND",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-100295",
+       "amount": 46,
+       "mode": "Span"
+      },
+      {
+       "ic": "",
+       "tx": "<b>Consultation paid</b> — SAR 46.00",
+       "sub": "Cash · tendered SAR 100.00 (1×SAR 100) · change SAR 54.00 · invoice INV-100295 created · SAR 184.00 to NCCI",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-100295",
+       "amount": 46,
+       "mode": "Cash"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Visit created</b> at reception",
+       "sub": "Paediatrics · Dr Lina Farouk",
+       "type": "VISIT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      }
+     ],
+     "wallet": {
+      "Open": 0,
+      "Doctor": 0,
+      "Clinic": 0
+     },
+     "credit": 0,
+     "ledger": [
+      {
+       "type": "CREDIT_SETTLED",
+       "amount": 46,
+       "note": "Settled by cash",
+       "invoiceId": "INV-577403",
+       "visitId": 31,
+       "docId": "CRED-400116"
+      },
+      {
+       "type": "CREDIT_RAISED",
+       "amount": 26,
+       "note": "Consultation left unsettled · SAR 20.00 paid at the desk",
+       "invoiceId": "INV-577403",
+       "visitId": 31,
+       "docId": "CRED-400107"
+      }
+     ],
+     "visit": {
+      "type": "Consultation",
+      "clinic": "PAEDIATRICS",
+      "doctor": "LINA FAROUK",
+      "slot": null,
+      "consult": {
+       "name": "Paediatric Consultation",
+       "code": "CON-101",
+       "price": 200
+      }
+     },
+     "payerId": "NCCI-A",
+     "policy": null,
+     "payers": [
+      "NCCI-A",
+      "MEDGULF-B",
+      "CASH"
+     ],
+     "payerStory": null,
+     "done": {
+      "refund": "Refunded SAR 46.00 on INV-100295 | Refund invoice RFD-390991 · Paediatric Consultation · Span · left before being seen"
+     },
+     "settled": [
+      "INV-577403:Cash"
+     ],
+     "appr": [
+      null
+     ],
+     "docs": [
+      "CRED-400107:CREDIT_RAISED:26:31:INV-577403:Consultation left unsettled · SAR 20.00 paid at the desk",
+      "CRED-400116:CREDIT_SETTLED:46:31:INV-577403:Settled by cash"
+     ]
     }
    ]
   }

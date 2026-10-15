@@ -24,6 +24,9 @@ export interface DrawerState {
   /* settling credit invoices picked earlier (v3 d.credit) / unused advance back to the patient (v3 d.advRefund) */
   credit?: { ids: string[]; fromWallet?: boolean } | null;
   advRefund?: { cat: AdvCat; reason: string } | null;
+  /* money back on an invoice (v3 d.refund) / the overpayment a replacement leaves (v3 d.refundDiff) */
+  refund?: { id: string; codes: string[]; reason: string; dedBack: number } | null;
+  refundDiff?: { reason: string; to: string } | null;
   mode: string;
   amount: number;
   parts: PayPart[];
@@ -40,7 +43,7 @@ export interface DrawerState {
 /* what a drawer interaction tells the receptionist */
 export interface DrawerToast { kind: "ok" | "warn" | ""; title: Msg; sub?: Msg }
 
-export function newDrawer(caseId: number | null, mrn: string, amount: number, extra: Pick<DrawerState, "credit" | "advRefund"> = {}, mode = "Cash"): DrawerState {
+export function newDrawer(caseId: number | null, mrn: string, amount: number, extra: DrawerExtra = {}, mode = "Cash"): DrawerState {
   const d: DrawerState = {
     caseId, mrn, ...extra, mode, amount: round2(amount), parts: [], notes: null, notesFor: null, tenderManual: null, partAmt: null,
     ref: "", ref2: "", moreOpen: false, editing: null,
@@ -49,7 +52,8 @@ export function newDrawer(caseId: number | null, mrn: string, amount: number, ex
   return d;
 }
 /* money going back, and credit settlement, are a single part with no split and no notes (v3 line 5528) */
-export const isMoneyBack = (d: DrawerState) => !!d.advRefund;
+export const isMoneyBack = (d: DrawerState) => !!(d.refund || d.refundDiff || d.advRefund);
+export type DrawerExtra = Pick<DrawerState, "credit" | "advRefund" | "refund" | "refundDiff">;
 export const isSimple = (d: DrawerState) => isMoneyBack(d) || !!d.credit;
 /* the visit the drawer acts on — or, for a patient with no visit, a stand-in that carries the MRN */
 export const drawerVisit = (w: World, d: DrawerState): Visit =>
@@ -130,7 +134,7 @@ export function drawerView(w: World, c: Visit, d: DrawerState) {
     canConfirm: back || (!short.length && unallocated <= 0.004),
     totalLabel: (back ? "toRefund" : parts.every((p) => p.mode === "Credit") ? "toCredit" : parts.some((p) => p.mode === "Credit") ? "toCollectAndCredit" : "toCollect") as
       "toRefund" | "toCredit" | "toCollectAndCredit" | "toCollect",
-    head: d.advRefund ? "advRefund" : d.credit ? "credit" : "payment",
+    head: d.advRefund ? "advRefund" : d.refund || d.refundDiff ? "refund" : d.credit ? "credit" : "payment",
     goLabel: confirmLabel(d, parts),
   };
 }

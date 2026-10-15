@@ -13,6 +13,8 @@ export const resetIds = () => {
   nextCaseId = 100;
 };
 export const newInvoiceId = () => "INV-" + Math.floor(100000 + random() * 899999);
+/* v3 raiseRefundInvoice(): a refund invoice (credit note) has its own number */
+export const newRefundId = () => "RFD-" + Math.floor(100000 + random() * 899999);
 /* v3 createWalkinVisit(): a new consultation code */
 export const newConsultCode = () => "CON-" + Math.floor(100 + random() * 899);
 export const nextLedgerKey = () => ++ledSeq;

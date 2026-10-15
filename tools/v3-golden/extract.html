@@ -154,6 +154,12 @@ f.onload = () => {
         ["addOrdersStory", 4, ["LAB-CBC", "PKG-EXEC"]], ["billApproved", 4], ["pay", 4, "Cash", "", [["Cash", "rest"]]],
         ["addOrdersStory", 4, ["LAB-CBC"]],
       ] },
+      /* 2b: refunds, worked in the Refund story and completed in the slide-in */
+      { name: "2b: refund one line by cash, the rest to the wallet; a consultation with a payer share", ops: [
+        ["refund", 4, "first", ["LAB-CBC"], "Cash", "", "ordered twice"],
+        ["refund", 4, "first", null, "Advance wallet", "", "patient changed their mind"],
+        ["refund", 1, "first", null, "Span", "4417", "left before being seen"],
+      ] },
     ];
     const caseOf = (id) => cases.find((x) => x.id === id);
     const S = E("state"), doc = w.document, R = (c) => E("renderPayerStory")(c), click = (root, sel) => root.querySelector(sel).click();
@@ -188,6 +194,15 @@ f.onload = () => {
       else if (op === "setPayer") E("setPayer")(c, a[0]);
       else if (op === "reprint") E("reprint")(a[0] === "first" ? c.invoices[0].id : a[0]);
       else if (op === "addOrders") E("addReceptionOrders")(c, a[0].map((code) => E("ORDER_CATALOG").find((x) => x.code === code)));
+      else if (op === "refund") {
+        const [which, codes, mode, ref, reason] = a;
+        const inv = which === "first" ? c.invoices.find((i) => E("refundable")(i)) : c.invoices.find((i) => i.id === which);
+        S.caseId = null; E("openRefund")(inv.id);
+        if (codes) S.refund.sel = Object.fromEntries(codes.map((k) => [k, true]));
+        S.refund.reason = reason;
+        click(E("renderRefundWork")(c), "#rfGo");
+        S.drawer.mode = mode; S.drawer.ref = ref; E("render")(); doc.getElementById("dGo").click();
+      }
       else if (op === "addOrdersStory") {
         c.addStory = { stage: 2, sel: Object.fromEntries(a[0].map((k) => [k, true])), q: "" };
         click(E("renderAddOrdersStory")(c), "#aoGo");
@@ -230,10 +245,13 @@ f.onload = () => {
         due: due(c), dedUsed: c.dedUsed, link: c.link ? c.link.ageMin : null, waitAll: !!c.prefs.waitAll,
         bill: c.bill ? { scope: c.bill.scope, codes: c.bill.codes, patient: c.bill.patient, company: c.bill.company, deductible: c.bill.deductible, cashOnly: !!c.bill.cashOnly } : null,
         lines: [c.consult, ...c.orders].map((l) => ({ code: l.code, ins: l.ins, price: l.price, paid: !!l.paid, via: l.via || null, invoiceId: l.invoiceId || null,
-          urgentCash: !!l.urgentCash, approvalPending: !!l.approvalPending })),
+          urgentCash: !!l.urgentCash, approvalPending: !!l.approvalPending, refunded: !!l.refunded })),
         invoices: c.invoices.map((i) => ({ id: i.id, scope: i.scope, patient: i.patient, company: i.company, deductible: i.deductible, paid: i.paid,
           via: i.via, viaDetail: norm(i.viaDetail), payments: i.payments || null, payer: i.payer, branch: i.branch || null, cashOnly: !!i.cashOnly,
-          billType: i.billType || null, rows: i.rows.map((r) => r.code) })),
+          billType: i.billType || null, rows: i.rows.map((r) => r.code + (r.refunded ? ":refunded" : "")),
+          refunded: i.refundedTotal || 0, refunds: (i.refunds || []).map((r) => `${r.amount}:${r.mode}:${norm(r.reason)}:${norm(r.detail)}:${r.codes.join("+")}:${r.refundInvoiceId}`),
+          replaced: i.replaced ? `${i.replaced.newId}:${i.replaced.to}` : null, replaces: i.replaces || null, credited: i.credited || 0 })),
+        refundInvoices: (c.refundInvoices || []).map((r) => `${r.id}:${r.refOf}:${r.patient}:${r.company}:${r.deductible}:${r.via}:${norm(r.viaDetail)}:${norm(r.reason)}:${r.payer}:${r.rows.map((x) => x.code).join("+")}`),
         history: c.history.map((h) => ({ ic: h.ic || "", tx: norm(h.tx), sub: norm(h.sub), type: h.type || "", by: h.by || "",
           invoiceId: h.invoiceId || null, amount: h.amount ?? null, mode: h.mode || null })),
         wallet: { ...p.wallet.advance }, credit: creditTotal(c.mrn),

@@ -159,8 +159,17 @@ export interface Invoice {
   cashOnly?: boolean;
   billType?: string;
   refundedTotal?: number;
-  refunds?: unknown[];
+  refunds?: RefundRec[];
   kind?: string;
+  /* a refund invoice (kind "refund"): the invoice it refunds, why, and who gave the money back */
+  refOf?: string;
+  reason?: string;
+  by?: string;
+}
+
+/* one refund against an invoice (v3 completeRefund, line 5308) */
+export interface RefundRec {
+  at: string; amount: number; mode: string; reason: string; by: string; detail: string; codes: string[]; refundInvoiceId?: string;
 }
 
 export interface Bill {

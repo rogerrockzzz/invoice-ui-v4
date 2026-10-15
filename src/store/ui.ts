@@ -2,12 +2,15 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import i18n, { type Lang } from "../i18n";
 import { resolveMsg } from "../i18n/msg";
-import { drawerVisit, newDrawer, type DrawerState, type DrawerToast } from "../domain/drawer";
+import { drawerVisit, newDrawer, type DrawerExtra, type DrawerState, type DrawerToast } from "../domain/drawer";
 import { defaultInvFilters, invCanLoad, queryInvoices, type InvFilters } from "../domain/invoices";
 import { now } from "../domain/clock";
 import type { AdvCat, PayerDecision, PayerDraft, Visit, World } from "../domain/types";
 import type { WalletDone } from "./wallet";
 import { openedVisit } from "./actions";
+import { findInvoice } from "../domain/lookup";
+import { refundStart, type RefundUi } from "../domain/refund";
+import { openRefundOn } from "./refund";
 import { notify } from "./toasts";
 import { useWorld } from "./world";
 
@@ -48,6 +51,8 @@ export interface UiState {
   histOpen: boolean;
   comment: { cid: number; text: string; important: boolean } | null;
   simOpen: boolean;
+  /* the refund being worked in its visit's Refund story (v3 state.refund) */
+  refund: RefundUi | null;
   /* the wallet section and its stories (v3 state.wallet / state.adv) */
   wallet: WalletUi | null;
   adv: AdvUi | null;
@@ -68,7 +73,7 @@ export interface UiState {
   closeTab: (mrn: string) => void;
   goHome: () => void;
   openInvoices: () => void;
-  openDrawer: (caseId: number | null, mrn: string, amount: number, extra?: Pick<DrawerState, "credit" | "advRefund">) => void;
+  openDrawer: (caseId: number | null, mrn: string, amount: number, extra?: DrawerExtra) => void;
   drawerDo: (fn: (d: DrawerState, w: World, c: Visit) => DrawerToast | null | void) => void;
   set: (patch: Partial<Omit<UiState, Fns>>) => void;
   upd: (fn: (s: UiState) => void) => void;
@@ -93,7 +98,7 @@ const initial = () => ({
   screen: "home" as Screen, tabs: [] as string[], activeMrn: null, caseId: null, q: "", homeSel: null, homePanel: null,
   walletOpen: false, profPendOpen: true, pendView: "today" as PendView, profVisitsOpen: true, vf: { no: "", from: "", to: "" },
   visGroup: false, pinvOpen: false, pkgOpen: false,
-  drawer: null, eventPop: null, invPop: null, histOpen: true, comment: null, simOpen: false,
+  drawer: null, eventPop: null, invPop: null, histOpen: true, comment: null, simOpen: false, refund: null as RefundUi | null,
   wallet: null, adv: null, profPayer: null, walkin: null,
   invF: defaultInvFilters(), invQ: "", invLoaded: null, invEdit: false, invGroup: false,
 });
@@ -107,6 +112,7 @@ export const useUi = create<UiState>()(
     /* v3 openPatient() (line 3391): several patients can be open at once */
     openPatient: (mrn) => set((s) => {
       if (!s.tabs.includes(mrn)) s.tabs.push(mrn);
+      dropInline(s);
       s.activeMrn = mrn; s.caseId = null; s.screen = "patient";
     }),
     /* v3 openVisit() (line 3397): a visit always opens on its main story */
@@ -114,6 +120,7 @@ export const useUi = create<UiState>()(
       useWorld.getState().act(id, (w, c) => openedVisit(w, c));
       set((s) => {
         if (!s.tabs.includes(mrn)) s.tabs.push(mrn);
+        if (s.caseId !== id) dropInline(s);
         s.activeMrn = mrn; s.caseId = id; s.screen = "visit";
       });
     },
@@ -126,7 +133,7 @@ export const useUi = create<UiState>()(
         else { s.activeMrn = null; s.caseId = null; s.screen = "home"; }
       }
     }),
-    goHome: () => set((s) => { s.screen = "home"; s.activeMrn = null; s.caseId = null; }),
+    goHome: () => set((s) => { dropInline(s); s.screen = "home"; s.activeMrn = null; s.caseId = null; }),
     /* v3 renderTabs(): the Invoices screen always opens asking what to load */
     openInvoices: () => set((s) => { s.screen = "invoices"; s.invLoaded = null; s.invEdit = false; s.invQ = ""; s.invF = defaultInvFilters(); }),
     /* v3 `state.drawer = { c, mode:"Cash", amount }` — the desk opens on cash */
@@ -148,6 +155,25 @@ export const useUi = create<UiState>()(
     reset: () => set((s) => { Object.assign(s, initial()); }),
   })),
 );
+
+/* v3 dropInlineRefund() (line 3417): work started inside a visit's story does not follow you out of the visit */
+function dropInline(s: UiState) {
+  if (s.screen === "visit") s.refund = null;
+}
+
+/* v3 openRefund() (line 5192): a refund always happens in its visit's Refund story — wherever it was started from,
+   the receptionist lands on the visit and sees what they are refunding against */
+export function openRefund(id: string) {
+  const w = useWorld.getState();
+  const hit = findInvoice(w, id);
+  const r = refundStart(w, id);
+  if (!hit || !r) return;
+  const ui = useUi.getState();
+  ui.set({ invPop: null, eventPop: null });
+  if (ui.screen !== "visit" || ui.caseId !== hit.c.id) ui.openVisit(hit.c.id, hit.c.mrn);
+  useWorld.getState().act(hit.c.id, openRefundOn);
+  useUi.getState().set({ refund: r });
+}
 
 /* v3 walletState() (line 4167): the wallet section's own state, for the patient in view */
 export const freshWallet = (mrn: string): WalletUi => ({ mrn, tab: "ADV", flow: null, stmt: false, cat: "Open", amount: null, reason: "", sel: null, done: null });

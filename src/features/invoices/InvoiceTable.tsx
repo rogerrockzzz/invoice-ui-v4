@@ -9,8 +9,7 @@ import { pt } from "../../domain/lookup";
 import { fmt } from "../../domain/money";
 import type { Invoice, Msg, WalletDoc } from "../../domain/types";
 import { useW } from "../../store/hooks";
-import { useUi } from "../../store/ui";
-import { ComingSoon } from "../../ui/ComingSoon";
+import { openRefund, useUi } from "../../store/ui";
 import { InvoiceLink } from "../../ui/InvoiceLink";
 import { M } from "../../ui/Rich";
 import { useReprint } from "./InvoiceModal";
@@ -30,9 +29,7 @@ export function InvoiceTable({ list, showPatient, emptyNote, label }: { list: En
       <Button size="sm" variant="outline" aria-label={`${t("event.view")} ${id}`} onPress={() => set({ invPop: id })}>{t("event.view")}</Button>
       <Button size="sm" variant="outline" aria-label={`${t("invoices.reprint")} ${id}`} onPress={() => reprint(id)}>{t("invoices.reprint")}</Button>
       {refund && (
-        <ComingSoon when="M2" label={t("event.refund")} className="inline-flex h-8 items-center rounded-full border border-danger/50 px-3 text-xs text-danger">
-          {t("invoices.refund")}
-        </ComingSoon>
+        <Button size="sm" variant="danger" aria-label={`${t("invoices.refund")} ${id}`} onPress={() => openRefund(id)}>{t("invoices.refund")}</Button>
       )}
     </div>
   );

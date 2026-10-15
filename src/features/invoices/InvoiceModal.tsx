@@ -10,10 +10,9 @@ import { fmt } from "../../domain/money";
 import type { Invoice, Visit, WalletDoc } from "../../domain/types";
 import { visitNo } from "../../domain/visits";
 import { useW } from "../../store/hooks";
-import { useUi } from "../../store/ui";
+import { openRefund, useUi } from "../../store/ui";
 import { reprint } from "../../store/wallet";
 import { useWorld } from "../../store/world";
-import { ComingSoon } from "../../ui/ComingSoon";
 import { InvoiceLink } from "../../ui/InvoiceLink";
 
 /* v3 reprint() (line 4854): recorded on the visit, a toast — and, in v4, the browser's print of the open document */
@@ -39,7 +38,9 @@ export function InvoiceModal() {
       <Modal.Container size="lg">
         <Modal.Dialog aria-label={hit.inv.id} data-print-doc="">
           <Modal.CloseTrigger data-print-hide="" />
-          {isWallet ? <WalletDocBody c={hit.c} d={hit.inv as WalletDoc} close={close} /> : <InvoiceBody c={hit.c} inv={hit.inv as Invoice} close={close} />}
+          {isWallet ? <WalletDocBody c={hit.c} d={hit.inv as WalletDoc} close={close} />
+            : (hit.inv as Invoice).kind === "refund" ? <RefundInvoiceBody c={hit.c} inv={hit.inv as Invoice} close={close} />
+            : <InvoiceBody c={hit.c} inv={hit.inv as Invoice} close={close} />}
         </Modal.Dialog>
       </Modal.Container>
     </Modal.Backdrop>
@@ -170,12 +171,65 @@ function InvoiceBody({ c, inv, close }: { c: Visit; inv: Invoice; close: () => v
       <Modal.Footer className="flex-wrap" data-print-hide="">
         <Button variant="primary" onPress={() => doReprint(inv.id, true)}><Printer className="size-4" />{t("invoice.reprint")}</Button>
         {refundable(w, inv) && (
-          <ComingSoon when="M2" label={t("event.refund")} className="inline-flex h-10 items-center rounded-full border border-danger/50 px-4 text-sm text-danger">
-            {t("invoices.refund")}
-          </ComingSoon>
+          <Button variant="danger" onPress={() => openRefund(inv.id)}>{t("invoices.refund")}</Button>
         )}
         <Button variant="outline" onPress={() => upd((s) => { s.invPop = null; s.screen = "invoices"; s.invQ = ""; s.invLoaded = null; })}>{t("event.goInvoices")}</Button>
         <Button variant="secondary" onPress={close}>{t("event.close")}</Button>
+      </Modal.Footer>
+    </>
+  );
+}
+
+/* v3 renderRefundInvoicePop() (line 5331): what went back, against which invoice, how and why */
+function RefundInvoiceBody({ c, inv, close }: { c: Visit; inv: Invoice; close: () => void }) {
+  const { t } = useTranslation();
+  const w = useW();
+  const p = pt(w, c);
+  const doReprint = useReprint();
+  const meta: [string, ReactNode, ReactNode?][] = [
+    [t("invoice.patient"), p.name, `${p.mrn} · ${p.age}/${p.gender} · ${p.mobile}`],
+    [t("invoice.visit"), `${c.visitType} · ${c.clinic}`, `Dr ${c.doctor} · ${visitNo(c)}`],
+    [t("refund.doc.of"), <InvoiceLink id={inv.refOf || ""} />, inv.payer],
+    [t("refund.doc.refunded"), t("event.today", { at: inv.at }), t("refund.doc.by", { via: inv.via, detail: inv.viaDetail ? ` · ${inv.viaDetail}` : "", by: inv.by })],
+    [t("refund.reason"), inv.reason],
+  ];
+  return (
+    <>
+      <DocHead title={t("refund.doc.title")} id={inv.id} />
+      <Modal.Body className="flex flex-col gap-4" data-testid="inv-doc">
+        <Meta rows={meta} />
+        <Table>
+          <Table.ScrollContainer>
+            <Table.Content aria-label={t("invoice.lines")}>
+              <Table.Header>
+                <Table.Column isRowHeader>{t("invoice.description")}</Table.Column>
+                <Table.Column className="text-end">{t("invoice.gross")}</Table.Column>
+                <Table.Column className="text-end">{t("invoice.deductible")}</Table.Column>
+                <Table.Column className="text-end">{t("refund.doc.back")}</Table.Column>
+                <Table.Column className="text-end">{t("refund.doc.reversed")}</Table.Column>
+              </Table.Header>
+              <Table.Body renderEmptyState={() => <span className="text-sm">{t("refund.doc.overpaid")}</span>}>
+                {inv.rows.map((r) => (
+                  <Table.Row key={r.code}>
+                    <Table.Cell><b>{r.name}</b><div className="text-[11px] text-muted">{r.code}</div></Table.Cell>
+                    <Table.Cell className="text-end tabular-nums">{fmt(r.calc.gross)}</Table.Cell>
+                    <Table.Cell className="text-end tabular-nums">{r.calc.deductible ? fmt(r.calc.deductible) : "—"}</Table.Cell>
+                    <Table.Cell className="text-end font-semibold tabular-nums">−{fmt(r.calc.patientWithTax)}</Table.Cell>
+                    <Table.Cell className="text-end tabular-nums">{r.calc.companyWithTax ? `−${fmt(r.calc.companyWithTax)}` : "—"}</Table.Cell>
+                  </Table.Row>
+                ))}
+              </Table.Body>
+            </Table.Content>
+          </Table.ScrollContainer>
+          <Table.Footer className="flex flex-wrap gap-4 border-t border-border px-3 py-2 text-xs" data-testid="inv-totals">
+            <span>{t("invoice.totals", { vat: Math.round(VAT * 100) })}</span>
+            <span className="ms-auto tabular-nums">{inv.deductible ? fmt(inv.deductible) : "—"} · <b data-testid="inv-total">−{fmt(inv.patient)}</b> · {inv.company ? `−${fmt(inv.company)}` : "—"}</span>
+          </Table.Footer>
+        </Table>
+      </Modal.Body>
+      <Modal.Footer data-print-hide="">
+        <Button variant="secondary" onPress={close}>{t("event.close")}</Button>
+        <Button variant="primary" onPress={() => doReprint(inv.id, true)}><Printer className="size-4" />{t("refund.doc.reprint")}</Button>
       </Modal.Footer>
     </>
   );

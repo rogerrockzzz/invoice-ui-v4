@@ -7,8 +7,7 @@ import { findInvoice, payerName, pt } from "../../domain/lookup";
 import { fmt } from "../../domain/money";
 import type { Invoice } from "../../domain/types";
 import { useW } from "../../store/hooks";
-import { openInvoicesFor, useUi } from "../../store/ui";
-import { ComingSoon } from "../../ui/ComingSoon";
+import { openInvoicesFor, openRefund, useUi } from "../../store/ui";
 import { InvoiceLink } from "../../ui/InvoiceLink";
 
 const INS_COLOR: Record<string, "success" | "accent" | "warning" | "default"> = { approved: "success", partial: "accent", pending: "warning" };
@@ -112,9 +111,7 @@ export function EventModal() {
           <Modal.Footer className="flex-wrap">
             {h.invoiceId && <Button variant="primary" onPress={() => set({ invPop: h.invoiceId!, eventPop: null })}>{t("event.preview", { id: h.invoiceId })}</Button>}
             {canRefund && (
-              <ComingSoon when="M2" label={t("event.refund")} className="inline-flex h-10 items-center rounded-full border border-danger/50 px-4 text-sm text-danger">
-                {t("event.refund")}
-              </ComingSoon>
+              <Button variant="danger" onPress={() => openRefund(h.invoiceId!)}>{t("event.refund")}</Button>
             )}
             <Button variant="outline" onPress={() => openInvoicesFor(p.mrn)}>{t("event.goInvoices")}</Button>
             <Button variant="secondary" onPress={close}>{t("event.close")}</Button>

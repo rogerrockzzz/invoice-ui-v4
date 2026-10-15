@@ -18,14 +18,16 @@ import { StepCard } from "../../ui/StepCard";
 import { StoryStepper } from "../../ui/StoryStepper";
 import { AddOrdersStory } from "../stories/AddOrdersStory";
 import { CreditStory } from "../stories/CreditStory";
+import { RefundStory, RefundWork } from "../stories/RefundStory";
 import { VisitPayerStory } from "../stories/PayerStory";
 
 /* stories that are built in a later checkpoint or milestone */
-const LATER: Partial<Record<StoryId, string>> = { refund: "M2", replace: "M2", package: "M3" };
+const LATER: Partial<Record<StoryId, string>> = { replace: "M2", package: "M3" };
 
 /* v3 renderStoryCard() (line 2142): the active story's stages, then its card */
 export function StoryCard({ c, ui }: { c: Visit; ui: StoryUiCtx }) {
   const w = useW();
+  const refund = useUi((s) => s.refund);
   const id = activeStory(w, c);
   const done = (c.storyDone || {})[id];
   const stages = (sid: StoryId) => <StoryStepper id={sid} pos={storyStage(w, c, sid, ui)} />;
@@ -35,7 +37,10 @@ export function StoryCard({ c, ui }: { c: Visit; ui: StoryUiCtx }) {
     const st = nextStep(w, c);
     return isVisitStep(w, c, st) ? <StepCard c={c} s={st} top={stages(id)} /> : <VisitDoneCard c={c} top={stages(id)} />;
   }
-  if (done) return <DoneCard c={c} id={id} done={done} top={stages(id)} />;
+  const refundInline = !!refund && c.invoices.some((i) => i.id === refund.id);
+  const refundDrawer = !!(ui.drawer && ui.drawer.caseId === c.id && ui.drawer.refund);
+  if (done && !(id === "refund" && (refundInline || refundDrawer))) return <DoneCard c={c} id={id} done={done} top={stages(id)} />;
+  if (id === "refund") return refundInline ? <RefundWork c={c} d={refund!} top={stages(id)} /> : <RefundStory c={c} top={stages(id)} />;
   if (id === "credit") return <CreditStory c={c} top={stages(id)} />;
   if (id === "payer") return <VisitPayerStory c={c} top={stages(id)} />;
   if (id === "addorders") return <AddOrdersStory c={c} top={stages(id)} />;

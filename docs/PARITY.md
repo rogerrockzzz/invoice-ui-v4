@@ -21,7 +21,7 @@ deferred-M2: 24, deferred-M3: 10, deferred-M4: 29, done: 239 (of 302 declaration
 | Patient profile: header, payer row, pending actions, visits, package items, invoices | 1a, 1c | done | wallet section, profile payer and invoices table added in 1c |
 | Visit screen, story strip, stepper, step card, order table | 1b | done | payer chip opens the Payer story (1c); M2/M3 stories shown with a "Coming in …" card |
 | Visit invoicing / Orders invoicing | 1b | done | scripted flows golden-tested step by step against v3 |
-| Payment drawer | 1b, 1c | done | payment, credit-settlement and advance-refund branches; refunds M2 |
+| Payment drawer | 1b, 1c, 2b | done | payment, credit-settlement, advance-refund and refund branches; replacement refund 2c |
 | Visit timeline + event pop-up | 1b | done | "Go to invoices" works from 1c |
 | Simulate panel | 1b | done | |
 | Wallet section + Add advance / Refund advance / Credit settlement | 1c | done | golden flows + e2e |
@@ -29,7 +29,8 @@ deferred-M2: 24, deferred-M3: 10, deferred-M4: 29, done: 239 (of 302 declaration
 | Walk-in visit | 1c | done | golden flows (4 walk-ins) + e2e |
 | Invoices screen + invoice pop-up | 1c | done | wallet document pop-up, reprint + print stylesheet |
 | Add orders | 2a | done | golden flow + e2e; NO_ORDERS "Add orders" opens it |
-| Refund, Replace | M2 | deferred-M2 | |
+| Refund | 2b | done | lands on the visit's Refund story from the invoice table / invoice pop-up / event pop-up; refund invoice pop-up |
+| Replace | M2 | deferred-M2 | |
 | Package booking, Package procedure, LWBS | M3 | deferred-M3 | |
 | Ask VIDA, Story map, Settings, Arabic/RTL | M4 | deferred-M4 | i18n keys and RTL-safe CSS from 1a |
 
@@ -248,7 +249,7 @@ deferred-M2: 24, deferred-M3: 10, deferred-M4: 29, done: 239 (of 302 declaration
 | `renderChat` | 2738 | features/chat | M4 | deferred-M4 |  |
 | `renderStoryMap` | 2771 | features/storymap | M4 | deferred-M4 | entry point shown disabled |
 | `renderDoneCard` | 2796 | features/visit/StoryCard.tsx | 1b | done |  |
-| `renderRefundStory` | 2825 | features/stories/refund | M2 | deferred-M2 |  |
+| `renderRefundStory` | 2825 | features/stories/RefundStory.tsx | 2b | done | golden flow + e2e |
 | `renderReplaceStory` | 2871 | features/stories/replace | M2 | deferred-M2 |  |
 | `renderPackageStory` | 2907 | features/stories/package | M3 | deferred-M3 |  |
 | `renderCreditStory` | 2970 | features/stories/CreditStory.tsx | 1c | done | link + desk; golden flows |
@@ -275,7 +276,7 @@ deferred-M2: 24, deferred-M3: 10, deferred-M4: 29, done: 239 (of 302 declaration
 | `openPatient` | 3391 | store/ui.ts | 1a | done | openVisit resets the visit's active story in 1b |
 | `openVisit` | 3397 | store/ui.ts | 1a | done | resets the visit's active story (store/actions.ts openedVisit) |
 | `closeTab` | 3407 | store/ui.ts | 1a | done | openVisit resets the visit's active story in 1b |
-| `dropInlineRefund` | 3417 | features/stories/refund | M2 | deferred-M2 |  |
+| `dropInlineRefund` | 3417 | store/ui.ts (dropInline) | 2b | done | golden flow + e2e |
 | `goHome` | 3418 | store/ui.ts | 1a | done | openVisit resets the visit's active story in 1b |
 | `render` | 3421 | App.tsx | 1a | done |  |
 | `renderTabs` | 3453 | features/shell/PatientTabs.tsx | 1a | done | Buttons + CloseButton (a close control may not sit inside role=tab) |
@@ -305,11 +306,11 @@ deferred-M2: 24, deferred-M3: 10, deferred-M4: 29, done: 239 (of 302 declaration
 | `addComment` | 4359 | store/world.ts | 1a | done | comment box + toast in features/visit/VisitTimeline.tsx |
 | `renderHistory` | 4363 | features/visit/VisitTimeline.tsx | 1b | done |  |
 | `findInvoice` | 4445 | domain/lookup.ts | 1a | done |  |
-| `raiseRefundInvoice` | 4452 | features/stories/refund | M2 | deferred-M2 |  |
+| `raiseRefundInvoice` | 4452 | store/refund.ts | 2b | done | golden flow + e2e |
 | `visitDocs` | 4460 | domain/lookup.ts | 1a | done |  |
 | `openInvoice` | 4461 | ui/InvoiceLink.tsx (ui.invPop) | 1c | done |  |
 | `EV_TITLES` | 4464 | features/visit/VisitTimeline.tsx | 1b | done |  |
-| `renderEventPop` | 4472 | features/visit/EventModal.tsx | 1b | done | Refund (M2) / Go to invoices (1c) shown disabled |
+| `renderEventPop` | 4472 | features/visit/EventModal.tsx | 1b | done | Refund works from 2b; Go to invoices from 1c |
 | `allInvoices` | 4543 | domain/invoices.ts | 1a | done | golden-tested; screen in 1c |
 | `INV_PRESETS` | 4551 | domain/invoices.ts | 1a | done | golden-tested; screen in 1c |
 | `isoDay` | 4552 | domain/visits.ts | 1a | done |  |
@@ -329,7 +330,7 @@ deferred-M2: 24, deferred-M3: 10, deferred-M4: 29, done: 239 (of 302 declaration
 | `renderInvoices` | 4626 | features/invoices/InvoicesScreen.tsx | 1c | done |  |
 | `ivDecorate` | 4690 | features/invoices/InvoiceTable.tsx | 1c | done |  |
 | `pairInvoices` | 4697 | domain/invoices.ts | 1c | done | unit-tested |
-| `invoiceTable` | 4733 | features/invoices/InvoiceTable.tsx | 1c | done | Refund action shown disabled (M2) |
+| `invoiceTable` | 4733 | features/invoices/InvoiceTable.tsx | 1c | done | Refund action works from 2b |
 | `renderPackageItems` | 4789 | features/patient/PatientCards.tsx | 1a | done | book/open actions in M3 |
 | `renderPatientInvoices` | 4825 | features/patient/PatientCards.tsx | 1c | done | table only rendered once expanded |
 | `reprint` | 4854 | store/wallet.ts, features/invoices/InvoiceModal.tsx | 1c | done | also opens the browser print (print stylesheet in theme.css) |
@@ -344,19 +345,19 @@ deferred-M2: 24, deferred-M3: 10, deferred-M4: 29, done: 239 (of 302 declaration
 | `openPkgBook` | 5099 | features/stories/package | M3 | deferred-M3 |  |
 | `renderPkgBookPop` | 5108 | features/stories/package | M3 | deferred-M3 |  |
 | `createPkgVisit` | 5163 | features/stories/package | M3 | deferred-M3 |  |
-| `openRefund` | 5192 | features/stories/refund | M2 | deferred-M2 |  |
-| `refundCalc` | 5205 | features/stories/refund | M2 | deferred-M2 |  |
-| `refundInline` | 5216 | features/stories/refund | M2 | deferred-M2 |  |
-| `refundAmtHtml` | 5219 | features/stories/refund | M2 | deferred-M2 |  |
-| `refundReasonHtml` | 5226 | features/stories/refund | M2 | deferred-M2 |  |
+| `openRefund` | 5192 | store/ui.ts, store/refund.ts (openRefundOn), domain/refund.ts (refundStart) | 2b | done | golden flow + e2e |
+| `refundCalc` | 5205 | domain/refund.ts | 2b | done | golden flow + e2e |
+| `refundInline` | 5216 | features/visit/StoryCard.tsx | 2b | done | golden flow + e2e |
+| `refundAmtHtml` | 5219 | features/stories/RefundStory.tsx | 2b | done | golden flow + e2e |
+| `refundReasonHtml` | 5226 | features/stories/RefundStory.tsx | 2b | done | golden flow + e2e |
 | `performedOf` | 5234 | domain/lines.ts | 1a | done |  |
-| `refundListHtml` | 5240 | features/stories/refund | M2 | deferred-M2 |  |
-| `wireRefundLines` | 5262 | features/stories/refund | M2 | deferred-M2 |  |
-| `renderRefundWork` | 5277 | features/stories/refund | M2 | deferred-M2 |  |
-| `completeRefund` | 5302 | features/stories/refund | M2 | deferred-M2 |  |
-| `renderRefundInvoicePop` | 5331 | features/stories/refund | M2 | deferred-M2 |  |
+| `refundListHtml` | 5240 | features/stories/RefundStory.tsx | 2b | done | golden flow + e2e |
+| `wireRefundLines` | 5262 | features/stories/RefundStory.tsx | 2b | done | golden flow + e2e |
+| `renderRefundWork` | 5277 | features/stories/RefundStory.tsx | 2b | done | golden flow + e2e |
+| `completeRefund` | 5302 | store/refund.ts | 2b | done | golden flow + e2e |
+| `renderRefundInvoicePop` | 5331 | features/invoices/InvoiceModal.tsx (RefundInvoiceBody) | 2b | done | golden flow + e2e |
 | `renderWalletDocPop` | 5375 | features/invoices/InvoiceModal.tsx | 1c | done |  |
-| `renderInvoicePop` | 5411 | features/invoices/InvoiceModal.tsx | 1c | done | settled credit invoices say "Settled — mode"; Refund shown disabled (M2) |
+| `renderInvoicePop` | 5411 | features/invoices/InvoiceModal.tsx | 1c | done | settled credit invoices say "Settled — mode"; Refund works from 2b; refund invoices open their own document |
 | `payTaken` | 5493 | domain/drawer.ts | 1b | done | unit-tested (drawer.test.ts) |
 | `payAllocated` | 5494 | domain/drawer.ts | 1b | done | unit-tested (drawer.test.ts) |
 | `payRemaining` | 5495 | domain/drawer.ts | 1b | done | unit-tested (drawer.test.ts) |

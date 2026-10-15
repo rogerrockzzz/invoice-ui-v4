@@ -6,7 +6,7 @@ import { resolveMsg } from "../../i18n/msg";
 import { setClock } from "../../domain/clock";
 import { setRandom } from "../../domain/ids";
 import { CONSULT_FEES, ORDER_CATALOG } from "../../domain/constants";
-import { approvedOrders, creditInvoices, creditOf, creditTotal, due, pendingOrders, selectedLines } from "../../domain/lines";
+import { approvedOrders, creditInvoices, creditOf, creditTotal, due, pendingOrders, refundable, selectedLines } from "../../domain/lines";
 import { visitsOf } from "../../domain/lookup";
 import { round2 } from "../../domain/money";
 import * as P from "../../domain/payers";
@@ -16,6 +16,8 @@ import type { AdvCat, PayerDecision, PayerDraft, Visit, World } from "../../doma
 import * as A from "../actions";
 import * as PA from "../payer";
 import * as W from "../wallet";
+import * as RF from "../refund";
+import { refundCalc, refundStart } from "../../domain/refund";
 
 /* Replays the scripted flows of tools/v3-golden/extract.html with v4's actions and compares the visit
    after every op with what v3 itself produced: steps, stages, bills, invoices, history, wallet, ledger. */
@@ -56,6 +58,16 @@ function runOp(w: World, [op, id, ...a]: Op) {
     case "setPayer": return PA.setPayer(w, c, a[0] as string, fx);
     case "reprint": return W.reprint(w, a[0] === "first" ? c.invoices[0]!.id : (a[0] as string), fx);
     case "addOrders": return PA.addReceptionOrders(c, (a[0] as string[]).map((k) => ORDER_CATALOG.find((x) => x.code === k)!));
+    case "refund": {
+      const [which, codes, mode, ref, reason] = a as [string, string[] | null, string, string, string];
+      const inv = which === "first" ? c.invoices.find((i) => refundable(w, i))! : c.invoices.find((i) => i.id === which)!;
+      A.openedVisit(w, c); RF.openRefundOn(w, c);
+      const d = refundStart(w, inv.id)!;
+      if (codes) d.sel = Object.fromEntries(codes.map((k) => [k, true]));
+      d.reason = reason;
+      const r = refundCalc(w, d)!;
+      return RF.completeRefund(w, c, inv.id, r.chosen.map((x) => x.code), r.amt, r.dedBack, mode, d.reason.trim(), ref, fx);
+    }
     case "addOrdersStory":
       PA.addStoryDo(c, (s) => { s.stage = 2; s.sel = Object.fromEntries((a[0] as string[]).map((k) => [k, true])); });
       return PA.addOrdersStory(w, c, fx);
@@ -109,10 +121,13 @@ function snap(w: World, c: Visit) {
     due: due(c), dedUsed: c.dedUsed, link: c.link ? c.link.ageMin : null, waitAll: !!c.prefs.waitAll,
     bill: c.bill ? { scope: c.bill.scope, codes: c.bill.codes, patient: c.bill.patient, company: c.bill.company, deductible: c.bill.deductible, cashOnly: !!c.bill.cashOnly } : null,
     lines: [c.consult, ...c.orders].map((l) => ({ code: l.code, ins: l.ins, price: l.price, paid: !!l.paid, via: l.via || null, invoiceId: l.invoiceId || null,
-      urgentCash: !!l.urgentCash, approvalPending: !!l.approvalPending })),
+      urgentCash: !!l.urgentCash, approvalPending: !!l.approvalPending, refunded: !!l.refunded })),
     invoices: c.invoices.map((i) => ({ id: i.id, scope: i.scope, patient: i.patient, company: i.company, deductible: i.deductible, paid: i.paid,
       via: i.via, viaDetail: norm(i.viaDetail), payments: i.payments || null, payer: i.payer, branch: i.branch || null, cashOnly: !!i.cashOnly,
-      billType: i.billType || null, rows: i.rows.map((r) => r.code) })),
+      billType: i.billType || null, rows: i.rows.map((r) => r.code + (r.refunded ? ":refunded" : "")),
+      refunded: i.refundedTotal || 0, refunds: (i.refunds || []).map((r) => `${r.amount}:${r.mode}:${norm(r.reason)}:${norm(r.detail)}:${r.codes.join("+")}:${r.refundInvoiceId}`),
+      replaced: i.replaced ? `${(i.replaced as { newId: string }).newId}:${(i.replaced as { to: string }).to}` : null, replaces: i.replaces || null, credited: i.credited || 0 })),
+    refundInvoices: (c.refundInvoices || []).map((r) => `${r.id}:${r.refOf}:${r.patient}:${r.company}:${r.deductible}:${r.via}:${norm(r.viaDetail)}:${norm(r.reason)}:${r.payer}:${r.rows.map((x) => x.code).join("+")}`),
     history: c.history.map((h) => ({ ic: h.ic || "", tx: norm(h.tx), sub: norm(h.sub), type: h.type || "", by: h.by || "",
       invoiceId: h.invoiceId || null, amount: h.amount ?? null, mode: h.mode || null })),
     wallet: { ...p.wallet.advance }, credit: creditTotal(w, c.mrn),
