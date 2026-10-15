@@ -2,10 +2,10 @@ import { MONTHS } from "./constants";
 import { today } from "./clock";
 import { payerOf, pt, visitDocs, walletDocVisit, visitsOf } from "./lookup";
 import { refundState, refundedOf } from "./lines";
-import { isoDay, visitDate } from "./visits";
+import { isoDay, parentVisit, relationTo, rootVisit, visitDate, visitNo } from "./visits";
 import { INTERNAL_PAYERS } from "../data/seed";
-import { round2 } from "./money";
-import type { Invoice, Visit, WalletDoc, World } from "./types";
+import { fmt, round2 } from "./money";
+import type { Invoice, Msg, Visit, WalletDoc, World } from "./types";
 
 /* v3 lines 4543–4625: invoices are retrieved on request, never all at once */
 export type DocRow = { c: Visit; inv: Invoice | WalletDoc };
@@ -91,6 +91,56 @@ export function queryInvoices(w: World, f: InvFilters, q: string) {
     if (f.mode && invMode(i) !== f.mode) return false;
     return true;
   });
+}
+
+/* v3 pairInvoices() (line 4697): the patient's documents, paired by visit group — the first visit's invoices, then
+   its follow-ups' and package procedures', each refund under the invoice it refunds; wallet documents with no visit last */
+export type PairedRow =
+  | { sep: { title: string; count: number; sub: Msg } }
+  | (DocRow & { sep?: undefined; child: Msg | null });
+export function pairInvoices(w: World, list: DocRow[]): PairedRow[] {
+  const groups = new Map<number | "wallet", { root: Visit | null; items: DocRow[] }>();
+  list.forEach((x) => {
+    const real = x.c && x.c.id != null && w.cases.includes(x.c);
+    const root = real ? rootVisit(w, x.c) : null;
+    const key = root ? root.id : "wallet";
+    if (!groups.has(key)) groups.set(key, { root, items: [] });
+    groups.get(key)!.items.push(x);
+  });
+  const latest = (g: { items: DocRow[] }) => Math.max(0, ...g.items.map((x) => (x.c && x.c.sortKey) || 0));
+  const out: PairedRow[] = [];
+  [...groups.entries()].sort((a, b) => (a[0] === "wallet" ? 1 : b[0] === "wallet" ? -1 : latest(b[1]) - latest(a[1]))).forEach(([, g]) => {
+    const visits = [...new Set(g.items.map((x) => x.c))].sort((a, b) => (a === g.root ? -1 : b === g.root ? 1 : (a.sortKey || 0) - (b.sortKey || 0)));
+    const net = round2(g.items.reduce((a, x) => a + (x.inv.kind === "refund" ? -(x.inv.patient || 0) : x.inv.kind === "wallet" ? 0 : x.inv.patient || 0), 0));
+    out.push({ sep: g.root
+      ? { title: `${visitNo(g.root)} · ${g.root.visitType} · ${g.root.clinic} · ${g.root.date}`, count: visits.length - 1,
+          sub: { k: "invoices.groupSub", p: { count: g.items.length, net: fmt(net) } } }
+      : { title: "", count: 0, sub: { k: "invoices.walletGroupSub", p: { count: g.items.length } } } });
+    visits.forEach((v) => {
+      const mine = g.items.filter((x) => x.c === v);
+      const rel: Msg | null = v !== g.root && g.root ? { k: "invoices.rel", p: { rel: { k: `patient.rel.${relationTo(v)}` }, no: visitNo(parentVisit(w, v) || g.root) } } : null;
+      const main = mine.filter((x) => !x.inv.kind).sort((a, b) => (a.inv.at || "").localeCompare(b.inv.at || ""));
+      const placed = new Set<DocRow>();
+      main.forEach((x) => {
+        out.push({ ...x, child: rel }); placed.add(x);
+        mine.filter((r) => r.inv.kind === "refund" && (r.inv as Invoice & { refOf?: string }).refOf === x.inv.id)
+          .forEach((r) => { out.push({ ...r, child: { k: "invoices.refundOf", p: { id: x.inv.id } } }); placed.add(r); });
+      });
+      mine.filter((x) => !placed.has(x)).forEach((x) => out.push({ ...x,
+        child: x.inv.kind === "refund" ? { k: "invoices.refundOf", p: { id: (x.inv as Invoice & { refOf?: string }).refOf || "" } }
+          : rel || (x.inv.kind === "wallet" ? { k: "invoices.onThisVisit" } : null) }));
+    });
+  });
+  return out;
+}
+
+/* v3 invFilterSummary() (line 4619) */
+export function invFilterSummary(L: { f: InvFilters; q: string }): (string | Msg)[] {
+  const f = L.f, bits: (string | Msg)[] = [];
+  if (L.q) bits.push(`“${L.q}”`);
+  bits.push(f.preset && f.preset !== "custom" ? { k: `invoices.preset.${f.preset}` } : `${f.from || "…"} → ${f.to || "…"}`);
+  INV_FILTERS.forEach(([k]) => { if (f[k]) bits.push(String(f[k])); });
+  return bits;
 }
 
 /* v3 lines 4825–4836: the profile's invoice card headline */

@@ -10,6 +10,7 @@ import { ActionTile } from "../../ui/ActionTile";
 import { ComingSoon } from "../../ui/ComingSoon";
 import { T } from "../../ui/Rich";
 import { EmptyState } from "../../ui/EmptyState";
+import { startWalkin, WalkinFlow } from "../walkin/WalkinFlow";
 
 /* v3 renderHome() (line 3476): find the patient; everything else starts from the patient */
 export function searchPatients(w: World, raw: string) {
@@ -72,7 +73,7 @@ export function Home() {
             const ongoing = pv.today.filter((x) => x.kind === "ongoing");
             const on = homeSel === p.mrn;
             const dv = byDoctor(p);
-            const toggle = () => set(on ? { homeSel: null, homePanel: null } : { homeSel: p.mrn, homePanel: null });
+            const toggle = () => set(on ? { homeSel: null, homePanel: null } : { homeSel: p.mrn, homePanel: null, walkin: null });
             return (
               <Card key={p.mrn} className="gap-0 p-0" data-testid={`patient-${p.mrn}`}>
                 <div className="flex items-center gap-3 p-4">
@@ -106,14 +107,15 @@ export function Home() {
                         selected={homePanel === "pending"}
                         onPress={() => set({ homePanel: homePanel === "pending" ? null : "pending" })}
                       />
-                      <ComingSoon when="1c" label={t("home.walkinTitle")} className="flex items-center gap-3 rounded-2xl bg-default p-3">
-                        <UserPlus className="size-5" />
-                        <span>
-                          <b className="block text-sm">{t("home.walkinTitle")}</b>
-                          <span className="text-xs text-muted">{t("home.walkinSub")}</span>
-                        </span>
-                      </ComingSoon>
+                      <HomeOption
+                        icon={<UserPlus className="size-5" />}
+                        title={t("home.walkinTitle")}
+                        sub={t("home.walkinSub")}
+                        selected={homePanel === "walkin"}
+                        onPress={() => (homePanel === "walkin" ? set({ homePanel: null }) : startWalkin(p.mrn))}
+                      />
                     </div>
+                    {homePanel === "walkin" && <WalkinFlow />}
                     {homePanel === "pending" && (
                       <div className="flex flex-col gap-2">
                         {!pv.today.length && (

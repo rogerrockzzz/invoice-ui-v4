@@ -16,9 +16,11 @@ import { useWorld } from "../../store/world";
 import { InvoiceLink } from "../../ui/InvoiceLink";
 import { StepCard } from "../../ui/StepCard";
 import { StoryStepper } from "../../ui/StoryStepper";
+import { CreditStory } from "../stories/CreditStory";
+import { VisitPayerStory } from "../stories/PayerStory";
 
 /* stories that are built in a later checkpoint or milestone */
-const LATER: Partial<Record<StoryId, string>> = { refund: "M2", replace: "M2", addorders: "M2", package: "M3", credit: "1c", payer: "1c" };
+const LATER: Partial<Record<StoryId, string>> = { refund: "M2", replace: "M2", addorders: "M2", package: "M3" };
 
 /* v3 renderStoryCard() (line 2142): the active story's stages, then its card */
 export function StoryCard({ c, ui }: { c: Visit; ui: StoryUiCtx }) {
@@ -33,6 +35,8 @@ export function StoryCard({ c, ui }: { c: Visit; ui: StoryUiCtx }) {
     return isVisitStep(w, c, st) ? <StepCard c={c} s={st} top={stages(id)} /> : <VisitDoneCard c={c} top={stages(id)} />;
   }
   if (done) return <DoneCard c={c} id={id} done={done} top={stages(id)} />;
+  if (id === "credit") return <CreditStory c={c} top={stages(id)} />;
+  if (id === "payer") return <VisitPayerStory c={c} top={stages(id)} />;
   if (LATER[id]) return <LaterCard id={id} when={LATER[id]!} top={stages(id)} />;
   return <StepCard c={c} s={nextStep(w, c)} top={stages(mainStory(w, c))} />;
 }

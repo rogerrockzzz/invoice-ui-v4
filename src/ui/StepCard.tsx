@@ -34,7 +34,7 @@ export function StepCard({ c, s, top }: { c: Visit; s: NextStep; top?: ReactNode
   const act = useWorld((x) => x.act);
   const openDrawer = useUi((x) => x.openDrawer);
   const run = (id: StepAction["id"]) => {
-    if (id === "openDrawer") return openDrawer(c.id, due(c));
+    if (id === "openDrawer") return openDrawer(c.id, c.mrn, due(c));
     const fn = STEP_RUN[id];
     if (fn) act(c.id, fn);
   };

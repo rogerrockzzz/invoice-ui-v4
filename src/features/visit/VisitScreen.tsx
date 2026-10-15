@@ -1,4 +1,4 @@
-import { Breadcrumbs, Card, Chip, Link } from "@heroui/react";
+import { Breadcrumbs, Button, Card, Chip, Link } from "@heroui/react";
 import { ArrowLeftRight, ChevronDown, Lock } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { payerOf, planOf } from "../../domain/lookup";
@@ -9,8 +9,9 @@ import type { StoryUiCtx } from "../../domain/types";
 import { visitNo } from "../../domain/visits";
 import { useW } from "../../store/hooks";
 import { useUi } from "../../store/ui";
-import { ComingSoon } from "../../ui/ComingSoon";
 import { WalletChip } from "../../ui/WalletChip";
+import { beginPayerStory } from "../stories/PayerStory";
+import { WalletSection } from "../wallet/WalletSection";
 import { StoryCard } from "./StoryCard";
 import { StoryStrip } from "./StoryStrip";
 import { VisitTimeline } from "./VisitTimeline";
@@ -27,7 +28,7 @@ export function VisitScreen() {
   const plan = planOf(w, c);
   const pool = dedPool(w, c);
   const canChange = payerChangeable(c);
-  const ui: StoryUiCtx = { drawer: drawer ? { caseId: drawer.caseId } : null };
+  const ui: StoryUiCtx = { drawer: drawer ? { caseId: drawer.caseId, credit: !!drawer.credit } : null };
   const payerInner = (
     <>
       <span className="text-end leading-tight" data-testid="visit-payer">
@@ -81,11 +82,11 @@ export function VisitScreen() {
             </Chip>
           )}
           <div className="flex-1" />
-          {/* the payer can only change while nothing has been charged; the Payer story is checkpoint 1c */}
+          {/* the payer can only change while nothing has been charged — the chip is the way into the Payer story */}
           {canChange ? (
-            <ComingSoon when="1c" label={t("visit.changePayer")} className="flex items-center gap-3 rounded-xl border border-border bg-surface px-3 py-1.5">
+            <Button variant="outline" className="h-auto gap-3 rounded-xl bg-surface px-3 py-1.5" aria-label={t("visit.changePayer")} onPress={() => beginPayerStory(c.id)} data-testid="payer-chip">
               {payerInner}
-            </ComingSoon>
+            </Button>
           ) : (
             <div className="flex items-center gap-3 rounded-xl border border-border bg-surface px-3 py-1.5" title={t("visit.payerLocked")}>
               {payerInner}
@@ -94,11 +95,7 @@ export function VisitScreen() {
         </div>
       </Card>
 
-      {walletOpen && (
-        <Card variant="secondary" className="flex-row items-center gap-2 text-sm text-muted" data-testid="wallet-placeholder">
-          <Lock className="size-4" /> {t("wallet.placeholder")}
-        </Card>
-      )}
+      {walletOpen && <WalletSection mrn={c.mrn} caseId={c.id} />}
 
       <StoryStrip c={c} ui={ui} />
       <StoryCard c={c} ui={ui} />

@@ -19,7 +19,11 @@ import { logLedgerOn, recordOn } from "./world";
    v3's light markup (<b>). Toasts are collected and fired by the caller once the change is committed. */
 
 export interface Fx { toast: (kind: ToastKind, title: string, sub?: string) => void }
-const t = (k: string, p?: Record<string, unknown>) => i18n.t(k, p) as string;
+export const t = (k: string, p?: Record<string, unknown>) => i18n.t(k, p) as string;
+/* v3 markDone() (line 2118): a finished story keeps its result until it is left */
+export function markDone(c: Visit, id: string, title: string, sub: string) {
+  c.storyDone = { ...(c.storyDone || {}), [id]: { title, sub, at: now() } };
+}
 const name = (w: World, c: Visit) => pt(w, c).name;
 const histLines = (ls: Line[], ins?: string) => ls.map((o) => ({ name: o.name, code: o.code, ins: ins || o.ins, price: o.price }));
 

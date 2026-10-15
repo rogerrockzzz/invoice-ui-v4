@@ -70,6 +70,7 @@ export interface Patient {
   ledger?: LedgerEntry[];
   walletDocs?: WalletDoc[];
   activePayerId?: string;
+  activePolicy?: (PolicyForm & { payer: string }) | null;
 }
 
 export interface LineChild {
@@ -146,6 +147,8 @@ export interface Invoice {
   payer?: string;
   rows: InvoiceRow[];
   settled?: boolean;
+  settledVia?: string;
+  settledAt?: string;
   voided?: unknown;
   replaced?: unknown;
   packagePrint?: boolean;
@@ -243,7 +246,8 @@ export interface Visit {
   visitPinned?: boolean;
   seen?: Record<string, boolean>;
   sel?: Record<string, boolean>;
-  payerStory?: { stage: number; choice?: { kind?: string } & Record<string, unknown>; form?: unknown } | null;
+  payerStory?: PayerStory | null;
+  policy?: (PolicyForm & { payer: string }) | null;
   pkgStory?: { stage: number } | null;
   addStory?: { stage: number } | null;
   checks?: number;
@@ -254,6 +258,43 @@ export interface Visit {
   lastOrderCheck?: string | null;
   orderRounds?: number;
   creditSel?: Record<string, boolean> | null;
+}
+
+/* what NPHIES returns for a patient (data/seed.ts NPHIES) */
+export interface NphiesPolicy {
+  id: string; insurer: string; cls: string; status: string; reason?: string; isNew?: boolean;
+  group: string; contract: string; policy: string; policyNo: string; subPolicy: string; cardId: string;
+  validTo: string; holderCode: string; holder: string; plan?: Plan;
+}
+/* the payer story (v3 lines 2257–2462): eligibility → choose → policy details → set */
+export interface PayerChoice { id: string | null; label: string; kind: string | null; plan: Plan | null; unverified?: boolean; manual?: boolean }
+export interface PolicyForm {
+  type: string; group: string; contract: string; policy: string; policyNo: string; subPolicy: string; cardId: string;
+  validTo: string; holderCode: string; holder: string; active: boolean; fromNphies: boolean;
+}
+export interface PayerStory {
+  stage: number;
+  checking?: boolean;
+  at: string;
+  results?: NphiesPolicy[];
+  tob?: string | null;
+  tob2?: boolean;
+  choice?: PayerChoice;
+  form?: PolicyForm | null;
+}
+export interface PayerDecision { choice: PayerChoice; form: PolicyForm | null }
+/* v3 payerDraft(): a stand-in for a visit-to-be, so the payer story can run before the visit exists */
+export interface PayerDraft {
+  isDraft: true;
+  mrn: string;
+  payerId: string | null;
+  dedUsed: number;
+  consult: Line;
+  history: HistoryEvent[];
+  payerStory: PayerStory | null;
+  results?: NphiesPolicy[];
+  checkedAt?: string;
+  forPatient?: boolean;
 }
 
 export interface Settings {
@@ -269,7 +310,7 @@ export interface World {
 
 /* the bits of UI state v3's storyStage() reads from its global `state` — passed explicitly in v4 */
 export interface StoryUiCtx {
-  drawer?: { caseId: number; refund?: boolean; refundDiff?: boolean; credit?: boolean } | null;
+  drawer?: { caseId: number | null; refund?: boolean; refundDiff?: boolean; credit?: boolean } | null;
   refundInvoiceId?: string | null;
   replaceCaseId?: number | null;
 }

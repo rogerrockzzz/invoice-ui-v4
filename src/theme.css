@@ -71,8 +71,15 @@ body {
   font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
 }
 
+/* Reprint: only the open invoice / wallet document goes to paper (the modal lives outside #root) */
 @media print {
-  .no-print {
+  .no-print,
+  #root,
+  [data-print-hide] {
     display: none !important;
+  }
+  [data-print-doc] {
+    max-height: none !important;
+    box-shadow: none !important;
   }
 }

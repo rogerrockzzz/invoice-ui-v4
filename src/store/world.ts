@@ -20,6 +20,8 @@ export interface WorldStore extends World {
   logLedger: (mrn: string, e: Omit<LedgerEntry, "at"> & Partial<Pick<LedgerEntry, "at">>) => void;
   /* run one of v3's actions (store/actions.ts) on a visit; its toasts fire once the change is committed */
   act: (caseId: number, fn: (w: World, c: Visit, fx: Fx) => void) => void;
+  /* the same, for a change that belongs to the patient or the world rather than one visit; returns what fn returns */
+  actW: <T>(fn: (w: World, fx: Fx) => T) => T;
 }
 
 /* v3 record() (line 1599) — newest first */
@@ -65,6 +67,14 @@ export const useWorld = create<WorldStore>()(
         if (c) fn(s, c, fx);
       });
       toasts.forEach(([k, title, sub]) => notify(k, title, sub));
+    },
+    actW: <T,>(fn: (w: World, fx: Fx) => T) => {
+      const toasts: [ToastKind, string, string?][] = [];
+      const fx: Fx = { toast: (k, title, sub) => { toasts.push([k, title, sub]); } };
+      let out: T | undefined;
+      set((s) => { out = fn(s, fx); });
+      toasts.forEach(([k, title, sub]) => notify(k, title, sub));
+      return out as T;
     },
   })),
 );

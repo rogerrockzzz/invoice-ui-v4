@@ -524,15 +524,15 @@ and finding/viewing any invoice — all v3-faithful.
     filtered to this patient".
 
 ### Acceptance (1c)
-- [ ] 7000667: Advance statement ends at SAR 500.00, Credit statement ends at SAR 300.00, no cross-account rows.
-- [ ] Add advance 250 to Doctor pot → chip SAR 750.00; drawer on a new charge shows DOCTOR mode with "SAR 250.00 available".
-- [ ] Refund advance 100 from Open by Cash → `ADV_REFUND`, RADV- doc, chip updates.
-- [ ] Settle both credit invoices (SAR 300.00) by Span from visit 2 → credit SAR 0.00, CREDIT_SETTLED entry on visit 2's timeline, invoices show Settled.
-- [ ] Payer story on 7000667 visit 30 shows TAWUNIYA "Not eligible · Policy expired on 30 Sep"; 1063301 shows new GIG CLASS C.
-- [ ] Walk-in for 1063301 → Cardiology, slot, GIG payer → visit created and opened at CONSULT_WAIT/CONSULT_BILL per v3.
-- [ ] Invoices screen loads nothing until "Load invoices"; "Any date" lists every seed invoice incl. wallet docs; search "INV-771204" finds it; modal prints.
-- [ ] All goldens still match; `npm run verify` green desktop + tablet + one dark pass. PARITY updated.
-- [ ] Commit `M1c: wallet, payer, walk-in, invoices`. **Milestone 1 review with the user.**
+- [x] 7000667: Advance statement ends at SAR 500.00, Credit statement ends at SAR 300.00, no cross-account rows.
+- [x] Add advance 250 to Doctor pot → chip SAR 750.00; drawer on a new charge shows DOCTOR mode with "SAR 250.00 available".
+- [x] Refund advance 100 from Open by Cash → `ADV_REFUND`, RADV- doc, chip updates.
+- [x] Settle both credit invoices (SAR 300.00) by Span from visit 2 → credit SAR 0.00, CREDIT_SETTLED entry on visit 2's timeline, invoices show Settled.
+- [x] Payer story on 7000667 visit 30 shows TAWUNIYA "Not eligible · Policy expired on 30 Sep"; 1063301 shows new GIG CLASS C.
+- [x] Walk-in for 1063301 → Cardiology, slot, GIG payer → visit created and opened at CONSULT_WAIT/CONSULT_BILL per v3.
+- [x] Invoices screen loads nothing until "Load invoices"; "Any date" (with a search, as v3 requires) lists every seed invoice — wallet docs are listed on the profile's invoice table, not on this screen, exactly as v3 (see PARITY); search "INV-771204" finds it; modal prints.
+- [x] All goldens still match; `npm run verify` green desktop + tablet + one dark pass. PARITY updated.
+- [x] Commit `M1c: wallet, payer, walk-in, invoices`. **Milestone 1 review with the user.**
 
 ---
 

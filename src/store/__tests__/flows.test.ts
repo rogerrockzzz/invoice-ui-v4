@@ -5,12 +5,17 @@ import i18n from "../../i18n";
 import { resolveMsg } from "../../i18n/msg";
 import { setClock } from "../../domain/clock";
 import { setRandom } from "../../domain/ids";
-import { approvedOrders, creditTotal, due, pendingOrders, selectedLines } from "../../domain/lines";
+import { CONSULT_FEES, ORDER_CATALOG } from "../../domain/constants";
+import { approvedOrders, creditInvoices, creditOf, creditTotal, due, pendingOrders, selectedLines } from "../../domain/lines";
+import { visitsOf } from "../../domain/lookup";
 import { round2 } from "../../domain/money";
+import * as P from "../../domain/payers";
 import { nextStep } from "../../domain/steps";
 import { activeStory, storyStage, visitStories } from "../../domain/stories";
-import type { Visit, World } from "../../domain/types";
+import type { AdvCat, PayerDecision, PayerDraft, Visit, World } from "../../domain/types";
 import * as A from "../actions";
+import * as PA from "../payer";
+import * as W from "../wallet";
 
 /* Replays the scripted flows of tools/v3-golden/extract.html with v4's actions and compares the visit
    after every op with what v3 itself produced: steps, stages, bills, invoices, history, wallet, ledger. */
@@ -20,9 +25,47 @@ const norm = (s: unknown) => String(s ?? "").replace(/\s+/g, " ").trim().replace
 const fx: A.Fx = { toast: () => {} };
 
 type Op = [string, number, ...unknown[]];
+/* the payer story's choices, as the UI makes them (domain/payers.ts) */
+function choose(w: World, c: Visit | PayerDraft, spec: string, apply: () => void) {
+  const ps = c.payerStory!;
+  if (spec.startsWith("manual:")) {
+    const [, query, id, ref] = spec.split(":");
+    P.startManual(ps); P.editPayerField(ps, "group", query!); P.pickDirectory(ps, id!); P.editPayerField(ps, "policyNo", ref!);
+    if (P.payerReady(ps)) apply();
+    return;
+  }
+  const o = P.payerOptions(w, c.mrn, ps).all.find((x) => x.id === spec)!;
+  if (P.choosePayer(ps, o)) apply();
+}
 function runOp(w: World, [op, id, ...a]: Op) {
   const c = w.cases.find((x) => x.id === id)!;
   switch (op) {
+    case "addAdvance": return W.addAdvance(w, c.mrn, c.id, a[0] as AdvCat, a[1] as string, a[2] as number, fx);
+    case "refundAdvance": return W.refundAdvance(w, c.mrn, c.id, a[0] as AdvCat, a[1] as number, a[2] as string, a[3] as string, "", fx);
+    case "settleCredit": {
+      const ids = a[1] === "first" ? [creditInvoices(w, c.mrn)[0]!.inv.id] : (a[1] as string[] | null);
+      const amount = round2(creditInvoices(w, c.mrn).filter((x) => !ids || ids.includes(x.inv.id)).reduce((s, x) => s + creditOf(x.inv), 0));
+      return W.settleCredit(w, c.mrn, a[2] as number | null, a[0] as string, amount, ids, "", fx);
+    }
+    case "creditLink": return W.creditLink(w, c, Object.keys(W.creditSel(w, c)), fx);
+    case "openCreditPicker": return W.openCreditPicker(w, c);
+    case "eligibility": return PA.startPayerStory(w, c, fx) && PA.finishEligibility(c);
+    case "choosePayer": return choose(w, c, a[0] as string, () => PA.applyPayer(w, c, fx));
+    case "savePayer": return P.payerReady(c.payerStory!) && PA.applyPayer(w, c, fx);
+    case "manualPick": return choose(w, c, `manual:${a.join(":")}`, () => PA.applyPayer(w, c, fx));
+    case "setPayer": return PA.setPayer(w, c, a[0] as string, fx);
+    case "reprint": return W.reprint(w, a[0] === "first" ? c.invoices[0]!.id : (a[0] as string), fx);
+    case "addOrders": return PA.addReceptionOrders(c, (a[0] as string[]).map((k) => ORDER_CATALOG.find((x) => x.code === k)!));
+    case "walkin": {
+      const sp = a[0] as { mrn: string; type: string; clinic: string; doctor: string; slot: string | null; payer: string; items: string[] };
+      const d = PA.payerDraft(sp.mrn, CONSULT_FEES[sp.clinic] || 200, w.patients[sp.mrn]!.activePayerId || null);
+      if (sp.type === "Procedure only") d.consult.price = 0;
+      PA.finishEligibility(d);
+      let decision: PayerDecision | null = null;
+      choose(w, d, sp.payer, () => { decision = PA.draftDecide(d); });
+      if (!decision && d.payerStory && P.payerReady(d.payerStory)) decision = PA.draftDecide(d);
+      return PA.createWalkinVisit(w, { ...sp, payerDecision: decision, draftHistory: d.history, items: P.cartItems({ sel: Object.fromEntries(sp.items.map((k) => [k, true])) }) }, fx);
+    }
     case "billConsult": return A.startBill(w, c, "consult", [c.consult]);
     case "billApproved": return A.startBill(w, c, "orders", selectedLines(c, approvedOrders(c)));
     case "approveConsult": return A.simApproveConsult(w, c, fx);
@@ -71,6 +114,13 @@ function snap(w: World, c: Visit) {
       invoiceId: h.invoiceId || null, amount: h.amount ?? null, mode: h.mode || null })),
     wallet: { ...p.wallet.advance }, credit: creditTotal(w, c.mrn),
     ledger: (p.ledger || []).map((e) => ({ type: e.type, amount: e.amount, note: norm(e.note), invoiceId: e.invoiceId || null, visitId: e.visitId ?? null, docId: e.docId || null })),
+    visit: { type: c.visitType, clinic: c.clinic, doctor: c.doctor, slot: c.slot || null, consult: { name: c.consult.name, code: c.consult.code, price: c.consult.price } },
+    payerId: c.payerId, policy: c.policy ? norm(Object.values(c.policy).join("|")) : null, payers: p.payers.map((x) => x.id),
+    payerStory: c.payerStory ? c.payerStory.stage : null,
+    done: Object.fromEntries(Object.entries(c.storyDone || {}).map(([k, v]) => [k, `${norm(v.title)} | ${norm(v.sub)}${v.cash ? " | cash" : ""}`])),
+    settled: visitsOf(w, c.mrn).flatMap((v) => v.invoices.filter((i) => i.settled).map((i) => `${i.id}:${i.settledVia}`)),
+    appr: [c.consult, ...c.orders].map((l) => l.appr || null),
+    docs: (p.walletDocs || []).map((d) => `${d.id}:${d.wtype}:${d.amount}:${d.visitId}:${d.invoiceId || ""}:${norm(d.note)}`),
   };
 }
 

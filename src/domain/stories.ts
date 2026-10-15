@@ -3,7 +3,7 @@ import { consultDone, creditInvoices, creditTotal, liveInvoices, ordersOpen, pro
 import { fmt } from "./money";
 import { invoiceReplace, packageItemsLeft } from "./replace";
 import { nextStep, type NextStep } from "./steps";
-import type { HistoryEvent, Msg, StoryUiCtx, Visit, World } from "./types";
+import type { HistoryEvent, Msg, PayerStory, StoryUiCtx, Visit, World } from "./types";
 
 /* v3 lines 1908–1956. A visit is a set of stories, each with a FIXED list of stages.
    Titles and stage names are translated in the UI via `story.<id>.title` / `story.<id>.stages.<i>`. */
@@ -128,7 +128,7 @@ export function storyStage(w: World, c: Visit, id: StoryId, ui: StoryUiCtx = {})
   if (id === "addorders") return { index: done ? last : c.addStory && c.addStory.stage === 2 ? 1 : 0, skipped: [] };
   if (id === "payer") {
     if (done && !c.payerStory) return { index: last, skipped: done.cash ? [2] : [] };
-    const ps = c.payerStory || { stage: 1 };
+    const ps: Partial<PayerStory> & { stage: number } = c.payerStory || { stage: 1 };
     return { index: ps.stage - 1, skipped: ps.choice && ps.choice.kind === "Cash" && ps.stage > 3 ? [2] : [] };
   }
   return { index: 0, skipped: [] };

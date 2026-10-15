@@ -49,3 +49,18 @@
 - `NumberField` snaps to `step` — use `step={0.01}` for money or 173.69 shows as 173.70.
 - Drawer width goes on `Drawer.Dialog` (not `Drawer.Content`, which is the full-screen flex container).
 - `tests/` compiles without the DOM lib: reach the app hook as `(globalThis as unknown as Vida).__vida` inside `page.evaluate`.
+
+## Learned in 1c
+- Patient-level changes (wallet, profile payer, walk-in) run through `useWorld.getState().actW((w, fx) => …)`, which
+  returns fn's result — return plain values (ids, strings), never immer drafts (they are revoked after the commit).
+- 1c actions: `store/wallet.ts` (addAdvance, refundAdvance, settleCredit, credit links, reprint) and `store/payer.ts`
+  (setPayer, payer story, PayerDraft, createWalkinVisit). The drawer's credit / advance-refund branches are
+  `DrawerState.credit` / `.advRefund` (`isSimple`: one part, no split, no notes).
+- The payer story body is shared (`features/stories/PayerStory.tsx`): callers pass a `PayerRun` — return `true` from
+  the change to mean "payer decided". NPHIES answers after `NPHIES_DELAY` (1.1 s); e2e just waits for it.
+- Golden extractor 1c ops drive v3's own UI (set `state.adv` / `state.drawer`, `render()`, click `#aGo` / `#dGo`;
+  click buttons inside `renderPayerStory(c)` / `renderCreditStory(c)`). Seed visits are all invoiced after the 1b
+  flows, so payer-story ops run on the walk-in visits (ids 100+).
+- HeroUI `Select` trigger's accessible name is "<value> <label>" — e2e opens it with `getByRole("button", { name: / Clinic$/ })`.
+  `Switch` inputs are visually hidden: click the label text. A `Disclosure`'s content stays mounted when collapsed —
+  render heavy content only when expanded.

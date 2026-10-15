@@ -7,7 +7,7 @@ import { findInvoice, payerName, pt } from "../../domain/lookup";
 import { fmt } from "../../domain/money";
 import type { Invoice } from "../../domain/types";
 import { useW } from "../../store/hooks";
-import { useUi } from "../../store/ui";
+import { openInvoicesFor, useUi } from "../../store/ui";
 import { ComingSoon } from "../../ui/ComingSoon";
 import { InvoiceLink } from "../../ui/InvoiceLink";
 
@@ -116,9 +116,7 @@ export function EventModal() {
                 {t("event.refund")}
               </ComingSoon>
             )}
-            <ComingSoon when="1c" label={t("event.goInvoices")} className="inline-flex h-10 items-center rounded-full border border-border px-4 text-sm">
-              {t("event.goInvoices")}
-            </ComingSoon>
+            <Button variant="outline" onPress={() => openInvoicesFor(p.mrn)}>{t("event.goInvoices")}</Button>
             <Button variant="secondary" onPress={close}>{t("event.close")}</Button>
           </Modal.Footer>
         </Modal.Dialog>

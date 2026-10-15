@@ -2,8 +2,11 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import i18n, { type Lang } from "../i18n";
 import { resolveMsg } from "../i18n/msg";
-import { newDrawer, type DrawerState, type DrawerToast } from "../domain/drawer";
-import type { Visit, World } from "../domain/types";
+import { drawerVisit, newDrawer, type DrawerState, type DrawerToast } from "../domain/drawer";
+import { defaultInvFilters, invCanLoad, queryInvoices, type InvFilters } from "../domain/invoices";
+import { now } from "../domain/clock";
+import type { AdvCat, PayerDecision, PayerDraft, Visit, World } from "../domain/types";
+import type { WalletDone } from "./wallet";
 import { openedVisit } from "./actions";
 import { notify } from "./toasts";
 import { useWorld } from "./world";
@@ -45,6 +48,18 @@ export interface UiState {
   histOpen: boolean;
   comment: { cid: number; text: string; important: boolean } | null;
   simOpen: boolean;
+  /* the wallet section and its stories (v3 state.wallet / state.adv) */
+  wallet: WalletUi | null;
+  adv: AdvUi | null;
+  /* the profile's payer flow and the walk-in (v3 state.profPayer / state.walkin) */
+  profPayer: ProfPayerUi | null;
+  walkin: WalkinUi | null;
+  /* the Invoices screen (v3 state.invF / invQ / invLoaded / invEdit) and the profile's invoice pairing */
+  invF: InvFilters;
+  invQ: string;
+  invLoaded: { f: InvFilters; q: string; at: string; ids: string[] } | null;
+  invEdit: boolean;
+  invGroup: boolean;
   theme: Theme;
   lang: Lang;
 
@@ -53,20 +68,34 @@ export interface UiState {
   closeTab: (mrn: string) => void;
   goHome: () => void;
   openInvoices: () => void;
-  openDrawer: (caseId: number, amount: number) => void;
+  openDrawer: (caseId: number | null, mrn: string, amount: number, extra?: Pick<DrawerState, "credit" | "advRefund">) => void;
   drawerDo: (fn: (d: DrawerState, w: World, c: Visit) => DrawerToast | null | void) => void;
   set: (patch: Partial<Omit<UiState, Fns>>) => void;
+  upd: (fn: (s: UiState) => void) => void;
   setTheme: (t: Theme) => void;
   setLang: (l: Lang) => void;
   reset: () => void;
 }
-type Fns = "openPatient" | "openVisit" | "closeTab" | "goHome" | "openInvoices" | "openDrawer" | "drawerDo" | "set" | "setTheme" | "setLang" | "reset";
+type Fns = "openPatient" | "openVisit" | "closeTab" | "goHome" | "openInvoices" | "openDrawer" | "drawerDo" | "set" | "upd" | "setTheme" | "setLang" | "reset";
+
+export interface WalletUi {
+  mrn: string; tab: "ADV" | "CREDIT"; flow: "add" | "refund" | "settle" | null; stmt: boolean;
+  cat: AdvCat; amount: number | null; reason: string; sel: Record<string, boolean> | null; done: WalletDone | null;
+}
+export interface AdvUi { caseId: number | null; mrn: string; cat: AdvCat; amount: number | null; mode: string; fromWallet: boolean }
+export interface ProfPayerUi { mrn: string; decision: PayerDecision | null; apply: Record<number, boolean>; pctx: PayerDraft }
+export interface WalkinUi {
+  stage: number; mrn: string; type: string; clinic: string; doctor: string; slot: string | null;
+  cart: { sel: Record<string, boolean>; q: string }; pctx: PayerDraft | null; payerDecision: PayerDecision | null; createdId: number | null;
+}
 
 const initial = () => ({
   screen: "home" as Screen, tabs: [] as string[], activeMrn: null, caseId: null, q: "", homeSel: null, homePanel: null,
   walletOpen: false, profPendOpen: true, pendView: "today" as PendView, profVisitsOpen: true, vf: { no: "", from: "", to: "" },
   visGroup: false, pinvOpen: false, pkgOpen: false,
   drawer: null, eventPop: null, invPop: null, histOpen: true, comment: null, simOpen: false,
+  wallet: null, adv: null, profPayer: null, walkin: null,
+  invF: defaultInvFilters(), invQ: "", invLoaded: null, invEdit: false, invGroup: false,
 });
 
 export const useUi = create<UiState>()(
@@ -99,23 +128,49 @@ export const useUi = create<UiState>()(
     }),
     goHome: () => set((s) => { s.screen = "home"; s.activeMrn = null; s.caseId = null; }),
     /* v3 renderTabs(): the Invoices screen always opens asking what to load */
-    openInvoices: () => set((s) => { s.screen = "invoices"; }),
+    openInvoices: () => set((s) => { s.screen = "invoices"; s.invLoaded = null; s.invEdit = false; s.invQ = ""; s.invF = defaultInvFilters(); }),
     /* v3 `state.drawer = { c, mode:"Cash", amount }` — the desk opens on cash */
-    openDrawer: (caseId, amount) => set((s) => { s.drawer = newDrawer(caseId, amount); }),
+    openDrawer: (caseId, mrn, amount, extra) => set((s) => { s.drawer = newDrawer(caseId, mrn, amount, extra); }),
     drawerDo: (fn) => {
       let out: DrawerToast | null | void = null;
       const w = useWorld.getState();
       set((s) => {
         if (!s.drawer) return;
-        const c = w.cases.find((x) => x.id === s.drawer!.caseId);
-        if (c) out = fn(s.drawer, w, c);
+        out = fn(s.drawer, w, drawerVisit(w, s.drawer));
       });
       const tst = out as DrawerToast | null;
       if (tst) notify(tst.kind, resolveMsg(i18n.t, tst.title), tst.sub ? resolveMsg(i18n.t, tst.sub) : undefined);
     },
     set: (patch) => set((s) => { Object.assign(s, patch); }),
+    upd: (fn) => set((s) => { fn(s); }),
     setTheme: (t) => set((s) => { s.theme = t; try { localStorage.setItem("vida.theme", t); } catch { /* private mode */ } }),
     setLang: (l) => set((s) => { s.lang = l; try { localStorage.setItem("vida.lang", l); } catch { /* private mode */ } }),
     reset: () => set((s) => { Object.assign(s, initial()); }),
   })),
 );
+
+/* v3 walletState() (line 4167): the wallet section's own state, for the patient in view */
+export const freshWallet = (mrn: string): WalletUi => ({ mrn, tab: "ADV", flow: null, stmt: false, cat: "Open", amount: null, reason: "", sel: null, done: null });
+export const walletOn = (s: UiState, mrn: string) => (s.wallet && s.wallet.mrn === mrn ? s.wallet : freshWallet(mrn));
+export function walletDo(mrn: string, fn: (ws: WalletUi) => void) {
+  useUi.getState().upd((s) => {
+    if (!s.wallet || s.wallet.mrn !== mrn) s.wallet = freshWallet(mrn);
+    fn(s.wallet);
+  });
+}
+
+/* v3 loadInvoices() (line 4604): retrieve — only now are invoices fetched */
+export function loadInvoices(f?: Partial<InvFilters> | null, q?: string) {
+  const ui = useUi.getState();
+  const ff = { ...ui.invF, ...(f || {}) };
+  const qq = q !== undefined ? q : ui.invQ;
+  ui.upd((s) => { s.invF = ff; s.invQ = qq; });
+  if (!invCanLoad(ff, qq || "")) { notify("warn", i18n.t("toast.narrowFirst"), i18n.t("toast.narrowFirstSub")); return; }
+  const rows = queryInvoices(useWorld.getState(), ff, qq);
+  ui.upd((s) => { s.invLoaded = { f: { ...ff }, q: qq || "", at: now(), ids: rows.map((r) => r.inv.id) }; s.invEdit = false; s.screen = "invoices"; s.invPop = null; s.eventPop = null; });
+}
+/* v3 openInvoicesFor() (line 4614): the screen already loaded for one patient, any date */
+export function openInvoicesFor(mrn: string) {
+  useUi.getState().set({ invF: { ...defaultInvFilters(), preset: "any", from: "", to: "" } });
+  loadInvoices(null, mrn);
+}

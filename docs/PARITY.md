@@ -10,24 +10,24 @@ checkpoint and whenever `npm run drift` reports a change (docs/PLAN-v4-M1.md §6
 - Goldens: `src/domain/__golden__/v3.json` — regenerate with `npm run golden`
 
 ## Status summary
-deferred-M2: 28, deferred-M3: 10, deferred-M4: 29, done: 195, todo: 38, wip: 2 (of 302 declarations)
+deferred-M2: 24, deferred-M3: 10, deferred-M4: 29, done: 239 (of 302 declarations) — Milestone 1 complete
 
 ## Screens and stories
 | v3 screen / story | Checkpoint | Status | Notes |
 |---|---|---|---|
 | Header (brand, branch, settings, user) | 1a | done | settings menu holds the theme switch; branch settings dialog is M4 |
 | Patient tabs | 1a | done | |
-| Home search + patient cards | 1a | done | walk-in card disabled until 1c |
-| Patient profile: header, payer row, pending actions, visits, package items, invoices headline | 1a | done | wallet section, payer change and invoices table in 1c |
-| Visit screen, story strip, stepper, step card, order table | 1b | done | payer change (1c), wallet section (1c), M2/M3 stories shown with a "Coming in …" card |
+| Home search + patient cards | 1a | done | walk-in card opens the walk-in (1c) |
+| Patient profile: header, payer row, pending actions, visits, package items, invoices | 1a, 1c | done | wallet section, profile payer and invoices table added in 1c |
+| Visit screen, story strip, stepper, step card, order table | 1b | done | payer chip opens the Payer story (1c); M2/M3 stories shown with a "Coming in …" card |
 | Visit invoicing / Orders invoicing | 1b | done | scripted flows golden-tested step by step against v3 |
-| Payment drawer | 1b | done | payment branch; advance refund 1c, refunds M2 |
-| Visit timeline + event pop-up | 1b | done | invoice links open a minimal preview until the full pop-up in 1c |
+| Payment drawer | 1b, 1c | done | payment, credit-settlement and advance-refund branches; refunds M2 |
+| Visit timeline + event pop-up | 1b | done | "Go to invoices" works from 1c |
 | Simulate panel | 1b | done | |
-| Wallet section + Add advance / Refund advance / Credit settlement | 1c | todo | |
-| Payer story, profile payer | 1c | todo | |
-| Walk-in visit | 1c | todo | |
-| Invoices screen + invoice pop-up | 1c | todo | placeholder screen in 1a |
+| Wallet section + Add advance / Refund advance / Credit settlement | 1c | done | golden flows + e2e |
+| Payer story, profile payer | 1c | done | golden flows + e2e |
+| Walk-in visit | 1c | done | golden flows (4 walk-ins) + e2e |
+| Invoices screen + invoice pop-up | 1c | done | wallet document pop-up, reprint + print stylesheet |
 | Add orders, Refund, Replace | M2 | deferred-M2 | |
 | Package booking, Package procedure, LWBS | M3 | deferred-M3 | |
 | Ask VIDA, Story map, Settings, Arabic/RTL | M4 | deferred-M4 | i18n keys and RTL-safe CSS from 1a |
@@ -48,7 +48,19 @@ deferred-M2: 28, deferred-M3: 10, deferred-M4: 29, done: 195, todo: 38, wip: 2 (
 - The Simulate panel is a fixed `Card`, not a `Popover`, so the page stays usable while it is open (as in v3).
 - `openCreditPicker` moved to 1c with the Credit story.
 - Golden scripted flows: `tools/v3-golden/extract.html` writes the op list and v3's snapshot after each op; seeded
-  `Math.random` (invoice numbers) and masked times keep it deterministic.
+  `Math.random` (invoice numbers) and masked times keep it deterministic. 1c ops drive v3's own drawers and story cards
+  (`state.adv` / `state.drawer` + their confirm buttons, `renderPayerStory` / `renderCreditStory` buttons).
+- 1c: the payer story's state lives on the visit (world store) or, for the walk-in and the profile, on a `PayerDraft`
+  in the UI store; one `PayerStoryBody` renders all three. NPHIES still answers after 1.1 s.
+- 1c: the wallet section's state (`ui.wallet`) is per patient as in v3; patient-level changes run through
+  `useWorld.actW` (no visit needed — a patient with no visits can still top up).
+- 1c: the Invoices screen keeps the ids it loaded and reads them from the live world (v3 keeps the row objects —
+  same membership, statuses stay current). Wallet documents are not on it, exactly as v3's `allInvoices` (the plan's
+  "incl. wallet docs" refers to the profile's invoice table, which lists them).
+- 1c: v3 settles credit by an advance pot without drawing the pot (only the old `"Advance"` mode draws) — ported as is.
+- 1c: a settled credit invoice's pop-up says "Settled — mode" (v3 shows "Paid in full — Credit").
+- 1c: Reprint also calls `window.print()` with a print stylesheet that prints only the open document (plan §9.10).
+- 1c: amounts are typed in HeroUI `NumberField`s; v3's Refund advance pot picker greys out empty pots (disabled toggles).
 
 ## Declarations
 | v3 name | v3 line | v4 module | Checkpoint | Status | Notes |
@@ -160,8 +172,8 @@ deferred-M2: 28, deferred-M3: 10, deferred-M4: 29, done: 195, todo: 38, wip: 2 (
 | `sendLink` | 1671 | store/actions.ts | 1b | done | always user-triggered; settings.autoSend has no caller (M4) |
 | `resendLink` | 1678 | store/actions.ts | 1b | done | golden flows (src/store/__tests__/flows.test.ts) |
 | `payAll` | 1686 | store/actions.ts | 1b | done | golden flows; the replacement branch is M2 |
-| `setPayer` | 1781 | store (actions) | 1c | todo |  |
-| `openCreditPicker` | 1801 | features/stories/credit | 1c | todo | moved to 1c with the Credit story |
+| `setPayer` | 1781 | store/payer.ts | 1c | done | golden flows (payer story on the walk-in visits) |
+| `openCreditPicker` | 1801 | store/wallet.ts | 1c | done | golden flows |
 | `checkDoctor` | 1810 | store/actions.ts | 1b | done | golden flows (src/store/__tests__/flows.test.ts) |
 | `markLwbs` | 1827 | — | M3 | deferred-M3 | entry point shown disabled |
 | `undoLwbs` | 1835 | — | M3 | deferred-M3 | entry point shown disabled |
@@ -188,23 +200,23 @@ deferred-M2: 28, deferred-M3: 10, deferred-M4: 29, done: 195, todo: 38, wip: 2 (
 | `storyStage` | 2056 | domain/stories.ts | 1a | done | storyStage takes an explicit uiCtx; activeStory does not mutate |
 | `stagesBar` | 2108 | ui/StoryStepper.tsx | 1b | done |  |
 | `withStages` | 2114 | ui/StoryStepper.tsx | 1b | done |  |
-| `markDone` | 2118 | domain/stories.ts | 1a | done | storyStage takes an explicit uiCtx; activeStory does not mutate |
+| `markDone` | 2118 | store/actions.ts | 1a | done | storyStage takes an explicit uiCtx; activeStory does not mutate |
 | `renderStoryStrip` | 2122 | features/visit/StoryStrip.tsx | 1b | done | ToggleButtonGroup (single) — its buttons are role=radio |
 | `renderStoryCard` | 2142 | features/visit/StoryCard.tsx | 1b | done | later stories show a 'Coming in …' card with their stages |
 | `renderVisitDoneCard` | 2163 | features/visit/StoryCard.tsx | 1b | done | later stories show a 'Coming in …' card with their stages |
-| `catPrice` | 2175 | features/stories/addorders | M2 | deferred-M2 | order picker reused by walk-in in 1c |
-| `renderOrderPicker` | 2176 | features/stories/addorders | M2 | deferred-M2 | order picker reused by walk-in in 1c |
-| `cartItems` | 2205 | features/stories/addorders | M2 | deferred-M2 | order picker; walk-in uses it in 1c |
-| `addReceptionOrders` | 2206 | features/stories/addorders | M2 | deferred-M2 | order picker reused by walk-in in 1c |
+| `catPrice` | 2175 | domain/payers.ts | 1c | done | used by the walk-in's order picker |
+| `renderOrderPicker` | 2176 | features/walkin/OrderPicker.tsx | 1c | done | reused by the Add orders story in M2 |
+| `cartItems` | 2205 | domain/payers.ts | 1c | done | used by the walk-in's order picker |
+| `addReceptionOrders` | 2206 | store/payer.ts | 1c | done | walk-in uses it; the Add orders story is M2 |
 | `renderAddOrdersStory` | 2218 | features/stories/addorders | M2 | deferred-M2 | order picker reused by walk-in in 1c |
 | `payerChangeable` | 2256 | domain/stories.ts | 1a | done | storyStage takes an explicit uiCtx; activeStory does not mutate |
-| `startPayerStory` | 2257 | features/stories/payer | 1c | todo |  |
-| `finishEligibility` | 2265 | features/stories/payer | 1c | todo |  |
-| `nphiesPlan` | 2278 | features/stories/payer | 1c | todo |  |
-| `tobHtml` | 2280 | features/stories/payer | 1c | todo |  |
-| `payerChoiceCard` | 2299 | features/stories/payer | 1c | todo |  |
-| `renderPayerStory` | 2319 | features/stories/payer | 1c | todo |  |
-| `applyPayer` | 2443 | features/stories/payer | 1c | todo |  |
+| `startPayerStory` | 2257 | store/payer.ts, features/stories/PayerStory.tsx | 1c | done | NPHIES answers after 1.1 s (beginPayerStory) |
+| `finishEligibility` | 2265 | store/payer.ts | 1c | done | works on a visit or a PayerDraft |
+| `nphiesPlan` | 2278 | domain/payers.ts | 1c | done |  |
+| `tobHtml` | 2280 | domain/payers.ts (tobRows), features/stories/PayerStory.tsx | 1c | done | cells are i18n messages |
+| `payerChoiceCard` | 2299 | features/stories/PayerStory.tsx | 1c | done | choices are domain/payers.ts payerOptions/choosePayer |
+| `renderPayerStory` | 2319 | features/stories/PayerStory.tsx | 1c | done | one body for visit, walk-in and profile (PayerRun) |
+| `applyPayer` | 2443 | store/payer.ts | 1c | done | golden flows |
 | `CHAT_SUGGEST_VISIT` | 2467 | features/chat | M4 | deferred-M4 |  |
 | `CHAT_SUGGEST_PATIENT` | 2469 | features/chat | M4 | deferred-M4 |  |
 | `CHAT_SUGGEST_HOME` | 2471 | features/chat | M4 | deferred-M4 |  |
@@ -238,7 +250,7 @@ deferred-M2: 28, deferred-M3: 10, deferred-M4: 29, done: 195, todo: 38, wip: 2 (
 | `renderRefundStory` | 2825 | features/stories/refund | M2 | deferred-M2 |  |
 | `renderReplaceStory` | 2871 | features/stories/replace | M2 | deferred-M2 |  |
 | `renderPackageStory` | 2907 | features/stories/package | M3 | deferred-M3 |  |
-| `renderCreditStory` | 2970 | features/stories/credit | 1c | todo |  |
+| `renderCreditStory` | 2970 | features/stories/CreditStory.tsx | 1c | done | link + desk; golden flows |
 | `nextStep` | 3025 | domain/steps.ts | 1a | done | returns data + i18n keys; texts golden-tested word for word |
 | `isToday` | 3231 | domain/visits.ts | 1a | done |  |
 | `parentVisit` | 3234 | domain/visits.ts | 1a | done |  |
@@ -271,30 +283,30 @@ deferred-M2: 28, deferred-M3: 10, deferred-M4: 29, done: 195, todo: 38, wip: 2 (
 | `renderVisit` | 3738 | features/visit/VisitScreen.tsx | 1b | done | payer change opens in 1c (shown disabled); wallet section 1c |
 | `renderStep` | 3795 | ui/StepCard.tsx | 1b | done | action ids → store/stepActions.ts |
 | `orderTable` | 3819 | ui/OrderTable.tsx | 1b | done | Table selection (checkbox per line); columns as v3 |
-| `startWalkin` | 3862 | features/walkin, features/stories/payer | 1c | todo |  |
-| `renderWalkin` | 3868 | features/walkin, features/stories/payer | 1c | todo |  |
-| `CLINIC_CLOSE` | 3990 | features/walkin, features/stories/payer | 1c | todo |  |
-| `hhmm` | 3991 | features/walkin | 1c | todo | slot labels |
-| `freeSlots` | 3992 | features/walkin, features/stories/payer | 1c | todo |  |
-| `backToPayerChoices` | 4006 | features/walkin, features/stories/payer | 1c | todo |  |
-| `payerDraft` | 4012 | features/walkin, features/stories/payer | 1c | todo |  |
-| `keepPayerOnPatient` | 4027 | features/walkin, features/stories/payer | 1c | todo |  |
+| `startWalkin` | 3862 | features/walkin/WalkinFlow.tsx | 1c | done |  |
+| `renderWalkin` | 3868 | features/walkin/WalkinFlow.tsx | 1c | done | stage 1 (patient search) is unreachable in v3 (the walk-in always starts from a chosen patient) — not built |
+| `CLINIC_CLOSE` | 3990 | domain/visits.ts | 1c | done |  |
+| `hhmm` | 3991 | domain/visits.ts | 1c | done |  |
+| `freeSlots` | 3992 | domain/visits.ts | 1c | done | unit-tested |
+| `backToPayerChoices` | 4006 | store/payer.ts (backToChoices) | 1c | done |  |
+| `payerDraft` | 4012 | store/payer.ts | 1c | done | the draft lives in the UI store (walkin / profPayer) |
+| `keepPayerOnPatient` | 4027 | store/payer.ts | 1c | done |  |
 | `activePayerOf` | 4031 | domain/visits.ts | 1a | done |  |
-| `startProfilePayer` | 4040 | features/walkin, features/stories/payer | 1c | todo |  |
-| `renderProfilePayer` | 4052 | features/walkin, features/stories/payer | 1c | todo |  |
-| `startWalkinPayer` | 4104 | features/walkin, features/stories/payer | 1c | todo |  |
-| `createWalkinVisit` | 4117 | features/walkin, features/stories/payer | 1c | todo |  |
-| `walletChipHtml` | 4159 | ui/WalletChip.tsx | 1a | done |  |
-| `walletState` | 4167 | features/wallet | 1c | todo |  |
-| `renderWalletSection` | 4171 | features/wallet | 1c | todo |  |
-| `renderAdvanceDrawer` | 4306 | features/wallet | 1c | todo |  |
+| `startProfilePayer` | 4040 | features/patient/ProfilePayer.tsx | 1c | done |  |
+| `renderProfilePayer` | 4052 | features/patient/ProfilePayer.tsx | 1c | done | saveProfilePayer in store/payer.ts |
+| `startWalkinPayer` | 4104 | features/walkin/WalkinFlow.tsx | 1c | done |  |
+| `createWalkinVisit` | 4117 | store/payer.ts | 1c | done | golden flows (4 walk-ins) |
+| `walletChipHtml` | 4159 | ui/WalletChip.tsx | 1a | done | opens the wallet section (1c) |
+| `walletState` | 4167 | store/ui.ts (walletOn / walletDo) | 1c | done |  |
+| `renderWalletSection` | 4171 | features/wallet/WalletSection.tsx | 1c | done | opened from the wallet chip on profile and visit |
+| `renderAdvanceDrawer` | 4306 | features/wallet/AdvanceDrawer.tsx | 1c | done | addAdvance in store/wallet.ts; golden flows |
 | `escHtml` | 4357 | — | 1a | done | not needed: React escapes text; comments stored as plain text |
 | `addComment` | 4359 | store/world.ts | 1a | done | comment box + toast in features/visit/VisitTimeline.tsx |
 | `renderHistory` | 4363 | features/visit/VisitTimeline.tsx | 1b | done |  |
 | `findInvoice` | 4445 | domain/lookup.ts | 1a | done |  |
 | `raiseRefundInvoice` | 4452 | features/stories/refund | M2 | deferred-M2 |  |
 | `visitDocs` | 4460 | domain/lookup.ts | 1a | done |  |
-| `openInvoice` | 4461 | features/invoices, features/wallet | 1c | todo |  |
+| `openInvoice` | 4461 | ui/InvoiceLink.tsx (ui.invPop) | 1c | done |  |
 | `EV_TITLES` | 4464 | features/visit/VisitTimeline.tsx | 1b | done |  |
 | `renderEventPop` | 4472 | features/visit/EventModal.tsx | 1b | done | Refund (M2) / Go to invoices (1c) shown disabled |
 | `allInvoices` | 4543 | domain/invoices.ts | 1a | done | golden-tested; screen in 1c |
@@ -307,21 +319,21 @@ deferred-M2: 28, deferred-M3: 10, deferred-M4: 29, done: 195, todo: 38, wip: 2 (
 | `invStatus` | 4570 | domain/invoices.ts | 1a | done | golden-tested; screen in 1c |
 | `invMode` | 4571 | domain/invoices.ts | 1a | done | golden-tested; screen in 1c |
 | `INV_FILTERS` | 4574 | domain/invoices.ts | 1a | done | golden-tested; screen in 1c |
-| `invFilters` | 4582 | features/invoices | 1c | todo |  |
+| `invFilters` | 4582 | store/ui.ts (invF) | 1c | done |  |
 | `invCanLoad` | 4585 | domain/invoices.ts | 1a | done | golden-tested; screen in 1c |
 | `queryInvoices` | 4586 | domain/invoices.ts | 1a | done | golden-tested; screen in 1c |
-| `loadInvoices` | 4604 | features/invoices | 1c | todo |  |
-| `openInvoicesFor` | 4614 | features/invoices | 1c | todo |  |
-| `invFilterSummary` | 4619 | features/invoices | 1c | todo |  |
-| `renderInvoices` | 4626 | features/invoices | 1c | todo |  |
-| `ivDecorate` | 4690 | features/invoices | 1c | todo |  |
-| `pairInvoices` | 4697 | features/invoices | 1c | todo |  |
-| `invoiceTable` | 4733 | features/invoices | 1c | todo |  |
+| `loadInvoices` | 4604 | store/ui.ts | 1c | done | keeps the ids loaded and reads them from the live world |
+| `openInvoicesFor` | 4614 | store/ui.ts | 1c | done |  |
+| `invFilterSummary` | 4619 | domain/invoices.ts | 1c | done | unit-tested |
+| `renderInvoices` | 4626 | features/invoices/InvoicesScreen.tsx | 1c | done |  |
+| `ivDecorate` | 4690 | features/invoices/InvoiceTable.tsx | 1c | done |  |
+| `pairInvoices` | 4697 | domain/invoices.ts | 1c | done | unit-tested |
+| `invoiceTable` | 4733 | features/invoices/InvoiceTable.tsx | 1c | done | Refund action shown disabled (M2) |
 | `renderPackageItems` | 4789 | features/patient/PatientCards.tsx | 1a | done | book/open actions in M3 |
-| `renderPatientInvoices` | 4825 | features/patient/PatientCards.tsx | 1a | wip | headline done; table + actions in 1c |
-| `reprint` | 4854 | features/invoices, features/wallet | 1c | todo |  |
-| `renderLedger` | 4863 | features/invoices, features/wallet | 1c | todo |  |
-| `renderLedgerPop` | 4900 | features/invoices, features/wallet | 1c | todo |  |
+| `renderPatientInvoices` | 4825 | features/patient/PatientCards.tsx | 1c | done | table only rendered once expanded |
+| `reprint` | 4854 | store/wallet.ts, features/invoices/InvoiceModal.tsx | 1c | done | also opens the browser print (print stylesheet in theme.css) |
+| `renderLedger` | 4863 | features/wallet/LedgerTable.tsx | 1c | done |  |
+| `renderLedgerPop` | 4900 | — | 1c | done | nothing in v3 opens it (state.ledgerPop is never set) — the statement lives in the wallet section |
 | `printPackageOrders` | 4932 | features/stories/package | M3 | deferred-M3 |  |
 | `renderVoidPop` | 4953 | features/stories/package | M3 | deferred-M3 |  |
 | `voidPrint` | 4989 | features/stories/package | M3 | deferred-M3 |  |
@@ -342,8 +354,8 @@ deferred-M2: 28, deferred-M3: 10, deferred-M4: 29, done: 195, todo: 38, wip: 2 (
 | `renderRefundWork` | 5277 | features/stories/refund | M2 | deferred-M2 |  |
 | `completeRefund` | 5302 | features/stories/refund | M2 | deferred-M2 |  |
 | `renderRefundInvoicePop` | 5331 | features/stories/refund | M2 | deferred-M2 |  |
-| `renderWalletDocPop` | 5375 | features/invoices, features/wallet | 1c | todo |  |
-| `renderInvoicePop` | 5411 | features/invoices, features/wallet | 1c | wip | minimal read-only preview in 1b (features/invoices/InvoiceModal.tsx); full pop-up 1c |
+| `renderWalletDocPop` | 5375 | features/invoices/InvoiceModal.tsx | 1c | done |  |
+| `renderInvoicePop` | 5411 | features/invoices/InvoiceModal.tsx | 1c | done | settled credit invoices say "Settled — mode"; Refund shown disabled (M2) |
 | `payTaken` | 5493 | domain/drawer.ts | 1b | done | unit-tested (drawer.test.ts) |
 | `payAllocated` | 5494 | domain/drawer.ts | 1b | done | unit-tested (drawer.test.ts) |
 | `payRemaining` | 5495 | domain/drawer.ts | 1b | done | unit-tested (drawer.test.ts) |
@@ -352,6 +364,6 @@ deferred-M2: 28, deferred-M3: 10, deferred-M4: 29, done: 195, todo: 38, wip: 2 (
 | `payParts` | 5511 | domain/drawer.ts | 1b | done | unit-tested (drawer.test.ts) |
 | `partsLabel` | 5515 | domain/drawer.ts | 1b | done | unit-tested (drawer.test.ts) |
 | `advShortfall` | 5517 | domain/drawer.ts | 1b | done | unit-tested (drawer.test.ts) |
-| `renderDrawer` | 5525 | features/drawer/PaymentDrawer.tsx, domain/drawer.ts | 1b | done | payment branch; advrefund (1c) and refund/refundDiff (M2) branches later |
+| `renderDrawer` | 5525 | features/drawer/PaymentDrawer.tsx, domain/drawer.ts | 1c | done | payment, credit and advance-refund branches; refund/refundDiff are M2 |
 | `renderSettings` | 5873 | features/settings | M4 | deferred-M4 |  |
 | `renderSim` | 5893 | features/sim/SimulatePanel.tsx | 1b | done | fixed Card, not a Popover, so the page stays usable; Reset resets both stores |

@@ -1,5 +1,5 @@
-import { Breadcrumbs, Card, Chip, Disclosure, Tabs } from "@heroui/react";
-import { ChevronDown, Lock } from "lucide-react";
+import { Breadcrumbs, Button, Card, Chip, Disclosure, Tabs } from "@heroui/react";
+import { ChevronDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { visitsOf } from "../../domain/lookup";
 import { fmt } from "../../domain/money";
@@ -8,8 +8,9 @@ import { activePayerOf } from "../../domain/visits";
 import { useW } from "../../store/hooks";
 import { useUi, type PendView } from "../../store/ui";
 import { ActionTile } from "../../ui/ActionTile";
-import { ComingSoon } from "../../ui/ComingSoon";
 import { WalletChip } from "../../ui/WalletChip";
+import { ProfilePayer, startProfilePayer } from "./ProfilePayer";
+import { WalletSection } from "../wallet/WalletSection";
 import { VisitsList } from "./VisitsList";
 import { PatientInvoicesCard, PackageItemsCard } from "./PatientCards";
 
@@ -57,7 +58,7 @@ export function PatientScreen() {
           <span className="text-sm text-muted">{t("patient.activePayer")}{from && ` · ${from}`}</span>
           <div className="flex-1" />
           {p.payers.length > 1 && <span className="text-sm text-muted">{t("patient.payersOnFile", { count: p.payers.length })}</span>}
-          <ComingSoon when="1c" label={t("patient.changeTitle")} className="flex items-center gap-3 rounded-xl border border-border bg-surface px-3 py-1.5">
+          <Button variant="outline" aria-label={t("patient.changeTitle")} className="h-auto gap-3 rounded-xl bg-surface px-3 py-1.5" onPress={() => startProfilePayer(p.mrn)}>
             <span className="text-end leading-tight" data-testid="payer-button">
               <b className="block text-sm text-accent">{ap.payer.label}</b>
               <span className="text-[11px] text-muted">
@@ -67,16 +68,13 @@ export function PatientScreen() {
                   : t("patient.noPolicy")}
               </span>
             </span>
-            <span className="text-xs">{t("patient.change")}</span>
-          </ComingSoon>
+            <span className="flex items-center text-xs">{t("patient.change")}<ChevronDown className="size-3" /></span>
+          </Button>
         </div>
       </Card>
 
-      {walletOpen && (
-        <Card variant="secondary" className="flex-row items-center gap-2 text-sm text-muted" data-testid="wallet-placeholder">
-          <Lock className="size-4" /> {t("wallet.placeholder")}
-        </Card>
-      )}
+      <ProfilePayer mrn={p.mrn} />
+      {walletOpen && <WalletSection mrn={p.mrn} caseId={vs[0] ? vs[0].id : null} />}
 
       {/* every pending action for this patient, including visits booked for later */}
       <Card className="gap-0 p-0">

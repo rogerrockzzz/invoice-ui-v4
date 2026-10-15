@@ -126,11 +126,74 @@ f.onload = () => {
       { name: "visit 30: approval, then all on credit", ops: [
         ["approveConsult", 30], ["billConsult", 30], ["pay", 30, "Credit", "", [["Credit", "rest"]]],
       ] },
+      /* checkpoint 1c: the wallet, the payer story, the walk-in */
+      { name: "7000667 wallet: add, spend, refund advance; settle credit from visit 2", ops: [
+        ["addAdvance", 2, "Doctor", "Cash", 250], ["addAdvance", 30, "Clinic", "Span", 40.5],
+        ["refundAdvance", 2, "Open", 100, "Cash", "patient travelling"], ["refundAdvance", 2, "Doctor", 50, "Visa", "not continuing"],
+        ["settleCredit", 2, "Span", null, 2],
+      ] },
+      { name: "visit 31 credit: link from the story, then settle it in cash from visit 1", ops: [
+        ["openCreditPicker", 31], ["creditLink", 31], ["settleCredit", 1, "Cash", "first", null],
+      ] },
+      { name: "walk-in: 1063301 with the new GIG policy, 7000667 a follow-up on BUPA", ops: [
+        ["walkin", 100, { mrn: "1063301", type: "Consultation", clinic: "CARDIOLOGY", doctor: "AHMED AL SUBAIE", slot: "15:00", payer: "GIG-C", items: [] }],
+        ["walkin", 101, { mrn: "7000667", type: "Follow-up", clinic: "ENT", doctor: "LINA FAROUK", slot: "16:30", payer: "BUPA-GOLD", items: ["LAB-CBC", "PKG-EXEC"] }],
+        ["walkin", 102, { mrn: "8825140", type: "Procedure only", clinic: "DERMATOLOGY", doctor: "OMAR HASSAN", slot: null, payer: "CASH", items: ["LAB-LIPID"] }],
+        ["walkin", 103, { mrn: "7100482", type: "Consultation", clinic: "ENT", doctor: "SARA AL DOSSARI", slot: "17:00", payer: "manual:zakat:CH-ZAKAT:ZK-1", items: [] }],
+      ] },
+      { name: "payer story on the new visits — cash, insurer, charity, back to the insurer", ops: [
+        ["eligibility", 100], ["choosePayer", 100, "CASH"],
+        ["eligibility", 100], ["choosePayer", 100, "GIG-C"], ["savePayer", 100],
+        ["eligibility", 100], ["manualPick", 100, "charity", "CH-HABIB", "CH-2026-0412"],
+        ["eligibility", 100], ["choosePayer", 100, "GIG-C"], ["savePayer", 100],
+        ["eligibility", 103], ["choosePayer", 103, "TAW-SILVER"], ["savePayer", 103], ["setPayer", 103, "CASH"],
+        ["reprint", 12, "first"], ["addOrders", 100, ["LAB-VITD", "PKG-DIAB", "LAB-VITD"]],
+      ] },
     ];
     const caseOf = (id) => cases.find((x) => x.id === id);
+    const S = E("state"), doc = w.document, R = (c) => E("renderPayerStory")(c), click = (root, sel) => root.querySelector(sel).click();
+    const type = (root, k, v) => { const i = root.querySelector(`[data-f="${k}"]`); i.value = v; i.dispatchEvent(new w.Event("input")); };
+    const chooseV3 = (c, spec) => {
+      if (spec.startsWith("manual:")) {
+        const [, query, id, ref] = spec.split(":");
+        click(R(c), "#pyManual");
+        let b = R(c); type(b, "group", query); click(b, `[data-pick="${id}"]`);
+        b = R(c); type(b, "policyNo", ref); click(b, "#pySave");
+        return;
+      }
+      click(R(c), `[data-choose="${spec}"]`);
+      if (c.payerStory && c.payerStory.stage === 3) click(R(c), "#pySave");
+    };
+    const creditIds = (mrn, ids) => ids === "first" ? [E("creditInvoices")(mrn)[0].inv.id] : ids;
     function runOp([op, id, ...a]) {
       const c = caseOf(id);
-      if (op === "billConsult") startBill(c, "consult", [c.consult]);
+      if (op === "addAdvance") { S.adv = { c, cat: a[0], mode: a[1], amount: String(a[2]), fromWallet: false }; E("render")(); doc.getElementById("aGo").click(); }
+      else if (op === "refundAdvance") { S.drawer = { c, mode: a[2], amount: a[1], advRefund: { cat: a[0], reason: a[3] } }; E("render")(); doc.getElementById("dGo").click(); }
+      else if (op === "settleCredit") {
+        const ids = creditIds(c.mrn, a[1]);
+        const list = E("creditInvoices")(c.mrn).filter((x) => !ids || ids.includes(x.inv.id));
+        const amount = round2(list.reduce((s, x) => s + E("creditOf")(x.inv), 0));
+        S.caseId = a[2]; S.drawer = { c, mode: a[0], amount, credit: true, ids: ids || undefined }; E("render")(); doc.getElementById("dGo").click(); S.caseId = null;
+      }
+      else if (op === "creditLink") click(E("renderCreditStory")(c), "#ccLink");
+      else if (op === "eligibility") { E("startPayerStory")(c); E("finishEligibility")(c); }
+      else if (op === "choosePayer") click(R(c), `[data-choose="${a[0]}"]`);
+      else if (op === "savePayer") click(R(c), "#pySave");
+      else if (op === "manualPick") chooseV3(c, `manual:${a[0]}:${a[1]}:${a[2]}`);
+      else if (op === "setPayer") E("setPayer")(c, a[0]);
+      else if (op === "reprint") E("reprint")(a[0] === "first" ? c.invoices[0].id : a[0]);
+      else if (op === "addOrders") E("addReceptionOrders")(c, a[0].map((code) => E("ORDER_CATALOG").find((x) => x.code === code)));
+      else if (op === "walkin") {
+        const sp = a[0], chosen = patients[sp.mrn], fee = E("CONSULT_FEES")[sp.clinic] || 200;
+        const d = { stage: 4, mrn: sp.mrn, type: sp.type, clinic: sp.clinic, doctor: sp.doctor, slot: sp.slot, payerId: null,
+          cart: { sel: Object.fromEntries(sp.items.map((k) => [k, true])), q: "" } };
+        E("startWalkinPayer")(d, chosen, fee);
+        E("finishEligibility")(d.pctx);
+        chooseV3(d.pctx, sp.payer);
+        E("createWalkinVisit")(d, chosen, fee);
+        S.walkin = null;
+      }
+      else if (op === "billConsult") startBill(c, "consult", [c.consult]);
       else if (op === "billApproved") startBill(c, "orders", selectedLines(c, approvedOrders(c)));
       else if (op === "approveConsult") E("simApproveConsult")(c);
       else if (op === "waitAll") nextStep(c).no.fn();
@@ -166,9 +229,16 @@ f.onload = () => {
           invoiceId: h.invoiceId || null, amount: h.amount ?? null, mode: h.mode || null })),
         wallet: { ...p.wallet.advance }, credit: creditTotal(c.mrn),
         ledger: (p.ledger || []).map((e) => ({ type: e.type, amount: e.amount, note: norm(e.note), invoiceId: e.invoiceId || null, visitId: e.visitId ?? null, docId: e.docId || null })),
+        visit: { type: c.visitType, clinic: c.clinic, doctor: c.doctor, slot: c.slot || null, consult: { name: c.consult.name, code: c.consult.code, price: c.consult.price } },
+        payerId: c.payerId, policy: c.policy ? norm(Object.values(c.policy).join("|")) : null, payers: p.payers.map((x) => x.id),
+        payerStory: c.payerStory ? c.payerStory.stage : null,
+        done: Object.fromEntries(Object.entries(c.storyDone || {}).map(([k, v]) => [k, `${norm(v.title)} | ${norm(v.sub)}${v.cash ? " | cash" : ""}`])),
+        settled: E("visitsOf")(c.mrn).flatMap((v) => v.invoices.filter((i) => i.settled).map((i) => `${i.id}:${i.settledVia}`)),
+        appr: [c.consult, ...c.orders].map((l) => l.appr || null),
+        docs: (p.walletDocs || []).map((d) => `${d.id}:${d.wtype}:${d.amount}:${d.visitId}:${d.invoiceId || ""}:${norm(d.note)}`),
       };
     }
-    const flows = FLOWS.map((f) => ({ name: f.name, ops: f.ops, snaps: f.ops.map((o) => { runOp(o); return snap(caseOf(o[1])); }) }));
+    const flows = FLOWS.map((f) => ({ name: f.name, ops: f.ops, snaps: f.ops.map((o) => { try { runOp(o); } catch (e) { e.message = `${JSON.stringify(o)}: ${e.message}`; throw e; } return snap(caseOf(o[1])); }) }));
     out.textContent = JSON.stringify({ build: E("BUILD"), generatedAt: new Date().toISOString(), calc, visits, patients: pats, notes, queries, payerSearch, flows });
   } catch (e) {
     out.textContent = "ERROR " + e.message + "\n" + e.stack;

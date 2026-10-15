@@ -11,8 +11,9 @@ import { VisitScreen } from "./features/visit/VisitScreen";
 import { EventModal } from "./features/visit/EventModal";
 import { InvoiceModal } from "./features/invoices/InvoiceModal";
 import { PaymentDrawer } from "./features/drawer/PaymentDrawer";
+import { AdvanceDrawer } from "./features/wallet/AdvanceDrawer";
 import { SimulatePanel } from "./features/sim/SimulatePanel";
-import { EmptyState } from "./ui/EmptyState";
+import { InvoicesScreen } from "./features/invoices/InvoicesScreen";
 
 export default function App() {
   const { i18n } = useTranslation();
@@ -36,19 +37,14 @@ export default function App() {
       <AppHeader />
       <main className="mx-auto w-full max-w-[960px] px-4 pb-20 pt-3 lg:px-5">
         <PatientTabs />
-        {screen === "patient" ? <PatientScreen /> : screen === "visit" ? <VisitScreen /> : screen === "invoices" ? <InvoicesPlaceholder /> : <Home />}
+        {screen === "patient" ? <PatientScreen /> : screen === "visit" ? <VisitScreen /> : screen === "invoices" ? <InvoicesScreen /> : <Home />}
       </main>
       <PaymentDrawer />
+      <AdvanceDrawer />
       <EventModal />
       <InvoiceModal />
       <SimulatePanel />
       <Toast.Provider placement="top end" maxVisibleToasts={3} />
     </>
   );
-}
-
-/* The Invoices screen is checkpoint 1c. */
-function InvoicesPlaceholder() {
-  const { t } = useTranslation();
-  return <EmptyState title={t("tabs.invoices")}>{t("invoicesScreen.placeholder")}</EmptyState>;
 }

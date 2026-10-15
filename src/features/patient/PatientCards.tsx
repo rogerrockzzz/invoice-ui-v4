@@ -1,18 +1,20 @@
-import { Card, Chip, Disclosure, Table } from "@heroui/react";
+import { Card, Chip, Disclosure, Label, Link, Switch, Table } from "@heroui/react";
 import { ChevronDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { patientInvoiceSummary } from "../../domain/invoices";
+import { pairInvoices, patientInvoiceSummary } from "../../domain/invoices";
 import { fmt } from "../../domain/money";
 import { packageItems } from "../../domain/replace";
 import { useW } from "../../store/hooks";
-import { useUi } from "../../store/ui";
+import { openInvoicesFor, useUi } from "../../store/ui";
+import { InvoiceTable } from "../invoices/InvoiceTable";
+import { InvoiceLink } from "../../ui/InvoiceLink";
 
-/* v3 renderPatientInvoices() (line 4825): every invoice this patient has, across all their visits.
-   1a shows the headline; the table and actions arrive with the Invoices work in 1c. */
+/* v3 renderPatientInvoices() (line 4825): every invoice this patient has, across all their visits — folded away
+   until asked for, with the headline figures in the header */
 export function PatientInvoicesCard({ mrn }: { mrn: string }) {
   const { t } = useTranslation();
   const w = useW();
-  const { pinvOpen, set } = useUi();
+  const { pinvOpen, invGroup, set } = useUi();
   const s = patientInvoiceSummary(w, mrn);
   return (
     <Card className="gap-0 border-s-4 border-s-vida-navy p-0" data-testid="patient-invoices">
@@ -32,7 +34,16 @@ export function PatientInvoicesCard({ mrn }: { mrn: string }) {
           </Disclosure.Trigger>
         </Disclosure.Heading>
         <Disclosure.Content>
-          <p className="px-4 pb-4 text-sm text-muted">{t("patient.invoicesTable")}</p>
+          <div className="flex flex-wrap items-center gap-3 border-b border-border px-4 pb-3">
+            <Switch className="flex-row items-center gap-2" isSelected={invGroup} onChange={(v) => set({ invGroup: v })} aria-describedby="inv-pair-hint">
+              <Switch.Control><Switch.Thumb /></Switch.Control>
+              <Switch.Content><Label>{t("patient.pairInvoices")}</Label></Switch.Content>
+            </Switch>
+            <span id="inv-pair-hint" className="sr-only">{t("patient.pairInvoicesTitle")}</span>
+            <Link className="ms-auto cursor-pointer text-sm" onPress={() => openInvoicesFor(mrn)}>{t("patient.allInvoices")}</Link>
+          </div>
+          {/* nothing is loaded until it is expanded (v3) */}
+          {pinvOpen && <InvoiceTable list={invGroup ? pairInvoices(w, s.list) : s.list} emptyNote={t("patient.noInvoices")} label={t("patient.invoices")} />}
         </Disclosure.Content>
       </Disclosure>
     </Card>
@@ -74,7 +85,7 @@ export function PackageItemsCard({ mrn }: { mrn: string }) {
                       <Table.Row key={`${x.inv.id}-${x.child.code}`}>
                         <Table.Cell><b>{x.child.name}</b><div className="text-xs text-muted">{x.child.code}</div></Table.Cell>
                         <Table.Cell>{x.parent.name}</Table.Cell>
-                        <Table.Cell>{x.inv.id}<div className="text-xs text-muted">{x.inv.at}</div></Table.Cell>
+                        <Table.Cell><InvoiceLink id={x.inv.id} /><div className="text-xs text-muted">{x.inv.at}</div></Table.Cell>
                         <Table.Cell>
                           {v ? <Chip size="sm" color="success" variant="soft">{v.visitType} · {v.date} {v.arrived}</Chip>
                             : <Chip size="sm" color="warning" variant="soft">{t("patient.notBooked")}</Chip>}

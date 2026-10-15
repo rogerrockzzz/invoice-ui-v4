@@ -48,6 +48,24 @@ export function visitDate(c: Visit) {
   return isoDay(d);
 }
 
+/* v3 lines 3988–4004: the doctor's free 15-minute slots from now until the clinic closes. A slot is taken if a
+   visit today already holds it, or the doctor's schedule has it booked (simulated, the same every time for a doctor). */
+export const CLINIC_CLOSE = 20 * 60;
+export const hhmm = (m: number) => `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
+export function freeSlots(w: World, doctor: string) {
+  const t = today();
+  const from = Math.ceil((t.getHours() * 60 + t.getMinutes() + 5) / 15) * 15;
+  const held = new Set(w.cases.filter((c) => c.doctor === doctor && isToday(c) && c.slot).map((c) => c.slot));
+  const seed = [...doctor].reduce((a, ch) => a + ch.charCodeAt(0), 0);
+  const out: string[] = [];
+  for (let m = Math.max(from, 8 * 60); m < CLINIC_CLOSE; m += 15) {
+    const s = hhmm(m);
+    if (held.has(s) || (seed + m / 15) % 3 === 0) continue; /* booked */
+    out.push(s);
+  }
+  return out;
+}
+
 /* v3 lines 4031–4037: the payer in force right now — taken from the latest visit on file */
 export function activePayerOf(w: World, p: Patient): { payer: Payer; from: { kind: "profile" | "open" | "last"; date?: string; at?: string } | null } {
   const vs = visitsOf(w, p.mrn);

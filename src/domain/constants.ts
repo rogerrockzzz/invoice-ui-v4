@@ -14,6 +14,9 @@ export const INS_STATUSES: Record<InsStatus, { label: string; cov: number; insur
   notinsured: { label: "Self-pay", cov: 0, insured: false },
 };
 
+/* how an advance is received at the desk (v3 line 875) */
+export const DESK_MODES = ["Cash", "Card", "Bank transfer"];
+
 export interface PayMode {
   id: string;
   label?: string;

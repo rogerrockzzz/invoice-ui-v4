@@ -1,4 +1,4 @@
-import { ADV_CATS, modeLabel, payMode, PAY_MODES, secondMode } from "./constants";
+import { ADV_CATS, modeLabel, payMode, PAY_MODES, REFUND_MODES, secondMode } from "./constants";
 import { noteLabel, notesTotal, suggestNotes } from "./cash";
 import { walletOf } from "./lookup";
 import { fmt, round2 } from "./money";
@@ -18,7 +18,12 @@ export interface PayPart {
 }
 
 export interface DrawerState {
-  caseId: number;
+  /* the visit it was opened on; a wallet opened on a patient with no visit has none */
+  caseId: number | null;
+  mrn: string;
+  /* settling credit invoices picked earlier (v3 d.credit) / unused advance back to the patient (v3 d.advRefund) */
+  credit?: { ids: string[]; fromWallet?: boolean } | null;
+  advRefund?: { cat: AdvCat; reason: string } | null;
   mode: string;
   amount: number;
   parts: PayPart[];
@@ -35,14 +40,20 @@ export interface DrawerState {
 /* what a drawer interaction tells the receptionist */
 export interface DrawerToast { kind: "ok" | "warn" | ""; title: Msg; sub?: Msg }
 
-export function newDrawer(caseId: number, amount: number, mode = "Cash"): DrawerState {
+export function newDrawer(caseId: number | null, mrn: string, amount: number, extra: Pick<DrawerState, "credit" | "advRefund"> = {}, mode = "Cash"): DrawerState {
   const d: DrawerState = {
-    caseId, mode, amount, parts: [], notes: null, notesFor: null, tenderManual: null, partAmt: null,
+    caseId, mrn, ...extra, mode, amount: round2(amount), parts: [], notes: null, notesFor: null, tenderManual: null, partAmt: null,
     ref: "", ref2: "", moreOpen: false, editing: null,
   };
   normalizeDrawer(d);
   return d;
 }
+/* money going back, and credit settlement, are a single part with no split and no notes (v3 line 5528) */
+export const isMoneyBack = (d: DrawerState) => !!d.advRefund;
+export const isSimple = (d: DrawerState) => isMoneyBack(d) || !!d.credit;
+/* the visit the drawer acts on — or, for a patient with no visit, a stand-in that carries the MRN */
+export const drawerVisit = (w: World, d: DrawerState): Visit =>
+  w.cases.find((x) => x.id === d.caseId) || ({ id: null, mrn: d.mrn, history: [], invoices: [], orders: [] } as unknown as Visit);
 
 export const payTaken = (d: DrawerState) => d.parts;
 export const payAllocated = (d: DrawerState) => round2(payTaken(d).reduce((a, p) => a + p.amount, 0));
@@ -51,7 +62,7 @@ export const payRemaining = (d: DrawerState) => round2(d.amount - payAllocated(d
 /* v3 payTendered() resets the notes to the usual ones whenever what is left changes. It does so while
    rendering; v4 does it after every change to the drawer, which reaches the same state. */
 export function normalizeDrawer(d: DrawerState) {
-  if (d.mode !== "Cash") return d;
+  if (d.mode !== "Cash" || isSimple(d)) return d;
   const left = payRemaining(d);
   if (d.notesFor !== left) {
     d.notes = suggestNotes(left);
@@ -95,33 +106,38 @@ export function advShortfall(w: World, c: Visit, parts: PayPart[]) {
 /* everything the drawer shows, derived from its state (v3 renderDrawer, lines 5526–5546) */
 export function drawerView(w: World, c: Visit, d: DrawerState) {
   const wal = walletOf(w, c);
-  const parts = payParts(d);
-  const taken = payTaken(d);
-  const left = payRemaining(d);
-  const active = payActive(d);
+  const back = isMoneyBack(d), simple = isSimple(d);
+  const parts = simple ? [{ mode: d.mode, amount: d.amount, ref: d.ref, ref2: d.ref2 }] : payParts(d);
+  const taken = simple ? [] : payTaken(d);
+  const left = simple ? d.amount : payRemaining(d);
+  const active = simple ? null : payActive(d);
   const activeAmt = active ? active.amount : 0;
-  const unallocated = round2(left - activeAmt);
-  const short = advShortfall(w, c, parts);
-  const tendered = d.mode === "Cash" ? payTendered(d)! : 0;
-  const change = d.mode === "Cash" ? round2(tendered - activeAmt) : 0;
-  /* an advance mode is offered up front only when that pot actually holds money */
-  const shown = PAY_MODES.filter((m) => m.top || (m.advance && wal.advance[m.advance] > 0));
-  const rest = PAY_MODES.filter((m) => !shown.includes(m));
-  const advParts = parts.filter((p) => payMode(p.mode).advance);
+  const unallocated = simple ? 0 : round2(left - activeAmt);
+  const short = back ? [] : advShortfall(w, c, parts);
+  const tendered = !simple && d.mode === "Cash" ? payTendered(d)! : 0;
+  const change = !simple && d.mode === "Cash" ? round2(tendered - activeAmt) : 0;
+  /* an advance mode is offered up front only when that pot actually holds money; credit cannot settle credit */
+  const offered = PAY_MODES.filter((m) => !(d.credit && m.id === "Credit"));
+  const shown = offered.filter((m) => m.top || (m.advance && wal.advance[m.advance] > 0));
+  const rest = offered.filter((m) => !shown.includes(m));
+  const advParts = back ? [] : parts.filter((p) => payMode(p.mode).advance);
   const advTotal = ADV_CATS.reduce((a, k) => a + wal.advance[k], 0);
   return {
     parts, taken, left, active, activeAmt, unallocated, short, shortAdv: short.length > 0, tendered, change,
+    back, simple, refundModes: REFUND_MODES.filter((m) => !(d.advRefund && m === "Advance wallet")),
     shown, rest, restOn: rest.some((m) => m.id === d.mode), advParts,
     walletAfter: advTotal - advParts.reduce((a, p) => a + p.amount, 0),
-    canConfirm: !short.length && unallocated <= 0.004,
-    totalLabel: (parts.every((p) => p.mode === "Credit") ? "toCredit" : parts.some((p) => p.mode === "Credit") ? "toCollectAndCredit" : "toCollect") as
-      "toCredit" | "toCollectAndCredit" | "toCollect",
+    canConfirm: back || (!short.length && unallocated <= 0.004),
+    totalLabel: (back ? "toRefund" : parts.every((p) => p.mode === "Credit") ? "toCredit" : parts.some((p) => p.mode === "Credit") ? "toCollectAndCredit" : "toCollect") as
+      "toRefund" | "toCredit" | "toCollectAndCredit" | "toCollect",
+    head: d.advRefund ? "advRefund" : d.credit ? "credit" : "payment",
     goLabel: confirmLabel(d, parts),
   };
 }
 
 /* the confirm button says what will happen (v3 line 5690) */
 function confirmLabel(d: DrawerState, parts: PayPart[]): Msg {
+  if (isMoneyBack(d)) return { k: "drawer.go.refund", p: { mode: modeLabel(d.mode).toLowerCase() } };
   if (parts.length === 1 && parts[0]!.mode === "Credit") return { k: "drawer.go.credit" };
   if (parts.length > 1) return { k: "drawer.go.parts", p: { count: parts.length } };
   const adv = payMode(d.mode).advance;
@@ -132,7 +148,7 @@ function confirmLabel(d: DrawerState, parts: PayPart[]): Msg {
 /* ---- what each control does (v3 lines 5698–5782) ---- */
 export function pickMode(w: World, c: Visit, d: DrawerState, id: string): DrawerToast | null {
   const meta = payMode(id);
-  if (meta.advance && walletOf(w, c).advance[meta.advance] <= 0)
+  if (meta.advance && walletOf(w, c).advance[meta.advance] <= 0 && !isMoneyBack(d))
     return { kind: "warn", title: { k: "toast.noAdvance", p: { pot: meta.advance.toLowerCase() } }, sub: { k: "toast.noAdvanceSub" } };
   d.mode = id;
   d.moreOpen = false;
@@ -207,9 +223,10 @@ export function setTendered(d: DrawerState, v: string) {
 
 /* what the confirm button hands to payAll: the mode label, the detail line and the parts (v3 lines 5789–5798) */
 export function drawerConfirm(d: DrawerState) {
+  let detail = [d.ref2, d.ref].filter(Boolean).join(" · ");
+  if (isSimple(d)) return { mode: d.mode, detail, parts: [{ mode: d.mode, amount: d.amount, ref: d.ref, ref2: d.ref2 }] };
   const parts = payParts(d);
   const mode = partsLabel(parts);
-  let detail = [d.ref2, d.ref].filter(Boolean).join(" · ");
   const tendered = d.mode === "Cash" ? payTendered(d)! : 0;
   if (d.mode === "Cash" && tendered > 0) {
     const act = payActive(d);

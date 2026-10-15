@@ -2,13 +2,9 @@
    Keep it identical to v3 — demos, goldens and e2e tests depend on these scenarios. */
 import { CASH_PAYER } from "../domain/constants";
 import { today } from "../domain/clock";
-import type { InsStatus, Patient, Plan, Visit, World } from "../domain/types";
+import type { InsStatus, NphiesPolicy, Patient, Plan, Visit, World } from "../domain/types";
 
-export interface NphiesPolicy {
-  id: string; insurer: string; cls: string; status: string; reason?: string; isNew?: boolean;
-  group: string; contract: string; policy: string; policyNo: string; subPolicy: string; cardId: string;
-  validTo: string; holderCode: string; holder: string; plan?: Plan;
-}
+export type { NphiesPolicy };
 export interface DirectoryPayer {
   id: string; label: string; kind: string; group: string; contract: string; policy?: string; plan: Plan;
 }

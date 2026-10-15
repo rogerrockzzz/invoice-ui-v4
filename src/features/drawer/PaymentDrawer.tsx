@@ -11,7 +11,8 @@ import { fmt } from "../../domain/money";
 import { resolveMsg } from "../../i18n/msg";
 import { payAll } from "../../store/actions";
 import { useW } from "../../store/hooks";
-import { useUi } from "../../store/ui";
+import { useUi, walletDo } from "../../store/ui";
+import { refundAdvance, settleCredit } from "../../store/wallet";
 import { useWorld } from "../../store/world";
 
 const ICON = { card: CreditCard, cash: Banknote, wallet: Wallet, hospital: Hospital, receipt: ReceiptText };
@@ -20,17 +21,19 @@ const ModeIcon = ({ m }: { m: PayMode }) => { const I = ICON[m.icon]; return <I 
 /* a bottom sheet below 768px, a side drawer above (docs/PLAN-v4-M1.md §5.1) */
 const narrowQ = "(max-width: 767px)";
 const subscribe = (cb: () => void) => { const m = window.matchMedia(narrowQ); m.addEventListener("change", cb); return () => m.removeEventListener("change", cb); };
-const useNarrow = () => useSyncExternalStore(subscribe, () => window.matchMedia(narrowQ).matches, () => false);
+export const useNarrow = () => useSyncExternalStore(subscribe, () => window.matchMedia(narrowQ).matches, () => false);
 
 /* v3 renderDrawer() (line 5525), the payment branch: pick the mode(s) and complete the payment here */
 export function PaymentDrawer() {
   const { t } = useTranslation();
   const w = useW();
-  const { drawer: d, drawerDo, set } = useUi();
+  const ui = useUi();
+  const { drawer: d, drawerDo, set } = ui;
   const act = useWorld((s) => s.act);
+  const actW = useWorld((s) => s.actW);
   const narrow = useNarrow();
-  const c = d ? w.cases.find((x) => x.id === d.caseId) : null;
-  if (!d || !c) return null;
+  if (!d) return null;
+  const c = D.drawerVisit(w, d);
   const v = D.drawerView(w, c, d);
   const wal = walletOf(w, c);
   const close = () => set({ drawer: null });
@@ -38,21 +41,30 @@ export function PaymentDrawer() {
     if (!v.canConfirm) return;
     const { mode, detail, parts } = D.drawerConfirm(d);
     set({ drawer: null });
-    act(c.id, (dw, dc, fx) => { payAll(dw, dc, mode, fx, detail, parts); });
+    if (d.advRefund) {
+      const { cat, reason } = d.advRefund;
+      const done = actW((dw, fx) => refundAdvance(dw, d.mrn, d.caseId, cat, d.amount, mode, reason, detail, fx));
+      if (ui.wallet) walletDo(d.mrn, (x) => { x.flow = null; x.done = done; });
+    } else if (d.credit) {
+      const { ids, fromWallet } = d.credit;
+      const done = actW((dw, fx) => settleCredit(dw, d.mrn, ui.caseId, mode, d.amount, ids, detail, fx));
+      if (fromWallet && ui.wallet) walletDo(d.mrn, (x) => { x.flow = null; x.sel = null; x.done = done; });
+    } else if (d.caseId != null) act(d.caseId, (dw, dc, fx) => { payAll(dw, dc, mode, fx, detail, parts); });
   };
-  const ref = payMode(d.mode).ref;
+  const ref = v.back ? undefined : payMode(d.mode).ref;
   const credit = d.mode === "Credit";
   const modeSub = (m: PayMode) => m.advance ? t("drawer.available", { amount: fmt(wal.advance[m.advance]) }) : m.note ? t(`drawer.note.${m.id}`) : "";
+  const title = t("drawer.title", { head: t(`drawer.head.${v.head}`), name: pt(w, c).name });
 
   return (
     <Drawer.Backdrop isOpen onOpenChange={(o) => { if (!o) close(); }}>
       {/* "right" is the inline end (the panel is laid out with justify-end), so it follows RTL */}
       <Drawer.Content placement={narrow ? "bottom" : "right"}>
-        <Drawer.Dialog aria-label={t("drawer.title", { name: pt(w, c).name })} data-testid="drawer" className={narrow ? "max-h-[92vh]" : "sm:w-[460px]"}>
+        <Drawer.Dialog aria-label={title} data-testid="drawer" className={narrow ? "max-h-[92vh]" : "sm:w-[460px]"}>
           {narrow && <Drawer.Handle />}
           <Drawer.CloseTrigger />
-          <Drawer.Header className={`-mx-6 -mt-6 px-6 pb-4 pt-6 ${credit ? "bg-warning/10" : "bg-success/10"}`}>
-            <Drawer.Heading className="text-xs font-semibold uppercase tracking-wide text-muted">{t("drawer.title", { name: pt(w, c).name })}</Drawer.Heading>
+          <Drawer.Header className={`-mx-6 -mt-6 px-6 pb-4 pt-6 ${v.back ? "bg-danger/10" : credit ? "bg-warning/10" : "bg-success/10"}`}>
+            <Drawer.Heading className="text-xs font-semibold uppercase tracking-wide text-muted">{title}</Drawer.Heading>
             <div className="text-2xl font-bold tabular-nums text-vida-navy" data-testid="drawer-amount">{fmt(d.amount)}</div>
           </Drawer.Header>
           <Drawer.Body className="flex flex-col gap-4">
@@ -81,8 +93,19 @@ export function PaymentDrawer() {
 
             <div className="flex flex-col gap-2">
               <span className="text-xs font-semibold text-muted">
-                {d.editing ? t("drawer.changing", { mode: modeLabel(d.editing).toLowerCase() }) : v.taken.length ? t("drawer.howRemaining", { amount: fmt(v.left) }) : t("drawer.mode")}
+                {v.back ? t("drawer.refundMode") : d.editing ? t("drawer.changing", { mode: modeLabel(d.editing).toLowerCase() }) : v.taken.length ? t("drawer.howRemaining", { amount: fmt(v.left) }) : t("drawer.mode")}
               </span>
+              {v.back ? (
+                <ToggleButtonGroup aria-label={t("drawer.refundMode")} selectionMode="single" disallowEmptySelection selectedKeys={[d.mode]}
+                  onSelectionChange={(k) => { const id = [...k][0]; if (id) drawerDo((dd, dw, dc) => D.pickMode(dw, dc, dd, String(id))); }}
+                  className="flex flex-wrap justify-start gap-2">
+                  {v.refundModes.map((m) => (
+                    <ToggleButton key={m} id={m} data-mode={m} className="min-h-11 rounded-xl px-3">
+                      {m === "Cash" ? <Banknote className="size-4" /> : <CreditCard className="size-4" />}{m}
+                    </ToggleButton>
+                  ))}
+                </ToggleButtonGroup>
+              ) : (
               <div className="flex flex-wrap gap-2">
                 <ToggleButtonGroup aria-label={t("drawer.mode")} selectionMode="single" disallowEmptySelection selectedKeys={v.restOn ? [] : [d.mode]}
                   onSelectionChange={(k) => { const id = [...k][0]; if (id) drawerDo((dd, dw, dc) => D.pickMode(dw, dc, dd, String(id))); }}
@@ -115,11 +138,24 @@ export function PaymentDrawer() {
                   </Dropdown>
                 )}
               </div>
+              )}
             </div>
 
-            {d.mode === "Cash" && <CashBox d={d} v={v} />}
+            {d.advRefund && (
+              <Alert status="danger" data-testid="adv-refund-box">
+                <Alert.Indicator />
+                <Alert.Content>
+                  <Alert.Description>
+                    <Row k={t("drawer.from")} v={t("drawer.potAdvanceName", { pot: d.advRefund.cat })} />
+                    <Row k={t("drawer.reason")} v={d.advRefund.reason} />
+                  </Alert.Description>
+                </Alert.Content>
+              </Alert>
+            )}
 
-            {credit && (
+            {!v.simple && d.mode === "Cash" && <CashBox d={d} v={v} />}
+
+            {credit && !v.simple && (
               <Alert status="warning" data-testid="credit-box">
                 <Alert.Indicator />
                 <Alert.Content>
@@ -132,7 +168,7 @@ export function PaymentDrawer() {
               </Alert>
             )}
 
-            {d.mode !== "Cash" && (
+            {!v.simple && d.mode !== "Cash" && (
               <NumberField
                 value={v.activeAmt}
                 minValue={0}
@@ -195,7 +231,7 @@ export function PaymentDrawer() {
             </div>
             <div className="flex gap-2">
               <Button variant="secondary" onPress={close}>{t("drawer.cancel")}</Button>
-              <Button variant="primary" className={`flex-1 ${credit ? "bg-warning text-warning-foreground" : "bg-success text-success-foreground"}`}
+              <Button variant="primary" className={`flex-1 ${v.back ? "bg-danger text-danger-foreground" : credit ? "bg-warning text-warning-foreground" : "bg-success text-success-foreground"}`}
                 isDisabled={!v.canConfirm} onPress={confirm} data-testid="drawer-go">
                 {resolveMsg(t, v.goLabel)}
               </Button>
