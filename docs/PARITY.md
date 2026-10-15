@@ -28,7 +28,8 @@ deferred-M2: 24, deferred-M3: 10, deferred-M4: 29, done: 239 (of 302 declaration
 | Payer story, profile payer | 1c | done | golden flows + e2e |
 | Walk-in visit | 1c | done | golden flows (4 walk-ins) + e2e |
 | Invoices screen + invoice pop-up | 1c | done | wallet document pop-up, reprint + print stylesheet |
-| Add orders, Refund, Replace | M2 | deferred-M2 | |
+| Add orders | 2a | done | golden flow + e2e; NO_ORDERS "Add orders" opens it |
+| Refund, Replace | M2 | deferred-M2 | |
 | Package booking, Package procedure, LWBS | M3 | deferred-M3 | |
 | Ask VIDA, Story map, Settings, Arabic/RTL | M4 | deferred-M4 | i18n keys and RTL-safe CSS from 1a |
 
@@ -205,10 +206,10 @@ deferred-M2: 24, deferred-M3: 10, deferred-M4: 29, done: 239 (of 302 declaration
 | `renderStoryCard` | 2142 | features/visit/StoryCard.tsx | 1b | done | later stories show a 'Coming in …' card with their stages |
 | `renderVisitDoneCard` | 2163 | features/visit/StoryCard.tsx | 1b | done | later stories show a 'Coming in …' card with their stages |
 | `catPrice` | 2175 | domain/payers.ts | 1c | done | used by the walk-in's order picker |
-| `renderOrderPicker` | 2176 | features/walkin/OrderPicker.tsx | 1c | done | reused by the Add orders story in M2 |
+| `renderOrderPicker` | 2176 | features/walkin/OrderPicker.tsx | 1c | done | reused by the Add orders story (2a) |
 | `cartItems` | 2205 | domain/payers.ts | 1c | done | used by the walk-in's order picker |
-| `addReceptionOrders` | 2206 | store/payer.ts | 1c | done | walk-in uses it; the Add orders story is M2 |
-| `renderAddOrdersStory` | 2218 | features/stories/addorders | M2 | deferred-M2 | order picker reused by walk-in in 1c |
+| `addReceptionOrders` | 2206 | store/payer.ts | 1c | done | walk-in (1c) and the Add orders story (2a) |
+| `renderAddOrdersStory` | 2218 | features/stories/AddOrdersStory.tsx, store/payer.ts | 2a | done | cart on `c.addStory`; golden flow + e2e |
 | `payerChangeable` | 2256 | domain/stories.ts | 1a | done | storyStage takes an explicit uiCtx; activeStory does not mutate |
 | `startPayerStory` | 2257 | store/payer.ts, features/stories/PayerStory.tsx | 1c | done | NPHIES answers after 1.1 s (beginPayerStory) |
 | `finishEligibility` | 2265 | store/payer.ts | 1c | done | works on a visit or a PayerDraft |

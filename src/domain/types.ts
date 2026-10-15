@@ -213,6 +213,9 @@ export interface StoryDone {
   refundInvoiceId?: string;
 }
 
+/* v3 renderAddOrdersStory(): choose → review, with the picker's cart on the visit */
+export interface AddStory { stage: number; sel: Record<string, boolean>; q: string }
+
 export interface Visit {
   id: number;
   mrn: string;
@@ -249,7 +252,7 @@ export interface Visit {
   payerStory?: PayerStory | null;
   policy?: (PolicyForm & { payer: string }) | null;
   pkgStory?: { stage: number } | null;
-  addStory?: { stage: number } | null;
+  addStory?: AddStory | null;
   checks?: number;
   lastCheck?: string | null;
   docChecks?: number;

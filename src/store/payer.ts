@@ -2,9 +2,10 @@ import { CASH_PAYER, CONSULT_FEES, USER, type CatalogItem } from "../domain/cons
 import { now } from "../domain/clock";
 import { newConsultCode, nextVisitId } from "../domain/ids";
 import { payerOf, pt } from "../domain/lookup";
-import { eligibilityOf } from "../domain/payers";
+import { fmt, round2 } from "../domain/money";
+import { cartItems, catPrice, eligibilityOf } from "../domain/payers";
 import { payerChangeable } from "../domain/stories";
-import type { HistoryEvent, Patient, PayerChoice, PayerDecision, PayerDraft, PolicyForm, Visit, World } from "../domain/types";
+import type { AddStory, HistoryEvent, Patient, PayerChoice, PayerDecision, PayerDraft, PolicyForm, Visit, World } from "../domain/types";
 import { markDone, t, type Fx } from "./actions";
 import { recordOn } from "./world";
 
@@ -122,6 +123,22 @@ export function addReceptionOrders(c: Visit, items: CatalogItem[], story?: strin
   });
   recordOn(c, "i", t("hist.addOrders", { count: items.length }), t("hist.addOrdersSub", { names: items.map((x) => x.name).join(", ") }),
     { type: "ADDORDER", story: story || "addorders", by: USER, lines: items.map((x) => ({ name: x.name, code: x.code, ins: "notinsured", price: x.price })) });
+}
+
+/* v3 renderAddOrdersStory() (line 2218): the cart lives on the visit; "Add N order(s)" puts them on it */
+export const addStoryOf = (c: Visit): AddStory => c.addStory || { stage: 1, sel: {}, q: "" };
+export function addStoryDo(c: Visit, fn: (st: AddStory) => void) {
+  if (!c.addStory) c.addStory = { stage: 1, sel: {}, q: "" };
+  fn(c.addStory);
+}
+export function addOrdersStory(w: World, c: Visit, fx: Fx) {
+  const items = cartItems(addStoryOf(c));
+  if (!items.length) return;
+  const total = round2(items.reduce((a, x) => a + catPrice(x), 0));
+  addReceptionOrders(c, items);
+  markDone(c, "addorders", t("addorders.done", { count: items.length }), t("addorders.doneSub", { names: items.map((x) => x.name).join(", "), total: fmt(total) }));
+  c.addStory = null;
+  fx.toast("ok", t("toast.ordersAdded"), t("toast.ordersAddedSub", { name: pt(w, c).name, count: items.length }));
 }
 
 /* v3 createWalkinVisit() (line 4117) */

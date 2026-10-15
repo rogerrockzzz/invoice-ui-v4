@@ -1,6 +1,6 @@
 {
  "build": "no-invoice-until-payment",
- "generatedAt": "2026-10-15T11:04:16.177Z",
+ "generatedAt": "2026-10-15T11:38:02.214Z",
  "calc": [
   {
    "plan": "none",
@@ -26917,6 +26917,980 @@
        "GIG-C": "pending",
        "CH-HABIB": "approved"
       },
+      null,
+      null,
+      null
+     ],
+     "docs": []
+    }
+   ]
+  },
+  {
+   "name": "2a: add orders through the story on visit 4, then bill and pay them",
+   "ops": [
+    [
+     "addOrdersStory",
+     4,
+     [
+      "LAB-CBC",
+      "PKG-EXEC"
+     ]
+    ],
+    [
+     "billApproved",
+     4
+    ],
+    [
+     "pay",
+     4,
+     "Cash",
+     "",
+     [
+      [
+       "Cash",
+       "rest"
+      ]
+     ]
+    ],
+    [
+     "addOrdersStory",
+     4,
+     [
+      "LAB-CBC"
+     ]
+    ]
+   ],
+   "snaps": [
+    {
+     "step": "ORDERS_BILL",
+     "q": "2 procedure(s) were ordered. Bill them?",
+     "sub": "Self-pay — the patient carries the whole charge.",
+     "amt": 1483.5,
+     "buttons": [
+      "Yes, bill them"
+     ],
+     "stories": [
+      "visit",
+      "orders",
+      "refund",
+      "addorders"
+     ],
+     "active": "orders",
+     "stages": {
+      "visit": {
+       "index": 4,
+       "skipped": [
+        0
+       ],
+       "complete": true
+      },
+      "orders": {
+       "index": 2,
+       "skipped": [
+        1
+       ]
+      },
+      "refund": {
+       "index": 0,
+       "skipped": []
+      },
+      "addorders": {
+       "index": 2,
+       "skipped": []
+      }
+     },
+     "due": 0,
+     "dedUsed": 0,
+     "link": null,
+     "waitAll": false,
+     "bill": null,
+     "lines": [
+      {
+       "code": "CON-310",
+       "ins": "notinsured",
+       "price": 250,
+       "paid": true,
+       "via": "Cash",
+       "invoiceId": "INV-660310",
+       "urgentCash": false,
+       "approvalPending": false
+      },
+      {
+       "code": "RAD-120",
+       "ins": "notinsured",
+       "price": 180,
+       "paid": true,
+       "via": "Payment link",
+       "invoiceId": "INV-660477",
+       "urgentCash": false,
+       "approvalPending": false
+      },
+      {
+       "code": "PKG-EXEC",
+       "ins": "notinsured",
+       "price": 1200,
+       "paid": false,
+       "via": null,
+       "invoiceId": null,
+       "urgentCash": false,
+       "approvalPending": false
+      },
+      {
+       "code": "LAB-CBC",
+       "ins": "notinsured",
+       "price": 90,
+       "paid": false,
+       "via": null,
+       "invoiceId": null,
+       "urgentCash": false,
+       "approvalPending": false
+      }
+     ],
+     "invoices": [
+      {
+       "id": "INV-660310",
+       "scope": "consult",
+       "patient": 287.5,
+       "company": 0,
+       "deductible": 0,
+       "paid": true,
+       "via": "Cash",
+       "viaDetail": "",
+       "payments": null,
+       "payer": "Cash / Self-pay",
+       "branch": null,
+       "cashOnly": false,
+       "billType": null,
+       "rows": [
+        "CON-310"
+       ]
+      },
+      {
+       "id": "INV-660477",
+       "scope": "orders",
+       "patient": 207,
+       "company": 0,
+       "deductible": 0,
+       "paid": true,
+       "via": "Payment link",
+       "viaDetail": "",
+       "payments": null,
+       "payer": "Cash / Self-pay",
+       "branch": null,
+       "cashOnly": false,
+       "billType": null,
+       "rows": [
+        "RAD-120"
+       ]
+      }
+     ],
+     "history": [
+      {
+       "ic": "i",
+       "tx": "<b>2 order(s) added at reception</b>",
+       "sub": "Executive Health Check, Complete Blood Count · no doctor needed · billed at the cash price",
+       "type": "ADDORDER",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "",
+       "tx": "<b>Orders paid</b> — SAR 207.00",
+       "sub": "Payment link · invoice INV-660477 created · Knee X-Ray",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-660477",
+       "amount": 207,
+       "mode": "Payment link"
+      },
+      {
+       "ic": "",
+       "tx": "<b>Consultation paid</b> — SAR 287.50",
+       "sub": "Cash at desk · invoice INV-660310 created",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-660310",
+       "amount": 287.5,
+       "mode": "Cash"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Visit created</b> at reception",
+       "sub": "Orthopaedics · Dr Omar Hassan",
+       "type": "VISIT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      }
+     ],
+     "wallet": {
+      "Open": 0,
+      "Doctor": 0,
+      "Clinic": 0
+     },
+     "credit": 0,
+     "ledger": [],
+     "visit": {
+      "type": "Consultation",
+      "clinic": "ORTHOPAEDICS",
+      "doctor": "OMAR HASSAN",
+      "slot": null,
+      "consult": {
+       "name": "Orthopaedic Consultation",
+       "code": "CON-310",
+       "price": 250
+      }
+     },
+     "payerId": "CASH",
+     "policy": null,
+     "payers": [
+      "CASH"
+     ],
+     "payerStory": null,
+     "done": {
+      "addorders": "2 order(s) added | Executive Health Check, Complete Blood Count · SAR 1,483.50 at the cash price"
+     },
+     "settled": [],
+     "appr": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "docs": []
+    },
+    {
+     "step": "COLLECT",
+     "q": "How is AHMED paying for the orders — SAR 1,483.50?",
+     "sub": "The invoice is created when the payment goes through.",
+     "amt": 1483.5,
+     "buttons": [
+      "Take payment at the desk",
+      "Send payment link"
+     ],
+     "stories": [
+      "visit",
+      "orders",
+      "refund",
+      "addorders"
+     ],
+     "active": "orders",
+     "stages": {
+      "visit": {
+       "index": 4,
+       "skipped": [
+        0
+       ],
+       "complete": true
+      },
+      "orders": {
+       "index": 3,
+       "skipped": [
+        1
+       ]
+      },
+      "refund": {
+       "index": 0,
+       "skipped": []
+      },
+      "addorders": {
+       "index": 2,
+       "skipped": []
+      }
+     },
+     "due": 1483.5,
+     "dedUsed": 0,
+     "link": null,
+     "waitAll": false,
+     "bill": {
+      "scope": "orders",
+      "codes": [
+       "PKG-EXEC",
+       "LAB-CBC"
+      ],
+      "patient": 1483.5,
+      "company": 0,
+      "deductible": 0,
+      "cashOnly": false
+     },
+     "lines": [
+      {
+       "code": "CON-310",
+       "ins": "notinsured",
+       "price": 250,
+       "paid": true,
+       "via": "Cash",
+       "invoiceId": "INV-660310",
+       "urgentCash": false,
+       "approvalPending": false
+      },
+      {
+       "code": "RAD-120",
+       "ins": "notinsured",
+       "price": 180,
+       "paid": true,
+       "via": "Payment link",
+       "invoiceId": "INV-660477",
+       "urgentCash": false,
+       "approvalPending": false
+      },
+      {
+       "code": "PKG-EXEC",
+       "ins": "notinsured",
+       "price": 1200,
+       "paid": false,
+       "via": null,
+       "invoiceId": null,
+       "urgentCash": false,
+       "approvalPending": false
+      },
+      {
+       "code": "LAB-CBC",
+       "ins": "notinsured",
+       "price": 90,
+       "paid": false,
+       "via": null,
+       "invoiceId": null,
+       "urgentCash": false,
+       "approvalPending": false
+      }
+     ],
+     "invoices": [
+      {
+       "id": "INV-660310",
+       "scope": "consult",
+       "patient": 287.5,
+       "company": 0,
+       "deductible": 0,
+       "paid": true,
+       "via": "Cash",
+       "viaDetail": "",
+       "payments": null,
+       "payer": "Cash / Self-pay",
+       "branch": null,
+       "cashOnly": false,
+       "billType": null,
+       "rows": [
+        "CON-310"
+       ]
+      },
+      {
+       "id": "INV-660477",
+       "scope": "orders",
+       "patient": 207,
+       "company": 0,
+       "deductible": 0,
+       "paid": true,
+       "via": "Payment link",
+       "viaDetail": "",
+       "payments": null,
+       "payer": "Cash / Self-pay",
+       "branch": null,
+       "cashOnly": false,
+       "billType": null,
+       "rows": [
+        "RAD-120"
+       ]
+      }
+     ],
+     "history": [
+      {
+       "ic": "i",
+       "tx": "<b>2 order(s) added at reception</b>",
+       "sub": "Executive Health Check, Complete Blood Count · no doctor needed · billed at the cash price",
+       "type": "ADDORDER",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "",
+       "tx": "<b>Orders paid</b> — SAR 207.00",
+       "sub": "Payment link · invoice INV-660477 created · Knee X-Ray",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-660477",
+       "amount": 207,
+       "mode": "Payment link"
+      },
+      {
+       "ic": "",
+       "tx": "<b>Consultation paid</b> — SAR 287.50",
+       "sub": "Cash at desk · invoice INV-660310 created",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-660310",
+       "amount": 287.5,
+       "mode": "Cash"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Visit created</b> at reception",
+       "sub": "Orthopaedics · Dr Omar Hassan",
+       "type": "VISIT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      }
+     ],
+     "wallet": {
+      "Open": 0,
+      "Doctor": 0,
+      "Clinic": 0
+     },
+     "credit": 0,
+     "ledger": [],
+     "visit": {
+      "type": "Consultation",
+      "clinic": "ORTHOPAEDICS",
+      "doctor": "OMAR HASSAN",
+      "slot": null,
+      "consult": {
+       "name": "Orthopaedic Consultation",
+       "code": "CON-310",
+       "price": 250
+      }
+     },
+     "payerId": "CASH",
+     "policy": null,
+     "payers": [
+      "CASH"
+     ],
+     "payerStory": null,
+     "done": {
+      "addorders": "2 order(s) added | Executive Health Check, Complete Blood Count · SAR 1,483.50 at the cash price"
+     },
+     "settled": [],
+     "appr": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "docs": []
+    },
+    {
+     "step": "CLOSE",
+     "q": "Everything ordered so far has been billed and paid.",
+     "sub": "Collected <b>SAR 1,978.00</b> across 3 invoice(s).",
+     "amt": null,
+     "buttons": [
+      "Check for new orders"
+     ],
+     "stories": [
+      "visit",
+      "orders",
+      "refund",
+      "package",
+      "addorders"
+     ],
+     "active": "orders",
+     "stages": {
+      "visit": {
+       "index": 4,
+       "skipped": [
+        0
+       ],
+       "complete": true
+      },
+      "orders": {
+       "index": 4,
+       "skipped": [
+        1
+       ]
+      },
+      "refund": {
+       "index": 0,
+       "skipped": []
+      },
+      "package": {
+       "index": 0,
+       "skipped": []
+      },
+      "addorders": {
+       "index": 2,
+       "skipped": []
+      }
+     },
+     "due": 0,
+     "dedUsed": 0,
+     "link": null,
+     "waitAll": false,
+     "bill": null,
+     "lines": [
+      {
+       "code": "CON-310",
+       "ins": "notinsured",
+       "price": 250,
+       "paid": true,
+       "via": "Cash",
+       "invoiceId": "INV-660310",
+       "urgentCash": false,
+       "approvalPending": false
+      },
+      {
+       "code": "RAD-120",
+       "ins": "notinsured",
+       "price": 180,
+       "paid": true,
+       "via": "Payment link",
+       "invoiceId": "INV-660477",
+       "urgentCash": false,
+       "approvalPending": false
+      },
+      {
+       "code": "PKG-EXEC",
+       "ins": "notinsured",
+       "price": 1200,
+       "paid": true,
+       "via": "Cash",
+       "invoiceId": "INV-320849",
+       "urgentCash": false,
+       "approvalPending": false
+      },
+      {
+       "code": "LAB-CBC",
+       "ins": "notinsured",
+       "price": 90,
+       "paid": true,
+       "via": "Cash",
+       "invoiceId": "INV-320849",
+       "urgentCash": false,
+       "approvalPending": false
+      }
+     ],
+     "invoices": [
+      {
+       "id": "INV-320849",
+       "scope": "orders",
+       "patient": 1483.5,
+       "company": 0,
+       "deductible": 0,
+       "paid": true,
+       "via": "Cash",
+       "viaDetail": "",
+       "payments": [
+        {
+         "mode": "Cash",
+         "amount": 1483.5,
+         "ref": ""
+        }
+       ],
+       "payer": "Cash / Self-pay",
+       "branch": null,
+       "cashOnly": false,
+       "billType": "cash",
+       "rows": [
+        "PKG-EXEC",
+        "LAB-CBC"
+       ]
+      },
+      {
+       "id": "INV-660310",
+       "scope": "consult",
+       "patient": 287.5,
+       "company": 0,
+       "deductible": 0,
+       "paid": true,
+       "via": "Cash",
+       "viaDetail": "",
+       "payments": null,
+       "payer": "Cash / Self-pay",
+       "branch": null,
+       "cashOnly": false,
+       "billType": null,
+       "rows": [
+        "CON-310"
+       ]
+      },
+      {
+       "id": "INV-660477",
+       "scope": "orders",
+       "patient": 207,
+       "company": 0,
+       "deductible": 0,
+       "paid": true,
+       "via": "Payment link",
+       "viaDetail": "",
+       "payments": null,
+       "payer": "Cash / Self-pay",
+       "branch": null,
+       "cashOnly": false,
+       "billType": null,
+       "rows": [
+        "RAD-120"
+       ]
+      }
+     ],
+     "history": [
+      {
+       "ic": "i",
+       "tx": "<b>6 package procedure(s) can now be booked</b>",
+       "sub": "Executive Health Check · paid on INV-320849 · book a visit for each whenever the patient can attend",
+       "type": "PKGREADY",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-320849",
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "",
+       "tx": "<b>Orders paid</b> — SAR 1,483.50",
+       "sub": "Cash · invoice INV-320849 created",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-320849",
+       "amount": 1483.5,
+       "mode": "Cash"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>2 order(s) added at reception</b>",
+       "sub": "Executive Health Check, Complete Blood Count · no doctor needed · billed at the cash price",
+       "type": "ADDORDER",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "",
+       "tx": "<b>Orders paid</b> — SAR 207.00",
+       "sub": "Payment link · invoice INV-660477 created · Knee X-Ray",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-660477",
+       "amount": 207,
+       "mode": "Payment link"
+      },
+      {
+       "ic": "",
+       "tx": "<b>Consultation paid</b> — SAR 287.50",
+       "sub": "Cash at desk · invoice INV-660310 created",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-660310",
+       "amount": 287.5,
+       "mode": "Cash"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Visit created</b> at reception",
+       "sub": "Orthopaedics · Dr Omar Hassan",
+       "type": "VISIT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      }
+     ],
+     "wallet": {
+      "Open": 0,
+      "Doctor": 0,
+      "Clinic": 0
+     },
+     "credit": 0,
+     "ledger": [],
+     "visit": {
+      "type": "Consultation",
+      "clinic": "ORTHOPAEDICS",
+      "doctor": "OMAR HASSAN",
+      "slot": null,
+      "consult": {
+       "name": "Orthopaedic Consultation",
+       "code": "CON-310",
+       "price": 250
+      }
+     },
+     "payerId": "CASH",
+     "policy": null,
+     "payers": [
+      "CASH"
+     ],
+     "payerStory": null,
+     "done": {
+      "addorders": "2 order(s) added | Executive Health Check, Complete Blood Count · SAR 1,483.50 at the cash price"
+     },
+     "settled": [],
+     "appr": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "docs": []
+    },
+    {
+     "step": "ORDERS_BILL",
+     "q": "1 procedure(s) were ordered. Bill them?",
+     "sub": "Self-pay — the patient carries the whole charge.",
+     "amt": 103.5,
+     "buttons": [
+      "Yes, bill them"
+     ],
+     "stories": [
+      "visit",
+      "orders",
+      "refund",
+      "package",
+      "addorders"
+     ],
+     "active": "orders",
+     "stages": {
+      "visit": {
+       "index": 4,
+       "skipped": [
+        0
+       ],
+       "complete": true
+      },
+      "orders": {
+       "index": 2,
+       "skipped": [
+        1
+       ]
+      },
+      "refund": {
+       "index": 0,
+       "skipped": []
+      },
+      "package": {
+       "index": 0,
+       "skipped": []
+      },
+      "addorders": {
+       "index": 2,
+       "skipped": []
+      }
+     },
+     "due": 0,
+     "dedUsed": 0,
+     "link": null,
+     "waitAll": false,
+     "bill": null,
+     "lines": [
+      {
+       "code": "CON-310",
+       "ins": "notinsured",
+       "price": 250,
+       "paid": true,
+       "via": "Cash",
+       "invoiceId": "INV-660310",
+       "urgentCash": false,
+       "approvalPending": false
+      },
+      {
+       "code": "RAD-120",
+       "ins": "notinsured",
+       "price": 180,
+       "paid": true,
+       "via": "Payment link",
+       "invoiceId": "INV-660477",
+       "urgentCash": false,
+       "approvalPending": false
+      },
+      {
+       "code": "PKG-EXEC",
+       "ins": "notinsured",
+       "price": 1200,
+       "paid": true,
+       "via": "Cash",
+       "invoiceId": "INV-320849",
+       "urgentCash": false,
+       "approvalPending": false
+      },
+      {
+       "code": "LAB-CBC",
+       "ins": "notinsured",
+       "price": 90,
+       "paid": true,
+       "via": "Cash",
+       "invoiceId": "INV-320849",
+       "urgentCash": false,
+       "approvalPending": false
+      },
+      {
+       "code": "LAB-CBC-2",
+       "ins": "notinsured",
+       "price": 90,
+       "paid": false,
+       "via": null,
+       "invoiceId": null,
+       "urgentCash": false,
+       "approvalPending": false
+      }
+     ],
+     "invoices": [
+      {
+       "id": "INV-320849",
+       "scope": "orders",
+       "patient": 1483.5,
+       "company": 0,
+       "deductible": 0,
+       "paid": true,
+       "via": "Cash",
+       "viaDetail": "",
+       "payments": [
+        {
+         "mode": "Cash",
+         "amount": 1483.5,
+         "ref": ""
+        }
+       ],
+       "payer": "Cash / Self-pay",
+       "branch": null,
+       "cashOnly": false,
+       "billType": "cash",
+       "rows": [
+        "PKG-EXEC",
+        "LAB-CBC"
+       ]
+      },
+      {
+       "id": "INV-660310",
+       "scope": "consult",
+       "patient": 287.5,
+       "company": 0,
+       "deductible": 0,
+       "paid": true,
+       "via": "Cash",
+       "viaDetail": "",
+       "payments": null,
+       "payer": "Cash / Self-pay",
+       "branch": null,
+       "cashOnly": false,
+       "billType": null,
+       "rows": [
+        "CON-310"
+       ]
+      },
+      {
+       "id": "INV-660477",
+       "scope": "orders",
+       "patient": 207,
+       "company": 0,
+       "deductible": 0,
+       "paid": true,
+       "via": "Payment link",
+       "viaDetail": "",
+       "payments": null,
+       "payer": "Cash / Self-pay",
+       "branch": null,
+       "cashOnly": false,
+       "billType": null,
+       "rows": [
+        "RAD-120"
+       ]
+      }
+     ],
+     "history": [
+      {
+       "ic": "i",
+       "tx": "<b>1 order(s) added at reception</b>",
+       "sub": "Complete Blood Count · no doctor needed · billed at the cash price",
+       "type": "ADDORDER",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "i",
+       "tx": "<b>6 package procedure(s) can now be booked</b>",
+       "sub": "Executive Health Check · paid on INV-320849 · book a visit for each whenever the patient can attend",
+       "type": "PKGREADY",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-320849",
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "",
+       "tx": "<b>Orders paid</b> — SAR 1,483.50",
+       "sub": "Cash · invoice INV-320849 created",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-320849",
+       "amount": 1483.5,
+       "mode": "Cash"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>2 order(s) added at reception</b>",
+       "sub": "Executive Health Check, Complete Blood Count · no doctor needed · billed at the cash price",
+       "type": "ADDORDER",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "",
+       "tx": "<b>Orders paid</b> — SAR 207.00",
+       "sub": "Payment link · invoice INV-660477 created · Knee X-Ray",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-660477",
+       "amount": 207,
+       "mode": "Payment link"
+      },
+      {
+       "ic": "",
+       "tx": "<b>Consultation paid</b> — SAR 287.50",
+       "sub": "Cash at desk · invoice INV-660310 created",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-660310",
+       "amount": 287.5,
+       "mode": "Cash"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Visit created</b> at reception",
+       "sub": "Orthopaedics · Dr Omar Hassan",
+       "type": "VISIT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      }
+     ],
+     "wallet": {
+      "Open": 0,
+      "Doctor": 0,
+      "Clinic": 0
+     },
+     "credit": 0,
+     "ledger": [],
+     "visit": {
+      "type": "Consultation",
+      "clinic": "ORTHOPAEDICS",
+      "doctor": "OMAR HASSAN",
+      "slot": null,
+      "consult": {
+       "name": "Orthopaedic Consultation",
+       "code": "CON-310",
+       "price": 250
+      }
+     },
+     "payerId": "CASH",
+     "policy": null,
+     "payers": [
+      "CASH"
+     ],
+     "payerStory": null,
+     "done": {
+      "addorders": "1 order(s) added | Complete Blood Count · SAR 103.50 at the cash price"
+     },
+     "settled": [],
+     "appr": [
+      null,
+      null,
       null,
       null,
       null

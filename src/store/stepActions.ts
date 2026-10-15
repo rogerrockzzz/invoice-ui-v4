@@ -1,5 +1,6 @@
 import { approvedOrders, selectedLines } from "../domain/lines";
 import type { ActionId } from "../domain/steps";
+import { activeStory } from "../domain/stories";
 import type { Visit, World } from "../domain/types";
 import * as A from "./actions";
 
@@ -20,9 +21,10 @@ export const STEP_RUN: Partial<Record<ActionId, (w: World, c: Visit, fx: A.Fx) =
   checkDoctor: A.checkDoctor,
   checkOrders: A.checkOrders,
   reopen: (_w, c) => { c.closed = false; },
+  addOrders: (w, c, fx) => A.switchStory(w, c, "addorders", activeStory(w, c), fx),
 };
 
 /* entry points that belong to later work: shown where v3 has them, disabled */
 export const STEP_LATER: Partial<Record<ActionId, string>> = {
-  billCashUrgent: "M2", addOrders: "M2", undoReplace: "M2", lwbs: "M3", undoLwbs: "M3", printPackage: "M3", voidPrint: "M3",
+  billCashUrgent: "M2", undoReplace: "M2", lwbs: "M3", undoLwbs: "M3", printPackage: "M3", voidPrint: "M3",
 };

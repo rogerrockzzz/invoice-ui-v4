@@ -149,6 +149,11 @@ f.onload = () => {
         ["eligibility", 103], ["choosePayer", 103, "TAW-SILVER"], ["savePayer", 103], ["setPayer", 103, "CASH"],
         ["reprint", 12, "first"], ["addOrders", 100, ["LAB-VITD", "PKG-DIAB", "LAB-VITD"]],
       ] },
+      /* milestone 2 — 2a: the Add orders story */
+      { name: "2a: add orders through the story on visit 4, then bill and pay them", ops: [
+        ["addOrdersStory", 4, ["LAB-CBC", "PKG-EXEC"]], ["billApproved", 4], ["pay", 4, "Cash", "", [["Cash", "rest"]]],
+        ["addOrdersStory", 4, ["LAB-CBC"]],
+      ] },
     ];
     const caseOf = (id) => cases.find((x) => x.id === id);
     const S = E("state"), doc = w.document, R = (c) => E("renderPayerStory")(c), click = (root, sel) => root.querySelector(sel).click();
@@ -183,6 +188,10 @@ f.onload = () => {
       else if (op === "setPayer") E("setPayer")(c, a[0]);
       else if (op === "reprint") E("reprint")(a[0] === "first" ? c.invoices[0].id : a[0]);
       else if (op === "addOrders") E("addReceptionOrders")(c, a[0].map((code) => E("ORDER_CATALOG").find((x) => x.code === code)));
+      else if (op === "addOrdersStory") {
+        c.addStory = { stage: 2, sel: Object.fromEntries(a[0].map((k) => [k, true])), q: "" };
+        click(E("renderAddOrdersStory")(c), "#aoGo");
+      }
       else if (op === "walkin") {
         const sp = a[0], chosen = patients[sp.mrn], fee = E("CONSULT_FEES")[sp.clinic] || 200;
         const d = { stage: 4, mrn: sp.mrn, type: sp.type, clinic: sp.clinic, doctor: sp.doctor, slot: sp.slot, payerId: null,

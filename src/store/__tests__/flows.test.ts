@@ -56,6 +56,9 @@ function runOp(w: World, [op, id, ...a]: Op) {
     case "setPayer": return PA.setPayer(w, c, a[0] as string, fx);
     case "reprint": return W.reprint(w, a[0] === "first" ? c.invoices[0]!.id : (a[0] as string), fx);
     case "addOrders": return PA.addReceptionOrders(c, (a[0] as string[]).map((k) => ORDER_CATALOG.find((x) => x.code === k)!));
+    case "addOrdersStory":
+      PA.addStoryDo(c, (s) => { s.stage = 2; s.sel = Object.fromEntries((a[0] as string[]).map((k) => [k, true])); });
+      return PA.addOrdersStory(w, c, fx);
     case "walkin": {
       const sp = a[0] as { mrn: string; type: string; clinic: string; doctor: string; slot: string | null; payer: string; items: string[] };
       const d = PA.payerDraft(sp.mrn, CONSULT_FEES[sp.clinic] || 200, w.patients[sp.mrn]!.activePayerId || null);

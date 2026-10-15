@@ -154,6 +154,21 @@
     "subMany": "{{count}} invoice(s) on credit across visits. The rest stays on the account.",
     "selected": "{{chosen}} of {{count}} invoice(s) selected"
   },
+  "addorders": {
+    "q": "What does {{first}} need?",
+    "sub": "Tests and packages that need no doctor can be added here.",
+    "next": "Next · review",
+    "nextN": "Next · review ({{count}} · {{total}})",
+    "reviewQ": "Add {{count}} order(s) to the visit?",
+    "reviewSub": "No doctor needed · billed to {{first}} at the cash price",
+    "change": "change",
+    "patientPays": "patient pays",
+    "hintOpen": "They go straight to Orders invoicing to be billed.",
+    "hintLater": "They are billed in Orders invoicing once the doctor has seen the patient.",
+    "go": "Add {{count}} order(s)",
+    "done": "{{count}} order(s) added",
+    "doneSub": "{{names}} · {{total}} at the cash price"
+  },
   "payer": {
     "checking": "Checking eligibility with NPHIES…",
     "lookingUp": "Looking up active policies for {{name}}.",
@@ -861,6 +876,8 @@
     }
   },
   "toast": {
+    "ordersAdded": "Orders added",
+    "ordersAddedSub": "{{name}} · {{count}} order(s)",
     "linkCancelled": "Link cancelled",
     "back": "Back",
     "nothingCharged": "Nothing was charged.",
