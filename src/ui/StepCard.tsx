@@ -38,6 +38,10 @@ export function StepCard({ c, s, top }: { c: Visit; s: NextStep; top?: ReactNode
   const run = (id: StepAction["id"]) => {
     if (id === "openDrawer") return openDrawer(c.id, c.mrn, due(c));
     if (id === "lwbs") return set({ lwbsPop: { caseId: c.id, reason: "" } });
+    if (id === "voidPrint") {
+      const inv = c.invoices.find((i) => !i.voided);
+      return inv && set({ voidPop: { caseId: c.id, invId: inv.id, reason: "" } });
+    }
     const fn = STEP_RUN[id];
     if (fn) act(c.id, fn);
   };

@@ -39,6 +39,7 @@ export function LwbsModal() {
             </div>
             {liveInvoices(c).some((i) => refundable(w, i)) && (
               <Alert status="warning">
+                <Alert.Indicator />
                 <Alert.Content><Alert.Description>{t("lwbs.hint")}</Alert.Description></Alert.Content>
               </Alert>
             )}

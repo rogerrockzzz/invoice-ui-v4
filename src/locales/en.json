@@ -992,7 +992,12 @@
     "pkgBooked": "<b>Visit booked for {{count}} package procedure(s)</b>",
     "pkgBookedSub": "{{names}} · from {{parent}} · already paid on {{inv}} · no charge",
     "pkgBookedSrc": "<b>{{count}} package procedure(s) booked for another day</b>",
-    "pkgBookedSrcSub": "{{names}} · {{clinic}} · still part of {{parent}}"
+    "pkgBookedSrcSub": "{{names}} · {{clinic}} · still part of {{parent}}",
+    "pkgPrinted": "<b>Package procedure invoice printed</b> — {{id}}",
+    "pkgPrintedSub": "{{names}} · no charge · already paid inside {{parent}} on {{inv}}",
+    "thePackage": "the package",
+    "pkgVoided": "<b>Package procedure print undone</b> — {{id}} voided",
+    "pkgVoidedSub": "{{names}} · {{reason}} · no money was involved · can be printed again"
   },
   "ledger": {
     "consultation": "consultation",
@@ -1107,7 +1112,11 @@
     "visitBooked": "Visit booked",
     "visitBookedSub": "{{name}} · {{count}} package procedure(s) · no charge",
     "nothingToBook": "Nothing left to book",
-    "nothingToBookSub": "Every procedure in the package has a visit."
+    "nothingToBookSub": "Every procedure in the package has a visit.",
+    "pkgPrinted": "Invoice {{id}} printed",
+    "pkgPrintedSub": "{{name}} · no charge · paid inside the package",
+    "pkgVoided": "Print undone · {{id}}",
+    "pkgVoidedSub": "{{name}} · the procedure can be printed again"
   },
   "pkg": {
     "q1": "Book a visit for {{name}}?",
@@ -1135,6 +1144,17 @@
       "hidden": "{{count}} procedure(s) already have a visit booked and are not shown.",
       "cancel": "Cancel",
       "go": "Create the visit · {{count}} procedure(s)"
+    },
+    "void": {
+      "title": "Undo the printed invoice {{id}}?",
+      "sub": "{{name}} · {{type}} · {{clinic}} · printed {{at}}",
+      "noMoney": "No money was charged on this invoice.",
+      "what": "{{id}} is marked void and the procedure goes back to <b>not yet printed</b>.",
+      "line": "{{code}} · no charge",
+      "reason": "Reason",
+      "reasonPh": "e.g. printed on the wrong visit",
+      "keep": "Keep it",
+      "go": "Undo the print"
     }
   },
   "lwbs": {

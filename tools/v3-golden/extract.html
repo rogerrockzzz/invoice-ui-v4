@@ -183,6 +183,10 @@ f.onload = () => {
         ["pkgStory", 2, ["PKG-100-A", "PKG-100-C"], "CARDIOLOGY", "AHMED AL SUBAIE"],
         ["pkgBook", 2, ["PKG-100-B"], "ENT", "LINA FAROUK"],
       ] },
+      /* 3c: the package procedure visits print their nil invoice; a print is undone and printed again */
+      { name: "3c: the new package visits print, one print is undone from the pop-up and printed again", ops: [
+        ["printPkg", 104], ["voidPrint", 104, "printed on the wrong visit"], ["printPkg", 104], ["printPkg", 105],
+      ] },
     ];
     const caseOf = (id) => cases.find((x) => x.id === id);
     const S = E("state"), doc = w.document, R = (c) => E("renderPayerStory")(c), click = (root, sel) => root.querySelector(sel).click();
@@ -248,6 +252,11 @@ f.onload = () => {
         Object.assign(S.pkgBook, { sel: Object.fromEntries(a[0].map((k) => [k, true])), clinic: a[1], doctor: a[2] });
         E("render")(); doc.getElementById("pbGo").click();
       }
+      else if (op === "printPkg") nextStep(c).yes.fn();
+      else if (op === "voidPrint") {
+        S.voidPop = { c, invId: c.invoices.find((i) => !i.voided).id, reason: a[0] };
+        E("render")(); doc.getElementById("vdGo").click();
+      }
       else if (op === "lwbs") { S.lwbsPop = { c, reason: a[0] || "" }; E("render")(); doc.getElementById("lwGo").click(); }
       else if (op === "addOrdersStory") {
         c.addStory = { stage: 2, sel: Object.fromEntries(a[0].map((k) => [k, true])), q: "" };
@@ -281,7 +290,9 @@ f.onload = () => {
         E("payAll")(c, via, detail || "", parts);
       } else E(op)(c);
     }
-    const norm = (s) => String(s ?? "").replace(/\s+/g, " ").trim().replace(/\b\d\d:\d\d\b/g, "HH:MM");
+    /* v3 writes an invoice link as an anchor; v4's texts mark it <inv>…</inv> (ui/Rich.tsx) */
+    const norm = (s) => String(s ?? "").replace(/<a class="invlink" data-inv="[^"]*">([^<]*)<\/a>/g, "<inv>$1</inv>")
+      .replace(/\s+/g, " ").trim().replace(/\b\d\d:\d\d\b/g, "HH:MM");
     function snap(c) {
       const s = nextStep(c), p = patients[c.mrn], stories = visitStories(c);
       return {
@@ -296,7 +307,8 @@ f.onload = () => {
           via: i.via, viaDetail: norm(i.viaDetail), payments: i.payments || null, payer: i.payer, branch: i.branch || null, cashOnly: !!i.cashOnly,
           billType: i.billType || null, rows: i.rows.map((r) => r.code + (r.refunded ? ":refunded" : "")),
           refunded: i.refundedTotal || 0, refunds: (i.refunds || []).map((r) => `${r.amount}:${r.mode}:${norm(r.reason)}:${norm(r.detail)}:${r.codes.join("+")}:${r.refundInvoiceId}`),
-          replaced: i.replaced ? `${i.replaced.newId}:${i.replaced.to}` : null, replaces: i.replaces || null, credited: i.credited || 0 })),
+          replaced: i.replaced ? `${i.replaced.newId}:${i.replaced.to}` : null, replaces: i.replaces || null, credited: i.credited || 0,
+          voided: i.voided ? norm(i.voided.reason) : null, packagePrint: i.packagePrint ? `${i.packagePrint.parent}:${i.packagePrint.invoiceId}` : null })),
         refundInvoices: (c.refundInvoices || []).map((r) => `${r.id}:${r.refOf}:${r.patient}:${r.company}:${r.deductible}:${r.via}:${norm(r.viaDetail)}:${norm(r.reason)}:${r.payer}:${r.rows.map((x) => x.code).join("+")}`),
         history: c.history.map((h) => ({ ic: h.ic || "", tx: norm(h.tx), sub: norm(h.sub), type: h.type || "", by: h.by || "",
           invoiceId: h.invoiceId || null, amount: h.amount ?? null, mode: h.mode || null })),

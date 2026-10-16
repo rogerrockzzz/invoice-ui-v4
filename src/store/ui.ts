@@ -58,6 +58,8 @@ export interface UiState {
   lwbsPop: { caseId: number; reason: string } | null;
   /* v3 state.pkgBook: the profile's "Book a visit for package procedures" pop-up */
   pkgBook: PkgBookUi | null;
+  /* v3 state.voidPop: undoing a package procedure's printed invoice asks why */
+  voidPop: { caseId: number; invId: string; reason: string } | null;
   /* the refund being worked in its visit's Refund story (v3 state.refund) */
   refund: RefundUi | null;
   /* the replacement being worked in its visit's Replace story (v3 state.replace) */
@@ -107,7 +109,7 @@ const initial = () => ({
   screen: "home" as Screen, tabs: [] as string[], activeMrn: null, caseId: null, q: "", homeSel: null, homePanel: null,
   walletOpen: false, profPendOpen: true, pendView: "today" as PendView, profVisitsOpen: true, vf: { no: "", from: "", to: "" },
   visGroup: false, pinvOpen: false, pkgOpen: false,
-  drawer: null, eventPop: null, invPop: null, histOpen: true, comment: null, simOpen: false, lwbsPop: null, pkgBook: null as PkgBookUi | null, refund: null as RefundUi | null, replace: null as ReplaceUi | null,
+  drawer: null, eventPop: null, invPop: null, histOpen: true, comment: null, simOpen: false, lwbsPop: null, pkgBook: null as PkgBookUi | null, voidPop: null, refund: null as RefundUi | null, replace: null as ReplaceUi | null,
   wallet: null, adv: null, profPayer: null, walkin: null,
   invF: defaultInvFilters(), invQ: "", invLoaded: null, invEdit: false, invGroup: false,
 });

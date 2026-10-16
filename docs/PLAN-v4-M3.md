@@ -41,10 +41,10 @@ pop-up's "Paid inside" / "Void" lines). M3 adds the actions, the UI and the gold
   visit" creates the Package procedure visit and the done card opens it; profile "Package procedures" card offers
   "book a visit ›" / "Book a visit" / "Open visit"; pop-up with list, hint for already-booked, clinic & doctor,
   "Create the visit · N procedure(s)" opens the new visit; golden + e2e.
-- [ ] 3c: Package procedure visit — PKG_PRINT "Yes, print it" raises a nil invoice (via Package, "Paid inside"), PKG_DONE
+- [x] 3c: Package procedure visit — PKG_PRINT "Yes, print it" raises a nil invoice (via Package, "Paid inside"), PKG_DONE
   "Undo the print · INV-…" opens the void pop-up (reason ≥ 3 chars), the invoice shows Void and the procedure can be
   printed again; golden + e2e.
-- [ ] `npm run verify` green; PARITY.md updated (no `deferred-M3` left); AGENTS.md "Learned in M3".
+- [x] `npm run verify` green; PARITY.md updated (no `deferred-M3` left); AGENTS.md "Learned in M3".
 
 ---
 

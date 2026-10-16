@@ -86,7 +86,7 @@ export function PkgList({ items, sel, line, onToggle }: {
         const on = !!sel[x.child.code];
         return (
           <li key={`${x.inv.id}-${x.child.code}`} className={`flex items-center gap-3 px-3 py-2 ${on ? "bg-accent/5" : ""}`} data-testid="pkg-row" data-code={x.child.code}>
-            <Checkbox isSelected={on} aria-label={t("pkg.tick", { name: x.child.name })} onChange={(v) => onToggle(x.child.code, v)}>
+            <Checkbox variant="secondary" isSelected={on} aria-label={t("pkg.tick", { name: x.child.name })} onChange={(v) => onToggle(x.child.code, v)}>
               <Checkbox.Content><Checkbox.Control><Checkbox.Indicator /></Checkbox.Control></Checkbox.Content>
             </Checkbox>
             <span className="min-w-0 flex-1 leading-tight">

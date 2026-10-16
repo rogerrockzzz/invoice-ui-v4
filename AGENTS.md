@@ -3,7 +3,7 @@
 ## Start here
 - Plan for Milestone 1 (checkpoints 1a / 1b / 1c): `docs/PLAN-v4-M1.md` — read §0–§6, then your checkpoint.
 - Milestone 2 (2a Add orders / 2b Refund / 2c Replace): `docs/PLAN-v4-M2.md` (done).
-- Milestone 3 (3a LWBS / 3b Package booking / 3c Package procedure): `docs/PLAN-v4-M3.md`. M4 still to be planned.
+- Milestone 3 (3a LWBS / 3b Package booking / 3c Package procedure): `docs/PLAN-v4-M3.md` (done). M4 still to be planned.
 - Progress and v3 drift: `docs/PARITY.md` (every v3 declaration → v4 module, checkpoint, status).
 - UI library skill: `.devin/skills/heroui-react/` (HeroUI **v3** only). Fetch component docs before use:
   `node .devin/skills/heroui-react/scripts/get_component_docs.mjs <Component>`.
@@ -82,3 +82,15 @@
   each op so v3's storyStage does not read leftover UI state. The flow snapshot now also carries refunds / replaced /
   refund invoices — keep `snap` identical in `extract.html` and `flows.test.ts`.
 - `useWorld.getState().actW` is how a UI action gets a result back from a visit action (e.g. `doReplace` → refundDiff).
+
+## Learned in M3
+- Pop-ups that a step opens (`ui.lwbsPop`, `ui.voidPop`) are UI state: `StepCard.run` handles their action ids (`lwbs`,
+  `voidPrint`) like `openDrawer`; `STEP_LATER` is empty now (the "Coming in …" mechanism stays for M4).
+- Package actions are in `store/package.ts` (createPkgVisit → returns the new id, bookPackageStory, printPackageOrders,
+  voidPrint); the profile pop-up is `openPkgBook` / `confirmPkgBook` in `store/ui.ts`. New package visits take ids from
+  `nextVisitId()` after the walk-ins, so golden ops address them as 104, 105.
+- v3 step texts with invoice links contain `<a class="invlink" …>`; both `norm`s (extractor + flows.test) turn them into
+  `<inv>…</inv>`. The flow snapshot also carries `pkg` (package children → visit), `visitIds`, and per invoice `voided` /
+  `packagePrint` — keep `snap` identical on both sides.
+- e2e: a Checkbox inside a Disclosure that has just expanded may be moving — `click({ force: true })` can miss; use
+  `dispatchEvent("click")`. The stepper shows stage names too, so assert toasts by their sub-line, not a bare title.

@@ -16,6 +16,7 @@ import { PaymentDrawer } from "./features/drawer/PaymentDrawer";
 import { AdvanceDrawer } from "./features/wallet/AdvanceDrawer";
 import { SimulatePanel } from "./features/sim/SimulatePanel";
 import { InvoicesScreen } from "./features/invoices/InvoicesScreen";
+import { VoidPrintModal } from "./features/stories/VoidPrintModal";
 
 export default function App() {
   const { i18n } = useTranslation();
@@ -47,6 +48,7 @@ export default function App() {
       <InvoiceModal />
       <LwbsModal />
       <PkgBookModal />
+      <VoidPrintModal />
       <SimulatePanel />
       <Toast.Provider placement="top end" maxVisibleToasts={3} />
     </>

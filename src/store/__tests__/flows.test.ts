@@ -26,7 +26,9 @@ import { refundCalc, refundStart } from "../../domain/refund";
    after every op with what v3 itself produced: steps, stages, bills, invoices, history, wallet, ledger. */
 const t = i18n.t.bind(i18n);
 const text = (m: Parameters<typeof resolveMsg>[1]) => resolveMsg(t, m);
-const norm = (s: unknown) => String(s ?? "").replace(/\s+/g, " ").trim().replace(/\b\d\d:\d\d\b/g, "HH:MM");
+/* v3 writes an invoice link as an anchor; v4's texts mark it <inv>…</inv> (ui/Rich.tsx) */
+const norm = (s: unknown) => String(s ?? "").replace(/<a class="invlink" data-inv="[^"]*">([^<]*)<\/a>/g, "<inv>$1</inv>")
+  .replace(/\s+/g, " ").trim().replace(/\b\d\d:\d\d\b/g, "HH:MM");
 const fx: A.Fx = { toast: () => {} };
 
 type Op = [string, number, ...unknown[]];
@@ -98,6 +100,8 @@ function runOp(w: World, [op, id, ...a]: Op) {
       const id = PK.createPkgVisit(w, { mrn: c.mrn, clinic, doctor }, PK.pkgChosen(w, c.mrn, Object.fromEntries(codes.map((k) => [k, true]))), fx);
       return A.openedVisit(w, w.cases.find((x) => x.id === id)!); /* the pop-up opens the new visit */
     }
+    case "printPkg": return PK.printPackageOrders(w, c, approvedOrders(c), fx);
+    case "voidPrint": return PK.voidPrint(w, c, c.invoices.find((i) => !i.voided)!.id, (a[0] as string).trim(), fx);
     case "addOrdersStory":
       PA.addStoryDo(c, (s) => { s.stage = 2; s.sel = Object.fromEntries((a[0] as string[]).map((k) => [k, true])); });
       return PA.addOrdersStory(w, c, fx);
@@ -156,7 +160,8 @@ function snap(w: World, c: Visit) {
       via: i.via, viaDetail: norm(i.viaDetail), payments: i.payments || null, payer: i.payer, branch: i.branch || null, cashOnly: !!i.cashOnly,
       billType: i.billType || null, rows: i.rows.map((r) => r.code + (r.refunded ? ":refunded" : "")),
       refunded: i.refundedTotal || 0, refunds: (i.refunds || []).map((r) => `${r.amount}:${r.mode}:${norm(r.reason)}:${norm(r.detail)}:${r.codes.join("+")}:${r.refundInvoiceId}`),
-      replaced: i.replaced ? `${(i.replaced as { newId: string }).newId}:${(i.replaced as { to: string }).to}` : null, replaces: i.replaces || null, credited: i.credited || 0 })),
+      replaced: i.replaced ? `${(i.replaced as { newId: string }).newId}:${(i.replaced as { to: string }).to}` : null, replaces: i.replaces || null, credited: i.credited || 0,
+      voided: i.voided ? norm((i.voided as { reason: string }).reason) : null, packagePrint: i.packagePrint ? `${i.packagePrint.parent}:${i.packagePrint.invoiceId}` : null })),
     refundInvoices: (c.refundInvoices || []).map((r) => `${r.id}:${r.refOf}:${r.patient}:${r.company}:${r.deductible}:${r.via}:${norm(r.viaDetail)}:${norm(r.reason)}:${r.payer}:${r.rows.map((x) => x.code).join("+")}`),
     history: c.history.map((h) => ({ ic: h.ic || "", tx: norm(h.tx), sub: norm(h.sub), type: h.type || "", by: h.by || "",
       invoiceId: h.invoiceId || null, amount: h.amount ?? null, mode: h.mode || null })),

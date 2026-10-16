@@ -1,8 +1,9 @@
 import { now } from "../domain/clock";
 import { USER } from "../domain/constants";
-import { nextVisitId } from "../domain/ids";
+import { newInvoiceId, nextVisitId } from "../domain/ids";
+import { payerOf, pt } from "../domain/lookup";
 import { packageItemsLeft, type PkgItem } from "../domain/replace";
-import type { PkgStory, Visit, World } from "../domain/types";
+import type { Invoice, Line, PkgStory, Visit, World } from "../domain/types";
 import { markDone, t, type Fx } from "./actions";
 import { recordOn } from "./world";
 
@@ -57,6 +58,39 @@ export function bookPackageStory(w: World, c: Visit, fx: Fx) {
   markDone(c, "package", t("pkg.done", { count: chosen.length }), t("pkg.doneSub", { names: names(chosen), clinic: ps.clinic, doctor: ps.doctor }));
   c.storyDone!.package!.visitId = id;
   c.pkgStory = null;
+}
+
+/* v3 printPackageOrders() (line 4932): the package was paid once; performing a child procedure only produces its own
+   printed invoice, at nil value, linked to this visit */
+export function printPackageOrders(w: World, c: Visit, lines: Line[], fx: Fx) {
+  if (!lines.length) return;
+  const src = lines[0]!.fromPackage || {};
+  const zero = { gross: 0, discount: 0, net: 0, deductible: 0, patient: 0, company: 0, patientWithTax: 0, companyWithTax: 0 };
+  const inv: Invoice = {
+    id: newInvoiceId(), scope: "orders", at: now(), patient: 0, company: 0, deductible: 0, paid: true, via: "Package", viaDetail: "",
+    payer: payerOf(w, c).label, packagePrint: { parent: src.parent, invoiceId: src.invoiceId },
+    rows: lines.map((l) => ({ name: l.name, code: l.code, calc: { ...zero } })),
+  };
+  c.invoices.unshift(inv);
+  lines.forEach((l) => { l.paid = true; l.via = "Package"; l.invoiceId = inv.id; });
+  c.bill = null; c.link = null;
+  recordOn(c, "", t("hist.pkgPrinted", { id: inv.id }),
+    t("hist.pkgPrintedSub", { names: lines.map((l) => l.name).join(", "), parent: src.parent || t("hist.thePackage"), inv: src.invoiceId }),
+    { type: "PKGPRINT", invoiceId: inv.id, amount: 0, mode: "Package", scope: "orders", lines: lines.map((l) => ({ name: l.name, code: l.code, ins: "notcovered", price: 0 })) });
+  fx.toast("ok", t("toast.pkgPrinted", { id: inv.id }), t("toast.pkgPrintedSub", { name: pt(w, c).name }));
+}
+
+/* v3 voidPrint() (line 4989): nothing was charged, so undoing the print voids it and hands the procedure back */
+export function voidPrint(w: World, c: Visit, invId: string, reason: string, fx: Fx) {
+  const inv = c.invoices.find((i) => i.id === invId);
+  if (!inv) return;
+  inv.voided = { at: now(), by: USER, reason };
+  inv.paid = false;
+  /* the procedure returns to this visit as not yet printed */
+  c.orders.filter((o) => o.invoiceId === invId).forEach((o) => { o.invoiceId = null; o.paid = false; o.via = null; });
+  recordOn(c, "w", t("hist.pkgVoided", { id: invId }), t("hist.pkgVoidedSub", { names: inv.rows.map((r) => r.name).join(", "), reason }),
+    { type: "VOID", invoiceId: invId, amount: 0, reason, lines: inv.rows.map((r) => ({ name: r.name, code: r.code, ins: "notcovered", price: 0 })) });
+  fx.toast("warn", t("toast.pkgVoided", { id: invId }), t("toast.pkgVoidedSub", { name: pt(w, c).name }));
 }
 
 /* v3 openPkgBook() (line 5099): the profile's pop-up, on the procedure asked for */

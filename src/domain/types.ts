@@ -152,7 +152,8 @@ export interface Invoice {
   settledAt?: string;
   voided?: unknown;
   replaced?: unknown;
-  packagePrint?: boolean;
+  /* a package procedure's nil invoice: the package it was paid inside (v3 printPackageOrders) */
+  packagePrint?: { parent?: string; invoiceId?: string };
   claimed?: boolean;
   branch?: string | null;
   replaces?: string[] | null;

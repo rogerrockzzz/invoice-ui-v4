@@ -3,6 +3,7 @@ import type { ActionId } from "../domain/steps";
 import { activeStory } from "../domain/stories";
 import type { Visit, World } from "../domain/types";
 import * as A from "./actions";
+import * as PK from "./package";
 import * as RP from "./replace";
 
 /* what each nextStep() action id does — the closures v3 builds inside nextStep (lines 3025–3229).
@@ -26,7 +27,8 @@ export const STEP_RUN: Partial<Record<ActionId, (w: World, c: Visit, fx: A.Fx) =
   undoReplace: RP.undoReplace,
   billCashUrgent: (w, c) => { A.startCashBill(w, c, pendingOrders(c).filter((o) => !o.paid && !o.invoiceId)); },
   undoLwbs: A.undoLwbs,
+  printPackage: (w, c, fx) => PK.printPackageOrders(w, c, approvedOrders(c), fx),
 };
 
-/* entry points that belong to later work: shown where v3 has them, disabled */
-export const STEP_LATER: Partial<Record<ActionId, string>> = { printPackage: "M3", voidPrint: "M3" };
+/* entry points that belong to later work: shown where v3 has them, disabled (none left after M3) */
+export const STEP_LATER: Partial<Record<ActionId, string>> = {};

@@ -1,6 +1,6 @@
 {
  "build": "no-invoice-until-payment",
- "generatedAt": "2026-10-16T05:47:19.098Z",
+ "generatedAt": "2026-10-16T05:54:42.516Z",
  "calc": [
   {
    "plan": "none",
@@ -8671,7 +8671,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -9763,7 +9765,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -9941,7 +9945,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -10128,7 +10134,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -10325,7 +10333,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -10556,7 +10566,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -10801,7 +10813,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -11056,7 +11070,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -11320,7 +11336,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -11604,7 +11622,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -11889,7 +11909,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -12173,7 +12195,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -12477,7 +12501,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -12778,7 +12804,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-572127",
@@ -12801,7 +12829,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -13111,7 +13141,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-572127",
@@ -13134,350 +13166,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
-      }
-     ],
-     "refundInvoices": [],
-     "history": [
-      {
-       "ic": "i",
-       "tx": "<b>Approval received</b> for 1 order(s)",
-       "sub": "Thyroid Panel",
-       "type": "APPROVAL",
-       "by": "TAWUNIYA",
-       "invoiceId": null,
-       "amount": null,
-       "mode": null
-      },
-      {
-       "ic": "",
-       "tx": "<b>Orders paid</b> — SAR 305.90",
-       "sub": "Span · 4417 · 884120 · invoice INV-761880 created · SAR 338.10 to TAWUNIYA",
-       "type": "PAYMENT",
-       "by": "SAADAN SAAFAN",
-       "invoiceId": "INV-761880",
-       "amount": 305.9,
-       "mode": "Span"
-      },
-      {
-       "ic": "i",
-       "tx": "<b>Payment link cancelled</b>",
-       "sub": "Nothing was charged",
-       "type": "LINKCANCEL",
-       "by": "SAADAN SAAFAN",
-       "invoiceId": null,
-       "amount": null,
-       "mode": null
-      },
-      {
-       "ic": "i",
-       "tx": "<b>Payment link sent</b> — SAR 305.90",
-       "sub": "To 0553 220 118",
-       "type": "LINK",
-       "by": "SAADAN SAAFAN",
-       "invoiceId": null,
-       "amount": 305.9,
-       "mode": "Payment link"
-      },
-      {
-       "ic": "i",
-       "tx": "<b>Held orders released for billing</b>",
-       "sub": "2 approved order(s) will be billed now; 1 still awaiting approval",
-       "type": "HOLD",
-       "by": "SAADAN SAAFAN",
-       "invoiceId": null,
-       "amount": null,
-       "mode": null
-      },
-      {
-       "ic": "w",
-       "tx": "<b>Approval checked</b> — no answer yet",
-       "sub": "TAWUNIYA · 1 order(s) still pending",
-       "type": "CHECK",
-       "by": "SAADAN SAAFAN",
-       "invoiceId": null,
-       "amount": null,
-       "mode": null
-      },
-      {
-       "ic": "i",
-       "tx": "<b>Holding for the remaining approvals</b>",
-       "sub": "2 approved order(s) held back so everything is billed together",
-       "type": "HOLD",
-       "by": "SAADAN SAAFAN",
-       "invoiceId": null,
-       "amount": null,
-       "mode": null
-      },
-      {
-       "ic": "i",
-       "tx": "<b>Dr HUDA placed 3 orders</b>",
-       "sub": "2 approved · 1 awaiting approval",
-       "type": "ORDERS",
-       "by": "Dr HUDA AL MUTAIRI",
-       "invoiceId": null,
-       "amount": null,
-       "mode": null
-      },
-      {
-       "ic": "i",
-       "tx": "<b>Dr Huda started the consultation</b>",
-       "sub": "NOURA AL HARBI is with the doctor",
-       "type": "CLINICAL",
-       "by": "Dr HUDA AL MUTAIRI",
-       "invoiceId": null,
-       "amount": null,
-       "mode": null
-      },
-      {
-       "ic": "w",
-       "tx": "<b>Checked</b> — the doctor has not started yet",
-       "sub": "NOURA AL HARBI is waiting to be seen",
-       "type": "CHECK",
-       "by": "SAADAN SAAFAN",
-       "invoiceId": null,
-       "amount": null,
-       "mode": null
-      },
-      {
-       "ic": "",
-       "tx": "<b>Consultation paid</b> — SAR 71.88",
-       "sub": "Payment link · invoice INV-572127 created · SAR 215.62 to TAWUNIYA",
-       "type": "PAYMENT",
-       "by": "SAADAN SAAFAN",
-       "invoiceId": "INV-572127",
-       "amount": 71.88,
-       "mode": "Payment link"
-      },
-      {
-       "ic": "i",
-       "tx": "<b>Payment link resent</b> — SAR 71.88",
-       "sub": "To 0553 220 118",
-       "type": "LINK",
-       "by": "SAADAN SAAFAN",
-       "invoiceId": null,
-       "amount": 71.88,
-       "mode": "Payment link"
-      },
-      {
-       "ic": "i",
-       "tx": "<b>Payment link sent</b> — SAR 71.88",
-       "sub": "To 0553 220 118",
-       "type": "LINK",
-       "by": "SAADAN SAAFAN",
-       "invoiceId": null,
-       "amount": 71.88,
-       "mode": "Payment link"
-      },
-      {
-       "ic": "i",
-       "tx": "<b>Approval received</b> for the consultation",
-       "sub": "TAWUNIYA · approved in full",
-       "type": "APPROVAL",
-       "by": "TAWUNIYA",
-       "invoiceId": null,
-       "amount": null,
-       "mode": null
-      },
-      {
-       "ic": "i",
-       "tx": "<b>Visit created</b> at reception",
-       "sub": "Approval requested from Tawuniya",
-       "type": "VISIT",
-       "by": "SAADAN SAAFAN",
-       "invoiceId": null,
-       "amount": null,
-       "mode": null
-      }
-     ],
-     "wallet": {
-      "Open": 200,
-      "Doctor": 0,
-      "Clinic": 0
-     },
-     "credit": 0,
-     "ledger": [
-      {
-       "type": "ADV_IN",
-       "amount": 200,
-       "note": "Open advance received at registration",
-       "invoiceId": null,
-       "visitId": 3,
-       "docId": "ADV-400104"
-      }
-     ],
-     "visit": {
-      "type": "Consultation",
-      "clinic": "DERMATOLOGY",
-      "doctor": "HUDA AL MUTAIRI",
-      "slot": null,
-      "consult": {
-       "name": "Dermatology Consultation",
-       "code": "CON-402",
-       "price": 250
-      }
-     },
-     "payerId": "TAW-SILVER",
-     "policy": null,
-     "payers": [
-      "TAW-SILVER",
-      "CASH"
-     ],
-     "payerStory": null,
-     "done": {},
-     "settled": [],
-     "appr": [
-      null,
-      null,
-      null,
-      null
-     ],
-     "docs": [
-      "ADV-400104:ADV_IN:200:3::Open advance received at registration"
-     ],
-     "pkg": [],
-     "visitIds": [
-      3
-     ]
-    },
-    {
-     "step": "ORDERS_BILL",
-     "q": "1 procedure(s) were ordered and are approved. Bill them?",
-     "sub": "Nothing else is waiting on approval.",
-     "amt": 74.75,
-     "buttons": [
-      "Yes, bill them"
-     ],
-     "stories": [
-      "visit",
-      "orders",
-      "refund",
-      "addorders"
-     ],
-     "active": "orders",
-     "stages": {
-      "visit": {
-       "index": 4,
-       "skipped": [],
-       "complete": true
-      },
-      "orders": {
-       "index": 2,
-       "skipped": []
-      },
-      "refund": {
-       "index": 0,
-       "skipped": []
-      },
-      "addorders": {
-       "index": 0,
-       "skipped": []
-      }
-     },
-     "due": 0,
-     "dedUsed": 160.5,
-     "link": null,
-     "waitAll": false,
-     "bill": null,
-     "lines": [
-      {
-       "code": "CON-402",
-       "ins": "approved",
-       "price": 250,
-       "paid": true,
-       "via": "Payment link",
-       "invoiceId": "INV-572127",
-       "urgentCash": false,
-       "approvalPending": false,
-       "refunded": false
-      },
-      {
-       "code": "LAB-022",
-       "ins": "approved",
-       "price": 140,
-       "paid": true,
-       "via": "Span",
-       "invoiceId": "INV-761880",
-       "urgentCash": false,
-       "approvalPending": false,
-       "refunded": false
-      },
-      {
-       "code": "RAD-018",
-       "ins": "partial",
-       "price": 420,
-       "paid": true,
-       "via": "Span",
-       "invoiceId": "INV-761880",
-       "urgentCash": false,
-       "approvalPending": false,
-       "refunded": false
-      },
-      {
-       "code": "LAB-440",
-       "ins": "approved",
-       "price": 260,
-       "paid": false,
-       "via": null,
-       "invoiceId": null,
-       "urgentCash": false,
-       "approvalPending": false,
-       "refunded": false
-      }
-     ],
-     "invoices": [
-      {
-       "id": "INV-761880",
-       "scope": "orders",
-       "patient": 305.9,
-       "company": 338.1,
-       "deductible": 98,
-       "paid": true,
-       "via": "Span",
-       "viaDetail": "4417 · 884120",
-       "payments": [
-        {
-         "mode": "Span",
-         "amount": 305.9,
-         "ref": "4417 · 884120"
-        }
-       ],
-       "payer": "TAWUNIYA · SILVER",
-       "branch": null,
-       "cashOnly": false,
-       "billType": "insurance",
-       "rows": [
-        "LAB-022",
-        "RAD-018"
-       ],
-       "refunded": 0,
-       "refunds": [],
-       "replaced": null,
-       "replaces": null,
-       "credited": 0
-      },
-      {
-       "id": "INV-572127",
-       "scope": "consult",
-       "patient": 71.88,
-       "company": 215.62,
-       "deductible": 62.5,
-       "paid": true,
-       "via": "Payment link",
-       "viaDetail": "",
-       "payments": null,
-       "payer": "TAWUNIYA · SILVER",
-       "branch": null,
-       "cashOnly": false,
-       "billType": "insurance",
-       "rows": [
-        "CON-402"
-       ],
-       "refunded": 0,
-       "refunds": [],
-       "replaced": null,
-       "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -13797,7 +13488,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-572127",
@@ -13820,7 +13513,356 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
+      }
+     ],
+     "refundInvoices": [],
+     "history": [
+      {
+       "ic": "i",
+       "tx": "<b>Approval received</b> for 1 order(s)",
+       "sub": "Thyroid Panel",
+       "type": "APPROVAL",
+       "by": "TAWUNIYA",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "",
+       "tx": "<b>Orders paid</b> — SAR 305.90",
+       "sub": "Span · 4417 · 884120 · invoice INV-761880 created · SAR 338.10 to TAWUNIYA",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-761880",
+       "amount": 305.9,
+       "mode": "Span"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Payment link cancelled</b>",
+       "sub": "Nothing was charged",
+       "type": "LINKCANCEL",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Payment link sent</b> — SAR 305.90",
+       "sub": "To 0553 220 118",
+       "type": "LINK",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": 305.9,
+       "mode": "Payment link"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Held orders released for billing</b>",
+       "sub": "2 approved order(s) will be billed now; 1 still awaiting approval",
+       "type": "HOLD",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "w",
+       "tx": "<b>Approval checked</b> — no answer yet",
+       "sub": "TAWUNIYA · 1 order(s) still pending",
+       "type": "CHECK",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Holding for the remaining approvals</b>",
+       "sub": "2 approved order(s) held back so everything is billed together",
+       "type": "HOLD",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Dr HUDA placed 3 orders</b>",
+       "sub": "2 approved · 1 awaiting approval",
+       "type": "ORDERS",
+       "by": "Dr HUDA AL MUTAIRI",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Dr Huda started the consultation</b>",
+       "sub": "NOURA AL HARBI is with the doctor",
+       "type": "CLINICAL",
+       "by": "Dr HUDA AL MUTAIRI",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "w",
+       "tx": "<b>Checked</b> — the doctor has not started yet",
+       "sub": "NOURA AL HARBI is waiting to be seen",
+       "type": "CHECK",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "",
+       "tx": "<b>Consultation paid</b> — SAR 71.88",
+       "sub": "Payment link · invoice INV-572127 created · SAR 215.62 to TAWUNIYA",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-572127",
+       "amount": 71.88,
+       "mode": "Payment link"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Payment link resent</b> — SAR 71.88",
+       "sub": "To 0553 220 118",
+       "type": "LINK",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": 71.88,
+       "mode": "Payment link"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Payment link sent</b> — SAR 71.88",
+       "sub": "To 0553 220 118",
+       "type": "LINK",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": 71.88,
+       "mode": "Payment link"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Approval received</b> for the consultation",
+       "sub": "TAWUNIYA · approved in full",
+       "type": "APPROVAL",
+       "by": "TAWUNIYA",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Visit created</b> at reception",
+       "sub": "Approval requested from Tawuniya",
+       "type": "VISIT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      }
+     ],
+     "wallet": {
+      "Open": 200,
+      "Doctor": 0,
+      "Clinic": 0
+     },
+     "credit": 0,
+     "ledger": [
+      {
+       "type": "ADV_IN",
+       "amount": 200,
+       "note": "Open advance received at registration",
+       "invoiceId": null,
+       "visitId": 3,
+       "docId": "ADV-400104"
+      }
+     ],
+     "visit": {
+      "type": "Consultation",
+      "clinic": "DERMATOLOGY",
+      "doctor": "HUDA AL MUTAIRI",
+      "slot": null,
+      "consult": {
+       "name": "Dermatology Consultation",
+       "code": "CON-402",
+       "price": 250
+      }
+     },
+     "payerId": "TAW-SILVER",
+     "policy": null,
+     "payers": [
+      "TAW-SILVER",
+      "CASH"
+     ],
+     "payerStory": null,
+     "done": {},
+     "settled": [],
+     "appr": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "docs": [
+      "ADV-400104:ADV_IN:200:3::Open advance received at registration"
+     ],
+     "pkg": [],
+     "visitIds": [
+      3
+     ]
+    },
+    {
+     "step": "ORDERS_BILL",
+     "q": "1 procedure(s) were ordered and are approved. Bill them?",
+     "sub": "Nothing else is waiting on approval.",
+     "amt": 74.75,
+     "buttons": [
+      "Yes, bill them"
+     ],
+     "stories": [
+      "visit",
+      "orders",
+      "refund",
+      "addorders"
+     ],
+     "active": "orders",
+     "stages": {
+      "visit": {
+       "index": 4,
+       "skipped": [],
+       "complete": true
+      },
+      "orders": {
+       "index": 2,
+       "skipped": []
+      },
+      "refund": {
+       "index": 0,
+       "skipped": []
+      },
+      "addorders": {
+       "index": 0,
+       "skipped": []
+      }
+     },
+     "due": 0,
+     "dedUsed": 160.5,
+     "link": null,
+     "waitAll": false,
+     "bill": null,
+     "lines": [
+      {
+       "code": "CON-402",
+       "ins": "approved",
+       "price": 250,
+       "paid": true,
+       "via": "Payment link",
+       "invoiceId": "INV-572127",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      },
+      {
+       "code": "LAB-022",
+       "ins": "approved",
+       "price": 140,
+       "paid": true,
+       "via": "Span",
+       "invoiceId": "INV-761880",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      },
+      {
+       "code": "RAD-018",
+       "ins": "partial",
+       "price": 420,
+       "paid": true,
+       "via": "Span",
+       "invoiceId": "INV-761880",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      },
+      {
+       "code": "LAB-440",
+       "ins": "approved",
+       "price": 260,
+       "paid": false,
+       "via": null,
+       "invoiceId": null,
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      }
+     ],
+     "invoices": [
+      {
+       "id": "INV-761880",
+       "scope": "orders",
+       "patient": 305.9,
+       "company": 338.1,
+       "deductible": 98,
+       "paid": true,
+       "via": "Span",
+       "viaDetail": "4417 · 884120",
+       "payments": [
+        {
+         "mode": "Span",
+         "amount": 305.9,
+         "ref": "4417 · 884120"
+        }
+       ],
+       "payer": "TAWUNIYA · SILVER",
+       "branch": null,
+       "cashOnly": false,
+       "billType": "insurance",
+       "rows": [
+        "LAB-022",
+        "RAD-018"
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
+      },
+      {
+       "id": "INV-572127",
+       "scope": "consult",
+       "patient": 71.88,
+       "company": 215.62,
+       "deductible": 62.5,
+       "paid": true,
+       "via": "Payment link",
+       "viaDetail": "",
+       "payments": null,
+       "payer": "TAWUNIYA · SILVER",
+       "branch": null,
+       "cashOnly": false,
+       "billType": "insurance",
+       "rows": [
+        "CON-402"
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -14150,7 +14192,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-572127",
@@ -14173,7 +14217,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -14497,7 +14543,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-761880",
@@ -14527,7 +14575,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-572127",
@@ -14550,7 +14600,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -14893,7 +14945,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-761880",
@@ -14923,7 +14977,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-572127",
@@ -14946,7 +15002,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -15312,7 +15370,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-761880",
@@ -15342,7 +15402,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-572127",
@@ -15365,7 +15427,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -15799,7 +15863,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -16053,7 +16119,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -16307,7 +16375,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -16561,7 +16631,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -16824,7 +16896,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -17088,7 +17162,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -17353,7 +17429,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -17625,7 +17703,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-771204",
@@ -17648,7 +17728,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -17963,7 +18045,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-771204",
@@ -17986,7 +18070,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -18302,7 +18388,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-771204",
@@ -18325,7 +18413,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -18650,7 +18740,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-771204",
@@ -18673,7 +18765,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -19008,7 +19102,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-771204",
@@ -19031,7 +19127,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -19540,7 +19638,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -19753,7 +19853,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -19985,7 +20087,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -20202,7 +20306,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-276657",
@@ -20231,7 +20337,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -20569,7 +20677,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -20866,7 +20976,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -21402,7 +21514,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -21726,7 +21840,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-771204",
@@ -21749,7 +21865,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -22062,7 +22180,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -22370,7 +22490,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-771204",
@@ -22393,7 +22515,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -22794,7 +22918,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-771204",
@@ -22817,7 +22943,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -23237,7 +23365,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-771204",
@@ -23260,7 +23390,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -23685,7 +23817,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -23854,7 +23988,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -24025,7 +24161,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -27746,7 +27884,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -28298,7 +28438,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-660477",
@@ -28321,7 +28463,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -28530,7 +28674,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-660477",
@@ -28553,7 +28699,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -28763,7 +28911,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-660310",
@@ -28786,7 +28936,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-660477",
@@ -28809,7 +28961,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -29057,7 +29211,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-660310",
@@ -29080,7 +29236,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-660477",
@@ -29103,7 +29261,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -29400,7 +29560,9 @@
        ],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-660310",
@@ -29423,7 +29585,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-660477",
@@ -29446,7 +29610,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [
@@ -29720,7 +29886,9 @@
        ],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-660310",
@@ -29743,7 +29911,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-660477",
@@ -29766,7 +29936,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [
@@ -30008,7 +30180,9 @@
        ],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [
@@ -30276,7 +30450,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-438601",
@@ -30312,7 +30488,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-771204",
@@ -30335,7 +30513,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -30795,7 +30975,9 @@
        "replaces": [
         "INV-193111"
        ],
-       "credited": 874
+       "credited": 874,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-193111",
@@ -30824,7 +31006,9 @@
        "refunds": [],
        "replaced": "INV-826635:insurance",
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-438601",
@@ -30860,7 +31044,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-771204",
@@ -30883,7 +31069,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [
@@ -31639,7 +31827,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [],
@@ -31888,7 +32078,9 @@
        ],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [
@@ -32150,7 +32342,9 @@
        ],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [
@@ -32412,7 +32606,9 @@
        ],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [
@@ -32684,7 +32880,9 @@
        ],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [
@@ -32975,7 +33173,9 @@
        ],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [
@@ -33267,7 +33467,9 @@
        ],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [
@@ -33578,7 +33780,9 @@
        ],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [
@@ -33899,7 +34103,9 @@
        ],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [
@@ -34219,7 +34425,9 @@
        "replaces": [
         "INV-860007"
        ],
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-860007",
@@ -34250,7 +34458,9 @@
        ],
        "replaced": "INV-170499:insurance",
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [
@@ -34583,7 +34793,9 @@
        ],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [
@@ -34779,7 +34991,9 @@
        ],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [
@@ -34981,7 +35195,9 @@
        ],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [
@@ -35277,7 +35493,9 @@
        "replaces": [
         "INV-193111"
        ],
-       "credited": 874
+       "credited": 874,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-193111",
@@ -35306,7 +35524,9 @@
        "refunds": [],
        "replaced": "INV-826635:insurance",
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-438601",
@@ -35342,7 +35562,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-771204",
@@ -35365,7 +35587,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [
@@ -35879,7 +36103,9 @@
        "replaces": [
         "INV-193111"
        ],
-       "credited": 874
+       "credited": 874,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-193111",
@@ -35908,7 +36134,9 @@
        "refunds": [],
        "replaced": "INV-826635:insurance",
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-438601",
@@ -35944,7 +36172,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       },
       {
        "id": "INV-771204",
@@ -35967,7 +36197,9 @@
        "refunds": [],
        "replaced": null,
        "replaces": null,
-       "credited": 0
+       "credited": 0,
+       "voided": null,
+       "packagePrint": null
       }
      ],
      "refundInvoices": [
@@ -36320,6 +36552,1245 @@
       null,
       null,
       null,
+      null,
+      null
+     ],
+     "docs": [
+      "CRED-400101:CREDIT_RAISED:120:11:INV-731044:Consultation left unsettled",
+      "ADV-400102:ADV_IN:500:10::Open advance received",
+      "CRED-400103:CREDIT_RAISED:180:10:INV-742118:Orders left unsettled",
+      "ADV-400106:ADV_USED:173.69:2:INV-438601:Applied to orders · SAR 173.69 open",
+      "CRED-400108:CREDIT_RAISED:32.77:30:INV-331391:Consultation left unsettled",
+      "ADV-400109:ADV_IN:250:2::Doctor advance received",
+      "ADV-400110:ADV_IN:40.5:30::Clinic advance received",
+      "RADV-400111:ADV_REFUND:100:2::Open advance refunded · patient travelling",
+      "RADV-400112:ADV_REFUND:50:2::Doctor advance refunded · not continuing",
+      "CRED-400113:CREDIT_SETTLED:32.77:30:INV-331391:Settled by span",
+      "CRED-400114:CREDIT_SETTLED:180:10:INV-742118:Settled by span",
+      "CRED-400115:CREDIT_SETTLED:120:11:INV-731044:Settled by span",
+      "ADV-400118:REFUND_IN:874:2:INV-826635:Overpayment returned to the wallet · Replaced with insurance pricing"
+     ],
+     "pkg": [
+      "INV-438601:PKG-100-A:104",
+      "INV-438601:PKG-100-B:105",
+      "INV-438601:PKG-100-C:104",
+      "INV-438601:PKG-100-D:"
+     ],
+     "visitIds": [
+      30,
+      105,
+      104,
+      20,
+      101,
+      2,
+      10,
+      11
+     ]
+    }
+   ]
+  },
+  {
+   "name": "3c: the new package visits print, one print is undone from the pop-up and printed again",
+   "ops": [
+    [
+     "printPkg",
+     104
+    ],
+    [
+     "voidPrint",
+     104,
+     "printed on the wrong visit"
+    ],
+    [
+     "printPkg",
+     104
+    ],
+    [
+     "printPkg",
+     105
+    ]
+   ],
+   "snaps": [
+    {
+     "step": "PKG_DONE",
+     "q": "This package procedure has been recorded.",
+     "sub": "<inv>INV-585107</inv> printed at <b>no charge</b> · package paid on <inv>INV-438601</inv>.",
+     "amt": null,
+     "buttons": [
+      "Undo the print · INV-585107"
+     ],
+     "stories": [
+      "pkgvisit",
+      "refund",
+      "package"
+     ],
+     "active": "pkgvisit",
+     "stages": {
+      "pkgvisit": {
+       "index": 1,
+       "skipped": []
+      },
+      "refund": {
+       "index": 0,
+       "skipped": []
+      },
+      "package": {
+       "index": 0,
+       "skipped": []
+      }
+     },
+     "due": 0,
+     "dedUsed": 0,
+     "link": null,
+     "waitAll": false,
+     "bill": null,
+     "lines": [
+      {
+       "code": "CON-PKG",
+       "ins": "notcovered",
+       "price": 0,
+       "paid": true,
+       "via": null,
+       "invoiceId": null,
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      },
+      {
+       "code": "PKG-100-A",
+       "ins": "notcovered",
+       "price": 0,
+       "paid": true,
+       "via": "Package",
+       "invoiceId": "INV-585107",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      },
+      {
+       "code": "PKG-100-C",
+       "ins": "notcovered",
+       "price": 0,
+       "paid": true,
+       "via": "Package",
+       "invoiceId": "INV-585107",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      }
+     ],
+     "invoices": [
+      {
+       "id": "INV-585107",
+       "scope": "orders",
+       "patient": 0,
+       "company": 0,
+       "deductible": 0,
+       "paid": true,
+       "via": "Package",
+       "viaDetail": "",
+       "payments": null,
+       "payer": "BUPA · GOLD",
+       "branch": null,
+       "cashOnly": false,
+       "billType": null,
+       "rows": [
+        "PKG-100-A",
+        "PKG-100-C"
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0,
+       "voided": null,
+       "packagePrint": "Cardiac Care Package:INV-438601"
+      }
+     ],
+     "refundInvoices": [],
+     "history": [
+      {
+       "ic": "",
+       "tx": "<b>Package procedure invoice printed</b> — INV-585107",
+       "sub": "Treadmill Stress Test, Lipid Profile Recheck · no charge · already paid inside Cardiac Care Package on INV-438601",
+       "type": "PKGPRINT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-585107",
+       "amount": 0,
+       "mode": "Package"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Visit booked for 2 package procedure(s)</b>",
+       "sub": "Treadmill Stress Test, Lipid Profile Recheck · from Cardiac Care Package · already paid on INV-438601 · no charge",
+       "type": "PKGBOOK",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-438601",
+       "amount": null,
+       "mode": null
+      }
+     ],
+     "wallet": {
+      "Open": 1100.31,
+      "Doctor": 200,
+      "Clinic": 40.5
+     },
+     "credit": 0,
+     "ledger": [
+      {
+       "type": "REFUND_IN",
+       "amount": 874,
+       "note": "Overpayment returned to the wallet · Replaced with insurance pricing",
+       "invoiceId": "INV-826635",
+       "visitId": 2,
+       "docId": "ADV-400118"
+      },
+      {
+       "type": "CREDIT_SETTLED",
+       "amount": 120,
+       "note": "Settled by span",
+       "invoiceId": "INV-731044",
+       "visitId": 11,
+       "docId": "CRED-400115"
+      },
+      {
+       "type": "CREDIT_SETTLED",
+       "amount": 180,
+       "note": "Settled by span",
+       "invoiceId": "INV-742118",
+       "visitId": 10,
+       "docId": "CRED-400114"
+      },
+      {
+       "type": "CREDIT_SETTLED",
+       "amount": 32.77,
+       "note": "Settled by span",
+       "invoiceId": "INV-331391",
+       "visitId": 30,
+       "docId": "CRED-400113"
+      },
+      {
+       "type": "ADV_REFUND",
+       "amount": 50,
+       "note": "Doctor advance refunded · not continuing",
+       "invoiceId": null,
+       "visitId": 2,
+       "docId": "RADV-400112"
+      },
+      {
+       "type": "ADV_REFUND",
+       "amount": 100,
+       "note": "Open advance refunded · patient travelling",
+       "invoiceId": null,
+       "visitId": 2,
+       "docId": "RADV-400111"
+      },
+      {
+       "type": "ADV_IN",
+       "amount": 40.5,
+       "note": "Clinic advance received",
+       "invoiceId": null,
+       "visitId": 30,
+       "docId": "ADV-400110"
+      },
+      {
+       "type": "ADV_IN",
+       "amount": 250,
+       "note": "Doctor advance received",
+       "invoiceId": null,
+       "visitId": 2,
+       "docId": "ADV-400109"
+      },
+      {
+       "type": "CREDIT_RAISED",
+       "amount": 32.77,
+       "note": "Consultation left unsettled",
+       "invoiceId": "INV-331391",
+       "visitId": 30,
+       "docId": "CRED-400108"
+      },
+      {
+       "type": "ADV_USED",
+       "amount": 173.69,
+       "note": "Applied to orders · SAR 173.69 open",
+       "invoiceId": "INV-438601",
+       "visitId": 2,
+       "docId": "ADV-400106"
+      },
+      {
+       "type": "CREDIT_RAISED",
+       "amount": 120,
+       "note": "Consultation left unsettled",
+       "invoiceId": "INV-731044",
+       "visitId": 11,
+       "docId": "CRED-400101"
+      },
+      {
+       "type": "ADV_IN",
+       "amount": 500,
+       "note": "Open advance received",
+       "invoiceId": null,
+       "visitId": 10,
+       "docId": "ADV-400102"
+      },
+      {
+       "type": "CREDIT_RAISED",
+       "amount": 180,
+       "note": "Orders left unsettled",
+       "invoiceId": "INV-742118",
+       "visitId": 10,
+       "docId": "CRED-400103"
+      }
+     ],
+     "visit": {
+      "type": "Package procedure",
+      "clinic": "CARDIOLOGY",
+      "doctor": "AHMED AL SUBAIE",
+      "slot": null,
+      "consult": {
+       "name": "Package follow-up",
+       "code": "CON-PKG",
+       "price": 0
+      }
+     },
+     "payerId": "BUPA-GOLD",
+     "policy": null,
+     "payers": [
+      "BUPA-GOLD",
+      "TAW-SILVER",
+      "CASH"
+     ],
+     "payerStory": null,
+     "done": {},
+     "settled": [
+      "INV-331391:Span",
+      "INV-742118:Span",
+      "INV-731044:Span"
+     ],
+     "appr": [
+      null,
+      null,
+      null
+     ],
+     "docs": [
+      "CRED-400101:CREDIT_RAISED:120:11:INV-731044:Consultation left unsettled",
+      "ADV-400102:ADV_IN:500:10::Open advance received",
+      "CRED-400103:CREDIT_RAISED:180:10:INV-742118:Orders left unsettled",
+      "ADV-400106:ADV_USED:173.69:2:INV-438601:Applied to orders · SAR 173.69 open",
+      "CRED-400108:CREDIT_RAISED:32.77:30:INV-331391:Consultation left unsettled",
+      "ADV-400109:ADV_IN:250:2::Doctor advance received",
+      "ADV-400110:ADV_IN:40.5:30::Clinic advance received",
+      "RADV-400111:ADV_REFUND:100:2::Open advance refunded · patient travelling",
+      "RADV-400112:ADV_REFUND:50:2::Doctor advance refunded · not continuing",
+      "CRED-400113:CREDIT_SETTLED:32.77:30:INV-331391:Settled by span",
+      "CRED-400114:CREDIT_SETTLED:180:10:INV-742118:Settled by span",
+      "CRED-400115:CREDIT_SETTLED:120:11:INV-731044:Settled by span",
+      "ADV-400118:REFUND_IN:874:2:INV-826635:Overpayment returned to the wallet · Replaced with insurance pricing"
+     ],
+     "pkg": [
+      "INV-438601:PKG-100-A:104",
+      "INV-438601:PKG-100-B:105",
+      "INV-438601:PKG-100-C:104",
+      "INV-438601:PKG-100-D:"
+     ],
+     "visitIds": [
+      30,
+      105,
+      104,
+      20,
+      101,
+      2,
+      10,
+      11
+     ]
+    },
+    {
+     "step": "PKG_PRINT",
+     "q": "Print the invoice for 2 package procedure(s)?",
+     "sub": "Treadmill Stress Test, Lipid Profile Recheck · already paid inside <b>Cardiac Care Package</b> on <inv>INV-438601</inv> · <b>no charge</b>.",
+     "amt": null,
+     "buttons": [
+      "Yes, print it"
+     ],
+     "stories": [
+      "pkgvisit",
+      "refund",
+      "package"
+     ],
+     "active": "pkgvisit",
+     "stages": {
+      "pkgvisit": {
+       "index": 0,
+       "skipped": []
+      },
+      "refund": {
+       "index": 0,
+       "skipped": []
+      },
+      "package": {
+       "index": 0,
+       "skipped": []
+      }
+     },
+     "due": 0,
+     "dedUsed": 0,
+     "link": null,
+     "waitAll": false,
+     "bill": null,
+     "lines": [
+      {
+       "code": "CON-PKG",
+       "ins": "notcovered",
+       "price": 0,
+       "paid": true,
+       "via": null,
+       "invoiceId": null,
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      },
+      {
+       "code": "PKG-100-A",
+       "ins": "notcovered",
+       "price": 0,
+       "paid": false,
+       "via": null,
+       "invoiceId": null,
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      },
+      {
+       "code": "PKG-100-C",
+       "ins": "notcovered",
+       "price": 0,
+       "paid": false,
+       "via": null,
+       "invoiceId": null,
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      }
+     ],
+     "invoices": [
+      {
+       "id": "INV-585107",
+       "scope": "orders",
+       "patient": 0,
+       "company": 0,
+       "deductible": 0,
+       "paid": false,
+       "via": "Package",
+       "viaDetail": "",
+       "payments": null,
+       "payer": "BUPA · GOLD",
+       "branch": null,
+       "cashOnly": false,
+       "billType": null,
+       "rows": [
+        "PKG-100-A",
+        "PKG-100-C"
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0,
+       "voided": "printed on the wrong visit",
+       "packagePrint": "Cardiac Care Package:INV-438601"
+      }
+     ],
+     "refundInvoices": [],
+     "history": [
+      {
+       "ic": "w",
+       "tx": "<b>Package procedure print undone</b> — INV-585107 voided",
+       "sub": "Treadmill Stress Test, Lipid Profile Recheck · printed on the wrong visit · no money was involved · can be printed again",
+       "type": "VOID",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-585107",
+       "amount": 0,
+       "mode": null
+      },
+      {
+       "ic": "",
+       "tx": "<b>Package procedure invoice printed</b> — INV-585107",
+       "sub": "Treadmill Stress Test, Lipid Profile Recheck · no charge · already paid inside Cardiac Care Package on INV-438601",
+       "type": "PKGPRINT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-585107",
+       "amount": 0,
+       "mode": "Package"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Visit booked for 2 package procedure(s)</b>",
+       "sub": "Treadmill Stress Test, Lipid Profile Recheck · from Cardiac Care Package · already paid on INV-438601 · no charge",
+       "type": "PKGBOOK",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-438601",
+       "amount": null,
+       "mode": null
+      }
+     ],
+     "wallet": {
+      "Open": 1100.31,
+      "Doctor": 200,
+      "Clinic": 40.5
+     },
+     "credit": 0,
+     "ledger": [
+      {
+       "type": "REFUND_IN",
+       "amount": 874,
+       "note": "Overpayment returned to the wallet · Replaced with insurance pricing",
+       "invoiceId": "INV-826635",
+       "visitId": 2,
+       "docId": "ADV-400118"
+      },
+      {
+       "type": "CREDIT_SETTLED",
+       "amount": 120,
+       "note": "Settled by span",
+       "invoiceId": "INV-731044",
+       "visitId": 11,
+       "docId": "CRED-400115"
+      },
+      {
+       "type": "CREDIT_SETTLED",
+       "amount": 180,
+       "note": "Settled by span",
+       "invoiceId": "INV-742118",
+       "visitId": 10,
+       "docId": "CRED-400114"
+      },
+      {
+       "type": "CREDIT_SETTLED",
+       "amount": 32.77,
+       "note": "Settled by span",
+       "invoiceId": "INV-331391",
+       "visitId": 30,
+       "docId": "CRED-400113"
+      },
+      {
+       "type": "ADV_REFUND",
+       "amount": 50,
+       "note": "Doctor advance refunded · not continuing",
+       "invoiceId": null,
+       "visitId": 2,
+       "docId": "RADV-400112"
+      },
+      {
+       "type": "ADV_REFUND",
+       "amount": 100,
+       "note": "Open advance refunded · patient travelling",
+       "invoiceId": null,
+       "visitId": 2,
+       "docId": "RADV-400111"
+      },
+      {
+       "type": "ADV_IN",
+       "amount": 40.5,
+       "note": "Clinic advance received",
+       "invoiceId": null,
+       "visitId": 30,
+       "docId": "ADV-400110"
+      },
+      {
+       "type": "ADV_IN",
+       "amount": 250,
+       "note": "Doctor advance received",
+       "invoiceId": null,
+       "visitId": 2,
+       "docId": "ADV-400109"
+      },
+      {
+       "type": "CREDIT_RAISED",
+       "amount": 32.77,
+       "note": "Consultation left unsettled",
+       "invoiceId": "INV-331391",
+       "visitId": 30,
+       "docId": "CRED-400108"
+      },
+      {
+       "type": "ADV_USED",
+       "amount": 173.69,
+       "note": "Applied to orders · SAR 173.69 open",
+       "invoiceId": "INV-438601",
+       "visitId": 2,
+       "docId": "ADV-400106"
+      },
+      {
+       "type": "CREDIT_RAISED",
+       "amount": 120,
+       "note": "Consultation left unsettled",
+       "invoiceId": "INV-731044",
+       "visitId": 11,
+       "docId": "CRED-400101"
+      },
+      {
+       "type": "ADV_IN",
+       "amount": 500,
+       "note": "Open advance received",
+       "invoiceId": null,
+       "visitId": 10,
+       "docId": "ADV-400102"
+      },
+      {
+       "type": "CREDIT_RAISED",
+       "amount": 180,
+       "note": "Orders left unsettled",
+       "invoiceId": "INV-742118",
+       "visitId": 10,
+       "docId": "CRED-400103"
+      }
+     ],
+     "visit": {
+      "type": "Package procedure",
+      "clinic": "CARDIOLOGY",
+      "doctor": "AHMED AL SUBAIE",
+      "slot": null,
+      "consult": {
+       "name": "Package follow-up",
+       "code": "CON-PKG",
+       "price": 0
+      }
+     },
+     "payerId": "BUPA-GOLD",
+     "policy": null,
+     "payers": [
+      "BUPA-GOLD",
+      "TAW-SILVER",
+      "CASH"
+     ],
+     "payerStory": null,
+     "done": {},
+     "settled": [
+      "INV-331391:Span",
+      "INV-742118:Span",
+      "INV-731044:Span"
+     ],
+     "appr": [
+      null,
+      null,
+      null
+     ],
+     "docs": [
+      "CRED-400101:CREDIT_RAISED:120:11:INV-731044:Consultation left unsettled",
+      "ADV-400102:ADV_IN:500:10::Open advance received",
+      "CRED-400103:CREDIT_RAISED:180:10:INV-742118:Orders left unsettled",
+      "ADV-400106:ADV_USED:173.69:2:INV-438601:Applied to orders · SAR 173.69 open",
+      "CRED-400108:CREDIT_RAISED:32.77:30:INV-331391:Consultation left unsettled",
+      "ADV-400109:ADV_IN:250:2::Doctor advance received",
+      "ADV-400110:ADV_IN:40.5:30::Clinic advance received",
+      "RADV-400111:ADV_REFUND:100:2::Open advance refunded · patient travelling",
+      "RADV-400112:ADV_REFUND:50:2::Doctor advance refunded · not continuing",
+      "CRED-400113:CREDIT_SETTLED:32.77:30:INV-331391:Settled by span",
+      "CRED-400114:CREDIT_SETTLED:180:10:INV-742118:Settled by span",
+      "CRED-400115:CREDIT_SETTLED:120:11:INV-731044:Settled by span",
+      "ADV-400118:REFUND_IN:874:2:INV-826635:Overpayment returned to the wallet · Replaced with insurance pricing"
+     ],
+     "pkg": [
+      "INV-438601:PKG-100-A:104",
+      "INV-438601:PKG-100-B:105",
+      "INV-438601:PKG-100-C:104",
+      "INV-438601:PKG-100-D:"
+     ],
+     "visitIds": [
+      30,
+      105,
+      104,
+      20,
+      101,
+      2,
+      10,
+      11
+     ]
+    },
+    {
+     "step": "PKG_DONE",
+     "q": "This package procedure has been recorded.",
+     "sub": "<inv>INV-217907</inv> printed at <b>no charge</b> · package paid on <inv>INV-438601</inv>.",
+     "amt": null,
+     "buttons": [
+      "Undo the print · INV-217907"
+     ],
+     "stories": [
+      "pkgvisit",
+      "refund",
+      "package"
+     ],
+     "active": "pkgvisit",
+     "stages": {
+      "pkgvisit": {
+       "index": 1,
+       "skipped": []
+      },
+      "refund": {
+       "index": 0,
+       "skipped": []
+      },
+      "package": {
+       "index": 0,
+       "skipped": []
+      }
+     },
+     "due": 0,
+     "dedUsed": 0,
+     "link": null,
+     "waitAll": false,
+     "bill": null,
+     "lines": [
+      {
+       "code": "CON-PKG",
+       "ins": "notcovered",
+       "price": 0,
+       "paid": true,
+       "via": null,
+       "invoiceId": null,
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      },
+      {
+       "code": "PKG-100-A",
+       "ins": "notcovered",
+       "price": 0,
+       "paid": true,
+       "via": "Package",
+       "invoiceId": "INV-217907",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      },
+      {
+       "code": "PKG-100-C",
+       "ins": "notcovered",
+       "price": 0,
+       "paid": true,
+       "via": "Package",
+       "invoiceId": "INV-217907",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      }
+     ],
+     "invoices": [
+      {
+       "id": "INV-217907",
+       "scope": "orders",
+       "patient": 0,
+       "company": 0,
+       "deductible": 0,
+       "paid": true,
+       "via": "Package",
+       "viaDetail": "",
+       "payments": null,
+       "payer": "BUPA · GOLD",
+       "branch": null,
+       "cashOnly": false,
+       "billType": null,
+       "rows": [
+        "PKG-100-A",
+        "PKG-100-C"
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0,
+       "voided": null,
+       "packagePrint": "Cardiac Care Package:INV-438601"
+      },
+      {
+       "id": "INV-585107",
+       "scope": "orders",
+       "patient": 0,
+       "company": 0,
+       "deductible": 0,
+       "paid": false,
+       "via": "Package",
+       "viaDetail": "",
+       "payments": null,
+       "payer": "BUPA · GOLD",
+       "branch": null,
+       "cashOnly": false,
+       "billType": null,
+       "rows": [
+        "PKG-100-A",
+        "PKG-100-C"
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0,
+       "voided": "printed on the wrong visit",
+       "packagePrint": "Cardiac Care Package:INV-438601"
+      }
+     ],
+     "refundInvoices": [],
+     "history": [
+      {
+       "ic": "",
+       "tx": "<b>Package procedure invoice printed</b> — INV-217907",
+       "sub": "Treadmill Stress Test, Lipid Profile Recheck · no charge · already paid inside Cardiac Care Package on INV-438601",
+       "type": "PKGPRINT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-217907",
+       "amount": 0,
+       "mode": "Package"
+      },
+      {
+       "ic": "w",
+       "tx": "<b>Package procedure print undone</b> — INV-585107 voided",
+       "sub": "Treadmill Stress Test, Lipid Profile Recheck · printed on the wrong visit · no money was involved · can be printed again",
+       "type": "VOID",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-585107",
+       "amount": 0,
+       "mode": null
+      },
+      {
+       "ic": "",
+       "tx": "<b>Package procedure invoice printed</b> — INV-585107",
+       "sub": "Treadmill Stress Test, Lipid Profile Recheck · no charge · already paid inside Cardiac Care Package on INV-438601",
+       "type": "PKGPRINT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-585107",
+       "amount": 0,
+       "mode": "Package"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Visit booked for 2 package procedure(s)</b>",
+       "sub": "Treadmill Stress Test, Lipid Profile Recheck · from Cardiac Care Package · already paid on INV-438601 · no charge",
+       "type": "PKGBOOK",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-438601",
+       "amount": null,
+       "mode": null
+      }
+     ],
+     "wallet": {
+      "Open": 1100.31,
+      "Doctor": 200,
+      "Clinic": 40.5
+     },
+     "credit": 0,
+     "ledger": [
+      {
+       "type": "REFUND_IN",
+       "amount": 874,
+       "note": "Overpayment returned to the wallet · Replaced with insurance pricing",
+       "invoiceId": "INV-826635",
+       "visitId": 2,
+       "docId": "ADV-400118"
+      },
+      {
+       "type": "CREDIT_SETTLED",
+       "amount": 120,
+       "note": "Settled by span",
+       "invoiceId": "INV-731044",
+       "visitId": 11,
+       "docId": "CRED-400115"
+      },
+      {
+       "type": "CREDIT_SETTLED",
+       "amount": 180,
+       "note": "Settled by span",
+       "invoiceId": "INV-742118",
+       "visitId": 10,
+       "docId": "CRED-400114"
+      },
+      {
+       "type": "CREDIT_SETTLED",
+       "amount": 32.77,
+       "note": "Settled by span",
+       "invoiceId": "INV-331391",
+       "visitId": 30,
+       "docId": "CRED-400113"
+      },
+      {
+       "type": "ADV_REFUND",
+       "amount": 50,
+       "note": "Doctor advance refunded · not continuing",
+       "invoiceId": null,
+       "visitId": 2,
+       "docId": "RADV-400112"
+      },
+      {
+       "type": "ADV_REFUND",
+       "amount": 100,
+       "note": "Open advance refunded · patient travelling",
+       "invoiceId": null,
+       "visitId": 2,
+       "docId": "RADV-400111"
+      },
+      {
+       "type": "ADV_IN",
+       "amount": 40.5,
+       "note": "Clinic advance received",
+       "invoiceId": null,
+       "visitId": 30,
+       "docId": "ADV-400110"
+      },
+      {
+       "type": "ADV_IN",
+       "amount": 250,
+       "note": "Doctor advance received",
+       "invoiceId": null,
+       "visitId": 2,
+       "docId": "ADV-400109"
+      },
+      {
+       "type": "CREDIT_RAISED",
+       "amount": 32.77,
+       "note": "Consultation left unsettled",
+       "invoiceId": "INV-331391",
+       "visitId": 30,
+       "docId": "CRED-400108"
+      },
+      {
+       "type": "ADV_USED",
+       "amount": 173.69,
+       "note": "Applied to orders · SAR 173.69 open",
+       "invoiceId": "INV-438601",
+       "visitId": 2,
+       "docId": "ADV-400106"
+      },
+      {
+       "type": "CREDIT_RAISED",
+       "amount": 120,
+       "note": "Consultation left unsettled",
+       "invoiceId": "INV-731044",
+       "visitId": 11,
+       "docId": "CRED-400101"
+      },
+      {
+       "type": "ADV_IN",
+       "amount": 500,
+       "note": "Open advance received",
+       "invoiceId": null,
+       "visitId": 10,
+       "docId": "ADV-400102"
+      },
+      {
+       "type": "CREDIT_RAISED",
+       "amount": 180,
+       "note": "Orders left unsettled",
+       "invoiceId": "INV-742118",
+       "visitId": 10,
+       "docId": "CRED-400103"
+      }
+     ],
+     "visit": {
+      "type": "Package procedure",
+      "clinic": "CARDIOLOGY",
+      "doctor": "AHMED AL SUBAIE",
+      "slot": null,
+      "consult": {
+       "name": "Package follow-up",
+       "code": "CON-PKG",
+       "price": 0
+      }
+     },
+     "payerId": "BUPA-GOLD",
+     "policy": null,
+     "payers": [
+      "BUPA-GOLD",
+      "TAW-SILVER",
+      "CASH"
+     ],
+     "payerStory": null,
+     "done": {},
+     "settled": [
+      "INV-331391:Span",
+      "INV-742118:Span",
+      "INV-731044:Span"
+     ],
+     "appr": [
+      null,
+      null,
+      null
+     ],
+     "docs": [
+      "CRED-400101:CREDIT_RAISED:120:11:INV-731044:Consultation left unsettled",
+      "ADV-400102:ADV_IN:500:10::Open advance received",
+      "CRED-400103:CREDIT_RAISED:180:10:INV-742118:Orders left unsettled",
+      "ADV-400106:ADV_USED:173.69:2:INV-438601:Applied to orders · SAR 173.69 open",
+      "CRED-400108:CREDIT_RAISED:32.77:30:INV-331391:Consultation left unsettled",
+      "ADV-400109:ADV_IN:250:2::Doctor advance received",
+      "ADV-400110:ADV_IN:40.5:30::Clinic advance received",
+      "RADV-400111:ADV_REFUND:100:2::Open advance refunded · patient travelling",
+      "RADV-400112:ADV_REFUND:50:2::Doctor advance refunded · not continuing",
+      "CRED-400113:CREDIT_SETTLED:32.77:30:INV-331391:Settled by span",
+      "CRED-400114:CREDIT_SETTLED:180:10:INV-742118:Settled by span",
+      "CRED-400115:CREDIT_SETTLED:120:11:INV-731044:Settled by span",
+      "ADV-400118:REFUND_IN:874:2:INV-826635:Overpayment returned to the wallet · Replaced with insurance pricing"
+     ],
+     "pkg": [
+      "INV-438601:PKG-100-A:104",
+      "INV-438601:PKG-100-B:105",
+      "INV-438601:PKG-100-C:104",
+      "INV-438601:PKG-100-D:"
+     ],
+     "visitIds": [
+      30,
+      105,
+      104,
+      20,
+      101,
+      2,
+      10,
+      11
+     ]
+    },
+    {
+     "step": "PKG_DONE",
+     "q": "This package procedure has been recorded.",
+     "sub": "<inv>INV-876272</inv> printed at <b>no charge</b> · package paid on <inv>INV-438601</inv>.",
+     "amt": null,
+     "buttons": [
+      "Undo the print · INV-876272"
+     ],
+     "stories": [
+      "pkgvisit",
+      "refund",
+      "package"
+     ],
+     "active": "pkgvisit",
+     "stages": {
+      "pkgvisit": {
+       "index": 1,
+       "skipped": []
+      },
+      "refund": {
+       "index": 0,
+       "skipped": []
+      },
+      "package": {
+       "index": 0,
+       "skipped": []
+      }
+     },
+     "due": 0,
+     "dedUsed": 0,
+     "link": null,
+     "waitAll": false,
+     "bill": null,
+     "lines": [
+      {
+       "code": "CON-PKG",
+       "ins": "notcovered",
+       "price": 0,
+       "paid": true,
+       "via": null,
+       "invoiceId": null,
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      },
+      {
+       "code": "PKG-100-B",
+       "ins": "notcovered",
+       "price": 0,
+       "paid": true,
+       "via": "Package",
+       "invoiceId": "INV-876272",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      }
+     ],
+     "invoices": [
+      {
+       "id": "INV-876272",
+       "scope": "orders",
+       "patient": 0,
+       "company": 0,
+       "deductible": 0,
+       "paid": true,
+       "via": "Package",
+       "viaDetail": "",
+       "payments": null,
+       "payer": "BUPA · GOLD",
+       "branch": null,
+       "cashOnly": false,
+       "billType": null,
+       "rows": [
+        "PKG-100-B"
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0,
+       "voided": null,
+       "packagePrint": "Cardiac Care Package:INV-438601"
+      }
+     ],
+     "refundInvoices": [],
+     "history": [
+      {
+       "ic": "",
+       "tx": "<b>Package procedure invoice printed</b> — INV-876272",
+       "sub": "Echocardiogram Review · no charge · already paid inside Cardiac Care Package on INV-438601",
+       "type": "PKGPRINT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-876272",
+       "amount": 0,
+       "mode": "Package"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Visit booked for 1 package procedure(s)</b>",
+       "sub": "Echocardiogram Review · from Cardiac Care Package · already paid on INV-438601 · no charge",
+       "type": "PKGBOOK",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-438601",
+       "amount": null,
+       "mode": null
+      }
+     ],
+     "wallet": {
+      "Open": 1100.31,
+      "Doctor": 200,
+      "Clinic": 40.5
+     },
+     "credit": 0,
+     "ledger": [
+      {
+       "type": "REFUND_IN",
+       "amount": 874,
+       "note": "Overpayment returned to the wallet · Replaced with insurance pricing",
+       "invoiceId": "INV-826635",
+       "visitId": 2,
+       "docId": "ADV-400118"
+      },
+      {
+       "type": "CREDIT_SETTLED",
+       "amount": 120,
+       "note": "Settled by span",
+       "invoiceId": "INV-731044",
+       "visitId": 11,
+       "docId": "CRED-400115"
+      },
+      {
+       "type": "CREDIT_SETTLED",
+       "amount": 180,
+       "note": "Settled by span",
+       "invoiceId": "INV-742118",
+       "visitId": 10,
+       "docId": "CRED-400114"
+      },
+      {
+       "type": "CREDIT_SETTLED",
+       "amount": 32.77,
+       "note": "Settled by span",
+       "invoiceId": "INV-331391",
+       "visitId": 30,
+       "docId": "CRED-400113"
+      },
+      {
+       "type": "ADV_REFUND",
+       "amount": 50,
+       "note": "Doctor advance refunded · not continuing",
+       "invoiceId": null,
+       "visitId": 2,
+       "docId": "RADV-400112"
+      },
+      {
+       "type": "ADV_REFUND",
+       "amount": 100,
+       "note": "Open advance refunded · patient travelling",
+       "invoiceId": null,
+       "visitId": 2,
+       "docId": "RADV-400111"
+      },
+      {
+       "type": "ADV_IN",
+       "amount": 40.5,
+       "note": "Clinic advance received",
+       "invoiceId": null,
+       "visitId": 30,
+       "docId": "ADV-400110"
+      },
+      {
+       "type": "ADV_IN",
+       "amount": 250,
+       "note": "Doctor advance received",
+       "invoiceId": null,
+       "visitId": 2,
+       "docId": "ADV-400109"
+      },
+      {
+       "type": "CREDIT_RAISED",
+       "amount": 32.77,
+       "note": "Consultation left unsettled",
+       "invoiceId": "INV-331391",
+       "visitId": 30,
+       "docId": "CRED-400108"
+      },
+      {
+       "type": "ADV_USED",
+       "amount": 173.69,
+       "note": "Applied to orders · SAR 173.69 open",
+       "invoiceId": "INV-438601",
+       "visitId": 2,
+       "docId": "ADV-400106"
+      },
+      {
+       "type": "CREDIT_RAISED",
+       "amount": 120,
+       "note": "Consultation left unsettled",
+       "invoiceId": "INV-731044",
+       "visitId": 11,
+       "docId": "CRED-400101"
+      },
+      {
+       "type": "ADV_IN",
+       "amount": 500,
+       "note": "Open advance received",
+       "invoiceId": null,
+       "visitId": 10,
+       "docId": "ADV-400102"
+      },
+      {
+       "type": "CREDIT_RAISED",
+       "amount": 180,
+       "note": "Orders left unsettled",
+       "invoiceId": "INV-742118",
+       "visitId": 10,
+       "docId": "CRED-400103"
+      }
+     ],
+     "visit": {
+      "type": "Package procedure",
+      "clinic": "ENT",
+      "doctor": "LINA FAROUK",
+      "slot": null,
+      "consult": {
+       "name": "Package follow-up",
+       "code": "CON-PKG",
+       "price": 0
+      }
+     },
+     "payerId": "BUPA-GOLD",
+     "policy": null,
+     "payers": [
+      "BUPA-GOLD",
+      "TAW-SILVER",
+      "CASH"
+     ],
+     "payerStory": null,
+     "done": {},
+     "settled": [
+      "INV-331391:Span",
+      "INV-742118:Span",
+      "INV-731044:Span"
+     ],
+     "appr": [
       null,
       null
      ],

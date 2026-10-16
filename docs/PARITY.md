@@ -10,7 +10,7 @@ checkpoint and whenever `npm run drift` reports a change (docs/PLAN-v4-M1.md §6
 - Goldens: `src/domain/__golden__/v3.json` — regenerate with `npm run golden`
 
 ## Status summary
-deferred-M3: 3, deferred-M4: 29, done: 270 (of 302 declarations) — Milestone 3 in progress (3a, 3b done)
+deferred-M4: 29, done: 273 (of 302 declarations) — Milestone 3 complete
 
 ## Screens and stories
 | v3 screen / story | Checkpoint | Status | Notes |
@@ -19,7 +19,7 @@ deferred-M3: 3, deferred-M4: 29, done: 270 (of 302 declarations) — Milestone 3
 | Patient tabs | 1a | done | |
 | Home search + patient cards | 1a | done | walk-in card opens the walk-in (1c) |
 | Patient profile: header, payer row, pending actions, visits, package items, invoices | 1a, 1c | done | wallet section, profile payer and invoices table added in 1c |
-| Visit screen, story strip, stepper, step card, order table | 1b | done | payer chip opens the Payer story (1c); M3 stories shown with a "Coming in …" card |
+| Visit screen, story strip, stepper, step card, order table | 1b | done | payer chip opens the Payer story (1c); every visit story is built (M3) |
 | Visit invoicing / Orders invoicing | 1b | done | scripted flows golden-tested step by step against v3 |
 | Payment drawer | 1b, 1c, 2b, 2c | done | payment, credit-settlement, advance-refund, refund and replacement-refund branches |
 | Visit timeline + event pop-up | 1b | done | "Go to invoices" works from 1c |
@@ -33,7 +33,7 @@ deferred-M3: 3, deferred-M4: 29, done: 270 (of 302 declarations) — Milestone 3
 | Replace | 2c | done | insured (cash-billed order → policy) and cash-patient (one invoice at a time) flows; refund of the difference; walk-away undoes it |
 | LWBS | 3a | done | pop-up from SEE_DOCTOR, LWBS step with undo; golden flow + e2e |
 | Package booking | 3b | done | visit story + profile pop-up; done card opens the new visit; golden flow + e2e |
-| Package procedure | M3 | deferred-M3 | |
+| Package procedure | 3c | done | nil invoice print, undo the print (void) and print again; golden flow + e2e |
 | Ask VIDA, Story map, Settings, Arabic/RTL | M4 | deferred-M4 | i18n keys and RTL-safe CSS from 1a |
 
 ## Deviations from v3 (deliberate)
@@ -73,6 +73,12 @@ deferred-M3: 3, deferred-M4: 29, done: 270 (of 302 declarations) — Milestone 3
   `refundedTotal`.
 - 1c: a settled credit invoice's pop-up says "Settled — mode" (v3 shows "Paid in full — Credit").
 - 1c: Reprint also calls `window.print()` with a print stylesheet that prints only the open document (plan §9.10).
+- M3: v3's pop-ups `state.lwbsPop` / `state.pkgBook` / `state.voidPop` are `ui.lwbsPop` / `ui.pkgBook` / `ui.voidPop`;
+  the package story's own state stays on the visit (`c.pkgStory`), but v4 creates it on the first change (v3 creates it
+  while rendering, with the first procedure ticked — the same state).
+- M3: `createPkgVisit` returns the new visit's id; the profile pop-up then opens it (v3 calls `openVisit` inside).
+- M3: v3 quirks ported as they are (golden-tested): `packageItems` only checks that the package invoice is paid, so a
+  refunded package's procedures can still be booked; the LWBS pop-up can be confirmed without a reason ("No reason given").
 - 1c: amounts are typed in HeroUI `NumberField`s; v3's Refund advance pot picker greys out empty pots (disabled toggles).
 
 ## Declarations
@@ -347,9 +353,9 @@ deferred-M3: 3, deferred-M4: 29, done: 270 (of 302 declarations) — Milestone 3
 | `reprint` | 4854 | store/wallet.ts, features/invoices/InvoiceModal.tsx | 1c | done | also opens the browser print (print stylesheet in theme.css) |
 | `renderLedger` | 4863 | features/wallet/LedgerTable.tsx | 1c | done |  |
 | `renderLedgerPop` | 4900 | — | 1c | done | nothing in v3 opens it (state.ledgerPop is never set) — the statement lives in the wallet section |
-| `printPackageOrders` | 4932 | features/stories/package | M3 | deferred-M3 |  |
-| `renderVoidPop` | 4953 | features/stories/package | M3 | deferred-M3 |  |
-| `voidPrint` | 4989 | features/stories/package | M3 | deferred-M3 |  |
+| `printPackageOrders` | 4932 | store/package.ts | 3c | done | `PKG_PRINT` "Yes, print it" (STEP_RUN.printPackage); golden flow + e2e |
+| `renderVoidPop` | 4953 | features/stories/VoidPrintModal.tsx (ui.voidPop) | 3c | done | golden flow drives v3's #vdGo; e2e |
+| `voidPrint` | 4989 | store/package.ts | 3c | done | golden flow + e2e |
 | `replaceInline` | 5005 | features/visit/StoryCard.tsx | 2c | done | golden flows + e2e |
 | `renderReplaceWork` | 5006 | features/stories/ReplaceStory.tsx (ReplaceWork) | 2c | done | golden flows + e2e |
 | `renderReplacePop` | 5018 | features/stories/ReplaceStory.tsx (ReplaceWork) | 2c | done | worked in the story card only — every entry point is inside the visit, so v3's pop-up variant is not needed |
