@@ -1,13 +1,13 @@
-import { Breadcrumbs, Button, Card, Chip, Disclosure, Tabs } from "@heroui/react";
+import { Breadcrumbs, Card, Chip, Disclosure, Tabs } from "@heroui/react";
 import { ChevronDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { visitsOf } from "../../domain/lookup";
-import { fmt } from "../../domain/money";
 import { pendingVisits } from "../../domain/steps";
 import { activePayerOf } from "../../domain/visits";
 import { useW } from "../../store/hooks";
 import { useUi, type PendView } from "../../store/ui";
 import { ActionTile } from "../../ui/ActionTile";
+import { PayerButton } from "../../ui/PayerButton";
 import { WalletChip } from "../../ui/WalletChip";
 import { ProfilePayer, startProfilePayer } from "./ProfilePayer";
 import { WalletSection } from "../wallet/WalletSection";
@@ -22,7 +22,6 @@ export function PatientScreen() {
   const p = w.patients[activeMrn!]!;
   const vs = visitsOf(w, p.mrn);
   const ap = activePayerOf(w, p);
-  const plan = ap.payer.plan;
   const from = !ap.from ? "" : ap.from.kind === "profile" ? t("patient.fromProfile")
     : t(ap.from.kind === "open" ? "patient.fromOpen" : "patient.fromLast", { date: ap.from.date, at: ap.from.at });
 
@@ -58,18 +57,8 @@ export function PatientScreen() {
           <span className="text-sm text-muted">{t("patient.activePayer")}{from && ` · ${from}`}</span>
           <div className="flex-1" />
           {p.payers.length > 1 && <span className="text-sm text-muted">{t("patient.payersOnFile", { count: p.payers.length })}</span>}
-          <Button variant="outline" aria-label={t("patient.changeTitle")} className="h-auto gap-3 rounded-xl bg-surface px-3 py-1.5" onPress={() => startProfilePayer(p.mrn)}>
-            <span className="text-end leading-tight" data-testid="payer-button">
-              <b className="block text-sm text-accent">{ap.payer.label}</b>
-              <span className="text-[11px] text-muted">
-                {plan
-                  ? t("patient.planLine", { ded: Math.round(plan.deductiblePct * 100), cap: fmt(Math.min(plan.visitCap, plan.annualLeft)) }) +
-                    (plan.discountPct ? t("patient.planDiscount", { pct: Math.round(plan.discountPct * 100) }) : "")
-                  : t("patient.noPolicy")}
-              </span>
-            </span>
-            <span className="flex items-center text-xs">{t("patient.change")}<ChevronDown className="size-3" /></span>
-          </Button>
+          {/* the payer itself shows its policy; the attached arrow changes it */}
+          <PayerButton mrn={p.mrn} payer={ap.payer} testId="payer-button" changeLabel={t("patient.changeTitle")} onChange={() => startProfilePayer(p.mrn)} />
         </div>
       </Card>
 

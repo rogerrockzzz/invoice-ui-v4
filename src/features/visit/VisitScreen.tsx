@@ -1,5 +1,5 @@
-import { Breadcrumbs, Button, Card, Chip, Link } from "@heroui/react";
-import { ArrowLeftRight, ChevronDown, Lock } from "lucide-react";
+import { Breadcrumbs, Card, Chip, Link } from "@heroui/react";
+import { ArrowLeftRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { payerOf, planOf } from "../../domain/lookup";
 import { fmt } from "../../domain/money";
@@ -9,6 +9,7 @@ import type { StoryUiCtx } from "../../domain/types";
 import { visitNo } from "../../domain/visits";
 import { useW } from "../../store/hooks";
 import { useUi } from "../../store/ui";
+import { PayerButton } from "../../ui/PayerButton";
 import { WalletChip } from "../../ui/WalletChip";
 import { beginPayerStory } from "../stories/PayerStory";
 import { WalletSection } from "../wallet/WalletSection";
@@ -33,21 +34,6 @@ export function VisitScreen() {
     refundInvoiceId: refund ? refund.id : null,
     replaceCaseId: replace ? replace.caseId : null,
   };
-  const payerInner = (
-    <>
-      <span className="text-end leading-tight" data-testid="visit-payer">
-        <b className="block text-sm text-accent">{payerOf(w, c).label}</b>
-        <span className="text-[11px] text-muted">
-          {plan
-            ? t("patient.planLine", { ded: Math.round(plan.deductiblePct * 100), cap: fmt(Math.min(plan.visitCap, plan.annualLeft)) }) +
-              (plan.discountPct ? t("patient.planDiscount", { pct: Math.round(plan.discountPct * 100) }) : "")
-            : t("patient.noPolicy")}
-        </span>
-      </span>
-      {canChange ? <span className="flex items-center text-xs">{t("patient.change")}<ChevronDown className="size-3" /></span>
-        : <Lock className="size-4 text-muted" aria-label={t("visit.payerLocked")} />}
-    </>
-  );
 
   return (
     <div className="flex flex-col gap-4">
@@ -86,16 +72,9 @@ export function VisitScreen() {
             </Chip>
           )}
           <div className="flex-1" />
-          {/* the payer can only change while nothing has been charged — the chip is the way into the Payer story */}
-          {canChange ? (
-            <Button variant="outline" className="h-auto gap-3 rounded-xl bg-surface px-3 py-1.5" aria-label={t("visit.changePayer")} onPress={() => beginPayerStory(c.id)} data-testid="payer-chip">
-              {payerInner}
-            </Button>
-          ) : (
-            <div className="flex items-center gap-3 rounded-xl border border-border bg-surface px-3 py-1.5" title={t("visit.payerLocked")}>
-              {payerInner}
-            </div>
-          )}
+          {/* the payer shows its policy; the arrow is the way into the Payer story, and only while nothing has been charged */}
+          <PayerButton mrn={c.mrn} payer={payerOf(w, c)} testId="visit-payer" changeLabel={t("visit.changePayer")}
+            lockedLabel={t("visit.payerLocked")} onChange={canChange ? () => beginPayerStory(c.id) : null} />
         </div>
       </Card>
 

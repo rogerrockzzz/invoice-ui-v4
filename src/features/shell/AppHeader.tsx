@@ -1,6 +1,7 @@
-import { Avatar, Button, Dropdown, Label, ListBox, Select } from "@heroui/react";
+import { Avatar, Button, Dropdown, Label, ListBox, Select, ToggleButton, ToggleButtonGroup } from "@heroui/react";
 import { Moon, Plus, Settings, Sun } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { LANG_NAMES, type Lang } from "../../i18n";
 import { BRANCHES } from "../../domain/constants";
 import { useWorld } from "../../store/world";
 import { useUi } from "../../store/ui";
@@ -13,6 +14,8 @@ export function AppHeader() {
   const setBranch = useWorld((s) => s.setBranch);
   const theme = useUi((s) => s.theme);
   const setTheme = useUi((s) => s.setTheme);
+  const lang = useUi((s) => s.lang);
+  const setLang = useUi((s) => s.setLang);
 
   return (
     <header className="no-print sticky top-0 z-30 flex items-center gap-3 border-b border-border bg-surface px-5 py-2">
@@ -53,6 +56,16 @@ export function AppHeader() {
           </ListBox>
         </Select.Popover>
       </Select>
+
+      <ToggleButtonGroup aria-label={t("app.language")} selectionMode="single" disallowEmptySelection size="sm"
+        selectedKeys={[lang]} onSelectionChange={(k) => { const id = [...k][0]; if (id === "en" || id === "ar") setLang(id); }}>
+        {(Object.keys(LANG_NAMES) as Lang[]).map((l, i) => (
+          <ToggleButton key={l} id={l} lang={l} className="px-3">
+            {i > 0 && <ToggleButtonGroup.Separator />}
+            {LANG_NAMES[l]}
+          </ToggleButton>
+        ))}
+      </ToggleButtonGroup>
 
       <Dropdown>
         <Button isIconOnly variant="ghost" aria-label={t("app.settings")}>

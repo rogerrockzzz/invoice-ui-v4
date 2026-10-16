@@ -70,6 +70,14 @@ body {
 body {
   font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
 }
+/* Arabic: a face with Arabic glyphs first (Latin data values still fall through to it), and no letter-spacing
+   (tracking-* would pull joined letters apart; uppercase has no effect on Arabic) */
+:lang(ar) body {
+  font-family: "Segoe UI", "Noto Sans Arabic", Tahoma, -apple-system, Roboto, Arial, sans-serif;
+}
+:lang(ar) [class*="tracking-"] {
+  letter-spacing: 0;
+}
 
 /* Reprint: only the open invoice / wallet document goes to paper (the modal lives outside #root) */
 @media print {

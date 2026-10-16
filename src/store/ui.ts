@@ -70,6 +70,8 @@ export interface UiState {
   /* the profile's payer flow and the walk-in (v3 state.profPayer / state.walkin) */
   profPayer: ProfPayerUi | null;
   walkin: WalkinUi | null;
+  /* the profile's "Payer Policy" pop-up: clicking the payer shows its policy (v4 only) */
+  policyPop: { mrn: string; payerId: string } | null;
   /* the Invoices screen (v3 state.invF / invQ / invLoaded / invEdit) and the profile's invoice pairing */
   invF: InvFilters;
   invQ: string;
@@ -110,7 +112,7 @@ const initial = () => ({
   walletOpen: false, profPendOpen: true, pendView: "today" as PendView, profVisitsOpen: true, vf: { no: "", from: "", to: "" },
   visGroup: false, pinvOpen: false, pkgOpen: false,
   drawer: null, eventPop: null, invPop: null, histOpen: true, comment: null, simOpen: false, lwbsPop: null, pkgBook: null as PkgBookUi | null, voidPop: null, refund: null as RefundUi | null, replace: null as ReplaceUi | null,
-  wallet: null, adv: null, profPayer: null, walkin: null,
+  wallet: null, adv: null, profPayer: null, walkin: null, policyPop: null as { mrn: string; payerId: string } | null,
   invF: defaultInvFilters(), invQ: "", invLoaded: null, invEdit: false, invGroup: false,
 });
 

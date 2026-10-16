@@ -10,7 +10,7 @@ checkpoint and whenever `npm run drift` reports a change (docs/PLAN-v4-M1.md §6
 - Goldens: `src/domain/__golden__/v3.json` — regenerate with `npm run golden`
 
 ## Status summary
-deferred-M4: 29, done: 273 (of 302 declarations) — Milestone 3 complete
+deferred-M4: 29, done: 273 (of 302 declarations) — Milestone 3 complete; M4 Arabic / RTL done (v3 has no Arabic, so no declarations move)
 
 ## Screens and stories
 | v3 screen / story | Checkpoint | Status | Notes |
@@ -34,7 +34,9 @@ deferred-M4: 29, done: 273 (of 302 declarations) — Milestone 3 complete
 | LWBS | 3a | done | pop-up from SEE_DOCTOR, LWBS step with undo; golden flow + e2e |
 | Package booking | 3b | done | visit story + profile pop-up; done card opens the new visit; golden flow + e2e |
 | Package procedure | 3c | done | nil invoice print, undo the print (void) and print again; golden flow + e2e |
-| Ask VIDA, Story map, Settings, Arabic/RTL | M4 | deferred-M4 | i18n keys and RTL-safe CSS from 1a |
+| Arabic / RTL | M4 | done | header language switch (EN / العربية, remembered); full `ar.json` (parity test: keys, params, tags); `<html lang dir>` flips the layout; e2e `4a-language` |
+| Payer Policy pop-up (v4 only) | M4 | done | clicking the payer (profile or visit) shows its policy (`domain/policy.ts`, mock HIS data in `data/policies.ts`); the attached arrow of the split button changes the payer; e2e `4b-payer-policy` |
+| Ask VIDA, Story map, Settings | M4 | deferred-M4 | |
 
 ## Deviations from v3 (deliberate)
 - Texts are i18n keys (`src/locales/en.json`) with v3's exact English; golden tests compare them word for word.

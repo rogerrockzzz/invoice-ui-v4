@@ -5,6 +5,8 @@ import ar from "../locales/ar.json";
 
 export type Lang = "en" | "ar";
 export const dirOf = (lang: Lang) => (lang === "ar" ? "rtl" : "ltr");
+/* each language is named in itself, so the switch reads the same whichever is on */
+export const LANG_NAMES: Record<Lang, string> = { en: "English", ar: "العربية" };
 
 void i18n.use(initReactI18next).init({
   resources: { en: { translation: en }, ar: { translation: ar } },

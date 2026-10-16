@@ -83,6 +83,23 @@
   refund invoices — keep `snap` identical in `extract.html` and `flows.test.ts`.
 - `useWorld.getState().actW` is how a UI action gets a result back from a visit action (e.g. `doReplace` → refundDiff).
 
+## Learned in M4 (Arabic / RTL)
+- Language switch is a `ToggleButtonGroup` in `AppHeader` (endonyms from `LANG_NAMES` in `src/i18n`); `ui.lang` is
+  persisted as `vida.lang`, and `App` sets `<html lang dir>`. e2e switches with `getByRole("radio", { name: "العربية" })`.
+- `ar.json` must have every key of `en.json` with the same `{{params}}` and `<b>`/`<inv>` tags —
+  `src/i18n/__tests__/locales.test.ts` enforces it. Plural keys take all six Arabic forms (`_zero … _other`).
+  Add the Arabic text whenever you add an English key.
+- Not translated (data, per PLAN §5.3): names, clinics, branches, payer labels, payment modes, visit types, gender,
+  `date: "Today"` and seed history. History / ledger texts are resolved when recorded, so they stay in the language
+  that was on at the time.
+- `:lang(ar)` in `theme.css` swaps in an Arabic font and zeroes `tracking-*` (letter-spacing breaks joined script).
+  Drawers use physical `placement="right"`, which already lands on the inline end in RTL.
+- The payer is a split button, `ui/PayerButton.tsx`, on the profile and on the visit: the payer part opens the "Payer Policy"
+  pop-up (`ui.policyPop`, `PayerPolicyModal`; disabled for self-pay), the attached arrow changes the payer ("Change the
+  patient's payer" / "Change who pays for this visit"), or shows a disabled lock once the visit is invoiced. `policyOf(payer)` (domain/policy.ts) builds the policy from
+  the plan + NPHIES / directory + `data/policies.ts` (v4-only mock HIS fields — never put them in seed.ts, which mirrors v3).
+  Wrap mixed-direction data values (codes like "1104 - NCCI") in `<bdi>` so they don't reorder in RTL.
+
 ## Learned in M3
 - Pop-ups that a step opens (`ui.lwbsPop`, `ui.voidPop`) are UI state: `StepCard.run` handles their action ids (`lwbs`,
   `voidPrint`) like `openDrawer`; `STEP_LATER` is empty now (the "Coming in …" mechanism stays for M4).

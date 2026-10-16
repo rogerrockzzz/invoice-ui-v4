@@ -8,6 +8,7 @@ import { PatientTabs } from "./features/shell/PatientTabs";
 import { Home } from "./features/home/Home";
 import { PatientScreen } from "./features/patient/Patient";
 import { PkgBookModal } from "./features/patient/PkgBookModal";
+import { PayerPolicyModal } from "./features/patient/PayerPolicyModal";
 import { VisitScreen } from "./features/visit/VisitScreen";
 import { EventModal } from "./features/visit/EventModal";
 import { LwbsModal } from "./features/visit/LwbsModal";
@@ -48,6 +49,7 @@ export default function App() {
       <InvoiceModal />
       <LwbsModal />
       <PkgBookModal />
+      <PayerPolicyModal />
       <VoidPrintModal />
       <SimulatePanel />
       <Toast.Provider placement="top end" maxVisibleToasts={3} />
