@@ -56,6 +56,8 @@ export const SECOND_MODE: Record<string, string> = {
 export const secondMode = (first: string) => SECOND_MODE[first] || "Span";
 
 export const REFUND_MODES = ["Cash", "Span", "Visa", "Master card", "Advance wallet"];
+/* v3 renderLwbsPop() (line 1843): the reasons on offer — kept on the visit as written */
+export const LWBS_REASONS = ["Waited too long", "Felt better", "Went to the emergency department", "Personal reasons"];
 export const ADV_CATS: AdvCat[] = ["Open", "Doctor", "Clinic"];
 export const CASH_PAYER: Payer = { id: "CASH", label: "Cash / Self-pay", plan: null };
 export const CLINICS = ["PAEDIATRICS", "CARDIOLOGY", "DERMATOLOGY", "ORTHOPAEDICS", "INTERNAL MEDICINE", "ENT"];

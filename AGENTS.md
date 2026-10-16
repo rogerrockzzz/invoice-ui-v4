@@ -2,7 +2,8 @@
 
 ## Start here
 - Plan for Milestone 1 (checkpoints 1a / 1b / 1c): `docs/PLAN-v4-M1.md` — read §0–§6, then your checkpoint.
-- Milestone 2 (2a Add orders / 2b Refund / 2c Replace): `docs/PLAN-v4-M2.md` (done). M3/M4 still to be planned.
+- Milestone 2 (2a Add orders / 2b Refund / 2c Replace): `docs/PLAN-v4-M2.md` (done).
+- Milestone 3 (3a LWBS / 3b Package booking / 3c Package procedure): `docs/PLAN-v4-M3.md`. M4 still to be planned.
 - Progress and v3 drift: `docs/PARITY.md` (every v3 declaration → v4 module, checkpoint, status).
 - UI library skill: `.devin/skills/heroui-react/` (HeroUI **v3** only). Fetch component docs before use:
   `node .devin/skills/heroui-react/scripts/get_component_docs.mjs <Component>`.

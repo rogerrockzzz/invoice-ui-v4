@@ -85,6 +85,8 @@ function runOp(w: World, [op, id, ...a]: Op) {
       if (out && mode) return RP.completeReplaceRefund(w, c, out.refundDiff, mode, t("replace.diffReason", { to: "insurance" }), "", fx);
       return out;
     }
+    case "lwbs": return A.markLwbs(w, c, (a[0] as string | null) || "", fx);
+    case "undoLwbs": return A.undoLwbs(w, c);
     case "addOrdersStory":
       PA.addStoryDo(c, (s) => { s.stage = 2; s.sel = Object.fromEntries((a[0] as string[]).map((k) => [k, true])); });
       return PA.addOrdersStory(w, c, fx);

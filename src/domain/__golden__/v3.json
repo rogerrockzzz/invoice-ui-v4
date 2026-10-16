@@ -1,6 +1,6 @@
 {
  "build": "no-invoice-until-payment",
- "generatedAt": "2026-10-15T11:56:37.731Z",
+ "generatedAt": "2026-10-16T05:40:14.339Z",
  "calc": [
   {
    "plan": "none",
@@ -6522,7 +6522,7 @@
      "status": "Paid",
      "mode": "Payment link",
      "payerType": "Insurance",
-     "date": "2026-10-15",
+     "date": "2026-10-16",
      "credit": 0
     }
    ]
@@ -6774,7 +6774,7 @@
      "status": "Paid",
      "mode": "Cash",
      "payerType": "Cash",
-     "date": "2026-10-15",
+     "date": "2026-10-16",
      "credit": 0
     },
     {
@@ -6785,7 +6785,7 @@
      "status": "Paid",
      "mode": "Payment link",
      "payerType": "Cash",
-     "date": "2026-10-15",
+     "date": "2026-10-16",
      "credit": 0
     }
    ]
@@ -20387,7 +20387,7 @@
      "history": [
       {
        "ic": "i",
-       "tx": "<b>Visit booked</b> for 21 Oct HH:MM",
+       "tx": "<b>Visit booked</b> for 22 Oct HH:MM",
        "sub": "Consultation · Paediatrics · NCCI approved in advance",
        "type": "VISIT",
        "by": "SAADAN SAAFAN",
@@ -20537,7 +20537,7 @@
       },
       {
        "ic": "i",
-       "tx": "<b>Visit booked</b> for 21 Oct HH:MM",
+       "tx": "<b>Visit booked</b> for 22 Oct HH:MM",
        "sub": "Consultation · Paediatrics · NCCI approved in advance",
        "type": "VISIT",
        "by": "SAADAN SAAFAN",
@@ -20689,7 +20689,7 @@
       },
       {
        "ic": "i",
-       "tx": "<b>Visit booked</b> for 17 Oct HH:MM",
+       "tx": "<b>Visit booked</b> for 18 Oct HH:MM",
        "sub": "Follow-up · Cardiology · approval requested from BUPA",
        "type": "VISIT",
        "by": "SAADAN SAAFAN",
@@ -20851,7 +20851,7 @@
       },
       {
        "ic": "i",
-       "tx": "<b>Visit booked</b> for 17 Oct HH:MM",
+       "tx": "<b>Visit booked</b> for 18 Oct HH:MM",
        "sub": "Follow-up · Cardiology · approval requested from BUPA",
        "type": "VISIT",
        "by": "SAADAN SAAFAN",
@@ -21049,7 +21049,7 @@
       },
       {
        "ic": "i",
-       "tx": "<b>Visit booked</b> for 17 Oct HH:MM",
+       "tx": "<b>Visit booked</b> for 18 Oct HH:MM",
        "sub": "Follow-up · Cardiology · approval requested from BUPA",
        "type": "VISIT",
        "by": "SAADAN SAAFAN",
@@ -21693,7 +21693,7 @@
       },
       {
        "ic": "i",
-       "tx": "<b>Visit booked</b> for 17 Oct HH:MM",
+       "tx": "<b>Visit booked</b> for 18 Oct HH:MM",
        "sub": "Follow-up · Cardiology · approval requested from BUPA",
        "type": "VISIT",
        "by": "SAADAN SAAFAN",
@@ -22823,10 +22823,10 @@
       {
        "ic": "",
        "tx": "<b>Credit settled</b> — SAR 332.77",
-       "sub": "Span · 3 invoice(s) settled · INV-742118, INV-331391, INV-731044",
+       "sub": "Span · 3 invoice(s) settled · INV-331391, INV-742118, INV-731044",
        "type": "CREDIT",
        "by": "SAADAN SAAFAN",
-       "invoiceId": "INV-742118",
+       "invoiceId": "INV-331391",
        "amount": 332.77,
        "mode": "Span"
       },
@@ -22978,18 +22978,18 @@
       },
       {
        "type": "CREDIT_SETTLED",
-       "amount": 32.77,
-       "note": "Settled by span",
-       "invoiceId": "INV-331391",
-       "visitId": 30,
-       "docId": "CRED-400114"
-      },
-      {
-       "type": "CREDIT_SETTLED",
        "amount": 180,
        "note": "Settled by span",
        "invoiceId": "INV-742118",
        "visitId": 10,
+       "docId": "CRED-400114"
+      },
+      {
+       "type": "CREDIT_SETTLED",
+       "amount": 32.77,
+       "note": "Settled by span",
+       "invoiceId": "INV-331391",
+       "visitId": 30,
        "docId": "CRED-400113"
       },
       {
@@ -23085,7 +23085,7 @@
      ],
      "payerStory": null,
      "done": {
-      "credit": "Credit settled — SAR 332.77 | Span · INV-742118, INV-331391, INV-731044"
+      "credit": "Credit settled — SAR 332.77 | Span · INV-331391, INV-742118, INV-731044"
      },
      "settled": [
       "INV-331391:Span",
@@ -23109,8 +23109,8 @@
       "ADV-400110:ADV_IN:40.5:30::Clinic advance received",
       "RADV-400111:ADV_REFUND:100:2::Open advance refunded · patient travelling",
       "RADV-400112:ADV_REFUND:50:2::Doctor advance refunded · not continuing",
-      "CRED-400113:CREDIT_SETTLED:180:10:INV-742118:Settled by span",
-      "CRED-400114:CREDIT_SETTLED:32.77:30:INV-331391:Settled by span",
+      "CRED-400113:CREDIT_SETTLED:32.77:30:INV-331391:Settled by span",
+      "CRED-400114:CREDIT_SETTLED:180:10:INV-742118:Settled by span",
       "CRED-400115:CREDIT_SETTLED:120:11:INV-731044:Settled by span"
      ]
     }
@@ -23244,7 +23244,7 @@
       },
       {
        "ic": "i",
-       "tx": "<b>Visit booked</b> for 21 Oct HH:MM",
+       "tx": "<b>Visit booked</b> for 22 Oct HH:MM",
        "sub": "Consultation · Paediatrics · NCCI approved in advance",
        "type": "VISIT",
        "by": "SAADAN SAAFAN",
@@ -23415,7 +23415,7 @@
       },
       {
        "ic": "i",
-       "tx": "<b>Visit booked</b> for 21 Oct HH:MM",
+       "tx": "<b>Visit booked</b> for 22 Oct HH:MM",
        "sub": "Consultation · Paediatrics · NCCI approved in advance",
        "type": "VISIT",
        "by": "SAADAN SAAFAN",
@@ -23964,18 +23964,18 @@
       },
       {
        "type": "CREDIT_SETTLED",
-       "amount": 32.77,
-       "note": "Settled by span",
-       "invoiceId": "INV-331391",
-       "visitId": 30,
-       "docId": "CRED-400114"
-      },
-      {
-       "type": "CREDIT_SETTLED",
        "amount": 180,
        "note": "Settled by span",
        "invoiceId": "INV-742118",
        "visitId": 10,
+       "docId": "CRED-400114"
+      },
+      {
+       "type": "CREDIT_SETTLED",
+       "amount": 32.77,
+       "note": "Settled by span",
+       "invoiceId": "INV-331391",
+       "visitId": 30,
        "docId": "CRED-400113"
       },
       {
@@ -24091,8 +24091,8 @@
       "ADV-400110:ADV_IN:40.5:30::Clinic advance received",
       "RADV-400111:ADV_REFUND:100:2::Open advance refunded · patient travelling",
       "RADV-400112:ADV_REFUND:50:2::Doctor advance refunded · not continuing",
-      "CRED-400113:CREDIT_SETTLED:180:10:INV-742118:Settled by span",
-      "CRED-400114:CREDIT_SETTLED:32.77:30:INV-331391:Settled by span",
+      "CRED-400113:CREDIT_SETTLED:32.77:30:INV-331391:Settled by span",
+      "CRED-400114:CREDIT_SETTLED:180:10:INV-742118:Settled by span",
       "CRED-400115:CREDIT_SETTLED:120:11:INV-731044:Settled by span"
      ]
     },
@@ -29705,10 +29705,10 @@
       {
        "ic": "",
        "tx": "<b>Credit settled</b> — SAR 332.77",
-       "sub": "Span · 3 invoice(s) settled · INV-742118, INV-331391, INV-731044",
+       "sub": "Span · 3 invoice(s) settled · INV-331391, INV-742118, INV-731044",
        "type": "CREDIT",
        "by": "SAADAN SAAFAN",
-       "invoiceId": "INV-742118",
+       "invoiceId": "INV-331391",
        "amount": 332.77,
        "mode": "Span"
       },
@@ -29860,18 +29860,18 @@
       },
       {
        "type": "CREDIT_SETTLED",
-       "amount": 32.77,
-       "note": "Settled by span",
-       "invoiceId": "INV-331391",
-       "visitId": 30,
-       "docId": "CRED-400114"
-      },
-      {
-       "type": "CREDIT_SETTLED",
        "amount": 180,
        "note": "Settled by span",
        "invoiceId": "INV-742118",
        "visitId": 10,
+       "docId": "CRED-400114"
+      },
+      {
+       "type": "CREDIT_SETTLED",
+       "amount": 32.77,
+       "note": "Settled by span",
+       "invoiceId": "INV-331391",
+       "visitId": 30,
        "docId": "CRED-400113"
       },
       {
@@ -29967,7 +29967,7 @@
      ],
      "payerStory": null,
      "done": {
-      "credit": "Credit settled — SAR 332.77 | Span · INV-742118, INV-331391, INV-731044"
+      "credit": "Credit settled — SAR 332.77 | Span · INV-331391, INV-742118, INV-731044"
      },
      "settled": [
       "INV-331391:Span",
@@ -29991,8 +29991,8 @@
       "ADV-400110:ADV_IN:40.5:30::Clinic advance received",
       "RADV-400111:ADV_REFUND:100:2::Open advance refunded · patient travelling",
       "RADV-400112:ADV_REFUND:50:2::Doctor advance refunded · not continuing",
-      "CRED-400113:CREDIT_SETTLED:180:10:INV-742118:Settled by span",
-      "CRED-400114:CREDIT_SETTLED:32.77:30:INV-331391:Settled by span",
+      "CRED-400113:CREDIT_SETTLED:32.77:30:INV-331391:Settled by span",
+      "CRED-400114:CREDIT_SETTLED:180:10:INV-742118:Settled by span",
       "CRED-400115:CREDIT_SETTLED:120:11:INV-731044:Settled by span"
      ]
     },
@@ -30271,10 +30271,10 @@
       {
        "ic": "",
        "tx": "<b>Credit settled</b> — SAR 332.77",
-       "sub": "Span · 3 invoice(s) settled · INV-742118, INV-331391, INV-731044",
+       "sub": "Span · 3 invoice(s) settled · INV-331391, INV-742118, INV-731044",
        "type": "CREDIT",
        "by": "SAADAN SAAFAN",
-       "invoiceId": "INV-742118",
+       "invoiceId": "INV-331391",
        "amount": 332.77,
        "mode": "Span"
       },
@@ -30434,18 +30434,18 @@
       },
       {
        "type": "CREDIT_SETTLED",
-       "amount": 32.77,
-       "note": "Settled by span",
-       "invoiceId": "INV-331391",
-       "visitId": 30,
-       "docId": "CRED-400114"
-      },
-      {
-       "type": "CREDIT_SETTLED",
        "amount": 180,
        "note": "Settled by span",
        "invoiceId": "INV-742118",
        "visitId": 10,
+       "docId": "CRED-400114"
+      },
+      {
+       "type": "CREDIT_SETTLED",
+       "amount": 32.77,
+       "note": "Settled by span",
+       "invoiceId": "INV-331391",
+       "visitId": 30,
        "docId": "CRED-400113"
       },
       {
@@ -30541,7 +30541,7 @@
      ],
      "payerStory": null,
      "done": {
-      "credit": "Credit settled — SAR 332.77 | Span · INV-742118, INV-331391, INV-731044",
+      "credit": "Credit settled — SAR 332.77 | Span · INV-331391, INV-742118, INV-731044",
       "replace": "Replaced — INV-193111 → INV-826635 | SAR 874.00 returned by Advance wallet"
      },
      "settled": [
@@ -30566,8 +30566,8 @@
       "ADV-400110:ADV_IN:40.5:30::Clinic advance received",
       "RADV-400111:ADV_REFUND:100:2::Open advance refunded · patient travelling",
       "RADV-400112:ADV_REFUND:50:2::Doctor advance refunded · not continuing",
-      "CRED-400113:CREDIT_SETTLED:180:10:INV-742118:Settled by span",
-      "CRED-400114:CREDIT_SETTLED:32.77:30:INV-331391:Settled by span",
+      "CRED-400113:CREDIT_SETTLED:32.77:30:INV-331391:Settled by span",
+      "CRED-400114:CREDIT_SETTLED:180:10:INV-742118:Settled by span",
       "CRED-400115:CREDIT_SETTLED:120:11:INV-731044:Settled by span",
       "ADV-400118:REFUND_IN:874:2:INV-826635:Overpayment returned to the wallet · Replaced with insurance pricing"
      ]
@@ -33750,6 +33750,613 @@
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration",
       "CRED-400105:CREDIT_RAISED:74.75:3:INV-336974:Orders left unsettled"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "3a: visit 1 is marked LWBS with a reason, comes back, then leaves with no reason given",
+   "ops": [
+    [
+     "lwbs",
+     1,
+     "Waited too long"
+    ],
+    [
+     "undoLwbs",
+     1
+    ],
+    [
+     "lwbs",
+     1,
+     null
+    ]
+   ],
+   "snaps": [
+    {
+     "step": "LWBS",
+     "q": "WADHA left without being seen.",
+     "sub": "Marked at HH:MM by SAADAN SAAFAN · Waited too long.",
+     "amt": null,
+     "buttons": [
+      "The patient came back — undo"
+     ],
+     "stories": [
+      "visit",
+      "orders",
+      "refund"
+     ],
+     "active": "refund",
+     "stages": {
+      "visit": {
+       "index": 3,
+       "skipped": [
+        4
+       ]
+      },
+      "orders": {
+       "index": 0,
+       "skipped": [],
+       "locked": true
+      },
+      "refund": {
+       "index": 3,
+       "skipped": []
+      }
+     },
+     "due": 0,
+     "dedUsed": 0,
+     "link": null,
+     "waitAll": false,
+     "bill": null,
+     "lines": [
+      {
+       "code": "CON-101",
+       "ins": "approved",
+       "price": 200,
+       "paid": true,
+       "via": "Cash",
+       "invoiceId": "INV-100295",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": true
+      }
+     ],
+     "invoices": [
+      {
+       "id": "INV-100295",
+       "scope": "consult",
+       "patient": 46,
+       "company": 184,
+       "deductible": 40,
+       "paid": true,
+       "via": "Cash",
+       "viaDetail": "tendered SAR 100.00 (1×SAR 100) · change SAR 54.00",
+       "payments": [
+        {
+         "mode": "Cash",
+         "amount": 46,
+         "ref": ""
+        }
+       ],
+       "payer": "NCCI · CLASS A",
+       "branch": null,
+       "cashOnly": false,
+       "billType": "insurance",
+       "rows": [
+        "CON-101:refunded"
+       ],
+       "refunded": 46,
+       "refunds": [
+        "46:Span:left before being seen:4417:CON-101:RFD-390991"
+       ],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
+      }
+     ],
+     "refundInvoices": [
+      "RFD-390991:INV-100295:46:184:40:Span:4417:left before being seen:NCCI · CLASS A:CON-101"
+     ],
+     "history": [
+      {
+       "ic": "w",
+       "tx": "<b>Left without being seen</b> — LWBS",
+       "sub": "Waited too long · the doctor had not started",
+       "type": "LWBS",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "w",
+       "tx": "<b>Refunded SAR 46.00</b> — INV-100295",
+       "sub": "Refund invoice RFD-390991 · Paediatric Consultation · Span · 4417 · left before being seen",
+       "type": "REFUND",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-100295",
+       "amount": 46,
+       "mode": "Span"
+      },
+      {
+       "ic": "",
+       "tx": "<b>Consultation paid</b> — SAR 46.00",
+       "sub": "Cash · tendered SAR 100.00 (1×SAR 100) · change SAR 54.00 · invoice INV-100295 created · SAR 184.00 to NCCI",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-100295",
+       "amount": 46,
+       "mode": "Cash"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Visit created</b> at reception",
+       "sub": "Paediatrics · Dr Lina Farouk",
+       "type": "VISIT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      }
+     ],
+     "wallet": {
+      "Open": 0,
+      "Doctor": 0,
+      "Clinic": 0
+     },
+     "credit": 0,
+     "ledger": [
+      {
+       "type": "CREDIT_SETTLED",
+       "amount": 46,
+       "note": "Settled by cash",
+       "invoiceId": "INV-577403",
+       "visitId": 31,
+       "docId": "CRED-400116"
+      },
+      {
+       "type": "CREDIT_RAISED",
+       "amount": 26,
+       "note": "Consultation left unsettled · SAR 20.00 paid at the desk",
+       "invoiceId": "INV-577403",
+       "visitId": 31,
+       "docId": "CRED-400107"
+      }
+     ],
+     "visit": {
+      "type": "Consultation",
+      "clinic": "PAEDIATRICS",
+      "doctor": "LINA FAROUK",
+      "slot": null,
+      "consult": {
+       "name": "Paediatric Consultation",
+       "code": "CON-101",
+       "price": 200
+      }
+     },
+     "payerId": "NCCI-A",
+     "policy": null,
+     "payers": [
+      "NCCI-A",
+      "MEDGULF-B",
+      "CASH"
+     ],
+     "payerStory": null,
+     "done": {
+      "refund": "Refunded SAR 46.00 on INV-100295 | Refund invoice RFD-390991 · Paediatric Consultation · Span · left before being seen"
+     },
+     "settled": [
+      "INV-577403:Cash"
+     ],
+     "appr": [
+      null
+     ],
+     "docs": [
+      "CRED-400107:CREDIT_RAISED:26:31:INV-577403:Consultation left unsettled · SAR 20.00 paid at the desk",
+      "CRED-400116:CREDIT_SETTLED:46:31:INV-577403:Settled by cash"
+     ]
+    },
+    {
+     "step": "SEE_DOCTOR",
+     "q": "WADHA can now see the doctor.",
+     "sub": "The visit moves on once the doctor starts the consultation.",
+     "amt": null,
+     "buttons": [
+      "Check if the doctor has started",
+      "Left without being seen"
+     ],
+     "stories": [
+      "visit",
+      "orders",
+      "refund",
+      "addorders"
+     ],
+     "active": "refund",
+     "stages": {
+      "visit": {
+       "index": 3,
+       "skipped": []
+      },
+      "orders": {
+       "index": 0,
+       "skipped": [],
+       "locked": true
+      },
+      "refund": {
+       "index": 3,
+       "skipped": []
+      },
+      "addorders": {
+       "index": 0,
+       "skipped": []
+      }
+     },
+     "due": 0,
+     "dedUsed": 0,
+     "link": null,
+     "waitAll": false,
+     "bill": null,
+     "lines": [
+      {
+       "code": "CON-101",
+       "ins": "approved",
+       "price": 200,
+       "paid": true,
+       "via": "Cash",
+       "invoiceId": "INV-100295",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": true
+      }
+     ],
+     "invoices": [
+      {
+       "id": "INV-100295",
+       "scope": "consult",
+       "patient": 46,
+       "company": 184,
+       "deductible": 40,
+       "paid": true,
+       "via": "Cash",
+       "viaDetail": "tendered SAR 100.00 (1×SAR 100) · change SAR 54.00",
+       "payments": [
+        {
+         "mode": "Cash",
+         "amount": 46,
+         "ref": ""
+        }
+       ],
+       "payer": "NCCI · CLASS A",
+       "branch": null,
+       "cashOnly": false,
+       "billType": "insurance",
+       "rows": [
+        "CON-101:refunded"
+       ],
+       "refunded": 46,
+       "refunds": [
+        "46:Span:left before being seen:4417:CON-101:RFD-390991"
+       ],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
+      }
+     ],
+     "refundInvoices": [
+      "RFD-390991:INV-100295:46:184:40:Span:4417:left before being seen:NCCI · CLASS A:CON-101"
+     ],
+     "history": [
+      {
+       "ic": "i",
+       "tx": "<b>LWBS cleared</b> — the patient came back",
+       "sub": "Marked at HH:MM, cleared at HH:MM",
+       "type": "LWBS",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "w",
+       "tx": "<b>Left without being seen</b> — LWBS",
+       "sub": "Waited too long · the doctor had not started",
+       "type": "LWBS",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "w",
+       "tx": "<b>Refunded SAR 46.00</b> — INV-100295",
+       "sub": "Refund invoice RFD-390991 · Paediatric Consultation · Span · 4417 · left before being seen",
+       "type": "REFUND",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-100295",
+       "amount": 46,
+       "mode": "Span"
+      },
+      {
+       "ic": "",
+       "tx": "<b>Consultation paid</b> — SAR 46.00",
+       "sub": "Cash · tendered SAR 100.00 (1×SAR 100) · change SAR 54.00 · invoice INV-100295 created · SAR 184.00 to NCCI",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-100295",
+       "amount": 46,
+       "mode": "Cash"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Visit created</b> at reception",
+       "sub": "Paediatrics · Dr Lina Farouk",
+       "type": "VISIT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      }
+     ],
+     "wallet": {
+      "Open": 0,
+      "Doctor": 0,
+      "Clinic": 0
+     },
+     "credit": 0,
+     "ledger": [
+      {
+       "type": "CREDIT_SETTLED",
+       "amount": 46,
+       "note": "Settled by cash",
+       "invoiceId": "INV-577403",
+       "visitId": 31,
+       "docId": "CRED-400116"
+      },
+      {
+       "type": "CREDIT_RAISED",
+       "amount": 26,
+       "note": "Consultation left unsettled · SAR 20.00 paid at the desk",
+       "invoiceId": "INV-577403",
+       "visitId": 31,
+       "docId": "CRED-400107"
+      }
+     ],
+     "visit": {
+      "type": "Consultation",
+      "clinic": "PAEDIATRICS",
+      "doctor": "LINA FAROUK",
+      "slot": null,
+      "consult": {
+       "name": "Paediatric Consultation",
+       "code": "CON-101",
+       "price": 200
+      }
+     },
+     "payerId": "NCCI-A",
+     "policy": null,
+     "payers": [
+      "NCCI-A",
+      "MEDGULF-B",
+      "CASH"
+     ],
+     "payerStory": null,
+     "done": {
+      "refund": "Refunded SAR 46.00 on INV-100295 | Refund invoice RFD-390991 · Paediatric Consultation · Span · left before being seen"
+     },
+     "settled": [
+      "INV-577403:Cash"
+     ],
+     "appr": [
+      null
+     ],
+     "docs": [
+      "CRED-400107:CREDIT_RAISED:26:31:INV-577403:Consultation left unsettled · SAR 20.00 paid at the desk",
+      "CRED-400116:CREDIT_SETTLED:46:31:INV-577403:Settled by cash"
+     ]
+    },
+    {
+     "step": "LWBS",
+     "q": "WADHA left without being seen.",
+     "sub": "Marked at HH:MM by SAADAN SAAFAN.",
+     "amt": null,
+     "buttons": [
+      "The patient came back — undo"
+     ],
+     "stories": [
+      "visit",
+      "orders",
+      "refund"
+     ],
+     "active": "refund",
+     "stages": {
+      "visit": {
+       "index": 3,
+       "skipped": [
+        4
+       ]
+      },
+      "orders": {
+       "index": 0,
+       "skipped": [],
+       "locked": true
+      },
+      "refund": {
+       "index": 3,
+       "skipped": []
+      }
+     },
+     "due": 0,
+     "dedUsed": 0,
+     "link": null,
+     "waitAll": false,
+     "bill": null,
+     "lines": [
+      {
+       "code": "CON-101",
+       "ins": "approved",
+       "price": 200,
+       "paid": true,
+       "via": "Cash",
+       "invoiceId": "INV-100295",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": true
+      }
+     ],
+     "invoices": [
+      {
+       "id": "INV-100295",
+       "scope": "consult",
+       "patient": 46,
+       "company": 184,
+       "deductible": 40,
+       "paid": true,
+       "via": "Cash",
+       "viaDetail": "tendered SAR 100.00 (1×SAR 100) · change SAR 54.00",
+       "payments": [
+        {
+         "mode": "Cash",
+         "amount": 46,
+         "ref": ""
+        }
+       ],
+       "payer": "NCCI · CLASS A",
+       "branch": null,
+       "cashOnly": false,
+       "billType": "insurance",
+       "rows": [
+        "CON-101:refunded"
+       ],
+       "refunded": 46,
+       "refunds": [
+        "46:Span:left before being seen:4417:CON-101:RFD-390991"
+       ],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
+      }
+     ],
+     "refundInvoices": [
+      "RFD-390991:INV-100295:46:184:40:Span:4417:left before being seen:NCCI · CLASS A:CON-101"
+     ],
+     "history": [
+      {
+       "ic": "w",
+       "tx": "<b>Left without being seen</b> — LWBS",
+       "sub": "No reason given · the doctor had not started",
+       "type": "LWBS",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "i",
+       "tx": "<b>LWBS cleared</b> — the patient came back",
+       "sub": "Marked at HH:MM, cleared at HH:MM",
+       "type": "LWBS",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "w",
+       "tx": "<b>Left without being seen</b> — LWBS",
+       "sub": "Waited too long · the doctor had not started",
+       "type": "LWBS",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "w",
+       "tx": "<b>Refunded SAR 46.00</b> — INV-100295",
+       "sub": "Refund invoice RFD-390991 · Paediatric Consultation · Span · 4417 · left before being seen",
+       "type": "REFUND",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-100295",
+       "amount": 46,
+       "mode": "Span"
+      },
+      {
+       "ic": "",
+       "tx": "<b>Consultation paid</b> — SAR 46.00",
+       "sub": "Cash · tendered SAR 100.00 (1×SAR 100) · change SAR 54.00 · invoice INV-100295 created · SAR 184.00 to NCCI",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-100295",
+       "amount": 46,
+       "mode": "Cash"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Visit created</b> at reception",
+       "sub": "Paediatrics · Dr Lina Farouk",
+       "type": "VISIT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      }
+     ],
+     "wallet": {
+      "Open": 0,
+      "Doctor": 0,
+      "Clinic": 0
+     },
+     "credit": 0,
+     "ledger": [
+      {
+       "type": "CREDIT_SETTLED",
+       "amount": 46,
+       "note": "Settled by cash",
+       "invoiceId": "INV-577403",
+       "visitId": 31,
+       "docId": "CRED-400116"
+      },
+      {
+       "type": "CREDIT_RAISED",
+       "amount": 26,
+       "note": "Consultation left unsettled · SAR 20.00 paid at the desk",
+       "invoiceId": "INV-577403",
+       "visitId": 31,
+       "docId": "CRED-400107"
+      }
+     ],
+     "visit": {
+      "type": "Consultation",
+      "clinic": "PAEDIATRICS",
+      "doctor": "LINA FAROUK",
+      "slot": null,
+      "consult": {
+       "name": "Paediatric Consultation",
+       "code": "CON-101",
+       "price": 200
+      }
+     },
+     "payerId": "NCCI-A",
+     "policy": null,
+     "payers": [
+      "NCCI-A",
+      "MEDGULF-B",
+      "CASH"
+     ],
+     "payerStory": null,
+     "done": {
+      "refund": "Refunded SAR 46.00 on INV-100295 | Refund invoice RFD-390991 · Paediatric Consultation · Span · left before being seen"
+     },
+     "settled": [
+      "INV-577403:Cash"
+     ],
+     "appr": [
+      null
+     ],
+     "docs": [
+      "CRED-400107:CREDIT_RAISED:26:31:INV-577403:Consultation left unsettled · SAR 20.00 paid at the desk",
+      "CRED-400116:CREDIT_SETTLED:46:31:INV-577403:Settled by cash"
      ]
     }
    ]

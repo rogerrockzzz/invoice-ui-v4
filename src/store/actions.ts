@@ -224,6 +224,19 @@ export function checkDoctor(w: World, c: Visit, fx: Fx) {
   fx.toast("ok", t("toast.withDoctor"), t("toast.withDoctorSub", { name: name(w, c) }));
 }
 
+/* v3 markLwbs() / undoLwbs() (lines 1827–1840): the patient left before the doctor started */
+export function markLwbs(w: World, c: Visit, reason: string, fx: Fx) {
+  c.lwbs = { at: now(), by: USER, reason };
+  recordOn(c, "w", t("hist.lwbs"), t("hist.lwbsSub", { reason: reason || t("hist.lwbsNoReason") }), { type: "LWBS", by: USER, reason });
+  fx.toast("warn", t("toast.lwbs"), t("toast.lwbsSub", { name: name(w, c) }));
+}
+export function undoLwbs(_w: World, c: Visit) {
+  const was = c.lwbs;
+  if (!was) return;
+  delete c.lwbs;
+  recordOn(c, "i", t("hist.lwbsCleared"), t("hist.lwbsClearedSub", { at: was.at, now: now() }), { type: "LWBS", by: USER });
+}
+
 export function checkOrders(w: World, c: Visit, fx: Fx) {
   const again = c.orders.length > 0;
   c.orderChecks = (c.orderChecks || 0) + 1;

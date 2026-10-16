@@ -9,6 +9,7 @@ import { Home } from "./features/home/Home";
 import { PatientScreen } from "./features/patient/Patient";
 import { VisitScreen } from "./features/visit/VisitScreen";
 import { EventModal } from "./features/visit/EventModal";
+import { LwbsModal } from "./features/visit/LwbsModal";
 import { InvoiceModal } from "./features/invoices/InvoiceModal";
 import { PaymentDrawer } from "./features/drawer/PaymentDrawer";
 import { AdvanceDrawer } from "./features/wallet/AdvanceDrawer";
@@ -43,6 +44,7 @@ export default function App() {
       <AdvanceDrawer />
       <EventModal />
       <InvoiceModal />
+      <LwbsModal />
       <SimulatePanel />
       <Toast.Provider placement="top end" maxVisibleToasts={3} />
     </>

@@ -53,6 +53,8 @@ export interface UiState {
   histOpen: boolean;
   comment: { cid: number; text: string; important: boolean } | null;
   simOpen: boolean;
+  /* v3 state.lwbsPop: "Left without being seen" asks why */
+  lwbsPop: { caseId: number; reason: string } | null;
   /* the refund being worked in its visit's Refund story (v3 state.refund) */
   refund: RefundUi | null;
   /* the replacement being worked in its visit's Replace story (v3 state.replace) */
@@ -102,7 +104,7 @@ const initial = () => ({
   screen: "home" as Screen, tabs: [] as string[], activeMrn: null, caseId: null, q: "", homeSel: null, homePanel: null,
   walletOpen: false, profPendOpen: true, pendView: "today" as PendView, profVisitsOpen: true, vf: { no: "", from: "", to: "" },
   visGroup: false, pinvOpen: false, pkgOpen: false,
-  drawer: null, eventPop: null, invPop: null, histOpen: true, comment: null, simOpen: false, refund: null as RefundUi | null, replace: null as ReplaceUi | null,
+  drawer: null, eventPop: null, invPop: null, histOpen: true, comment: null, simOpen: false, lwbsPop: null, refund: null as RefundUi | null, replace: null as ReplaceUi | null,
   wallet: null, adv: null, profPayer: null, walkin: null,
   invF: defaultInvFilters(), invQ: "", invLoaded: null, invEdit: false, invGroup: false,
 });

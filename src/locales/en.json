@@ -980,7 +980,12 @@
     "visitCreatedSub": "Walk-in · {{type}} · {{clinic}} · Dr {{doctor}}{{slot}}",
     "appointment": " · appointment {{slot}}",
     "approvalRequested": "<b>Approval requested</b> from {{payer}}",
-    "consultation": "Consultation"
+    "consultation": "Consultation",
+    "lwbs": "<b>Left without being seen</b> — LWBS",
+    "lwbsSub": "{{reason}} · the doctor had not started",
+    "lwbsNoReason": "No reason given",
+    "lwbsCleared": "<b>LWBS cleared</b> — the patient came back",
+    "lwbsClearedSub": "Marked at {{at}}, cleared at {{now}}"
   },
   "ledger": {
     "consultation": "consultation",
@@ -1089,6 +1094,17 @@
     "finishFirst": "Finish this first",
     "finishFirstSub": "Complete or cancel what you started.",
     "narrowFirst": "Narrow it down first",
-    "narrowFirstSub": "Pick a date range, or search for a patient or invoice."
+    "narrowFirstSub": "Pick a date range, or search for a patient or invoice.",
+    "lwbs": "Marked LWBS",
+    "lwbsSub": "{{name}} left without being seen"
+  },
+  "lwbs": {
+    "title": "Mark {{first}} as left without being seen?",
+    "sub": "{{name}} · {{type}} · {{clinic}} — the doctor had not started the consultation.",
+    "reason": "Reason",
+    "reasons": ["Waited too long", "Felt better", "Went to the emergency department", "Personal reasons"],
+    "hint": "The consultation stays paid. If the money goes back, use the Refund story.",
+    "keep": "Keep waiting",
+    "go": "Mark as LWBS"
   }
 }

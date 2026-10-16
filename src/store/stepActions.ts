@@ -25,9 +25,8 @@ export const STEP_RUN: Partial<Record<ActionId, (w: World, c: Visit, fx: A.Fx) =
   addOrders: (w, c, fx) => A.switchStory(w, c, "addorders", activeStory(w, c), fx),
   undoReplace: RP.undoReplace,
   billCashUrgent: (w, c) => { A.startCashBill(w, c, pendingOrders(c).filter((o) => !o.paid && !o.invoiceId)); },
+  undoLwbs: A.undoLwbs,
 };
 
 /* entry points that belong to later work: shown where v3 has them, disabled */
-export const STEP_LATER: Partial<Record<ActionId, string>> = {
-  lwbs: "M3", undoLwbs: "M3", printPackage: "M3", voidPrint: "M3",
-};
+export const STEP_LATER: Partial<Record<ActionId, string>> = { printPackage: "M3", voidPrint: "M3" };

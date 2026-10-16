@@ -33,8 +33,11 @@ export function StepCard({ c, s, top }: { c: Visit; s: NextStep; top?: ReactNode
   const { t } = useTranslation();
   const act = useWorld((x) => x.act);
   const openDrawer = useUi((x) => x.openDrawer);
+  const set = useUi((x) => x.set);
+  /* the drawer and the pop-ups are UI state; everything else is a visit action */
   const run = (id: StepAction["id"]) => {
     if (id === "openDrawer") return openDrawer(c.id, c.mrn, due(c));
+    if (id === "lwbs") return set({ lwbsPop: { caseId: c.id, reason: "" } });
     const fn = STEP_RUN[id];
     if (fn) act(c.id, fn);
   };

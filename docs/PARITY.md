@@ -10,7 +10,7 @@ checkpoint and whenever `npm run drift` reports a change (docs/PLAN-v4-M1.md §6
 - Goldens: `src/domain/__golden__/v3.json` — regenerate with `npm run golden`
 
 ## Status summary
-deferred-M3: 10, deferred-M4: 29, done: 263 (of 302 declarations) — Milestone 2 complete
+deferred-M3: 7, deferred-M4: 29, done: 266 (of 302 declarations) — Milestone 3 in progress (3a done)
 
 ## Screens and stories
 | v3 screen / story | Checkpoint | Status | Notes |
@@ -31,7 +31,8 @@ deferred-M3: 10, deferred-M4: 29, done: 263 (of 302 declarations) — Milestone 
 | Add orders | 2a | done | golden flow + e2e; NO_ORDERS "Add orders" opens it |
 | Refund | 2b | done | lands on the visit's Refund story from the invoice table / invoice pop-up / event pop-up; refund invoice pop-up |
 | Replace | 2c | done | insured (cash-billed order → policy) and cash-patient (one invoice at a time) flows; refund of the difference; walk-away undoes it |
-| Package booking, Package procedure, LWBS | M3 | deferred-M3 | |
+| LWBS | 3a | done | pop-up from SEE_DOCTOR, LWBS step with undo; golden flow + e2e |
+| Package booking, Package procedure | M3 | deferred-M3 | |
 | Ask VIDA, Story map, Settings, Arabic/RTL | M4 | deferred-M4 | i18n keys and RTL-safe CSS from 1a |
 
 ## Deviations from v3 (deliberate)
@@ -186,9 +187,9 @@ deferred-M3: 10, deferred-M4: 29, done: 263 (of 302 declarations) — Milestone 
 | `setPayer` | 1781 | store/payer.ts | 1c | done | golden flows (payer story on the walk-in visits) |
 | `openCreditPicker` | 1801 | store/wallet.ts | 1c | done | golden flows |
 | `checkDoctor` | 1810 | store/actions.ts | 1b | done | golden flows (src/store/__tests__/flows.test.ts) |
-| `markLwbs` | 1827 | — | M3 | deferred-M3 | entry point shown disabled |
-| `undoLwbs` | 1835 | — | M3 | deferred-M3 | entry point shown disabled |
-| `renderLwbsPop` | 1841 | — | M3 | deferred-M3 | entry point shown disabled |
+| `markLwbs` | 1827 | store/actions.ts | 3a | done | golden flow + e2e |
+| `undoLwbs` | 1835 | store/actions.ts | 3a | done | golden flow + e2e |
+| `renderLwbsPop` | 1841 | features/visit/LwbsModal.tsx (ui.lwbsPop) | 3a | done | golden flow drives v3's #lwGo; e2e |
 | `checkOrders` | 1866 | store/actions.ts | 1b | done | golden flows (src/store/__tests__/flows.test.ts) |
 | `selectedLines` | 1882 | domain/lines.ts | 1a | done |  |
 | `toggleLine` | 1886 | store/actions.ts | 1b | done | golden flows (src/store/__tests__/flows.test.ts) |
