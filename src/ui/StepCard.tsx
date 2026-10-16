@@ -46,7 +46,7 @@ export function StepCard({ c, s, top }: { c: Visit; s: NextStep; top?: ReactNode
     if (fn) act(c.id, fn);
   };
   return (
-    <Card className={`gap-3 border-s-4 p-5 ${TONE[s.tone]}`} data-testid="step-card" data-step={s.key}>
+    <Card className={`gap-3 border-s-4 bg-linear-to-br from-blue-50 to-white p-5 ${TONE[s.tone]}`} data-testid="step-card" data-step={s.key}>
       {top}
       <div className="flex items-center gap-2">
         <Chip size="sm" variant="soft" color={TAG[s.tone]}><M msg={s.tag} /></Chip>

@@ -35,7 +35,7 @@ export function VisitPayerStory({ c, top }: { c: Visit; top: ReactNode }) {
   const act = useWorld((s) => s.act);
   const run: PayerRun = (fn) => act(c.id, (dw, dc, fx) => { if (dc.payerStory && fn(dc.payerStory)) applyPayer(dw, dc, fx); });
   return (
-    <Card className="gap-3 border-s-4 border-s-accent p-5" data-testid="step-card" data-step="PAYER">
+    <Card className="gap-3 border-s-4 bg-linear-to-br from-blue-50 to-white border-s-accent p-5" data-testid="step-card" data-step="PAYER">
       {top}
       <Chip size="sm" variant="soft" color="accent" className="self-start">{t("story.payer.title")}</Chip>
       {c.payerStory ? <PayerStoryBody ctx={c} ps={c.payerStory} run={run} recheck={() => beginPayerStory(c.id)} />

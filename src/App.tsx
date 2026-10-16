@@ -39,7 +39,7 @@ export default function App() {
   return (
     <>
       <AppHeader />
-      <main className="mx-auto w-full max-w-[960px] px-4 pb-20 pt-3 lg:px-5">
+      <main className="mx-auto w-full max-w-[1152px] px-4 pb-20 pt-3 lg:px-5">
         <PatientTabs />
         {screen === "patient" ? <PatientScreen /> : screen === "visit" ? <VisitScreen /> : screen === "invoices" ? <InvoicesScreen /> : <Home />}
       </main>

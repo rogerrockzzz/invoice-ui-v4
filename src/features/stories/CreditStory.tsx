@@ -23,7 +23,7 @@ export function CreditStory({ c, top }: { c: Visit; top: ReactNode }) {
   const amt = round2(chosen.reduce((a, x) => a + creditOf(x.inv), 0));
   const ids = chosen.map((x) => x.inv.id);
   return (
-    <Card className="gap-3 border-s-4 border-s-warning p-5" data-testid="step-card" data-step="CREDIT">
+    <Card className="gap-3 border-s-4 bg-linear-to-br from-blue-50 to-white border-s-warning p-5" data-testid="step-card" data-step="CREDIT">
       {top}
       <Chip size="sm" variant="soft" color="warning" className="self-start">{t("story.credit.title")}</Chip>
       <h2 className="text-lg font-bold text-vida-navy" data-testid="step-q">{t("credit.q", { first: who.name.split(" ")[0] })}</h2>

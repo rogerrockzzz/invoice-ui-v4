@@ -28,7 +28,7 @@ export function ReplaceStory({ c, top }: { c: Visit; top: ReactNode }) {
   const rows = liveInvoices(c).map((inv) => ({ inv, r: invoiceReplace(w, c, inv) })).filter((x) => x.r);
   const outstanding = insured && cashHeld(c).length > 0;
   return (
-    <Card className="gap-3 border-s-4 border-s-accent p-5" data-testid="step-card" data-step="REPLACE_LIST">
+    <Card className="gap-3 border-s-4 bg-linear-to-br from-blue-50 to-white border-s-accent p-5" data-testid="step-card" data-step="REPLACE_LIST">
       {top}
       <Tag />
       <h2 className="text-lg font-bold text-vida-navy" data-testid="step-q">{t(insured ? "replace.listQIns" : "replace.listQCash")}</h2>
@@ -80,7 +80,7 @@ export function ReplaceWork({ c, d, top }: { c: Visit; d: ReplaceUi; top: ReactN
   };
   const ok = (st: string | null) => isApproved(st as never);
   return (
-    <Card className="gap-3 border-s-4 border-s-accent p-5" data-testid="step-card" data-step="REPLACE_WORK">
+    <Card className="gap-3 border-s-4 bg-linear-to-br from-blue-50 to-white border-s-accent p-5" data-testid="step-card" data-step="REPLACE_WORK">
       {top}
       <Tag />
       <h2 className="text-lg font-bold text-vida-navy" data-testid="step-q">{t("replace.workQ", { ids })}</h2>

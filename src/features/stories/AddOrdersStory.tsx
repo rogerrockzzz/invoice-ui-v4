@@ -23,7 +23,7 @@ export function AddOrdersStory({ c, top }: { c: Visit; top: ReactNode }) {
   const upd = (fn: (s: AddStory) => void) => act(c.id, (_w, dc) => addStoryDo(dc, fn));
 
   if (st.stage === 2) return (
-    <Card className="gap-3 border-s-4 border-s-accent p-5" data-testid="step-card" data-step="ADD_REVIEW">
+    <Card className="gap-3 border-s-4 bg-linear-to-br from-blue-50 to-white border-s-accent p-5" data-testid="step-card" data-step="ADD_REVIEW">
       {top}
       <Chip size="sm" variant="soft" color="accent" className="self-start">{t("story.addorders.title")}</Chip>
       <h2 className="text-lg font-bold text-vida-navy" data-testid="step-q">{t("addorders.reviewQ", { count: items.length })}</h2>
@@ -55,7 +55,7 @@ export function AddOrdersStory({ c, top }: { c: Visit; top: ReactNode }) {
   );
 
   return (
-    <Card className="gap-3 border-s-4 border-s-accent p-5" data-testid="step-card" data-step="ADD_CHOOSE">
+    <Card className="gap-3 border-s-4 bg-linear-to-br from-blue-50 to-white border-s-accent p-5" data-testid="step-card" data-step="ADD_CHOOSE">
       {top}
       <Chip size="sm" variant="soft" color="accent" className="self-start">{t("story.addorders.title")}</Chip>
       <h2 className="text-lg font-bold text-vida-navy" data-testid="step-q">{t("addorders.q", { first })}</h2>

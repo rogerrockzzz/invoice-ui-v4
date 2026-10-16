@@ -34,7 +34,7 @@ export function RefundStory({ c, top }: { c: Visit; top: ReactNode }) {
   const list = c.invoices, rfds = c.refundInvoices || [], wds = walletDocsOf(w, c);
   const can = list.filter((i) => refundable(w, i));
   return (
-    <Card className="gap-3 border-s-4 border-s-accent p-5" data-testid="step-card" data-step="REFUND_LIST">
+    <Card className="gap-3 border-s-4 bg-linear-to-br from-blue-50 to-white border-s-accent p-5" data-testid="step-card" data-step="REFUND_LIST">
       {top}
       <Tag />
       <h2 className="text-lg font-bold text-vida-navy" data-testid="step-q">
@@ -91,7 +91,7 @@ export function RefundWork({ c, d, top }: { c: Visit; d: RefundUi; top: ReactNod
     openDrawer(c.id, c.mrn, amt, { refund: { id: inv.id, codes: chosen.map((x) => x.code), reason: d.reason.trim(), dedBack } });
   };
   return (
-    <Card className="gap-3 border-s-4 border-s-danger p-5" data-testid="step-card" data-step="REFUND_WORK">
+    <Card className="gap-3 border-s-4 bg-linear-to-br from-blue-50 to-white border-s-danger p-5" data-testid="step-card" data-step="REFUND_WORK">
       {top}
       <Tag />
       <h2 className="text-lg font-bold text-vida-navy" data-testid="step-q">{t("refund.workQ", { first: firstName(w, c), inv: inv.id })}</h2>

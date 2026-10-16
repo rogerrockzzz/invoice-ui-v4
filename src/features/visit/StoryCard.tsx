@@ -57,7 +57,7 @@ function VisitDoneCard({ c, top }: { c: Visit; top: ReactNode }) {
   const act = useWorld((s) => s.act);
   const inv = c.invoices.find((i) => i.scope === "consult" && !i.voided && !i.replaced);
   return (
-    <Card className="gap-3 border-s-4 border-s-success p-5" data-testid="step-card" data-step="VISIT_DONE">
+    <Card className="gap-3 border-s-4 bg-linear-to-br from-blue-50 to-white border-s-success p-5" data-testid="step-card" data-step="VISIT_DONE">
       {top}
       <Chip size="sm" variant="soft" color="success" className="self-start">{t("story.visit.title")}</Chip>
       <h2 className="text-lg font-bold text-vida-navy">{t("visit.doneQ", { first: firstName(w, c) })}</h2>
@@ -92,7 +92,7 @@ function DoneCard({ c, id, done, top }: { c: Visit; id: StoryId; done: StoryDone
     if (id === "addorders") dc.addStory = null;
   });
   return (
-    <Card className="gap-3 border-s-4 border-s-success p-5" data-testid="step-card" data-step="STORY_DONE">
+    <Card className="gap-3 border-s-4 bg-linear-to-br from-blue-50 to-white border-s-success p-5" data-testid="step-card" data-step="STORY_DONE">
       {top}
       <Chip size="sm" variant="soft" color="success" className="self-start">{t(`story.${id}.title`)}</Chip>
       <h2 className="text-lg font-bold text-vida-navy">{done.title}</h2>

@@ -25,7 +25,7 @@ export function PackageStory({ c, top }: { c: Visit; top: ReactNode }) {
   const tag = <Chip size="sm" variant="soft" color="accent" className="self-start">{t("story.package.title")}</Chip>;
 
   if (ps.stage === 2) return (
-    <Card className="gap-3 border-s-4 border-s-accent p-5" data-testid="step-card" data-step="PKG_WHERE">
+    <Card className="gap-3 border-s-4 bg-linear-to-br from-blue-50 to-white border-s-accent p-5" data-testid="step-card" data-step="PKG_WHERE">
       {top}
       {tag}
       <h2 className="text-lg font-bold text-vida-navy" data-testid="step-q">{t("pkg.whereQ")}</h2>
@@ -43,7 +43,7 @@ export function PackageStory({ c, top }: { c: Visit; top: ReactNode }) {
   );
 
   return (
-    <Card className="gap-3 border-s-4 border-s-accent p-5" data-testid="step-card" data-step="PKG_CHOOSE">
+    <Card className="gap-3 border-s-4 bg-linear-to-br from-blue-50 to-white border-s-accent p-5" data-testid="step-card" data-step="PKG_CHOOSE">
       {top}
       {tag}
       <h2 className="text-lg font-bold text-vida-navy" data-testid="step-q">
