@@ -104,8 +104,12 @@
     "noInvoices": "No invoice has been raised for this patient yet.",
     "packageProcedures": "Package procedures",
     "packageCount": "{{left}} of {{count}} still to be booked",
-    "pkgCols": { "procedure": "Procedure", "package": "Package", "billedOn": "Billed on", "visit": "Visit" },
-    "notBooked": "Not booked"
+    "pkgCols": { "procedure": "Procedure", "package": "Package", "billedOn": "Billed on", "visit": "Visit", "action": "Action" },
+    "notBooked": "Not booked",
+    "paidInFull": "paid in full",
+    "bookAll": "book a visit ›",
+    "bookOne": "Book a visit",
+    "openVisit": "Open visit"
   },
   "wallet": {
     "open": "Open the wallet",
@@ -418,8 +422,7 @@
     "consultBilled": "Consultation billed",
     "doctorStartedAt": " · doctor started at {{at}}",
     "goTo": "Go to {{story}}",
-    "backTo": "Back to {{story}}",
-    "laterSub": "{{story}} is shown here so the visit reads as it will; its work arrives later."
+    "backTo": "Back to {{story}}"
   },
   "done": {
     "openVisit": "Open the new visit",
@@ -985,7 +988,11 @@
     "lwbsSub": "{{reason}} · the doctor had not started",
     "lwbsNoReason": "No reason given",
     "lwbsCleared": "<b>LWBS cleared</b> — the patient came back",
-    "lwbsClearedSub": "Marked at {{at}}, cleared at {{now}}"
+    "lwbsClearedSub": "Marked at {{at}}, cleared at {{now}}",
+    "pkgBooked": "<b>Visit booked for {{count}} package procedure(s)</b>",
+    "pkgBookedSub": "{{names}} · from {{parent}} · already paid on {{inv}} · no charge",
+    "pkgBookedSrc": "<b>{{count}} package procedure(s) booked for another day</b>",
+    "pkgBookedSrcSub": "{{names}} · {{clinic}} · still part of {{parent}}"
   },
   "ledger": {
     "consultation": "consultation",
@@ -1096,7 +1103,39 @@
     "narrowFirst": "Narrow it down first",
     "narrowFirstSub": "Pick a date range, or search for a patient or invoice.",
     "lwbs": "Marked LWBS",
-    "lwbsSub": "{{name}} left without being seen"
+    "lwbsSub": "{{name}} left without being seen",
+    "visitBooked": "Visit booked",
+    "visitBookedSub": "{{name}} · {{count}} package procedure(s) · no charge",
+    "nothingToBook": "Nothing left to book",
+    "nothingToBookSub": "Every procedure in the package has a visit."
+  },
+  "pkg": {
+    "q1": "Book a visit for {{name}}?",
+    "qN": "Book a visit for {{count}} package procedures?",
+    "q0": "Choose a procedure to book.",
+    "sub": "{{names}} · paid inside {{parent}} · <b>no charge</b>.",
+    "sub0": "Nothing is selected.",
+    "yesIt": "Yes, book it",
+    "yesThem": "Yes, book them",
+    "others": "Choose other procedures · {{count}} still to book in the package",
+    "paidOn": "{{code}} · {{parent}} · paid on ",
+    "noCharge": "no charge",
+    "whereQ": "Where and with whom?",
+    "change": "change",
+    "clinic": "Clinic",
+    "doctor": "Doctor",
+    "go": "Book the visit",
+    "done": "Visit booked for {{count}} package procedure(s)",
+    "doneSub": "{{names}} · {{clinic}} · Dr {{doctor}} · no charge",
+    "tick": "Book {{name}}",
+    "pop": {
+      "title": "Book a visit for package procedures",
+      "sub": "{{name}} · MRN {{mrn}} · paid inside a package, so the visit is raised at <b>no charge</b>",
+      "from": "{{code}} · from <b>{{parent}}</b> · billed {{at}} on ",
+      "hidden": "{{count}} procedure(s) already have a visit booked and are not shown.",
+      "cancel": "Cancel",
+      "go": "Create the visit · {{count}} procedure(s)"
+    }
   },
   "lwbs": {
     "title": "Mark {{first}} as left without being seen?",

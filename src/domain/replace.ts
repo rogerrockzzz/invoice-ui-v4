@@ -82,8 +82,9 @@ export function invoiceReplace(w: World, c: Visit, inv: Invoice): { ok: boolean;
 }
 
 /* a package is billed once; its child procedures are booked as their own nil-priced visits */
+export interface PkgItem { c: Visit; inv: Invoice; parent: Invoice["rows"][number]; child: NonNullable<Line["children"]>[number]; doneOn: Visit | null }
 export function packageItems(w: World, mrn: string) {
-  const out: { c: Visit; inv: Invoice; parent: Invoice["rows"][number]; child: NonNullable<Line["children"]>[number]; doneOn: Visit | null }[] = [];
+  const out: PkgItem[] = [];
   w.cases.filter((x) => x.mrn === mrn).forEach((c) => c.invoices.forEach((inv) => {
     if (!inv.paid) return;
     (inv.rows || []).forEach((r) => {

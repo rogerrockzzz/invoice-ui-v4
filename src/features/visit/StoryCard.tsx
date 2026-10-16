@@ -1,5 +1,4 @@
 import { Button, Card, Chip } from "@heroui/react";
-import { Lock } from "lucide-react";
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { creditInvoices, liveInvoices, refundable } from "../../domain/lines";
@@ -17,13 +16,11 @@ import { InvoiceLink } from "../../ui/InvoiceLink";
 import { StepCard } from "../../ui/StepCard";
 import { StoryStepper } from "../../ui/StoryStepper";
 import { AddOrdersStory } from "../stories/AddOrdersStory";
+import { PackageStory } from "../stories/PackageStory";
 import { CreditStory } from "../stories/CreditStory";
 import { RefundStory, RefundWork } from "../stories/RefundStory";
 import { ReplaceStory, ReplaceWork } from "../stories/ReplaceStory";
 import { VisitPayerStory } from "../stories/PayerStory";
-
-/* stories that are built in a later checkpoint or milestone */
-const LATER: Partial<Record<StoryId, string>> = { package: "M3" };
 
 /* v3 renderStoryCard() (line 2142): the active story's stages, then its card */
 export function StoryCard({ c, ui }: { c: Visit; ui: StoryUiCtx }) {
@@ -49,7 +46,7 @@ export function StoryCard({ c, ui }: { c: Visit; ui: StoryUiCtx }) {
   if (id === "credit") return <CreditStory c={c} top={stages(id)} />;
   if (id === "payer") return <VisitPayerStory c={c} top={stages(id)} />;
   if (id === "addorders") return <AddOrdersStory c={c} top={stages(id)} />;
-  if (LATER[id]) return <LaterCard id={id} when={LATER[id]!} top={stages(id)} />;
+  if (id === "package") return <PackageStory c={c} top={stages(id)} />;
   return <StepCard c={c} s={nextStep(w, c)} top={stages(mainStory(w, c))} />;
 }
 
@@ -107,19 +104,6 @@ function DoneCard({ c, id, done, top }: { c: Visit; id: StoryId; done: StoryDone
         {more && <Button variant="outline" onPress={again}>{t(`done.again.${id}`)}</Button>}
         <Button variant={done.visitId ? "outline" : "primary"} onPress={toMain}>{t("visit.backTo", { story: t(`story.${main}.title`) })}</Button>
       </div>
-    </Card>
-  );
-}
-
-/* a story whose work arrives in a later checkpoint: its place and stages are shown, the work is not */
-function LaterCard({ id, when, top }: { id: StoryId; when: string; top: ReactNode }) {
-  const { t } = useTranslation();
-  return (
-    <Card className="gap-3 border-s-4 border-s-border p-5" data-testid="step-card" data-step="LATER">
-      {top}
-      <Chip size="sm" variant="soft" className="self-start">{t(`story.${id}.title`)}</Chip>
-      <h2 className="flex items-center gap-2 text-lg font-bold text-vida-navy"><Lock className="size-4" /> {t("app.comingSoon", { when })}</h2>
-      <p className="text-sm text-muted">{t("visit.laterSub", { story: t(`story.${id}.title`) })}</p>
     </Card>
   );
 }

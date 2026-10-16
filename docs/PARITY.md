@@ -10,7 +10,7 @@ checkpoint and whenever `npm run drift` reports a change (docs/PLAN-v4-M1.md §6
 - Goldens: `src/domain/__golden__/v3.json` — regenerate with `npm run golden`
 
 ## Status summary
-deferred-M3: 7, deferred-M4: 29, done: 266 (of 302 declarations) — Milestone 3 in progress (3a done)
+deferred-M3: 3, deferred-M4: 29, done: 270 (of 302 declarations) — Milestone 3 in progress (3a, 3b done)
 
 ## Screens and stories
 | v3 screen / story | Checkpoint | Status | Notes |
@@ -32,7 +32,8 @@ deferred-M3: 7, deferred-M4: 29, done: 266 (of 302 declarations) — Milestone 3
 | Refund | 2b | done | lands on the visit's Refund story from the invoice table / invoice pop-up / event pop-up; refund invoice pop-up |
 | Replace | 2c | done | insured (cash-billed order → policy) and cash-patient (one invoice at a time) flows; refund of the difference; walk-away undoes it |
 | LWBS | 3a | done | pop-up from SEE_DOCTOR, LWBS step with undo; golden flow + e2e |
-| Package booking, Package procedure | M3 | deferred-M3 | |
+| Package booking | 3b | done | visit story + profile pop-up; done card opens the new visit; golden flow + e2e |
+| Package procedure | M3 | deferred-M3 | |
 | Ask VIDA, Story map, Settings, Arabic/RTL | M4 | deferred-M4 | i18n keys and RTL-safe CSS from 1a |
 
 ## Deviations from v3 (deliberate)
@@ -261,7 +262,7 @@ deferred-M3: 7, deferred-M4: 29, done: 266 (of 302 declarations) — Milestone 3
 | `renderDoneCard` | 2796 | features/visit/StoryCard.tsx | 1b | done |  |
 | `renderRefundStory` | 2825 | features/stories/RefundStory.tsx | 2b | done | golden flow + e2e |
 | `renderReplaceStory` | 2871 | features/stories/ReplaceStory.tsx | 2c | done | golden flows + e2e |
-| `renderPackageStory` | 2907 | features/stories/package | M3 | deferred-M3 |  |
+| `renderPackageStory` | 2907 | features/stories/PackageStory.tsx, store/package.ts (pkgStoryOf, bookPackageStory) | 3b | done | story state on `c.pkgStory`, created on first edit (v3 creates it while rendering); golden flow + e2e |
 | `renderCreditStory` | 2970 | features/stories/CreditStory.tsx | 1c | done | link + desk; golden flows |
 | `nextStep` | 3025 | domain/steps.ts | 1a | done | returns data + i18n keys; texts golden-tested word for word |
 | `isToday` | 3231 | domain/visits.ts | 1a | done |  |
@@ -341,7 +342,7 @@ deferred-M3: 7, deferred-M4: 29, done: 266 (of 302 declarations) — Milestone 3
 | `ivDecorate` | 4690 | features/invoices/InvoiceTable.tsx | 1c | done |  |
 | `pairInvoices` | 4697 | domain/invoices.ts | 1c | done | unit-tested |
 | `invoiceTable` | 4733 | features/invoices/InvoiceTable.tsx | 1c | done | Refund action works from 2b |
-| `renderPackageItems` | 4789 | features/patient/PatientCards.tsx | 1a | done | book/open actions in M3 |
+| `renderPackageItems` | 4789 | features/patient/PatientCards.tsx | 1a, 3b | done | "book a visit ›" sits beside the fold trigger (a button may not sit inside it) |
 | `renderPatientInvoices` | 4825 | features/patient/PatientCards.tsx | 1c | done | table only rendered once expanded |
 | `reprint` | 4854 | store/wallet.ts, features/invoices/InvoiceModal.tsx | 1c | done | also opens the browser print (print stylesheet in theme.css) |
 | `renderLedger` | 4863 | features/wallet/LedgerTable.tsx | 1c | done |  |
@@ -352,9 +353,9 @@ deferred-M3: 7, deferred-M4: 29, done: 266 (of 302 declarations) — Milestone 3
 | `replaceInline` | 5005 | features/visit/StoryCard.tsx | 2c | done | golden flows + e2e |
 | `renderReplaceWork` | 5006 | features/stories/ReplaceStory.tsx (ReplaceWork) | 2c | done | golden flows + e2e |
 | `renderReplacePop` | 5018 | features/stories/ReplaceStory.tsx (ReplaceWork) | 2c | done | worked in the story card only — every entry point is inside the visit, so v3's pop-up variant is not needed |
-| `openPkgBook` | 5099 | features/stories/package | M3 | deferred-M3 |  |
-| `renderPkgBookPop` | 5108 | features/stories/package | M3 | deferred-M3 |  |
-| `createPkgVisit` | 5163 | features/stories/package | M3 | deferred-M3 |  |
+| `openPkgBook` | 5099 | store/ui.ts, store/package.ts (pkgBookFor) | 3b | done | golden flow + e2e |
+| `renderPkgBookPop` | 5108 | features/patient/PkgBookModal.tsx (ui.pkgBook) | 3b | done | golden flow drives v3's #pbGo; e2e |
+| `createPkgVisit` | 5163 | store/package.ts | 3b | done | returns the new visit's id; the pop-up opens it (store/ui.ts confirmPkgBook) |
 | `openRefund` | 5192 | store/ui.ts, store/refund.ts (openRefundOn), domain/refund.ts (refundStart) | 2b | done | golden flow + e2e |
 | `refundCalc` | 5205 | domain/refund.ts | 2b | done | golden flow + e2e |
 | `refundInline` | 5216 | features/visit/StoryCard.tsx | 2b | done | golden flow + e2e |

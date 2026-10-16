@@ -7,6 +7,7 @@ import { AppHeader } from "./features/shell/AppHeader";
 import { PatientTabs } from "./features/shell/PatientTabs";
 import { Home } from "./features/home/Home";
 import { PatientScreen } from "./features/patient/Patient";
+import { PkgBookModal } from "./features/patient/PkgBookModal";
 import { VisitScreen } from "./features/visit/VisitScreen";
 import { EventModal } from "./features/visit/EventModal";
 import { LwbsModal } from "./features/visit/LwbsModal";
@@ -45,6 +46,7 @@ export default function App() {
       <EventModal />
       <InvoiceModal />
       <LwbsModal />
+      <PkgBookModal />
       <SimulatePanel />
       <Toast.Provider placement="top end" maxVisibleToasts={3} />
     </>

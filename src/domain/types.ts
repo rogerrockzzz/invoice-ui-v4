@@ -77,6 +77,7 @@ export interface LineChild {
   code: string;
   name: string;
   visitId?: number;
+  bookedAt?: string;
 }
 
 export interface Line {
@@ -224,6 +225,8 @@ export interface StoryDone {
 
 /* v3 renderAddOrdersStory(): choose → review, with the picker's cart on the visit */
 export interface AddStory { stage: number; sel: Record<string, boolean>; q: string }
+/* v3 renderPackageStory(): choose the procedures → clinic and doctor, kept on the visit */
+export interface PkgStory { stage: number; sel: Record<string, boolean>; clinic: string; doctor: string; listOpen: boolean }
 
 export interface Visit {
   id: number;
@@ -260,7 +263,7 @@ export interface Visit {
   sel?: Record<string, boolean>;
   payerStory?: PayerStory | null;
   policy?: (PolicyForm & { payer: string }) | null;
-  pkgStory?: { stage: number } | null;
+  pkgStory?: PkgStory | null;
   addStory?: AddStory | null;
   checks?: number;
   insChecks?: Record<string, number>;

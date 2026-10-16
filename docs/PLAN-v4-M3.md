@@ -37,7 +37,7 @@ pop-up's "Paid inside" / "Void" lines). M3 adds the actions, the UI and the gold
 - [x] 3a: "Left without being seen" on SEE_DOCTOR opens the pop-up (four reasons, refund hint when the consultation
   is refundable, "Keep waiting" / "Mark as LWBS"); LWBS step with undo; visit badge "Left without being seen",
   orders locked with the LWBS reason, Add orders hidden, visits list "LWBS"; golden + e2e.
-- [ ] 3b: Package story — first procedure suggested, "Choose other procedures" list, stage 2 clinic & doctor, "Book the
+- [x] 3b: Package story — first procedure suggested, "Choose other procedures" list, stage 2 clinic & doctor, "Book the
   visit" creates the Package procedure visit and the done card opens it; profile "Package procedures" card offers
   "book a visit ›" / "Book a visit" / "Open visit"; pop-up with list, hint for already-booked, clinic & doctor,
   "Create the visit · N procedure(s)" opens the new visit; golden + e2e.

@@ -18,7 +18,8 @@ import * as PA from "../payer";
 import * as W from "../wallet";
 import * as RF from "../refund";
 import * as RP from "../replace";
-import { invoiceReplace, replacePreview } from "../../domain/replace";
+import * as PK from "../package";
+import { invoiceReplace, packageItems, replacePreview } from "../../domain/replace";
 import { refundCalc, refundStart } from "../../domain/refund";
 
 /* Replays the scripted flows of tools/v3-golden/extract.html with v4's actions and compares the visit
@@ -87,6 +88,16 @@ function runOp(w: World, [op, id, ...a]: Op) {
     }
     case "lwbs": return A.markLwbs(w, c, (a[0] as string | null) || "", fx);
     case "undoLwbs": return A.undoLwbs(w, c);
+    case "pkgStory": {
+      const [codes, clinic, doctor] = a as [string[], string, string];
+      c.pkgStory = { stage: 2, sel: Object.fromEntries(codes.map((k) => [k, true])), clinic, doctor, listOpen: false };
+      return PK.bookPackageStory(w, c, fx);
+    }
+    case "pkgBook": {
+      const [codes, clinic, doctor] = a as [string[], string, string];
+      const id = PK.createPkgVisit(w, { mrn: c.mrn, clinic, doctor }, PK.pkgChosen(w, c.mrn, Object.fromEntries(codes.map((k) => [k, true]))), fx);
+      return A.openedVisit(w, w.cases.find((x) => x.id === id)!); /* the pop-up opens the new visit */
+    }
     case "addOrdersStory":
       PA.addStoryDo(c, (s) => { s.stage = 2; s.sel = Object.fromEntries((a[0] as string[]).map((k) => [k, true])); });
       return PA.addOrdersStory(w, c, fx);
@@ -158,6 +169,8 @@ function snap(w: World, c: Visit) {
     settled: visitsOf(w, c.mrn).flatMap((v) => v.invoices.filter((i) => i.settled).map((i) => `${i.id}:${i.settledVia}`)),
     appr: [c.consult, ...c.orders].map((l) => l.appr || null),
     docs: (p.walletDocs || []).map((d) => `${d.id}:${d.wtype}:${d.amount}:${d.visitId}:${d.invoiceId || ""}:${norm(d.note)}`),
+    pkg: packageItems(w, c.mrn).map((x) => `${x.inv.id}:${x.child.code}:${x.child.visitId || ""}`),
+    visitIds: visitsOf(w, c.mrn).map((v) => v.id),
   };
 }
 

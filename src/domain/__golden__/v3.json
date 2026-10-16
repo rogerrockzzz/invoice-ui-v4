@@ -1,6 +1,6 @@
 {
  "build": "no-invoice-until-payment",
- "generatedAt": "2026-10-16T05:40:14.339Z",
+ "generatedAt": "2026-10-16T05:47:19.098Z",
  "calc": [
   {
    "plan": "none",
@@ -8366,7 +8366,15 @@
      "appr": [
       null
      ],
-     "docs": []
+     "docs": [],
+     "pkg": [],
+     "visitIds": [
+      31,
+      13,
+      1,
+      21,
+      12
+     ]
     },
     {
      "step": "CONSULT_BILL",
@@ -8460,7 +8468,15 @@
      "appr": [
       null
      ],
-     "docs": []
+     "docs": [],
+     "pkg": [],
+     "visitIds": [
+      31,
+      13,
+      1,
+      21,
+      12
+     ]
     },
     {
      "step": "COLLECT",
@@ -8564,7 +8580,15 @@
      "appr": [
       null
      ],
-     "docs": []
+     "docs": [],
+     "pkg": [],
+     "visitIds": [
+      31,
+      13,
+      1,
+      21,
+      12
+     ]
     },
     {
      "step": "SEE_DOCTOR",
@@ -8704,7 +8728,15 @@
      "appr": [
       null
      ],
-     "docs": []
+     "docs": [],
+     "pkg": [],
+     "visitIds": [
+      31,
+      13,
+      1,
+      21,
+      12
+     ]
     }
    ]
   },
@@ -8952,6 +8984,10 @@
      ],
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration"
+     ],
+     "pkg": [],
+     "visitIds": [
+      3
      ]
     },
     {
@@ -9071,6 +9107,10 @@
      ],
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration"
+     ],
+     "pkg": [],
+     "visitIds": [
+      3
      ]
     },
     {
@@ -9200,6 +9240,10 @@
      ],
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration"
+     ],
+     "pkg": [],
+     "visitIds": [
+      3
      ]
     },
     {
@@ -9340,6 +9384,10 @@
      ],
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration"
+     ],
+     "pkg": [],
+     "visitIds": [
+      3
      ]
     },
     {
@@ -9480,6 +9528,10 @@
      ],
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration"
+     ],
+     "pkg": [],
+     "visitIds": [
+      3
      ]
     },
     {
@@ -9630,6 +9682,10 @@
      ],
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration"
+     ],
+     "pkg": [],
+     "visitIds": [
+      3
      ]
     },
     {
@@ -9804,6 +9860,10 @@
      ],
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration"
+     ],
+     "pkg": [],
+     "visitIds": [
+      3
      ]
     },
     {
@@ -9988,6 +10048,10 @@
      ],
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration"
+     ],
+     "pkg": [],
+     "visitIds": [
+      3
      ]
     },
     {
@@ -10181,6 +10245,10 @@
      ],
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration"
+     ],
+     "pkg": [],
+     "visitIds": [
+      3
      ]
     },
     {
@@ -10374,6 +10442,10 @@
      ],
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration"
+     ],
+     "pkg": [],
+     "visitIds": [
+      3
      ]
     },
     {
@@ -10614,6 +10686,10 @@
      ],
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration"
+     ],
+     "pkg": [],
+     "visitIds": [
+      3
      ]
     },
     {
@@ -10865,6 +10941,10 @@
      ],
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration"
+     ],
+     "pkg": [],
+     "visitIds": [
+      3
      ]
     },
     {
@@ -11126,6 +11206,10 @@
      ],
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration"
+     ],
+     "pkg": [],
+     "visitIds": [
+      3
      ]
     },
     {
@@ -11396,6 +11480,10 @@
      ],
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration"
+     ],
+     "pkg": [],
+     "visitIds": [
+      3
      ]
     },
     {
@@ -11676,6 +11764,10 @@
      ],
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration"
+     ],
+     "pkg": [],
+     "visitIds": [
+      3
      ]
     },
     {
@@ -11967,6 +12059,10 @@
      ],
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration"
+     ],
+     "pkg": [],
+     "visitIds": [
+      3
      ]
     },
     {
@@ -12257,6 +12353,10 @@
      ],
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration"
+     ],
+     "pkg": [],
+     "visitIds": [
+      3
      ]
     },
     {
@@ -12557,6 +12657,10 @@
      ],
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration"
+     ],
+     "pkg": [],
+     "visitIds": [
+      3
      ]
     },
     {
@@ -12887,6 +12991,10 @@
      ],
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration"
+     ],
+     "pkg": [],
+     "visitIds": [
+      3
      ]
     },
     {
@@ -13226,6 +13334,10 @@
      ],
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration"
+     ],
+     "pkg": [],
+     "visitIds": [
+      3
      ]
     },
     {
@@ -13565,6 +13677,10 @@
      ],
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration"
+     ],
+     "pkg": [],
+     "visitIds": [
+      3
      ]
     },
     {
@@ -13904,6 +14020,10 @@
      ],
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration"
+     ],
+     "pkg": [],
+     "visitIds": [
+      3
      ]
     },
     {
@@ -14253,6 +14373,10 @@
      ],
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration"
+     ],
+     "pkg": [],
+     "visitIds": [
+      3
      ]
     },
     {
@@ -14645,6 +14769,10 @@
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration",
       "CRED-400105:CREDIT_RAISED:74.75:3:INV-336974:Orders left unsettled"
+     ],
+     "pkg": [],
+     "visitIds": [
+      3
      ]
     },
     {
@@ -15037,6 +15165,10 @@
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration",
       "CRED-400105:CREDIT_RAISED:74.75:3:INV-336974:Orders left unsettled"
+     ],
+     "pkg": [],
+     "visitIds": [
+      3
      ]
     },
     {
@@ -15464,6 +15596,10 @@
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration",
       "CRED-400105:CREDIT_RAISED:74.75:3:INV-336974:Orders left unsettled"
+     ],
+     "pkg": [],
+     "visitIds": [
+      3
      ]
     }
    ]
@@ -15783,6 +15919,14 @@
       "CRED-400101:CREDIT_RAISED:120:11:INV-731044:Consultation left unsettled",
       "ADV-400102:ADV_IN:500:10::Open advance received",
       "CRED-400103:CREDIT_RAISED:180:10:INV-742118:Orders left unsettled"
+     ],
+     "pkg": [],
+     "visitIds": [
+      30,
+      20,
+      2,
+      10,
+      11
      ]
     },
     {
@@ -16029,6 +16173,14 @@
       "CRED-400101:CREDIT_RAISED:120:11:INV-731044:Consultation left unsettled",
       "ADV-400102:ADV_IN:500:10::Open advance received",
       "CRED-400103:CREDIT_RAISED:180:10:INV-742118:Orders left unsettled"
+     ],
+     "pkg": [],
+     "visitIds": [
+      30,
+      20,
+      2,
+      10,
+      11
      ]
     },
     {
@@ -16275,6 +16427,14 @@
       "CRED-400101:CREDIT_RAISED:120:11:INV-731044:Consultation left unsettled",
       "ADV-400102:ADV_IN:500:10::Open advance received",
       "CRED-400103:CREDIT_RAISED:180:10:INV-742118:Orders left unsettled"
+     ],
+     "pkg": [],
+     "visitIds": [
+      30,
+      20,
+      2,
+      10,
+      11
      ]
     },
     {
@@ -16521,6 +16681,14 @@
       "CRED-400101:CREDIT_RAISED:120:11:INV-731044:Consultation left unsettled",
       "ADV-400102:ADV_IN:500:10::Open advance received",
       "CRED-400103:CREDIT_RAISED:180:10:INV-742118:Orders left unsettled"
+     ],
+     "pkg": [],
+     "visitIds": [
+      30,
+      20,
+      2,
+      10,
+      11
      ]
     },
     {
@@ -16776,6 +16944,14 @@
       "CRED-400101:CREDIT_RAISED:120:11:INV-731044:Consultation left unsettled",
       "ADV-400102:ADV_IN:500:10::Open advance received",
       "CRED-400103:CREDIT_RAISED:180:10:INV-742118:Orders left unsettled"
+     ],
+     "pkg": [],
+     "visitIds": [
+      30,
+      20,
+      2,
+      10,
+      11
      ]
     },
     {
@@ -17032,6 +17208,14 @@
       "CRED-400101:CREDIT_RAISED:120:11:INV-731044:Consultation left unsettled",
       "ADV-400102:ADV_IN:500:10::Open advance received",
       "CRED-400103:CREDIT_RAISED:180:10:INV-742118:Orders left unsettled"
+     ],
+     "pkg": [],
+     "visitIds": [
+      30,
+      20,
+      2,
+      10,
+      11
      ]
     },
     {
@@ -17289,6 +17473,14 @@
       "CRED-400101:CREDIT_RAISED:120:11:INV-731044:Consultation left unsettled",
       "ADV-400102:ADV_IN:500:10::Open advance received",
       "CRED-400103:CREDIT_RAISED:180:10:INV-742118:Orders left unsettled"
+     ],
+     "pkg": [],
+     "visitIds": [
+      30,
+      20,
+      2,
+      10,
+      11
      ]
     },
     {
@@ -17605,6 +17797,19 @@
       "ADV-400102:ADV_IN:500:10::Open advance received",
       "CRED-400103:CREDIT_RAISED:180:10:INV-742118:Orders left unsettled",
       "ADV-400106:ADV_USED:173.69:2:INV-438601:Applied to orders · SAR 173.69 open"
+     ],
+     "pkg": [
+      "INV-438601:PKG-100-A:",
+      "INV-438601:PKG-100-B:",
+      "INV-438601:PKG-100-C:",
+      "INV-438601:PKG-100-D:"
+     ],
+     "visitIds": [
+      30,
+      20,
+      2,
+      10,
+      11
      ]
     },
     {
@@ -17940,6 +18145,19 @@
       "ADV-400102:ADV_IN:500:10::Open advance received",
       "CRED-400103:CREDIT_RAISED:180:10:INV-742118:Orders left unsettled",
       "ADV-400106:ADV_USED:173.69:2:INV-438601:Applied to orders · SAR 173.69 open"
+     ],
+     "pkg": [
+      "INV-438601:PKG-100-A:",
+      "INV-438601:PKG-100-B:",
+      "INV-438601:PKG-100-C:",
+      "INV-438601:PKG-100-D:"
+     ],
+     "visitIds": [
+      30,
+      20,
+      2,
+      10,
+      11
      ]
     },
     {
@@ -18266,6 +18484,19 @@
       "ADV-400102:ADV_IN:500:10::Open advance received",
       "CRED-400103:CREDIT_RAISED:180:10:INV-742118:Orders left unsettled",
       "ADV-400106:ADV_USED:173.69:2:INV-438601:Applied to orders · SAR 173.69 open"
+     ],
+     "pkg": [
+      "INV-438601:PKG-100-A:",
+      "INV-438601:PKG-100-B:",
+      "INV-438601:PKG-100-C:",
+      "INV-438601:PKG-100-D:"
+     ],
+     "visitIds": [
+      30,
+      20,
+      2,
+      10,
+      11
      ]
     },
     {
@@ -18611,6 +18842,19 @@
       "ADV-400102:ADV_IN:500:10::Open advance received",
       "CRED-400103:CREDIT_RAISED:180:10:INV-742118:Orders left unsettled",
       "ADV-400106:ADV_USED:173.69:2:INV-438601:Applied to orders · SAR 173.69 open"
+     ],
+     "pkg": [
+      "INV-438601:PKG-100-A:",
+      "INV-438601:PKG-100-B:",
+      "INV-438601:PKG-100-C:",
+      "INV-438601:PKG-100-D:"
+     ],
+     "visitIds": [
+      30,
+      20,
+      2,
+      10,
+      11
      ]
     },
     {
@@ -18966,6 +19210,19 @@
       "ADV-400102:ADV_IN:500:10::Open advance received",
       "CRED-400103:CREDIT_RAISED:180:10:INV-742118:Orders left unsettled",
       "ADV-400106:ADV_USED:173.69:2:INV-438601:Applied to orders · SAR 173.69 open"
+     ],
+     "pkg": [
+      "INV-438601:PKG-100-A:",
+      "INV-438601:PKG-100-B:",
+      "INV-438601:PKG-100-C:",
+      "INV-438601:PKG-100-D:"
+     ],
+     "visitIds": [
+      30,
+      20,
+      2,
+      10,
+      11
      ]
     }
    ]
@@ -19166,6 +19423,19 @@
       "ADV-400102:ADV_IN:500:10::Open advance received",
       "CRED-400103:CREDIT_RAISED:180:10:INV-742118:Orders left unsettled",
       "ADV-400106:ADV_USED:173.69:2:INV-438601:Applied to orders · SAR 173.69 open"
+     ],
+     "pkg": [
+      "INV-438601:PKG-100-A:",
+      "INV-438601:PKG-100-B:",
+      "INV-438601:PKG-100-C:",
+      "INV-438601:PKG-100-D:"
+     ],
+     "visitIds": [
+      30,
+      20,
+      2,
+      10,
+      11
      ]
     },
     {
@@ -19367,6 +19637,19 @@
       "ADV-400102:ADV_IN:500:10::Open advance received",
       "CRED-400103:CREDIT_RAISED:180:10:INV-742118:Orders left unsettled",
       "ADV-400106:ADV_USED:173.69:2:INV-438601:Applied to orders · SAR 173.69 open"
+     ],
+     "pkg": [
+      "INV-438601:PKG-100-A:",
+      "INV-438601:PKG-100-B:",
+      "INV-438601:PKG-100-C:",
+      "INV-438601:PKG-100-D:"
+     ],
+     "visitIds": [
+      30,
+      20,
+      2,
+      10,
+      11
      ]
     },
     {
@@ -19577,6 +19860,19 @@
       "ADV-400102:ADV_IN:500:10::Open advance received",
       "CRED-400103:CREDIT_RAISED:180:10:INV-742118:Orders left unsettled",
       "ADV-400106:ADV_USED:173.69:2:INV-438601:Applied to orders · SAR 173.69 open"
+     ],
+     "pkg": [
+      "INV-438601:PKG-100-A:",
+      "INV-438601:PKG-100-B:",
+      "INV-438601:PKG-100-C:",
+      "INV-438601:PKG-100-D:"
+     ],
+     "visitIds": [
+      30,
+      20,
+      2,
+      10,
+      11
      ]
     },
     {
@@ -19796,6 +20092,19 @@
       "ADV-400102:ADV_IN:500:10::Open advance received",
       "CRED-400103:CREDIT_RAISED:180:10:INV-742118:Orders left unsettled",
       "ADV-400106:ADV_USED:173.69:2:INV-438601:Applied to orders · SAR 173.69 open"
+     ],
+     "pkg": [
+      "INV-438601:PKG-100-A:",
+      "INV-438601:PKG-100-B:",
+      "INV-438601:PKG-100-C:",
+      "INV-438601:PKG-100-D:"
+     ],
+     "visitIds": [
+      30,
+      20,
+      2,
+      10,
+      11
      ]
     },
     {
@@ -20039,6 +20348,19 @@
       "ADV-400102:ADV_IN:500:10::Open advance received",
       "CRED-400103:CREDIT_RAISED:180:10:INV-742118:Orders left unsettled",
       "ADV-400106:ADV_USED:173.69:2:INV-438601:Applied to orders · SAR 173.69 open"
+     ],
+     "pkg": [
+      "INV-438601:PKG-100-A:",
+      "INV-438601:PKG-100-B:",
+      "INV-438601:PKG-100-C:",
+      "INV-438601:PKG-100-D:"
+     ],
+     "visitIds": [
+      30,
+      20,
+      2,
+      10,
+      11
      ]
     }
    ]
@@ -20160,7 +20482,15 @@
      "appr": [
       null
      ],
-     "docs": []
+     "docs": [],
+     "pkg": [],
+     "visitIds": [
+      31,
+      13,
+      1,
+      21,
+      12
+     ]
     },
     {
      "step": "SEE_DOCTOR",
@@ -20296,7 +20626,15 @@
      "appr": [
       null
      ],
-     "docs": []
+     "docs": [],
+     "pkg": [],
+     "visitIds": [
+      31,
+      13,
+      1,
+      21,
+      12
+     ]
     }
    ]
   },
@@ -20427,7 +20765,15 @@
      "appr": [
       null
      ],
-     "docs": []
+     "docs": [],
+     "pkg": [],
+     "visitIds": [
+      31,
+      13,
+      1,
+      21,
+      12
+     ]
     },
     {
      "step": "SEE_DOCTOR",
@@ -20588,6 +20934,14 @@
      ],
      "docs": [
       "CRED-400107:CREDIT_RAISED:26:31:INV-577403:Consultation left unsettled · SAR 20.00 paid at the desk"
+     ],
+     "pkg": [],
+     "visitIds": [
+      31,
+      13,
+      1,
+      21,
+      12
      ]
     }
    ]
@@ -20767,6 +21121,19 @@
       "ADV-400102:ADV_IN:500:10::Open advance received",
       "CRED-400103:CREDIT_RAISED:180:10:INV-742118:Orders left unsettled",
       "ADV-400106:ADV_USED:173.69:2:INV-438601:Applied to orders · SAR 173.69 open"
+     ],
+     "pkg": [
+      "INV-438601:PKG-100-A:",
+      "INV-438601:PKG-100-B:",
+      "INV-438601:PKG-100-C:",
+      "INV-438601:PKG-100-D:"
+     ],
+     "visitIds": [
+      30,
+      20,
+      2,
+      10,
+      11
      ]
     },
     {
@@ -20929,6 +21296,19 @@
       "ADV-400102:ADV_IN:500:10::Open advance received",
       "CRED-400103:CREDIT_RAISED:180:10:INV-742118:Orders left unsettled",
       "ADV-400106:ADV_USED:173.69:2:INV-438601:Applied to orders · SAR 173.69 open"
+     ],
+     "pkg": [
+      "INV-438601:PKG-100-A:",
+      "INV-438601:PKG-100-B:",
+      "INV-438601:PKG-100-C:",
+      "INV-438601:PKG-100-D:"
+     ],
+     "visitIds": [
+      30,
+      20,
+      2,
+      10,
+      11
      ]
     },
     {
@@ -21136,6 +21516,19 @@
       "CRED-400103:CREDIT_RAISED:180:10:INV-742118:Orders left unsettled",
       "ADV-400106:ADV_USED:173.69:2:INV-438601:Applied to orders · SAR 173.69 open",
       "CRED-400108:CREDIT_RAISED:32.77:30:INV-331391:Consultation left unsettled"
+     ],
+     "pkg": [
+      "INV-438601:PKG-100-A:",
+      "INV-438601:PKG-100-B:",
+      "INV-438601:PKG-100-C:",
+      "INV-438601:PKG-100-D:"
+     ],
+     "visitIds": [
+      30,
+      20,
+      2,
+      10,
+      11
      ]
     }
    ]
@@ -21563,6 +21956,19 @@
       "ADV-400106:ADV_USED:173.69:2:INV-438601:Applied to orders · SAR 173.69 open",
       "CRED-400108:CREDIT_RAISED:32.77:30:INV-331391:Consultation left unsettled",
       "ADV-400109:ADV_IN:250:2::Doctor advance received"
+     ],
+     "pkg": [
+      "INV-438601:PKG-100-A:",
+      "INV-438601:PKG-100-B:",
+      "INV-438601:PKG-100-C:",
+      "INV-438601:PKG-100-D:"
+     ],
+     "visitIds": [
+      30,
+      20,
+      2,
+      10,
+      11
      ]
     },
     {
@@ -21798,6 +22204,19 @@
       "CRED-400108:CREDIT_RAISED:32.77:30:INV-331391:Consultation left unsettled",
       "ADV-400109:ADV_IN:250:2::Doctor advance received",
       "ADV-400110:ADV_IN:40.5:30::Clinic advance received"
+     ],
+     "pkg": [
+      "INV-438601:PKG-100-A:",
+      "INV-438601:PKG-100-B:",
+      "INV-438601:PKG-100-C:",
+      "INV-438601:PKG-100-D:"
+     ],
+     "visitIds": [
+      30,
+      20,
+      2,
+      10,
+      11
      ]
     },
     {
@@ -22209,6 +22628,19 @@
       "ADV-400109:ADV_IN:250:2::Doctor advance received",
       "ADV-400110:ADV_IN:40.5:30::Clinic advance received",
       "RADV-400111:ADV_REFUND:100:2::Open advance refunded · patient travelling"
+     ],
+     "pkg": [
+      "INV-438601:PKG-100-A:",
+      "INV-438601:PKG-100-B:",
+      "INV-438601:PKG-100-C:",
+      "INV-438601:PKG-100-D:"
+     ],
+     "visitIds": [
+      30,
+      20,
+      2,
+      10,
+      11
      ]
     },
     {
@@ -22639,6 +23071,19 @@
       "ADV-400110:ADV_IN:40.5:30::Clinic advance received",
       "RADV-400111:ADV_REFUND:100:2::Open advance refunded · patient travelling",
       "RADV-400112:ADV_REFUND:50:2::Doctor advance refunded · not continuing"
+     ],
+     "pkg": [
+      "INV-438601:PKG-100-A:",
+      "INV-438601:PKG-100-B:",
+      "INV-438601:PKG-100-C:",
+      "INV-438601:PKG-100-D:"
+     ],
+     "visitIds": [
+      30,
+      20,
+      2,
+      10,
+      11
      ]
     },
     {
@@ -23112,6 +23557,19 @@
       "CRED-400113:CREDIT_SETTLED:32.77:30:INV-331391:Settled by span",
       "CRED-400114:CREDIT_SETTLED:180:10:INV-742118:Settled by span",
       "CRED-400115:CREDIT_SETTLED:120:11:INV-731044:Settled by span"
+     ],
+     "pkg": [
+      "INV-438601:PKG-100-A:",
+      "INV-438601:PKG-100-B:",
+      "INV-438601:PKG-100-C:",
+      "INV-438601:PKG-100-D:"
+     ],
+     "visitIds": [
+      30,
+      20,
+      2,
+      10,
+      11
      ]
     }
    ]
@@ -23295,6 +23753,14 @@
      ],
      "docs": [
       "CRED-400107:CREDIT_RAISED:26:31:INV-577403:Consultation left unsettled · SAR 20.00 paid at the desk"
+     ],
+     "pkg": [],
+     "visitIds": [
+      31,
+      13,
+      1,
+      21,
+      12
      ]
     },
     {
@@ -23468,6 +23934,14 @@
      ],
      "docs": [
       "CRED-400107:CREDIT_RAISED:26:31:INV-577403:Consultation left unsettled · SAR 20.00 paid at the desk"
+     ],
+     "pkg": [],
+     "visitIds": [
+      31,
+      13,
+      1,
+      21,
+      12
      ]
     },
     {
@@ -23630,6 +24104,14 @@
      "docs": [
       "CRED-400107:CREDIT_RAISED:26:31:INV-577403:Consultation left unsettled · SAR 20.00 paid at the desk",
       "CRED-400116:CREDIT_SETTLED:46:31:INV-577403:Settled by cash"
+     ],
+     "pkg": [],
+     "visitIds": [
+      31,
+      13,
+      1,
+      21,
+      12
      ]
     }
    ]
@@ -23817,7 +24299,11 @@
      "appr": [
       null
      ],
-     "docs": []
+     "docs": [],
+     "pkg": [],
+     "visitIds": [
+      100
+     ]
     },
     {
      "step": "CONSULT_WAIT",
@@ -24094,6 +24580,20 @@
       "CRED-400113:CREDIT_SETTLED:32.77:30:INV-331391:Settled by span",
       "CRED-400114:CREDIT_SETTLED:180:10:INV-742118:Settled by span",
       "CRED-400115:CREDIT_SETTLED:120:11:INV-731044:Settled by span"
+     ],
+     "pkg": [
+      "INV-438601:PKG-100-A:",
+      "INV-438601:PKG-100-B:",
+      "INV-438601:PKG-100-C:",
+      "INV-438601:PKG-100-D:"
+     ],
+     "visitIds": [
+      30,
+      20,
+      101,
+      2,
+      10,
+      11
      ]
     },
     {
@@ -24224,7 +24724,12 @@
       null,
       null
      ],
-     "docs": []
+     "docs": [],
+     "pkg": [],
+     "visitIds": [
+      102,
+      4
+     ]
     },
     {
      "step": "CONSULT_BILL",
@@ -24363,6 +24868,11 @@
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration",
       "CRED-400105:CREDIT_RAISED:74.75:3:INV-336974:Orders left unsettled"
+     ],
+     "pkg": [],
+     "visitIds": [
+      103,
+      3
      ]
     }
    ]
@@ -24586,7 +25096,11 @@
      "appr": [
       null
      ],
-     "docs": []
+     "docs": [],
+     "pkg": [],
+     "visitIds": [
+      100
+     ]
     },
     {
      "step": "CONSULT_BILL",
@@ -24752,7 +25266,11 @@
        "GIG-C": "pending"
       }
      ],
-     "docs": []
+     "docs": [],
+     "pkg": [],
+     "visitIds": [
+      100
+     ]
     },
     {
      "step": "CONSULT_BILL",
@@ -24924,7 +25442,11 @@
        "GIG-C": "pending"
       }
      ],
-     "docs": []
+     "docs": [],
+     "pkg": [],
+     "visitIds": [
+      100
+     ]
     },
     {
      "step": "CONSULT_BILL",
@@ -25096,7 +25618,11 @@
        "GIG-C": "pending"
       }
      ],
-     "docs": []
+     "docs": [],
+     "pkg": [],
+     "visitIds": [
+      100
+     ]
     },
     {
      "step": "CONSULT_WAIT",
@@ -25288,7 +25814,11 @@
        "GIG-C": "pending"
       }
      ],
-     "docs": []
+     "docs": [],
+     "pkg": [],
+     "visitIds": [
+      100
+     ]
     },
     {
      "step": "CONSULT_WAIT",
@@ -25488,7 +26018,11 @@
        "GIG-C": "pending"
       }
      ],
-     "docs": []
+     "docs": [],
+     "pkg": [],
+     "visitIds": [
+      100
+     ]
     },
     {
      "step": "CONSULT_BILL",
@@ -25711,7 +26245,11 @@
        "GIG-C": "pending"
       }
      ],
-     "docs": []
+     "docs": [],
+     "pkg": [],
+     "visitIds": [
+      100
+     ]
     },
     {
      "step": "CONSULT_BILL",
@@ -25942,7 +26480,11 @@
        "GIG-C": "pending"
       }
      ],
-     "docs": []
+     "docs": [],
+     "pkg": [],
+     "visitIds": [
+      100
+     ]
     },
     {
      "step": "CONSULT_BILL",
@@ -26173,7 +26715,11 @@
        "GIG-C": "pending"
       }
      ],
-     "docs": []
+     "docs": [],
+     "pkg": [],
+     "visitIds": [
+      100
+     ]
     },
     {
      "step": "CONSULT_WAIT",
@@ -26427,7 +26973,11 @@
        "CH-HABIB": "approved"
       }
      ],
-     "docs": []
+     "docs": [],
+     "pkg": [],
+     "visitIds": [
+      100
+     ]
     },
     {
      "step": "CONSULT_BILL",
@@ -26581,6 +27131,11 @@
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration",
       "CRED-400105:CREDIT_RAISED:74.75:3:INV-336974:Orders left unsettled"
+     ],
+     "pkg": [],
+     "visitIds": [
+      103,
+      3
      ]
     },
     {
@@ -26735,6 +27290,11 @@
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration",
       "CRED-400105:CREDIT_RAISED:74.75:3:INV-336974:Orders left unsettled"
+     ],
+     "pkg": [],
+     "visitIds": [
+      103,
+      3
      ]
     },
     {
@@ -26913,6 +27473,11 @@
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration",
       "CRED-400105:CREDIT_RAISED:74.75:3:INV-336974:Orders left unsettled"
+     ],
+     "pkg": [],
+     "visitIds": [
+      103,
+      3
      ]
     },
     {
@@ -27104,6 +27669,11 @@
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration",
       "CRED-400105:CREDIT_RAISED:74.75:3:INV-336974:Orders left unsettled"
+     ],
+     "pkg": [],
+     "visitIds": [
+      103,
+      3
      ]
     },
     {
@@ -27265,6 +27835,14 @@
      "docs": [
       "CRED-400107:CREDIT_RAISED:26:31:INV-577403:Consultation left unsettled · SAR 20.00 paid at the desk",
       "CRED-400116:CREDIT_SETTLED:46:31:INV-577403:Settled by cash"
+     ],
+     "pkg": [],
+     "visitIds": [
+      31,
+      13,
+      1,
+      21,
+      12
      ]
     },
     {
@@ -27565,7 +28143,11 @@
       null,
       null
      ],
-     "docs": []
+     "docs": [],
+     "pkg": [],
+     "visitIds": [
+      100
+     ]
     }
    ]
   },
@@ -27819,7 +28401,12 @@
       null,
       null
      ],
-     "docs": []
+     "docs": [],
+     "pkg": [],
+     "visitIds": [
+      102,
+      4
+     ]
     },
     {
      "step": "COLLECT",
@@ -28046,7 +28633,12 @@
       null,
       null
      ],
-     "docs": []
+     "docs": [],
+     "pkg": [],
+     "visitIds": [
+      102,
+      4
+     ]
     },
     {
      "step": "CLOSE",
@@ -28317,7 +28909,19 @@
       null,
       null
      ],
-     "docs": []
+     "docs": [],
+     "pkg": [
+      "INV-320849:PKG-EXEC-A:",
+      "INV-320849:PKG-EXEC-B:",
+      "INV-320849:PKG-EXEC-C:",
+      "INV-320849:PKG-EXEC-D:",
+      "INV-320849:PKG-EXEC-E:",
+      "INV-320849:PKG-EXEC-F:"
+     ],
+     "visitIds": [
+      102,
+      4
+     ]
     },
     {
      "step": "ORDERS_BILL",
@@ -28610,7 +29214,19 @@
       null,
       null
      ],
-     "docs": []
+     "docs": [],
+     "pkg": [
+      "INV-320849:PKG-EXEC-A:",
+      "INV-320849:PKG-EXEC-B:",
+      "INV-320849:PKG-EXEC-C:",
+      "INV-320849:PKG-EXEC-D:",
+      "INV-320849:PKG-EXEC-E:",
+      "INV-320849:PKG-EXEC-F:"
+     ],
+     "visitIds": [
+      102,
+      4
+     ]
     }
    ]
   },
@@ -28953,7 +29569,19 @@
       null,
       null
      ],
-     "docs": []
+     "docs": [],
+     "pkg": [
+      "INV-320849:PKG-EXEC-A:",
+      "INV-320849:PKG-EXEC-B:",
+      "INV-320849:PKG-EXEC-C:",
+      "INV-320849:PKG-EXEC-D:",
+      "INV-320849:PKG-EXEC-E:",
+      "INV-320849:PKG-EXEC-F:"
+     ],
+     "visitIds": [
+      102,
+      4
+     ]
     },
     {
      "step": "ORDERS_BILL",
@@ -29283,6 +29911,18 @@
      ],
      "docs": [
       "ADV-400117:REFUND_IN:1380:4:INV-320849:Refund credited to the wallet · patient changed their mind"
+     ],
+     "pkg": [
+      "INV-320849:PKG-EXEC-A:",
+      "INV-320849:PKG-EXEC-B:",
+      "INV-320849:PKG-EXEC-C:",
+      "INV-320849:PKG-EXEC-D:",
+      "INV-320849:PKG-EXEC-E:",
+      "INV-320849:PKG-EXEC-F:"
+     ],
+     "visitIds": [
+      102,
+      4
      ]
     },
     {
@@ -29461,6 +30101,14 @@
      "docs": [
       "CRED-400107:CREDIT_RAISED:26:31:INV-577403:Consultation left unsettled · SAR 20.00 paid at the desk",
       "CRED-400116:CREDIT_SETTLED:46:31:INV-577403:Settled by cash"
+     ],
+     "pkg": [],
+     "visitIds": [
+      31,
+      13,
+      1,
+      21,
+      12
      ]
     }
    ]
@@ -29994,6 +30642,20 @@
       "CRED-400113:CREDIT_SETTLED:32.77:30:INV-331391:Settled by span",
       "CRED-400114:CREDIT_SETTLED:180:10:INV-742118:Settled by span",
       "CRED-400115:CREDIT_SETTLED:120:11:INV-731044:Settled by span"
+     ],
+     "pkg": [
+      "INV-438601:PKG-100-A:",
+      "INV-438601:PKG-100-B:",
+      "INV-438601:PKG-100-C:",
+      "INV-438601:PKG-100-D:"
+     ],
+     "visitIds": [
+      30,
+      20,
+      101,
+      2,
+      10,
+      11
      ]
     },
     {
@@ -30570,6 +31232,20 @@
       "CRED-400114:CREDIT_SETTLED:180:10:INV-742118:Settled by span",
       "CRED-400115:CREDIT_SETTLED:120:11:INV-731044:Settled by span",
       "ADV-400118:REFUND_IN:874:2:INV-826635:Overpayment returned to the wallet · Replaced with insurance pricing"
+     ],
+     "pkg": [
+      "INV-438601:PKG-100-A:",
+      "INV-438601:PKG-100-B:",
+      "INV-438601:PKG-100-C:",
+      "INV-438601:PKG-100-D:"
+     ],
+     "visitIds": [
+      30,
+      20,
+      101,
+      2,
+      10,
+      11
      ]
     }
    ]
@@ -30858,6 +31534,11 @@
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration",
       "CRED-400105:CREDIT_RAISED:74.75:3:INV-336974:Orders left unsettled"
+     ],
+     "pkg": [],
+     "visitIds": [
+      103,
+      3
      ]
     },
     {
@@ -31100,6 +31781,11 @@
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration",
       "CRED-400105:CREDIT_RAISED:74.75:3:INV-336974:Orders left unsettled"
+     ],
+     "pkg": [],
+     "visitIds": [
+      103,
+      3
      ]
     },
     {
@@ -31357,6 +32043,11 @@
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration",
       "CRED-400105:CREDIT_RAISED:74.75:3:INV-336974:Orders left unsettled"
+     ],
+     "pkg": [],
+     "visitIds": [
+      103,
+      3
      ]
     },
     {
@@ -31614,6 +32305,11 @@
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration",
       "CRED-400105:CREDIT_RAISED:74.75:3:INV-336974:Orders left unsettled"
+     ],
+     "pkg": [],
+     "visitIds": [
+      103,
+      3
      ]
     },
     {
@@ -31881,6 +32577,11 @@
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration",
       "CRED-400105:CREDIT_RAISED:74.75:3:INV-336974:Orders left unsettled"
+     ],
+     "pkg": [],
+     "visitIds": [
+      103,
+      3
      ]
     },
     {
@@ -32158,6 +32859,11 @@
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration",
       "CRED-400105:CREDIT_RAISED:74.75:3:INV-336974:Orders left unsettled"
+     ],
+     "pkg": [],
+     "visitIds": [
+      103,
+      3
      ]
     },
     {
@@ -32454,6 +33160,11 @@
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration",
       "CRED-400105:CREDIT_RAISED:74.75:3:INV-336974:Orders left unsettled"
+     ],
+     "pkg": [],
+     "visitIds": [
+      103,
+      3
      ]
     },
     {
@@ -32751,6 +33462,11 @@
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration",
       "CRED-400105:CREDIT_RAISED:74.75:3:INV-336974:Orders left unsettled"
+     ],
+     "pkg": [],
+     "visitIds": [
+      103,
+      3
      ]
     },
     {
@@ -33067,6 +33783,11 @@
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration",
       "CRED-400105:CREDIT_RAISED:74.75:3:INV-336974:Orders left unsettled"
+     ],
+     "pkg": [],
+     "visitIds": [
+      103,
+      3
      ]
     },
     {
@@ -33393,6 +34114,11 @@
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration",
       "CRED-400105:CREDIT_RAISED:74.75:3:INV-336974:Orders left unsettled"
+     ],
+     "pkg": [],
+     "visitIds": [
+      103,
+      3
      ]
     },
     {
@@ -33750,6 +34476,11 @@
      "docs": [
       "ADV-400104:ADV_IN:200:3::Open advance received at registration",
       "CRED-400105:CREDIT_RAISED:74.75:3:INV-336974:Orders left unsettled"
+     ],
+     "pkg": [],
+     "visitIds": [
+      103,
+      3
      ]
     }
    ]
@@ -33955,6 +34686,14 @@
      "docs": [
       "CRED-400107:CREDIT_RAISED:26:31:INV-577403:Consultation left unsettled · SAR 20.00 paid at the desk",
       "CRED-400116:CREDIT_SETTLED:46:31:INV-577403:Settled by cash"
+     ],
+     "pkg": [],
+     "visitIds": [
+      31,
+      13,
+      1,
+      21,
+      12
      ]
     },
     {
@@ -34153,6 +34892,14 @@
      "docs": [
       "CRED-400107:CREDIT_RAISED:26:31:INV-577403:Consultation left unsettled · SAR 20.00 paid at the desk",
       "CRED-400116:CREDIT_SETTLED:46:31:INV-577403:Settled by cash"
+     ],
+     "pkg": [],
+     "visitIds": [
+      31,
+      13,
+      1,
+      21,
+      12
      ]
     },
     {
@@ -34357,6 +35104,1255 @@
      "docs": [
       "CRED-400107:CREDIT_RAISED:26:31:INV-577403:Consultation left unsettled · SAR 20.00 paid at the desk",
       "CRED-400116:CREDIT_SETTLED:46:31:INV-577403:Settled by cash"
+     ],
+     "pkg": [],
+     "visitIds": [
+      31,
+      13,
+      1,
+      21,
+      12
+     ]
+    }
+   ]
+  },
+  {
+   "name": "3b: two Cardiac Care procedures booked from visit 2's story, one more from the profile",
+   "ops": [
+    [
+     "pkgStory",
+     2,
+     [
+      "PKG-100-A",
+      "PKG-100-C"
+     ],
+     "CARDIOLOGY",
+     "AHMED AL SUBAIE"
+    ],
+    [
+     "pkgBook",
+     2,
+     [
+      "PKG-100-B"
+     ],
+     "ENT",
+     "LINA FAROUK"
+    ]
+   ],
+   "snaps": [
+    {
+     "step": "CLOSE",
+     "q": "Everything ordered so far has been billed and paid.",
+     "sub": "Collected <b>SAR 339.24</b> across 4 invoice(s).",
+     "amt": null,
+     "buttons": [
+      "Check for new orders"
+     ],
+     "stories": [
+      "visit",
+      "orders",
+      "refund",
+      "replace",
+      "package",
+      "credit",
+      "addorders"
+     ],
+     "active": "replace",
+     "stages": {
+      "visit": {
+       "index": 4,
+       "skipped": [],
+       "complete": true
+      },
+      "orders": {
+       "index": 4,
+       "skipped": []
+      },
+      "refund": {
+       "index": 0,
+       "skipped": []
+      },
+      "replace": {
+       "index": 3,
+       "skipped": []
+      },
+      "package": {
+       "index": 2,
+       "skipped": []
+      },
+      "credit": {
+       "index": 2,
+       "skipped": []
+      },
+      "addorders": {
+       "index": 0,
+       "skipped": []
+      }
+     },
+     "due": 0,
+     "dedUsed": 200,
+     "link": null,
+     "waitAll": false,
+     "bill": null,
+     "lines": [
+      {
+       "code": "CON-204",
+       "ins": "approved",
+       "price": 300,
+       "paid": true,
+       "via": "Payment link",
+       "invoiceId": "INV-771204",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      },
+      {
+       "code": "LAB-010",
+       "ins": "approved",
+       "price": 120,
+       "paid": true,
+       "via": "Span + OPEN",
+       "invoiceId": "INV-438601",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      },
+      {
+       "code": "RAD-050",
+       "ins": "partial",
+       "price": 250,
+       "paid": true,
+       "via": "Span + OPEN",
+       "invoiceId": "INV-438601",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      },
+      {
+       "code": "CAR-330",
+       "ins": "approved",
+       "price": 900,
+       "paid": true,
+       "via": "Replaced",
+       "invoiceId": "INV-826635",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      },
+      {
+       "code": "PKG-100",
+       "ins": "approved",
+       "price": 1500,
+       "paid": true,
+       "via": "Span + OPEN",
+       "invoiceId": "INV-438601",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      }
+     ],
+     "invoices": [
+      {
+       "id": "INV-826635",
+       "scope": "orders",
+       "patient": 0,
+       "company": 983.25,
+       "deductible": 0,
+       "paid": true,
+       "via": "Replaced",
+       "viaDetail": "",
+       "payments": null,
+       "payer": "BUPA · GOLD",
+       "branch": null,
+       "cashOnly": false,
+       "billType": "insurance",
+       "rows": [
+        "CAR-330"
+       ],
+       "refunded": 0,
+       "refunds": [
+        "874:Advance wallet:Replaced with insurance pricing:::RFD-580969"
+       ],
+       "replaced": null,
+       "replaces": [
+        "INV-193111"
+       ],
+       "credited": 874
+      },
+      {
+       "id": "INV-193111",
+       "scope": "orders",
+       "patient": 874,
+       "company": 0,
+       "deductible": 0,
+       "paid": true,
+       "via": "Cash",
+       "viaDetail": "",
+       "payments": [
+        {
+         "mode": "Cash",
+         "amount": 874,
+         "ref": ""
+        }
+       ],
+       "payer": "BUPA · GOLD",
+       "branch": null,
+       "cashOnly": true,
+       "billType": "cash",
+       "rows": [
+        "CAR-330"
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": "INV-826635:insurance",
+       "replaces": null,
+       "credited": 0
+      },
+      {
+       "id": "INV-438601",
+       "scope": "orders",
+       "patient": 273.69,
+       "company": 1769.27,
+       "deductible": 143,
+       "paid": true,
+       "via": "Span + OPEN",
+       "viaDetail": "Span SAR 100.00 + OPEN SAR 173.69",
+       "payments": [
+        {
+         "mode": "Span",
+         "amount": 100,
+         "ref": ""
+        },
+        {
+         "mode": "OPEN",
+         "amount": 173.69,
+         "ref": ""
+        }
+       ],
+       "payer": "BUPA · GOLD",
+       "branch": null,
+       "cashOnly": false,
+       "billType": "insurance",
+       "rows": [
+        "LAB-010",
+        "RAD-050",
+        "PKG-100"
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
+      },
+      {
+       "id": "INV-771204",
+       "scope": "consult",
+       "patient": 65.55,
+       "company": 262.2,
+       "deductible": 57,
+       "paid": true,
+       "via": "Payment link",
+       "viaDetail": "",
+       "payments": null,
+       "payer": "BUPA · GOLD",
+       "branch": null,
+       "cashOnly": false,
+       "billType": null,
+       "rows": [
+        "CON-204"
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
+      }
+     ],
+     "refundInvoices": [
+      "RFD-580969:INV-826635:874:0:0:Advance wallet::Replaced with insurance pricing:BUPA · GOLD:"
+     ],
+     "history": [
+      {
+       "ic": "i",
+       "tx": "<b>2 package procedure(s) booked for another day</b>",
+       "sub": "Treadmill Stress Test, Lipid Profile Recheck · CARDIOLOGY · still part of Cardiac Care Package",
+       "type": "PKGBOOK",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-438601",
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "w",
+       "tx": "<b>Refunded SAR 874.00</b> — overpaid before the replacement",
+       "sub": "Refund invoice RFD-580969 · Advance wallet · Replaced with insurance pricing · against INV-826635",
+       "type": "REFUND",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-826635",
+       "amount": 874,
+       "mode": "Advance wallet"
+      },
+      {
+       "ic": "",
+       "tx": "<b>Invoice replaced</b> — INV-193111 → INV-826635",
+       "sub": "Order moved onto BUPA · GOLD · SAR 874.00 already paid carried over · SAR 874.00 refunded",
+       "type": "REPLACE",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-826635",
+       "amount": 0,
+       "mode": "Replaced"
+      },
+      {
+       "ic": "",
+       "tx": "<b>Replacement started</b> — moving 1 order(s) to insurance billing",
+       "sub": "1 line(s) · INV-193111 to be reversed in full · new total SAR 0.00 · SAR 874.00 already paid carried over · SAR 874.00 to give back",
+       "type": "REPLACE_START",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-193111",
+       "amount": 0,
+       "mode": null
+      },
+      {
+       "ic": "",
+       "tx": "<b>Orders paid</b> — SAR 874.00",
+       "sub": "Cash · invoice INV-193111 created",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-193111",
+       "amount": 874,
+       "mode": "Cash"
+      },
+      {
+       "ic": "",
+       "tx": "<b>Credit settled</b> — SAR 332.77",
+       "sub": "Span · 3 invoice(s) settled · INV-331391, INV-742118, INV-731044",
+       "type": "CREDIT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-331391",
+       "amount": 332.77,
+       "mode": "Span"
+      },
+      {
+       "ic": "w",
+       "tx": "<b>Advance refunded</b> — SAR 50.00",
+       "sub": "Doctor advance · Visa · not continuing",
+       "type": "ADVREFUND",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": 50,
+       "mode": "Visa"
+      },
+      {
+       "ic": "w",
+       "tx": "<b>Advance refunded</b> — SAR 100.00",
+       "sub": "Open advance · Cash · patient travelling",
+       "type": "ADVREFUND",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": 100,
+       "mode": "Cash"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Advance added</b> — SAR 250.00",
+       "sub": "Doctor advance · Cash",
+       "type": "ADVANCE",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": 250,
+       "mode": "Cash"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Approval received</b> for 1 order(s)",
+       "sub": "Echocardiogram · 1 billed as cash — move it onto the policy from the Replace story",
+       "type": "APPROVAL",
+       "by": "BUPA",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "w",
+       "tx": "<b>1 order(s) billed as cash while the approval is outstanding</b>",
+       "sub": "Echocardiogram at the cash price SAR 760.00 · the consultation stays on BUPA · its approval and move onto the policy continue in the Replace story",
+       "type": "CASH_URGENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": 874,
+       "mode": null
+      },
+      {
+       "ic": "w",
+       "tx": "<b>1 order(s) billed as cash while the approval is outstanding</b>",
+       "sub": "Echocardiogram at the cash price SAR 760.00 · the consultation stays on BUPA · its approval and move onto the policy continue in the Replace story",
+       "type": "CASH_URGENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": 874,
+       "mode": null
+      },
+      {
+       "ic": "i",
+       "tx": "<b>4 package procedure(s) can now be booked</b>",
+       "sub": "Cardiac Care Package · paid on INV-438601 · book a visit for each whenever the patient can attend",
+       "type": "PKGREADY",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-438601",
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "",
+       "tx": "<b>Orders paid</b> — SAR 273.69",
+       "sub": "Span + OPEN · Span SAR 100.00 + OPEN SAR 173.69 · invoice INV-438601 created · SAR 1,769.27 to BUPA",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-438601",
+       "amount": 273.69,
+       "mode": "Span + OPEN"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Dr Ahmed placed 4 orders</b>",
+       "sub": "3 approved · 1 awaiting BUPA · includes the Cardiac Care Package",
+       "type": "ORDERS",
+       "by": "Dr AHMED AL SUBAIE",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "",
+       "tx": "<b>Consultation paid</b> — SAR 65.55",
+       "sub": "Payment link · invoice INV-771204 created · SAR 262.20 to BUPA",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-771204",
+       "amount": 65.55,
+       "mode": "Payment link"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Payment link sent</b> — SAR 65.55",
+       "sub": "To 0555 112 233",
+       "type": "LINK",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": 65.55,
+       "mode": "Payment link"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Approval received</b> for the consultation",
+       "sub": "BUPA GOLD · approved in full",
+       "type": "APPROVAL",
+       "by": "BUPA",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Visit created</b> at reception",
+       "sub": "Cardiology · Dr Ahmed Al Subaie",
+       "type": "VISIT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      }
+     ],
+     "wallet": {
+      "Open": 1100.31,
+      "Doctor": 200,
+      "Clinic": 40.5
+     },
+     "credit": 0,
+     "ledger": [
+      {
+       "type": "REFUND_IN",
+       "amount": 874,
+       "note": "Overpayment returned to the wallet · Replaced with insurance pricing",
+       "invoiceId": "INV-826635",
+       "visitId": 2,
+       "docId": "ADV-400118"
+      },
+      {
+       "type": "CREDIT_SETTLED",
+       "amount": 120,
+       "note": "Settled by span",
+       "invoiceId": "INV-731044",
+       "visitId": 11,
+       "docId": "CRED-400115"
+      },
+      {
+       "type": "CREDIT_SETTLED",
+       "amount": 180,
+       "note": "Settled by span",
+       "invoiceId": "INV-742118",
+       "visitId": 10,
+       "docId": "CRED-400114"
+      },
+      {
+       "type": "CREDIT_SETTLED",
+       "amount": 32.77,
+       "note": "Settled by span",
+       "invoiceId": "INV-331391",
+       "visitId": 30,
+       "docId": "CRED-400113"
+      },
+      {
+       "type": "ADV_REFUND",
+       "amount": 50,
+       "note": "Doctor advance refunded · not continuing",
+       "invoiceId": null,
+       "visitId": 2,
+       "docId": "RADV-400112"
+      },
+      {
+       "type": "ADV_REFUND",
+       "amount": 100,
+       "note": "Open advance refunded · patient travelling",
+       "invoiceId": null,
+       "visitId": 2,
+       "docId": "RADV-400111"
+      },
+      {
+       "type": "ADV_IN",
+       "amount": 40.5,
+       "note": "Clinic advance received",
+       "invoiceId": null,
+       "visitId": 30,
+       "docId": "ADV-400110"
+      },
+      {
+       "type": "ADV_IN",
+       "amount": 250,
+       "note": "Doctor advance received",
+       "invoiceId": null,
+       "visitId": 2,
+       "docId": "ADV-400109"
+      },
+      {
+       "type": "CREDIT_RAISED",
+       "amount": 32.77,
+       "note": "Consultation left unsettled",
+       "invoiceId": "INV-331391",
+       "visitId": 30,
+       "docId": "CRED-400108"
+      },
+      {
+       "type": "ADV_USED",
+       "amount": 173.69,
+       "note": "Applied to orders · SAR 173.69 open",
+       "invoiceId": "INV-438601",
+       "visitId": 2,
+       "docId": "ADV-400106"
+      },
+      {
+       "type": "CREDIT_RAISED",
+       "amount": 120,
+       "note": "Consultation left unsettled",
+       "invoiceId": "INV-731044",
+       "visitId": 11,
+       "docId": "CRED-400101"
+      },
+      {
+       "type": "ADV_IN",
+       "amount": 500,
+       "note": "Open advance received",
+       "invoiceId": null,
+       "visitId": 10,
+       "docId": "ADV-400102"
+      },
+      {
+       "type": "CREDIT_RAISED",
+       "amount": 180,
+       "note": "Orders left unsettled",
+       "invoiceId": "INV-742118",
+       "visitId": 10,
+       "docId": "CRED-400103"
+      }
+     ],
+     "visit": {
+      "type": "Consultation",
+      "clinic": "CARDIOLOGY",
+      "doctor": "AHMED AL SUBAIE",
+      "slot": null,
+      "consult": {
+       "name": "Cardiology Consultation",
+       "code": "CON-204",
+       "price": 300
+      }
+     },
+     "payerId": "BUPA-GOLD",
+     "policy": null,
+     "payers": [
+      "BUPA-GOLD",
+      "TAW-SILVER",
+      "CASH"
+     ],
+     "payerStory": null,
+     "done": {
+      "credit": "Credit settled — SAR 332.77 | Span · INV-331391, INV-742118, INV-731044",
+      "replace": "Replaced — INV-193111 → INV-826635 | SAR 874.00 returned by Advance wallet",
+      "package": "Visit booked for 2 package procedure(s) | Treadmill Stress Test, Lipid Profile Recheck · CARDIOLOGY · Dr AHMED AL SUBAIE · no charge"
+     },
+     "settled": [
+      "INV-331391:Span",
+      "INV-742118:Span",
+      "INV-731044:Span"
+     ],
+     "appr": [
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     "docs": [
+      "CRED-400101:CREDIT_RAISED:120:11:INV-731044:Consultation left unsettled",
+      "ADV-400102:ADV_IN:500:10::Open advance received",
+      "CRED-400103:CREDIT_RAISED:180:10:INV-742118:Orders left unsettled",
+      "ADV-400106:ADV_USED:173.69:2:INV-438601:Applied to orders · SAR 173.69 open",
+      "CRED-400108:CREDIT_RAISED:32.77:30:INV-331391:Consultation left unsettled",
+      "ADV-400109:ADV_IN:250:2::Doctor advance received",
+      "ADV-400110:ADV_IN:40.5:30::Clinic advance received",
+      "RADV-400111:ADV_REFUND:100:2::Open advance refunded · patient travelling",
+      "RADV-400112:ADV_REFUND:50:2::Doctor advance refunded · not continuing",
+      "CRED-400113:CREDIT_SETTLED:32.77:30:INV-331391:Settled by span",
+      "CRED-400114:CREDIT_SETTLED:180:10:INV-742118:Settled by span",
+      "CRED-400115:CREDIT_SETTLED:120:11:INV-731044:Settled by span",
+      "ADV-400118:REFUND_IN:874:2:INV-826635:Overpayment returned to the wallet · Replaced with insurance pricing"
+     ],
+     "pkg": [
+      "INV-438601:PKG-100-A:104",
+      "INV-438601:PKG-100-B:",
+      "INV-438601:PKG-100-C:104",
+      "INV-438601:PKG-100-D:"
+     ],
+     "visitIds": [
+      30,
+      104,
+      20,
+      101,
+      2,
+      10,
+      11
+     ]
+    },
+    {
+     "step": "CLOSE",
+     "q": "Everything ordered so far has been billed and paid.",
+     "sub": "Collected <b>SAR 339.24</b> across 4 invoice(s).",
+     "amt": null,
+     "buttons": [
+      "Check for new orders"
+     ],
+     "stories": [
+      "visit",
+      "orders",
+      "refund",
+      "replace",
+      "package",
+      "credit",
+      "addorders"
+     ],
+     "active": "replace",
+     "stages": {
+      "visit": {
+       "index": 4,
+       "skipped": [],
+       "complete": true
+      },
+      "orders": {
+       "index": 4,
+       "skipped": []
+      },
+      "refund": {
+       "index": 0,
+       "skipped": []
+      },
+      "replace": {
+       "index": 3,
+       "skipped": []
+      },
+      "package": {
+       "index": 2,
+       "skipped": []
+      },
+      "credit": {
+       "index": 2,
+       "skipped": []
+      },
+      "addorders": {
+       "index": 0,
+       "skipped": []
+      }
+     },
+     "due": 0,
+     "dedUsed": 200,
+     "link": null,
+     "waitAll": false,
+     "bill": null,
+     "lines": [
+      {
+       "code": "CON-204",
+       "ins": "approved",
+       "price": 300,
+       "paid": true,
+       "via": "Payment link",
+       "invoiceId": "INV-771204",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      },
+      {
+       "code": "LAB-010",
+       "ins": "approved",
+       "price": 120,
+       "paid": true,
+       "via": "Span + OPEN",
+       "invoiceId": "INV-438601",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      },
+      {
+       "code": "RAD-050",
+       "ins": "partial",
+       "price": 250,
+       "paid": true,
+       "via": "Span + OPEN",
+       "invoiceId": "INV-438601",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      },
+      {
+       "code": "CAR-330",
+       "ins": "approved",
+       "price": 900,
+       "paid": true,
+       "via": "Replaced",
+       "invoiceId": "INV-826635",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      },
+      {
+       "code": "PKG-100",
+       "ins": "approved",
+       "price": 1500,
+       "paid": true,
+       "via": "Span + OPEN",
+       "invoiceId": "INV-438601",
+       "urgentCash": false,
+       "approvalPending": false,
+       "refunded": false
+      }
+     ],
+     "invoices": [
+      {
+       "id": "INV-826635",
+       "scope": "orders",
+       "patient": 0,
+       "company": 983.25,
+       "deductible": 0,
+       "paid": true,
+       "via": "Replaced",
+       "viaDetail": "",
+       "payments": null,
+       "payer": "BUPA · GOLD",
+       "branch": null,
+       "cashOnly": false,
+       "billType": "insurance",
+       "rows": [
+        "CAR-330"
+       ],
+       "refunded": 0,
+       "refunds": [
+        "874:Advance wallet:Replaced with insurance pricing:::RFD-580969"
+       ],
+       "replaced": null,
+       "replaces": [
+        "INV-193111"
+       ],
+       "credited": 874
+      },
+      {
+       "id": "INV-193111",
+       "scope": "orders",
+       "patient": 874,
+       "company": 0,
+       "deductible": 0,
+       "paid": true,
+       "via": "Cash",
+       "viaDetail": "",
+       "payments": [
+        {
+         "mode": "Cash",
+         "amount": 874,
+         "ref": ""
+        }
+       ],
+       "payer": "BUPA · GOLD",
+       "branch": null,
+       "cashOnly": true,
+       "billType": "cash",
+       "rows": [
+        "CAR-330"
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": "INV-826635:insurance",
+       "replaces": null,
+       "credited": 0
+      },
+      {
+       "id": "INV-438601",
+       "scope": "orders",
+       "patient": 273.69,
+       "company": 1769.27,
+       "deductible": 143,
+       "paid": true,
+       "via": "Span + OPEN",
+       "viaDetail": "Span SAR 100.00 + OPEN SAR 173.69",
+       "payments": [
+        {
+         "mode": "Span",
+         "amount": 100,
+         "ref": ""
+        },
+        {
+         "mode": "OPEN",
+         "amount": 173.69,
+         "ref": ""
+        }
+       ],
+       "payer": "BUPA · GOLD",
+       "branch": null,
+       "cashOnly": false,
+       "billType": "insurance",
+       "rows": [
+        "LAB-010",
+        "RAD-050",
+        "PKG-100"
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
+      },
+      {
+       "id": "INV-771204",
+       "scope": "consult",
+       "patient": 65.55,
+       "company": 262.2,
+       "deductible": 57,
+       "paid": true,
+       "via": "Payment link",
+       "viaDetail": "",
+       "payments": null,
+       "payer": "BUPA · GOLD",
+       "branch": null,
+       "cashOnly": false,
+       "billType": null,
+       "rows": [
+        "CON-204"
+       ],
+       "refunded": 0,
+       "refunds": [],
+       "replaced": null,
+       "replaces": null,
+       "credited": 0
+      }
+     ],
+     "refundInvoices": [
+      "RFD-580969:INV-826635:874:0:0:Advance wallet::Replaced with insurance pricing:BUPA · GOLD:"
+     ],
+     "history": [
+      {
+       "ic": "i",
+       "tx": "<b>1 package procedure(s) booked for another day</b>",
+       "sub": "Echocardiogram Review · ENT · still part of Cardiac Care Package",
+       "type": "PKGBOOK",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-438601",
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "i",
+       "tx": "<b>2 package procedure(s) booked for another day</b>",
+       "sub": "Treadmill Stress Test, Lipid Profile Recheck · CARDIOLOGY · still part of Cardiac Care Package",
+       "type": "PKGBOOK",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-438601",
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "w",
+       "tx": "<b>Refunded SAR 874.00</b> — overpaid before the replacement",
+       "sub": "Refund invoice RFD-580969 · Advance wallet · Replaced with insurance pricing · against INV-826635",
+       "type": "REFUND",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-826635",
+       "amount": 874,
+       "mode": "Advance wallet"
+      },
+      {
+       "ic": "",
+       "tx": "<b>Invoice replaced</b> — INV-193111 → INV-826635",
+       "sub": "Order moved onto BUPA · GOLD · SAR 874.00 already paid carried over · SAR 874.00 refunded",
+       "type": "REPLACE",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-826635",
+       "amount": 0,
+       "mode": "Replaced"
+      },
+      {
+       "ic": "",
+       "tx": "<b>Replacement started</b> — moving 1 order(s) to insurance billing",
+       "sub": "1 line(s) · INV-193111 to be reversed in full · new total SAR 0.00 · SAR 874.00 already paid carried over · SAR 874.00 to give back",
+       "type": "REPLACE_START",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-193111",
+       "amount": 0,
+       "mode": null
+      },
+      {
+       "ic": "",
+       "tx": "<b>Orders paid</b> — SAR 874.00",
+       "sub": "Cash · invoice INV-193111 created",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-193111",
+       "amount": 874,
+       "mode": "Cash"
+      },
+      {
+       "ic": "",
+       "tx": "<b>Credit settled</b> — SAR 332.77",
+       "sub": "Span · 3 invoice(s) settled · INV-331391, INV-742118, INV-731044",
+       "type": "CREDIT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-331391",
+       "amount": 332.77,
+       "mode": "Span"
+      },
+      {
+       "ic": "w",
+       "tx": "<b>Advance refunded</b> — SAR 50.00",
+       "sub": "Doctor advance · Visa · not continuing",
+       "type": "ADVREFUND",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": 50,
+       "mode": "Visa"
+      },
+      {
+       "ic": "w",
+       "tx": "<b>Advance refunded</b> — SAR 100.00",
+       "sub": "Open advance · Cash · patient travelling",
+       "type": "ADVREFUND",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": 100,
+       "mode": "Cash"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Advance added</b> — SAR 250.00",
+       "sub": "Doctor advance · Cash",
+       "type": "ADVANCE",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": 250,
+       "mode": "Cash"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Approval received</b> for 1 order(s)",
+       "sub": "Echocardiogram · 1 billed as cash — move it onto the policy from the Replace story",
+       "type": "APPROVAL",
+       "by": "BUPA",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "w",
+       "tx": "<b>1 order(s) billed as cash while the approval is outstanding</b>",
+       "sub": "Echocardiogram at the cash price SAR 760.00 · the consultation stays on BUPA · its approval and move onto the policy continue in the Replace story",
+       "type": "CASH_URGENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": 874,
+       "mode": null
+      },
+      {
+       "ic": "w",
+       "tx": "<b>1 order(s) billed as cash while the approval is outstanding</b>",
+       "sub": "Echocardiogram at the cash price SAR 760.00 · the consultation stays on BUPA · its approval and move onto the policy continue in the Replace story",
+       "type": "CASH_URGENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": 874,
+       "mode": null
+      },
+      {
+       "ic": "i",
+       "tx": "<b>4 package procedure(s) can now be booked</b>",
+       "sub": "Cardiac Care Package · paid on INV-438601 · book a visit for each whenever the patient can attend",
+       "type": "PKGREADY",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-438601",
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "",
+       "tx": "<b>Orders paid</b> — SAR 273.69",
+       "sub": "Span + OPEN · Span SAR 100.00 + OPEN SAR 173.69 · invoice INV-438601 created · SAR 1,769.27 to BUPA",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-438601",
+       "amount": 273.69,
+       "mode": "Span + OPEN"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Dr Ahmed placed 4 orders</b>",
+       "sub": "3 approved · 1 awaiting BUPA · includes the Cardiac Care Package",
+       "type": "ORDERS",
+       "by": "Dr AHMED AL SUBAIE",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "",
+       "tx": "<b>Consultation paid</b> — SAR 65.55",
+       "sub": "Payment link · invoice INV-771204 created · SAR 262.20 to BUPA",
+       "type": "PAYMENT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": "INV-771204",
+       "amount": 65.55,
+       "mode": "Payment link"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Payment link sent</b> — SAR 65.55",
+       "sub": "To 0555 112 233",
+       "type": "LINK",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": 65.55,
+       "mode": "Payment link"
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Approval received</b> for the consultation",
+       "sub": "BUPA GOLD · approved in full",
+       "type": "APPROVAL",
+       "by": "BUPA",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      },
+      {
+       "ic": "i",
+       "tx": "<b>Visit created</b> at reception",
+       "sub": "Cardiology · Dr Ahmed Al Subaie",
+       "type": "VISIT",
+       "by": "SAADAN SAAFAN",
+       "invoiceId": null,
+       "amount": null,
+       "mode": null
+      }
+     ],
+     "wallet": {
+      "Open": 1100.31,
+      "Doctor": 200,
+      "Clinic": 40.5
+     },
+     "credit": 0,
+     "ledger": [
+      {
+       "type": "REFUND_IN",
+       "amount": 874,
+       "note": "Overpayment returned to the wallet · Replaced with insurance pricing",
+       "invoiceId": "INV-826635",
+       "visitId": 2,
+       "docId": "ADV-400118"
+      },
+      {
+       "type": "CREDIT_SETTLED",
+       "amount": 120,
+       "note": "Settled by span",
+       "invoiceId": "INV-731044",
+       "visitId": 11,
+       "docId": "CRED-400115"
+      },
+      {
+       "type": "CREDIT_SETTLED",
+       "amount": 180,
+       "note": "Settled by span",
+       "invoiceId": "INV-742118",
+       "visitId": 10,
+       "docId": "CRED-400114"
+      },
+      {
+       "type": "CREDIT_SETTLED",
+       "amount": 32.77,
+       "note": "Settled by span",
+       "invoiceId": "INV-331391",
+       "visitId": 30,
+       "docId": "CRED-400113"
+      },
+      {
+       "type": "ADV_REFUND",
+       "amount": 50,
+       "note": "Doctor advance refunded · not continuing",
+       "invoiceId": null,
+       "visitId": 2,
+       "docId": "RADV-400112"
+      },
+      {
+       "type": "ADV_REFUND",
+       "amount": 100,
+       "note": "Open advance refunded · patient travelling",
+       "invoiceId": null,
+       "visitId": 2,
+       "docId": "RADV-400111"
+      },
+      {
+       "type": "ADV_IN",
+       "amount": 40.5,
+       "note": "Clinic advance received",
+       "invoiceId": null,
+       "visitId": 30,
+       "docId": "ADV-400110"
+      },
+      {
+       "type": "ADV_IN",
+       "amount": 250,
+       "note": "Doctor advance received",
+       "invoiceId": null,
+       "visitId": 2,
+       "docId": "ADV-400109"
+      },
+      {
+       "type": "CREDIT_RAISED",
+       "amount": 32.77,
+       "note": "Consultation left unsettled",
+       "invoiceId": "INV-331391",
+       "visitId": 30,
+       "docId": "CRED-400108"
+      },
+      {
+       "type": "ADV_USED",
+       "amount": 173.69,
+       "note": "Applied to orders · SAR 173.69 open",
+       "invoiceId": "INV-438601",
+       "visitId": 2,
+       "docId": "ADV-400106"
+      },
+      {
+       "type": "CREDIT_RAISED",
+       "amount": 120,
+       "note": "Consultation left unsettled",
+       "invoiceId": "INV-731044",
+       "visitId": 11,
+       "docId": "CRED-400101"
+      },
+      {
+       "type": "ADV_IN",
+       "amount": 500,
+       "note": "Open advance received",
+       "invoiceId": null,
+       "visitId": 10,
+       "docId": "ADV-400102"
+      },
+      {
+       "type": "CREDIT_RAISED",
+       "amount": 180,
+       "note": "Orders left unsettled",
+       "invoiceId": "INV-742118",
+       "visitId": 10,
+       "docId": "CRED-400103"
+      }
+     ],
+     "visit": {
+      "type": "Consultation",
+      "clinic": "CARDIOLOGY",
+      "doctor": "AHMED AL SUBAIE",
+      "slot": null,
+      "consult": {
+       "name": "Cardiology Consultation",
+       "code": "CON-204",
+       "price": 300
+      }
+     },
+     "payerId": "BUPA-GOLD",
+     "policy": null,
+     "payers": [
+      "BUPA-GOLD",
+      "TAW-SILVER",
+      "CASH"
+     ],
+     "payerStory": null,
+     "done": {
+      "credit": "Credit settled — SAR 332.77 | Span · INV-331391, INV-742118, INV-731044",
+      "replace": "Replaced — INV-193111 → INV-826635 | SAR 874.00 returned by Advance wallet",
+      "package": "Visit booked for 2 package procedure(s) | Treadmill Stress Test, Lipid Profile Recheck · CARDIOLOGY · Dr AHMED AL SUBAIE · no charge"
+     },
+     "settled": [
+      "INV-331391:Span",
+      "INV-742118:Span",
+      "INV-731044:Span"
+     ],
+     "appr": [
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     "docs": [
+      "CRED-400101:CREDIT_RAISED:120:11:INV-731044:Consultation left unsettled",
+      "ADV-400102:ADV_IN:500:10::Open advance received",
+      "CRED-400103:CREDIT_RAISED:180:10:INV-742118:Orders left unsettled",
+      "ADV-400106:ADV_USED:173.69:2:INV-438601:Applied to orders · SAR 173.69 open",
+      "CRED-400108:CREDIT_RAISED:32.77:30:INV-331391:Consultation left unsettled",
+      "ADV-400109:ADV_IN:250:2::Doctor advance received",
+      "ADV-400110:ADV_IN:40.5:30::Clinic advance received",
+      "RADV-400111:ADV_REFUND:100:2::Open advance refunded · patient travelling",
+      "RADV-400112:ADV_REFUND:50:2::Doctor advance refunded · not continuing",
+      "CRED-400113:CREDIT_SETTLED:32.77:30:INV-331391:Settled by span",
+      "CRED-400114:CREDIT_SETTLED:180:10:INV-742118:Settled by span",
+      "CRED-400115:CREDIT_SETTLED:120:11:INV-731044:Settled by span",
+      "ADV-400118:REFUND_IN:874:2:INV-826635:Overpayment returned to the wallet · Replaced with insurance pricing"
+     ],
+     "pkg": [
+      "INV-438601:PKG-100-A:104",
+      "INV-438601:PKG-100-B:105",
+      "INV-438601:PKG-100-C:104",
+      "INV-438601:PKG-100-D:"
+     ],
+     "visitIds": [
+      30,
+      105,
+      104,
+      20,
+      101,
+      2,
+      10,
+      11
      ]
     }
    ]

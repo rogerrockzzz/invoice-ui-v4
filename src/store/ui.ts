@@ -12,6 +12,7 @@ import { findInvoice } from "../domain/lookup";
 import { refundStart, type RefundUi } from "../domain/refund";
 import { openRefundOn } from "./refund";
 import { openReplaceOn } from "./replace";
+import { createPkgVisit, pkgBookFor, pkgChosen } from "./package";
 import { invoiceReplace, type ReplaceTo } from "../domain/replace";
 import { notify } from "./toasts";
 import { useWorld } from "./world";
@@ -55,6 +56,8 @@ export interface UiState {
   simOpen: boolean;
   /* v3 state.lwbsPop: "Left without being seen" asks why */
   lwbsPop: { caseId: number; reason: string } | null;
+  /* v3 state.pkgBook: the profile's "Book a visit for package procedures" pop-up */
+  pkgBook: PkgBookUi | null;
   /* the refund being worked in its visit's Refund story (v3 state.refund) */
   refund: RefundUi | null;
   /* the replacement being worked in its visit's Replace story (v3 state.replace) */
@@ -104,7 +107,7 @@ const initial = () => ({
   screen: "home" as Screen, tabs: [] as string[], activeMrn: null, caseId: null, q: "", homeSel: null, homePanel: null,
   walletOpen: false, profPendOpen: true, pendView: "today" as PendView, profVisitsOpen: true, vf: { no: "", from: "", to: "" },
   visGroup: false, pinvOpen: false, pkgOpen: false,
-  drawer: null, eventPop: null, invPop: null, histOpen: true, comment: null, simOpen: false, lwbsPop: null, refund: null as RefundUi | null, replace: null as ReplaceUi | null,
+  drawer: null, eventPop: null, invPop: null, histOpen: true, comment: null, simOpen: false, lwbsPop: null, pkgBook: null as PkgBookUi | null, refund: null as RefundUi | null, replace: null as ReplaceUi | null,
   wallet: null, adv: null, profPayer: null, walkin: null,
   invF: defaultInvFilters(), invQ: "", invLoaded: null, invEdit: false, invGroup: false,
 });
@@ -190,6 +193,23 @@ export function openRefund(id: string) {
   if (ui.screen !== "visit" || ui.caseId !== hit.c.id) ui.openVisit(hit.c.id, hit.c.mrn);
   useWorld.getState().act(hit.c.id, openRefundOn);
   useUi.getState().set({ refund: r });
+}
+
+/* v3 openPkgBook() (line 5099) and createPkgVisit() from the pop-up: the new visit opens */
+export interface PkgBookUi { mrn: string; sel: Record<string, boolean>; clinic: string; doctor: string }
+export function openPkgBook(mrn: string, preselect?: string) {
+  const d = useWorld.getState().actW((w, fx) => pkgBookFor(w, mrn, preselect, fx));
+  if (d) useUi.getState().set({ pkgBook: d });
+}
+export function confirmPkgBook() {
+  const d = useUi.getState().pkgBook;
+  if (!d) return;
+  const id = useWorld.getState().actW((w, fx) => {
+    const chosen = pkgChosen(w, d.mrn, d.sel);
+    return chosen.length ? createPkgVisit(w, d, chosen, fx) : null;
+  });
+  useUi.getState().set({ pkgBook: null });
+  if (id != null) useUi.getState().openVisit(id, d.mrn);
 }
 
 /* v3 walletState() (line 4167): the wallet section's own state, for the patient in view */

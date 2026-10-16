@@ -178,6 +178,11 @@ f.onload = () => {
       { name: "3a: visit 1 is marked LWBS with a reason, comes back, then leaves with no reason given", ops: [
         ["lwbs", 1, "Waited too long"], ["undoLwbs", 1], ["lwbs", 1, null],
       ] },
+      /* 3b: package booking — in the visit's story (stays on the visit), then from the profile's pop-up (opens the new one) */
+      { name: "3b: two Cardiac Care procedures booked from visit 2's story, one more from the profile", ops: [
+        ["pkgStory", 2, ["PKG-100-A", "PKG-100-C"], "CARDIOLOGY", "AHMED AL SUBAIE"],
+        ["pkgBook", 2, ["PKG-100-B"], "ENT", "LINA FAROUK"],
+      ] },
     ];
     const caseOf = (id) => cases.find((x) => x.id === id);
     const S = E("state"), doc = w.document, R = (c) => E("renderPayerStory")(c), click = (root, sel) => root.querySelector(sel).click();
@@ -233,6 +238,15 @@ f.onload = () => {
           if (mode === "cancel") { E("render")(); doc.getElementById("dCancel").click(); }
           else { S.drawer.mode = mode; E("render")(); doc.getElementById("dGo").click(); }
         }
+      }
+      else if (op === "pkgStory") {
+        c.pkgStory = { stage: 2, sel: Object.fromEntries(a[0].map((k) => [k, true])), clinic: a[1], doctor: a[2], listOpen: false };
+        click(E("renderPackageStory")(c), "#pkGo");
+      }
+      else if (op === "pkgBook") {
+        E("openPkgBook")(c.mrn, a[0][0]);
+        Object.assign(S.pkgBook, { sel: Object.fromEntries(a[0].map((k) => [k, true])), clinic: a[1], doctor: a[2] });
+        E("render")(); doc.getElementById("pbGo").click();
       }
       else if (op === "lwbs") { S.lwbsPop = { c, reason: a[0] || "" }; E("render")(); doc.getElementById("lwGo").click(); }
       else if (op === "addOrdersStory") {
@@ -295,6 +309,8 @@ f.onload = () => {
         settled: E("visitsOf")(c.mrn).flatMap((v) => v.invoices.filter((i) => i.settled).map((i) => `${i.id}:${i.settledVia}`)),
         appr: [c.consult, ...c.orders].map((l) => l.appr || null),
         docs: (p.walletDocs || []).map((d) => `${d.id}:${d.wtype}:${d.amount}:${d.visitId}:${d.invoiceId || ""}:${norm(d.note)}`),
+        pkg: E("packageItems")(c.mrn).map((x) => `${x.inv.id}:${x.child.code}:${x.child.visitId || ""}`),
+        visitIds: E("visitsOf")(c.mrn).map((v) => v.id),
       };
     }
     const flows = FLOWS.map((f) => ({ name: f.name, ops: f.ops, snaps: f.ops.map((o) => { try { runOp(o); } catch (e) { e.message = `${JSON.stringify(o)}: ${e.message}`; throw e; } return snap(caseOf(o[1])); }) }));
