@@ -79,6 +79,8 @@
     "noneUpcoming": "No upcoming visit has anything pending.",
     "nonePast": "No earlier visit is still waiting on anything.",
     "visits": "Visits",
+    "newWalkin": "New walk-in",
+    "closeWalkin": "Close walk-in",
     "visitsCount": "{{count}} on file · newest first",
     "visitsFiltered": "{{shown}} of {{count}} · newest first",
     "visitNo": "Visit no.",

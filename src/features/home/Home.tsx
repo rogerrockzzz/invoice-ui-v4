@@ -30,7 +30,7 @@ export function searchPatients(w: World, raw: string) {
 export function Home() {
   const { t } = useTranslation();
   const w = useW();
-  const { q: query, tabs, homeSel, homePanel, set, openPatient } = useUi();
+  const { q: query, tabs, homeSel, homePanel, walkin, set, openPatient } = useUi();
   const { q, found, viaDoctor, byDoctor } = searchPatients(w, query);
 
   return (
@@ -115,7 +115,7 @@ export function Home() {
                         onPress={() => (homePanel === "walkin" ? set({ homePanel: null }) : startWalkin(p.mrn))}
                       />
                     </div>
-                    {homePanel === "walkin" && <WalkinFlow />}
+                    {homePanel === "walkin" && walkin?.at !== "profile" && <WalkinFlow />}
                     {homePanel === "pending" && (
                       <div className="flex flex-col gap-2">
                         {!pv.today.length && (

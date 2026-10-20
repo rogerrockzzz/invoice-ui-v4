@@ -277,6 +277,25 @@ test("a patient who already has an open visit can be given another — and the p
   await expect(page.locator('[data-testid^="visit-row-"]')).toHaveCount(6);
 });
 
+test("a walk-in from the profile: the story opens inside the visits section, the profile stays on screen", async ({ page }) => {
+  await openPatient(page, "1063301");
+  const rows = page.locator('[data-testid^="visit-row-"]');
+  const before = await rows.count();
+  await page.getByTestId("profile-walkin").click();
+  const wk = page.getByTestId("walkin");
+  await expect(stepNow(wk)).toContainText("Visit details");
+  await wk.getByRole("button", { name: "Next · orders" }).click();
+  await wk.getByRole("button", { name: "Skip · no orders" }).click();
+  await wk.getByRole("button", { name: "Choose GIG · CLASS C" }).click();
+  await page.getByTestId("payer-save").click();
+  await wk.getByRole("button", { name: "Create the visit" }).click();
+  await expect(wk).toContainText("Visit created for RASANGIKA JAYAWARDHANA.");
+  /* still on the profile, and the new visit is already listed beneath */
+  await expect(rows).toHaveCount(before + 1);
+  await page.getByTestId("profile-walkin").click();
+  await expect(wk).toHaveCount(0);
+});
+
 test("the invoices screen loads nothing until asked, finds by number, views and reprints", async ({ page }) => {
   await page.getByRole("button", { name: "Invoices", exact: true }).click();
   await expect(page.getByTestId("invoice-filters")).toContainText("What should be loaded?");

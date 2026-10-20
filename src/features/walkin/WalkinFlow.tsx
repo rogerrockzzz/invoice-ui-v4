@@ -20,11 +20,10 @@ import { NPHIES_DELAY, PayerStoryBody, type PayerRun } from "../stories/PayerSto
 import { OrderPicker } from "./OrderPicker";
 
 /* v3 startWalkin() (line 3862): the patient was chosen in the search, so the story opens on its second stage */
-export function startWalkin(mrn: string) {
-  useUi.getState().set({
-    walkin: { stage: 2, mrn, type: "Consultation", clinic: "PAEDIATRICS", doctor: "LINA FAROUK", slot: null, cart: { sel: {}, q: "" }, pctx: null, payerDecision: null, createdId: null },
-    homeSel: mrn, homePanel: "walkin", screen: "home",
-  });
+export function startWalkin(mrn: string, at: "home" | "profile" = "home") {
+  const walkin: WalkinUi = { stage: 2, mrn, type: "Consultation", clinic: "PAEDIATRICS", doctor: "LINA FAROUK", slot: null, cart: { sel: {}, q: "" }, pctx: null, payerDecision: null, createdId: null, at };
+  /* from the profile, the story opens inside the visits section and the screen stays put */
+  useUi.getState().set(at === "profile" ? { walkin, profVisitsOpen: true, homePanel: null } : { walkin, homeSel: mrn, homePanel: "walkin", screen: "home" });
 }
 /* v3 startWalkinPayer() (line 4104): the payer story on a stand-in for the visit-to-be */
 function startWalkinPayer(s: { walkin: WalkinUi | null }, activePayerId: string | null) {
@@ -186,7 +185,7 @@ export function WalkinFlow() {
           </p>
           <div className="flex flex-wrap gap-2">
             <Button variant="primary" onPress={() => { set({ walkin: null, homePanel: null }); openVisit(v.id, v.mrn); }}>{t("walkin.open")}</Button>
-            <Button variant="outline" onPress={() => startWalkin(d.mrn)}>{t("walkin.again")}</Button>
+            <Button variant="outline" onPress={() => startWalkin(d.mrn, d.at)}>{t("walkin.again")}</Button>
           </div>
         </>
       );

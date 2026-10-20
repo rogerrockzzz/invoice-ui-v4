@@ -105,6 +105,8 @@ export interface ProfPayerUi { mrn: string; decision: PayerDecision | null; appl
 export interface WalkinUi {
   stage: number; mrn: string; type: string; clinic: string; doctor: string; slot: string | null;
   cart: { sel: Record<string, boolean>; q: string }; pctx: PayerDraft | null; payerDecision: PayerDecision | null; createdId: number | null;
+  /* where the story runs: the home search result, or the profile's visits section (v4 only) */
+  at?: "home" | "profile";
 }
 
 const initial = () => ({

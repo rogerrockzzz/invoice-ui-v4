@@ -57,7 +57,7 @@ export function PackageStory({ c, top }: { c: Visit; top: ReactNode }) {
           {t(chosen.length === 1 ? "pkg.yesIt" : "pkg.yesThem")}
         </Button>
       </div>
-      <Disclosure isExpanded={ps.listOpen} onExpandedChange={(o) => upd((s) => { s.listOpen = o; })} className="rounded-xl border border-border">
+      <Disclosure isExpanded={ps.listOpen} onExpandedChange={(o) => upd((s) => { s.listOpen = o; })} className="rounded-xl border border-border bg-white dark:bg-transparent">
         <Disclosure.Heading>
           <Disclosure.Trigger className="flex w-full items-center justify-start gap-2 px-3 py-2 text-start text-sm font-semibold text-vida-navy">
             {t("pkg.others", { count: left.length })}

@@ -3,6 +3,9 @@
 /* HeroUI v3 styles — after Tailwind */
 @import "@heroui/styles";
 
+/* dark: follows the app's theme switch (.dark on <html>), not the OS setting */
+@custom-variant dark (&:where(.dark, .dark *, [data-theme="dark"], [data-theme="dark"] *));
+
 /* VIDA brand on top of HeroUI's theme variables (names from `get_theme.mjs`, HeroUI v3.2.6).
    Colours are the v3 prototype's (journey-opd-v3.html :root), converted to oklch. */
 :root,
@@ -60,6 +63,11 @@
   --color-vida-red: var(--vida-red);
   --color-vida-purple: var(--vida-purple);
   --color-vida-purple-soft: var(--vida-purple-soft);
+}
+
+/* the visit's story buttons sit white on the page in light mode (hover, press and the chosen one keep HeroUI's look) */
+:root:not(.dark, [data-theme="dark"]) .toggle-button[data-story]:not([data-selected], [data-hovered], [data-pressed]) {
+  background-color: white;
 }
 
 html,

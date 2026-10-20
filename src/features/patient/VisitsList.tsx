@@ -1,6 +1,6 @@
 import { Button, Card, Chip, DateField, Disclosure, Input, Label, Switch, TextField } from "@heroui/react";
 import { parseDate, type DateValue } from "@internationalized/date";
-import { ArrowLeftRight, ChevronDown, CornerDownRight } from "lucide-react";
+import { ArrowLeftRight, ChevronDown, CornerDownRight, UserPlus, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { payerOf, visitsOf } from "../../domain/lookup";
 import { collected } from "../../domain/lines";
@@ -11,6 +11,7 @@ import { isFuture, parentVisit, relationTo, rootVisit, visitDate, visitNo } from
 import { useW } from "../../store/hooks";
 import { useUi } from "../../store/ui";
 import { M } from "../../ui/Rich";
+import { startWalkin, WalkinFlow } from "../walkin/WalkinFlow";
 
 type Row = { c: Visit; child: Visit | null; size?: number };
 
@@ -18,7 +19,8 @@ type Row = { c: Visit; child: Visit | null; size?: number };
 export function VisitsList({ mrn }: { mrn: string }) {
   const { t } = useTranslation();
   const w = useW();
-  const { profVisitsOpen: open, vf, visGroup, set, openVisit } = useUi();
+  const { profVisitsOpen: open, vf, visGroup, walkin, set, openVisit } = useUi();
+  const walkinHere = !!walkin && walkin.at === "profile" && walkin.mrn === mrn;
   const vs = visitsOf(w, mrn);
   const shown = vs.filter((c) => {
     const want = vf.no.trim().toLowerCase().replace(/^v/, "");
@@ -53,16 +55,22 @@ export function VisitsList({ mrn }: { mrn: string }) {
   return (
     <Card className="gap-0 p-0">
       <Disclosure isExpanded={open} onExpandedChange={(v) => set({ profVisitsOpen: v })}>
-        <Disclosure.Heading>
-          <Disclosure.Trigger className="flex w-full items-center justify-start gap-2 px-4 py-3 text-start">
+        <Disclosure.Heading className="flex items-center gap-2 pe-4">
+          <Disclosure.Trigger className="flex min-w-0 flex-1 items-center justify-start gap-2 px-4 py-3 text-start">
             <h2 className="text-xs font-bold uppercase tracking-wider text-vida-navy">{t("patient.visits")}</h2>
             <span className="ms-auto text-xs text-muted">
               {filtered ? t("patient.visitsFiltered", { shown: shown.length, count: vs.length }) : t("patient.visitsCount", { count: vs.length })}
             </span>
             <Disclosure.Indicator className="ms-2"><ChevronDown className="size-4" /></Disclosure.Indicator>
           </Disclosure.Trigger>
+          {/* outside the trigger: a button may not sit inside another */}
+          <Button size="sm" variant={walkinHere ? "outline" : "primary"} data-testid="profile-walkin"
+            onPress={() => (walkinHere ? set({ walkin: null }) : startWalkin(mrn, "profile"))}>
+            {walkinHere ? <><X className="size-4" />{t("patient.closeWalkin")}</> : <><UserPlus className="size-4" />{t("patient.newWalkin")}</>}
+          </Button>
         </Disclosure.Heading>
         <Disclosure.Content>
+          {walkinHere && <div className="px-4 pb-3"><WalkinFlow /></div>}
           <div className="flex flex-wrap items-end gap-3 border-b border-border px-4 pb-3">
             <TextField aria-label={t("patient.visitNo")} value={vf.no} onChange={(v) => setVf({ no: v })} className="w-52">
               <Input placeholder={t("patient.visitNoPlaceholder")} />
